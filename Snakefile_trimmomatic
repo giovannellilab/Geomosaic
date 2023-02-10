@@ -1,0 +1,39 @@
+SAMPLES=['AG19_S52_L001_001',
+'AG19_S52_L002_001',
+'AG19_S52_L003_001',
+'AG19_S52_L004_001',]
+
+WDIR="raw_metagenomes/output_example2"
+
+rule targets:
+  input:
+    expand("{wdir}/{sample}/r1_paired.fastq.gz", sample=SAMPLES, wdir=WDIR)
+
+rule m1_trimmomatic:
+  input: 
+    r1="{wdir}/{sample}/R1.fastq.gz",
+    r2="{wdir}/{sample}/R2.fastq.gz",
+  output:
+    r1_paired="{wdir}/{sample}/r1_paired.fastq.gz",
+    r2_paired="{wdir}/{sample}/r2_paired.fastq.gz",
+    r1_unpaired="{wdir}/{sample}/r1_unpaired.fastq.gz",
+    r2_unpaired="{wdir}/{sample}/r2_unpaired.fastq.gz",
+  params:
+    pgs="m1/pgms/Trimmomatic-0.39",
+    type_end="PE",
+    adapters="m1/pgms/Trimmomatic-0.39/adapters",
+    leading=3,
+    trailing=3,
+    slidingwindow="4:15",
+    minlen=36
+  shell:
+    """
+    java -jar {params.pgs}/trimmomatic-0.39.jar {params.type_end} \
+    {input.r1} {input.r2} \
+    {output.r1_paired} {output.r1_unpaired} \
+    {output.r2_paired} {output.r2_unpaired} \
+    LEADING:{params.leading} \
+    TRAILING:{params.trailing} \
+    SLIDINGWINDOW:{params.slidingwindow} \
+    MINLEN:{params.minlen}
+    """
