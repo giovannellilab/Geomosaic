@@ -1,5 +1,7 @@
 # Metagenomic Pipeline
 
+`Temp description`
+
 Activate conda environment
 ```
 conda activate metapipe
@@ -26,4 +28,3 @@ Cutadapt
 ```
 conda install -c bioconda trim-galore
 ```
-
