@@ -24,7 +24,14 @@ This pipeline is organized in modules:
 
 
 ### Module 1: Reads quality check
-Cutadapt
+trim-galore
 ```
 conda install -c bioconda trim-galore
 ```
+
+### Module 2: 
+Kaiju
+```
+conda install -c bioconda kaiju
+```
+
