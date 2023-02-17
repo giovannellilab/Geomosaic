@@ -30,8 +30,14 @@ conda install -c bioconda trim-galore
 ```
 
 ### Module 2: 
-Kaiju
+Kaiju (Taxonomic classification [Read-based])
 ```
 conda install -c bioconda kaiju
+```
+
+### Module 3
+metaSPAdes (Assembly)
+```
+conda install -c bioconda spades
 ```
 
