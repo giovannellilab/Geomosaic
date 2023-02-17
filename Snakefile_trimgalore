@@ -7,14 +7,14 @@ WDIR="raw_metagenomes/output_example"
 
 rule targets:
   input:
-    expand("{wdir}/{sample}/tg", sample=SAMPLES, wdir=WDIR)
+    expand("{wdir}/{sample}/trimgalore", sample=SAMPLES, wdir=WDIR)
 
 rule m1_trimgalore:
   input: 
     r1="{wdir}/{sample}/R1.fastq.gz",
     r2="{wdir}/{sample}/R2.fastq.gz",
   output:
-    directory("{wdir}/{sample}/tg")
+    directory("{wdir}/{sample}/trimgalore")
   params:
     extra="--paired --fastqc --gzip"
   shell:
