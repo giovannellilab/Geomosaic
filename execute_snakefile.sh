@@ -1,4 +1,4 @@
 #!/bin/bash
 #
 
-snakemake --use-conda --cores 20
+snakemake --use-conda --cores 5
