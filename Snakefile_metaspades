@@ -1,0 +1,21 @@
+SAMPLES=['AG1', 'AG11']
+WDIR='raw_metagenomes/somnus'
+
+rule targets:
+  input:
+    expand("{wdir}/{sample}/metaspades", sample=SAMPLES, wdir=WDIR)
+
+
+rule run_metaspades:
+    input:
+        r1="{wdir}/{sample}/trimgalore/R1_val_1.fq.gz",
+        r2="{wdir}/{sample}/trimgalore/R2_val_2.fq.gz",
+    output:
+        directory("{wdir}/{sample}/metaspades")
+    threads: 10
+    resources:
+        mem_gb=45
+    shell:
+        """
+        spades.py --meta --only-assembler -t {threads} -m {resources.mem_gb} -1 {input.r1} -2 {input.r2} -o {output}
+        """
