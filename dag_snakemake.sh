@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 
+snakefile=$1
 
-snakemake --dag | dot -Tpdf > dag.pdf
+snakemake -s $snakefile --dag | dot -Tpdf > dag.pdf
 
