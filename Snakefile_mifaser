@@ -1,0 +1,44 @@
+SAMPLES=['AG1', 'AG11']
+WDIR='raw_metagenomes/somnus'
+
+
+rule targets:
+  input:
+    expand("{wdir}/{sample}/mifaser", sample=SAMPLES, wdir=WDIR)
+
+
+rule download_gs21all:
+    params:
+        sequences="https://bitbucket.org/bromberglab/mifaser/raw/bbd1ca1d093d8a26060ee83daf2d7f3f5e88bfd0/mifaser/database/GS-21-all/sequences.fasta"
+    output:
+        gs21all="{wdir}/gs21all/sequences.fasta"
+    shell:
+        """
+        curl {params.sequences} -o {output.gs21all}
+        """
+
+
+rule create_updated_diamond_db:
+    input:
+        gs21all=expand("{wdir}/gs21all/sequences.fasta", wdir=WDIR)
+    output:
+        diamond_db=directory("{wdir}/gs21all/GS-21-all")
+    params:
+        mifaser_path="$CONDA_PREFIX/lib/python3.10/site-packages/mifaser/database",
+        local_diamond="-i $CONDA_PREFIX/bin "
+    run:
+        shell("mifaser --createdb GS-21-all {input.gs21all}")
+        shell("cp -r {params.mifaser_path}/GS-21-all {output.diamond_db}")
+
+
+rule run_mifaser:
+    input:
+        r1="{wdir}/{sample}/trimgalore/R1_val_1.fq.gz",
+        r2="{wdir}/{sample}/trimgalore/R2_val_2.fq.gz",
+        diamond_db=expand("{wdir}/gs21all/GS-21-all", wdir=WDIR)
+    output:
+        directory("{wdir}/{sample}/mifaser")
+    threads: 10
+    run:
+        shell("echo $(basename {input.diamond_db})") # Dummy execution for the order of mifaser rules
+        shell("mifaser -d GS-21-all -l {input.r1} {input.r2} -t {threads} -o {output}")
