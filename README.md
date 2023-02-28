@@ -1,4 +1,4 @@
-# Metagenomic Pipeline
+# GeoMosaic: A flexible metagenomic pipeline combining read-based, assemblies and MAGs with downstream analysis
 
 `Temp description`
 
