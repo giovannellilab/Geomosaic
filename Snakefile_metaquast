@@ -1,0 +1,22 @@
+SAMPLES=['AG1', 'AG11']
+WDIR='raw_metagenomes/somnus'
+
+rule targets:
+  input:
+    expand("{wdir}/{sample}/metaquast", sample=SAMPLES, wdir=WDIR)
+
+
+rule run_metaspades:
+    input:
+        contigs="{wdir}/{sample}/metaspades/contigs.fasta",
+        scaffolds="{wdir}/{sample}/metaspades/scaffolds.fasta",
+    output:
+        directory("{wdir}/{sample}/metaquast")
+    threads: 5
+    params:
+        extra="--contig-thresholds 0,1000,10000,100000,1000000",
+        label="--labels metaspades"
+    shell:
+        """
+        quast --threads {threads} {params.extra} -o {output} {input.contigs}
+        """
