@@ -1,9 +1,5 @@
-SAMPLES=['AG19_S52_L001_001',
-'AG19_S52_L002_001',
-'AG19_S52_L003_001',
-'AG19_S52_L004_001',]
-
-WDIR="raw_metagenomes/output_example"
+SAMPLES=['AG1', 'AG11']
+WDIR='raw_metagenomes/somnus'
 
 rule targets:
   input:
