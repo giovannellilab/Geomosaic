@@ -1,0 +1,49 @@
+{
+    "graph": {
+        "m1": ["m2", "m4", "m5"],
+        "m2": ["m3"]
+    },
+
+    "modules": {
+        "m1": {
+            "description": "Module 1: Quality check of raw read",
+            "choices": {
+                "Trim-Galore": "trimgalore",
+                "Trimmomatic": "trimmomatic"
+            }
+    
+        },
+    
+        "m2": {
+            "description": "Module 2: Assembly",
+            "choices": {
+                "MetaSpades": "metaspades"
+    
+            }
+    
+        },
+    
+        "m3": {
+            "description": "Module 3: Quality Assessment Tool for Genome Assemblies",
+            "choices": {
+                "MetaQuast": "metaquast"
+            }
+    
+        },
+    
+        "m4": {
+            "description": "Module 4: Functional classification [Read-based]",
+            "choices": {
+                "mi-faser": "mifaser"
+            }
+        },
+    
+        "m5": {
+            "description": "Module 5: Taxonomic classification [Read-based]",
+            "choices": {
+                "Kaiju": "kaiju"
+            }
+    
+        }
+    }    
+}
