@@ -1,11 +1,3 @@
-SAMPLES=['AG1', 'AG11']
-WDIR='raw_metagenomes/somnus'
-
-
-rule targets:
-  input:
-    expand("{wdir}/{sample}/mifaser", sample=SAMPLES, wdir=WDIR)
-
 
 rule download_gs21all:
     params:
@@ -20,7 +12,7 @@ rule download_gs21all:
 
 rule create_updated_diamond_db:
     input:
-        gs21all=expand("{wdir}/gs21all/sequences.fasta", wdir=WDIR)
+        gs21all=expand("{wdir}/gs21all/sequences.fasta", wdir=config["WDIR"])
     output:
         diamond_db=directory("{wdir}/gs21all/GS-21-all")
     params:
@@ -33,9 +25,9 @@ rule create_updated_diamond_db:
 
 rule run_mifaser:
     input:
-        r1="{wdir}/{sample}/trimgalore/R1_val_1.fq.gz",
-        r2="{wdir}/{sample}/trimgalore/R2_val_2.fq.gz",
-        diamond_db=expand("{wdir}/gs21all/GS-21-all", wdir=WDIR)
+        r1=expand("{wdir}/{sample}/{pre_mifaser}/R1.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"], pre_mifaser=config["PRE_MIFASER"]),
+        r2=expand("{wdir}/{sample}/{pre_mifaser}/R2.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"], pre_mifaser=config["PRE_MIFASER"]),
+        diamond_db=expand("{wdir}/gs21all/GS-21-all", wdir=config["WDIR"])
     output:
         directory("{wdir}/{sample}/mifaser")
     threads: 10

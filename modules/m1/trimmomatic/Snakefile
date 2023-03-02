@@ -1,19 +1,13 @@
-SAMPLES=['AG1', 'AG11']
-WDIR='raw_metagenomes/somnus'
-
-rule targets:
-  input:
-    expand("{wdir}/{sample}/r1_paired.fastq.gz", sample=SAMPLES, wdir=WDIR)
 
 rule m1_trimmomatic:
   input: 
     r1="{wdir}/{sample}/R1.fastq.gz",
     r2="{wdir}/{sample}/R2.fastq.gz",
   output:
-    r1_paired="{wdir}/{sample}/r1_paired.fastq.gz",
-    r2_paired="{wdir}/{sample}/r2_paired.fastq.gz",
-    r1_unpaired="{wdir}/{sample}/r1_unpaired.fastq.gz",
-    r2_unpaired="{wdir}/{sample}/r2_unpaired.fastq.gz",
+    r1_paired="{wdir}/{sample}/trimmomatic/r1_paired.fastq.gz",
+    r2_paired="{wdir}/{sample}/trimmomatic/r2_paired.fastq.gz",
+    r1_unpaired="{wdir}/{sample}/trimmomatic/r1_unpaired.fastq.gz",
+    r2_unpaired="{wdir}/{sample}/trimmomatic/r2_unpaired.fastq.gz",
   params:
     pgs="m1/pgms/Trimmomatic-0.39",
     type_end="PE",
