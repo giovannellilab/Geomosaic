@@ -3,13 +3,19 @@
 
 import pandas as pd
 from subprocess import check_call
+from argparse import ArgumentParser
 
 
 def main():
-    print("Mapping samples to filenames...")
-    file = "data_mapping.tsv"
+    args = parse_args()
 
-    rawdf = pd.read_csv(file, sep="\t", names=["filenames", "sample_name"])
+    folder_raw_reads = args.directory
+    working_dir = args.working_dir
+    sample_table = args.sample_table
+
+    print("Mapping samples to filenames...")
+
+    rawdf = pd.read_csv(sample_table, sep="\t", names=["filenames", "sample_name"])
     df = rawdf[rawdf["filenames"].str.contains(".fastq.gz")]
     grp = df.groupby(by=["sample_name"]).agg(list)
     grp.reset_index(inplace=True)
@@ -51,31 +57,30 @@ def main():
             assert suffix_r1 == suffix_r2, f"R1 and R2 files are not matching.\nR1 file: {r1}\nR2 file: {r2}\n"
     
     print("Prepairing samples files...")
-    # input="raw_metagenomes/somnus"
-    wdir_somnus="raw_metagenomes/somnus"
-    folder_raw_reads = "raw_metagenomes/GiovanARG19MetaG"
 
-    check_call(f"mkdir -p {wdir_somnus}", shell=True)
+    check_call(f"mkdir -p {working_dir}", shell=True)
 
     template = list(sorted_mapping.items())
     samples_list = []
     for sample, reads_files in template[:2]:
         assert len(reads_files["r1"]) == len(reads_files["r2"]), f"For this Sample {sample}, there are different number of R1 and R2 files"
-        sample_folder = f"{wdir_somnus}/{sample}"
+        sample_folder = f"{working_dir}/{sample}"
         check_call(f"mkdir -p {sample_folder}", shell=True)
         r1 = " ".join(map(lambda x: f"{folder_raw_reads}/{x}", reads_files["r1"]))
         r2 = " ".join(map(lambda x: f"{folder_raw_reads}/{x}", reads_files["r2"]))
-        check_call(f"cat {r1} > {sample_folder}/R1.fastq.gz", shell=True)
-        check_call(f"cat {r2} > {sample_folder}/R2.fastq.gz", shell=True)
+        # check_call(f"cat {r1} > {sample_folder}/R1.fastq.gz", shell=True)
+        # check_call(f"cat {r2} > {sample_folder}/R2.fastq.gz", shell=True)
         samples_list.append(sample)
     
-    s = f"""SAMPLES={str(repr(samples_list))}
-WDIR={str(repr(wdir_somnus))}
+    return samples_list, working_dir
 
-"""
 
-    check_call(f"""printf "{s}" | cat - Snakefile > temp && mv temp Snakefile""", shell=True)
-    print("Done.")
+def parse_args():
+    parser = ArgumentParser(description="Script to parse user samples table")
+    parser.add_argument("-d", "--directory", required=True, type=str, help="Path to the directory containing raw reads (fastq.gz files)")
+    parser.add_argument("-w", "--working_dir", required=True, type=str, help="Path to the working directory for geomosaic")
+    parser.add_argument("-s", "--sample_table", required=True, type=str, help="Path to the user sample table")
+    return parser.parse_args()
 
 
 if __name__ == "__main__":
