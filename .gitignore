@@ -2,3 +2,7 @@
 .snakemake
 /m1/pgms
 *.pdf
+/test_modules
+/__pycache__
+Snakefile*
+config.yaml
