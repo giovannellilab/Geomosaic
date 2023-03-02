@@ -6,3 +6,4 @@
 /__pycache__
 Snakefile*
 config.yaml
+dag_snakefile.sh
