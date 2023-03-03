@@ -1,14 +1,8 @@
 # GeoMosaic: A flexible metagenomic pipeline combining read-based, assemblies and MAGs with downstream analysis
 
-`Temp description`
-
-Activate conda environment
+Create the conda environment:
 ```
-conda activate metapipe
-```
-### Installed conda packages
-```
-conda install snakemake
+conda env create -f environment.yaml
 ```
 
 
