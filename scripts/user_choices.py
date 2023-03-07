@@ -5,25 +5,34 @@ import networkx as nx
 import json
 from networkx.classes import DiGraph
 import yaml
-from parse_sample_table import main as parse_sample_table
+from parse_sample_table import parse_sample_table
+from argparse import ArgumentParser
+from collections import deque
+import matplotlib.pyplot as plt
+import networkx as nx
+from networkx.drawing.nx_pydot import graphviz_layout
 
 
 
 def main():
-    samples_list, wdir_geomosaic = parse_sample_table()
+    args = parse_args()
+
+    folder_raw_reads = args.directory
+    working_dir = args.working_dir
+    sample_table = args.sample_table
+
+    samples_list, wdir_geomosaic = parse_sample_table(folder_raw_reads, working_dir, sample_table)
 
     modules_folder = "modules"
+    # with open('gmpackages_dummy.json', 'r') as f:
     with open('gmpackages.json', 'r') as f:
         gmpackages = json.load(f)
 
-    g = import_graph(gmpackages["graph"])
+    G = import_graph(gmpackages["graph"])
+    collected_modules = gmpackages["modules"]
 
-    print("\nChoose your workflow...")
-    user_choices, deps = user_input_order(g, gmpackages["modules"])
-    for s, t in deps:
-        user_choices[t]["previous"] = user_choices[s]["package"]
-
-    print(user_choices)
+    mstart = "m1"
+    user_choices, dependencies, modified_G = build_pipeline_modules(G, collected_modules, mstart=mstart)
 
     # print(user_choices)
     config_filename = "config.yaml"
@@ -31,9 +40,9 @@ def main():
     config["SAMPLES"] = samples_list[:1]
     config["WDIR"] = wdir_geomosaic
 
-    for i, v in user_choices.items():
-        if "previous" in v:
-            config[f"PRE_{v['package'].upper()}"] = v['previous']
+    for _, pckg_info in user_choices.items():
+        if "previous" in pckg_info:
+            config[f"PRE_{pckg_info['package'].upper()}"] = pckg_info['previous']
 
     with open(config_filename, 'w') as fd_config:
         yaml.dump(config, fd_config)
@@ -60,29 +69,71 @@ def main():
                 fd.write(sf.read())
 
 
-def user_input_order(G: DiGraph, modules: dict):
-    dfs = list(nx.dfs_preorder_nodes(G, source="m1"))
-    dependencies = list(nx.dfs_edges(G, source="m1"))
-    user_choices = {}
-    for n in dfs:
-        status = False
-        choices = {idx: {"name": v[0], "package": v[1]} for idx, v in enumerate(list(modules[n]["choices"].items()), start=1)}
-        prompt = [f"{k}) {v['name']}" for k, v in choices.items()]
-        while not status:
-            print(modules[n]["description"])
-            print("\n".join(prompt))
+def build_pipeline_modules(graph: DiGraph, collected_modules: dict, mstart: str="m1"):
+    G = graph.copy()
+    assert mstart in G.nodes()
 
+    dfs_collection = {}
+    for m in G.nodes():
+        dfs_collection[m] = list(nx.dfs_preorder_nodes(G, source=m))
+    
+    # Cleaning the Graph, based on the starting point
+    for n in graph.nodes():
+        if n not in dfs_collection[mstart]:
+            G.remove_node(n)
+
+    # Obtaining all descendants of the working graphs
+    modules_descendants = {}
+    for m in G.nodes():
+        modules_descendants[m] = list(nx.descendants(G, m))
+    
+    user_choices = {}
+    queue = deque(list(nx.bfs_tree(G, source=mstart).nodes()))
+
+    while queue:
+        status = False
+        my_module = queue[0]
+
+        module_descr = collected_modules[my_module]["description"]
+        module_choices = {}
+        module_choices[0] = {"display": "-- Ignore this module (and all successors) --", "package": ""}
+        for indice, raw_package in enumerate(collected_modules[my_module]["choices"].items(), start=1):
+            pckg_display, pckg_name = raw_package
+            module_choices[indice] = {"display": pckg_display, "package": pckg_name}
+
+        prompt_display = f"\n{module_descr}\n" + "\n".join([f"{integer}) {pck_info['display']}" for integer, pck_info in module_choices.items()])
+        while not status:
+            print(prompt_display)
+            
             raw_input = input()
 
-            status, obj = check_user_input(raw_input, list(choices.keys()))
+            status, obj = check_user_input(raw_input, list(module_choices.keys()))
             if not status:
                 print(obj)
         
-        print("============================\n")
         parse_input = obj
-        user_choices[n] = {"package": choices[parse_input]["package"]}
+        if parse_input == 0:
+            G.remove_node(my_module)
+            G.remove_nodes_from(modules_descendants[my_module])
+            for desc in modules_descendants[my_module]:
+                queue.remove(desc)
+            
+            queue.popleft()
+            continue
+        
+        user_choices[my_module] = {"package": module_choices[parse_input]["package"]}
+        queue.popleft()
     
-    return user_choices, dependencies
+    dependencies = list(nx.dfs_edges(G, source=mstart))
+
+    for module_source, module_target in dependencies:
+        user_choices[module_target]["previous"] = user_choices[module_source]["package"]
+
+    pos = graphviz_layout(G, prog="dot")
+    nx.draw(G, pos, with_labels=True, arrows=True)
+    plt.show()
+
+    return user_choices, dependencies, G
 
 
 def import_graph(edges: dict) -> DiGraph:
@@ -109,6 +160,12 @@ def check_user_input(input, list_ints):
     return True, user_input
 
 
+def parse_args():
+    parser = ArgumentParser(description="Script to parse user samples table")
+    parser.add_argument("-d", "--directory", required=True, type=str, help="Path to the directory containing raw reads (fastq.gz files)")
+    parser.add_argument("-w", "--working_dir", required=True, type=str, help="Path to the working directory for geomosaic")
+    parser.add_argument("-s", "--sample_table", required=True, type=str, help="Path to the user sample table")
+    return parser.parse_args()
 
 
 if __name__ == "__main__":
