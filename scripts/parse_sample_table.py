@@ -1,18 +1,9 @@
-#!/usr/bin/env python3
-#
 
 import pandas as pd
 from subprocess import check_call
-from argparse import ArgumentParser
 
 
-def main():
-    args = parse_args()
-
-    folder_raw_reads = args.directory
-    working_dir = args.working_dir
-    sample_table = args.sample_table
-
+def parse_sample_table(folder_raw_reads, working_dir, sample_table):
     print("Mapping samples to filenames...")
 
     rawdf = pd.read_csv(sample_table, sep="\t", names=["filenames", "sample_name"])
@@ -73,15 +64,3 @@ def main():
         samples_list.append(sample)
     
     return samples_list, working_dir
-
-
-def parse_args():
-    parser = ArgumentParser(description="Script to parse user samples table")
-    parser.add_argument("-d", "--directory", required=True, type=str, help="Path to the directory containing raw reads (fastq.gz files)")
-    parser.add_argument("-w", "--working_dir", required=True, type=str, help="Path to the working directory for geomosaic")
-    parser.add_argument("-s", "--sample_table", required=True, type=str, help="Path to the user sample table")
-    return parser.parse_args()
-
-
-if __name__ == "__main__":
-    main()
