@@ -8,7 +8,7 @@ helpFunction()
     echo ""
     echo "GeoMosaic: A flexible metagenomic pipeline combining read-based, assemblies and MAGs with downstream analysis"
     echo ""
-    echo "Usage: $0 -d <directory> -w <working_dir> -s <sample_table> "
+    echo "Usage: $0 -d <rawreads_directory> -w <working_dir> -s <sample_table> "
     echo -e "\t-d Path to the directory containing raw reads (fastq.gz files)"
     echo -e "\t-w Path to the working directory for geomosaic"
     echo -e "\t-s Sample table"
@@ -32,3 +32,8 @@ then
     helpFunction
 fi
 
+python3 scripts/user_choices.py -d $directory -w $working_dir -s $sample_table
+
+./dag_snakefile.sh Snakefile
+
+# snakemake --use-conda --cores 20
