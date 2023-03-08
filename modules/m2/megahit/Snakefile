@@ -1,0 +1,16 @@
+
+rule run_metagahit:
+    input:
+        r1=expand("{wdir}/{sample}/{pre_megahit}/R1.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"], pre_megahit=config["PRE_MEGAHIT"]),
+        r2=expand("{wdir}/{sample}/{pre_megahit}/R2.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"], pre_megahit=config["PRE_MEGAHIT"]),
+    output:
+        directory("{wdir}/{sample}/megahit")
+    threads: 10
+    resources:
+        mem_gb=45
+    params:
+        complex_metagenome="--presets meta-large"
+    shell:
+        """
+        megahit {params.complex_metagenome} -t {threads} -m 0.5 -1 {input.r1} -2 {input.r2} -o {output}
+        """

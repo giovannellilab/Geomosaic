@@ -17,8 +17,8 @@
         "m2": {
             "description": "Module 2: Assembly",
             "choices": {
-                "MetaSpades": "metaspades"
-    
+                "MetaSpades": "metaspades",
+                "MegaHit": "megahit"
             }
     
         },
