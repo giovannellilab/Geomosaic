@@ -4,6 +4,6 @@
 *.pdf
 /test_modules
 /__pycache__
-Snakefile*
+/Snakefile*
 config.yaml
 dag_snakefile.sh
