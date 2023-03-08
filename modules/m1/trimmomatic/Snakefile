@@ -9,16 +9,14 @@ rule m1_trimmomatic:
     r1_unpaired="{wdir}/{sample}/trimmomatic/r1_unpaired.fastq.gz",
     r2_unpaired="{wdir}/{sample}/trimmomatic/r2_unpaired.fastq.gz",
   params:
-    pgs="m1/pgms/Trimmomatic-0.39",
     type_end="PE",
-    adapters="m1/pgms/Trimmomatic-0.39/adapters",
     leading=3,
     trailing=3,
     slidingwindow="4:15",
     minlen=36
   shell:
     """
-    java -jar {params.pgs}/trimmomatic-0.39.jar {params.type_end} \
+    trimmomatic {params.type_end} \
     {input.r1} {input.r2} \
     {output.r1_paired} {output.r1_unpaired} \
     {output.r2_paired} {output.r2_unpaired} \
