@@ -36,4 +36,4 @@ python3 scripts/user_choices.py -d $directory -w $working_dir -s $sample_table
 
 ./dag_snakefile.sh Snakefile
 
-# snakemake --use-conda --cores 20
+snakemake --use-conda --cores 20
