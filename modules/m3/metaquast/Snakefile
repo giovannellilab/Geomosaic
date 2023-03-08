@@ -10,5 +10,5 @@ rule run_metaquast:
         label="--labels metaspades"
     shell:
         """
-        quast --threads {threads} {params.extra} -o {output} {input.contig_path}/contigs.fasta
+        metaquast --threads {threads} {params.extra} -o {output} {input.contig_path}/contigs.fasta
         """
