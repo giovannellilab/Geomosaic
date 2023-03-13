@@ -1,0 +1,12 @@
+
+rule run_fastp:
+    input:
+        r1=expand("{wdir}/{sample}/R1.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"]),
+        r2=expand("{wdir}/{sample}/R2.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"]),
+    output:
+        dir=directory("{wdir}/{sample}/fastp"),
+        r1="{wdir}/{sample}/fastp/R1.fastq.gz", 
+        r2="{wdir}/{sample}/fastp/R2.fastq.gz"
+    threads: 3
+    shell:
+        "fastp -i {input.r1} -I {input.r2} -o {output.r1} -O {output.r2} --thread {threads} -q 20 u 40"
