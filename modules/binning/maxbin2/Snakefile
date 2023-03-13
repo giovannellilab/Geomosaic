@@ -1,0 +1,12 @@
+
+rule run_maxbin2:
+    input:
+        r1=expand("{wdir}/{sample}/{pre_processing}/R1.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"], pre_processing=config["pre_processing"]),
+        r2=expand("{wdir}/{sample}/{pre_processing}/R2.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"], pre_processing=config["pre_processing"]),
+        contig_path=expand("{wdir}/{sample}/{assembly}", wdir=config["WDIR"], sample=config["SAMPLES"], assembly=config["assembly"]),
+    output:
+        folder=directory("{wdir}/{sample}/maxbin2")
+    threads: 5
+    run:
+        shell("mkdir -p {output.folder}")
+        shell("run_MaxBin.pl -contig {input.contig_path}/contigs.fasta -reads {input.r1} -reads2 {input.r2} -thread {threads} -out {output.folder}/output")
