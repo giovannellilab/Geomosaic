@@ -24,16 +24,16 @@ def main():
     samples_list, wdir_geomosaic = parse_sample_table(folder_raw_reads, working_dir, sample_table)
 
     modules_folder = "modules"
-    # with open('gmpackages_dummy.json', 'r') as f:
+    
     with open('gmpackages.json', 'r') as f:
         gmpackages = json.load(f)
 
     G = import_graph(gmpackages["graph"])
     collected_modules = gmpackages["modules"]
-    acronyms = gmpackages["acronyms"]
+    order = gmpackages["order"]
 
     mstart = "pre_processing"
-    user_choices, dependencies, modified_G = build_pipeline_modules(G, collected_modules, acronyms, mstart=mstart)
+    user_choices, dependencies, modified_G = build_pipeline_modules(G, collected_modules, order, mstart=mstart)
 
     config_filename = "config.yaml"
     config = {}
@@ -67,7 +67,7 @@ def main():
                 fd.write(sf.read())
 
 
-def build_pipeline_modules(graph: DiGraph, collected_modules: dict, acronyms: dict, mstart: str="m1"):
+def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list, mstart: str="m1"):
     G = graph.copy()
     assert mstart in G.nodes()
 
@@ -86,7 +86,10 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, acronyms: di
         modules_descendants[m] = list(nx.descendants(G, m))
     
     user_choices = {}
-    queue = deque(list(nx.bfs_tree(G, source=mstart).nodes()))
+    raw_queue = list(nx.bfs_tree(G, source=mstart).nodes())
+
+    # Defining order
+    queue = deque([elem for elem in order if elem in raw_queue])
 
     while queue:
         status = False
