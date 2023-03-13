@@ -30,19 +30,18 @@ def main():
 
     G = import_graph(gmpackages["graph"])
     collected_modules = gmpackages["modules"]
+    acronyms = gmpackages["acronyms"]
 
-    mstart = "m1"
-    user_choices, dependencies, modified_G = build_pipeline_modules(G, collected_modules, mstart=mstart)
+    mstart = "pre_processing"
+    user_choices, dependencies, modified_G = build_pipeline_modules(G, collected_modules, acronyms, mstart=mstart)
 
-    # print(user_choices)
     config_filename = "config.yaml"
     config = {}
     config["SAMPLES"] = samples_list[:1]
     config["WDIR"] = wdir_geomosaic
 
-    for _, pckg_info in user_choices.items():
-        if "previous" in pckg_info:
-            config[f"PRE_{pckg_info['package'].upper()}"] = pckg_info['previous']
+    for module_name, pckg_info in user_choices.items():
+        config[module_name] = pckg_info['package']
 
     with open(config_filename, 'w') as fd_config:
         yaml.dump(config, fd_config)
@@ -60,7 +59,6 @@ def main():
                 target = yaml.load(file, Loader=yaml.FullLoader)
             
             input_target = target[f"rule all_{package}"]["input"]
-            print(input_target)
             fd.write(f"{input_target}\n\t\t")
                     
         # Rule for each package
@@ -69,7 +67,7 @@ def main():
                 fd.write(sf.read())
 
 
-def build_pipeline_modules(graph: DiGraph, collected_modules: dict, mstart: str="m1"):
+def build_pipeline_modules(graph: DiGraph, collected_modules: dict, acronyms: dict, mstart: str="m1"):
     G = graph.copy()
     assert mstart in G.nodes()
 
@@ -124,14 +122,11 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, mstart: str=
         user_choices[my_module] = {"package": module_choices[parse_input]["package"]}
         queue.popleft()
     
-    dependencies = list(nx.dfs_edges(G, source=mstart))
+    dependencies = list(G.edges())
 
-    for module_source, module_target in dependencies:
-        user_choices[module_target]["previous"] = user_choices[module_source]["package"]
-
-    pos = graphviz_layout(G, prog="dot")
-    nx.draw(G, pos, with_labels=True, arrows=True)
-    plt.show()
+    # pos = graphviz_layout(G, prog="dot")
+    # nx.draw(G, pos, with_labels=True, arrows=True)
+    # plt.show()
 
     return user_choices, dependencies, G
 

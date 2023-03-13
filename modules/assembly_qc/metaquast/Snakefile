@@ -1,7 +1,7 @@
 
 rule run_metaquast:
     input:
-        contig_path=expand("{wdir}/{sample}/{pre_metaquast}", wdir=config["WDIR"], sample=config["SAMPLES"], pre_metaquast=config["PRE_METAQUAST"]),
+        contig_path=expand("{wdir}/{sample}/{assembly}", wdir=config["WDIR"], sample=config["SAMPLES"], assembly=config["assembly"]),
     output:
         directory("{wdir}/{sample}/metaquast")
     threads: 5

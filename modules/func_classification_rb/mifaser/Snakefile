@@ -25,8 +25,8 @@ rule create_updated_diamond_db:
 
 rule run_mifaser:
     input:
-        r1=expand("{wdir}/{sample}/{pre_mifaser}/R1.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"], pre_mifaser=config["PRE_MIFASER"]),
-        r2=expand("{wdir}/{sample}/{pre_mifaser}/R2.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"], pre_mifaser=config["PRE_MIFASER"]),
+        r1=expand("{wdir}/{sample}/{pre_processing}/R1.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"], pre_processing=config["pre_processing"]),
+        r2=expand("{wdir}/{sample}/{pre_processing}/R2.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"], pre_processing=config["pre_processing"]),
         diamond_db=expand("{wdir}/gs21all/GS-21-all", wdir=config["WDIR"])
     output:
         directory("{wdir}/{sample}/mifaser")
