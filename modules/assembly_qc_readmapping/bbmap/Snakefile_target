@@ -1,0 +1,5 @@
+
+rule all_bbmap:
+    input:
+        expand("{wdir}/{sample}/bbmap", sample=config["SAMPLES"], wdir=config["WDIR"]),
+        expand("{wdir}/{sample}/bbmap/bbmap_result.sam", sample=config["SAMPLES"], wdir=config["WDIR"]),
