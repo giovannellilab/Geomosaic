@@ -1,21 +1,42 @@
 {
+    "order": [
+        "pre_processing",
+        "assembly",
+        "assembly_qc",
+        "assembly_qc_readmapping",
+        "binning",
+        "func_classification_rb",
+        "tax_classification_rb"
+    ],
+
     "graph": {
-        "m1": ["m2", "m4", "m5"],
-        "m2": ["m3"]
+        "pre_processing": [
+            "assembly", 
+            "func_classification_rb", 
+            "tax_classification_rb", 
+            "assembly_qc_readmapping",
+            "binning"
+        ],
+        "assembly": [
+            "assembly_qc",
+            "assembly_qc_readmapping",
+            "binning"
+        ]
     },
 
     "modules": {
-        "m1": {
-            "description": "Module 1: Quality check of raw read",
+        "pre_processing": {
+            "description": "Module: Pre processing with quality check",
             "choices": {
                 "Trim-Galore": "trimgalore",
-                "Trimmomatic": "trimmomatic"
+                "Trimmomatic": "trimmomatic",
+                "fastp": "fastp"
             }
     
         },
     
-        "m2": {
-            "description": "Module 2: Assembly",
+        "assembly": {
+            "description": "Module: Assembly",
             "choices": {
                 "MetaSpades": "metaspades",
                 "MegaHit": "megahit"
@@ -23,25 +44,41 @@
     
         },
     
-        "m3": {
-            "description": "Module 3: Quality Assessment Tool for Genome Assemblies",
+        "assembly_qc": {
+            "description": "Module: Assembly evaluation with metrics",
             "choices": {
                 "MetaQuast": "metaquast"
             }
     
         },
     
-        "m4": {
-            "description": "Module 4: Functional classification [Read-based]",
+        "func_classification_rb": {
+            "description": "Module: Functional classification [Read-based]",
             "choices": {
                 "mi-faser": "mifaser"
             }
         },
     
-        "m5": {
-            "description": "Module 5: Taxonomic classification [Read-based]",
+        "tax_classification_rb": {
+            "description": "Module: Taxonomic classification [Read-based]",
             "choices": {
                 "Kaiju": "kaiju"
+            }
+    
+        },
+
+        "binning": {
+            "description": "Module: Binning",
+            "choices": {
+                "MaxBin2": "maxbin2"
+            }
+    
+        },
+
+        "assembly_qc_readmapping": {
+            "description": "Module: Assembly evaluation by read mapping",
+            "choices": {
+                "BBMap": "bbmap"
             }
     
         }
