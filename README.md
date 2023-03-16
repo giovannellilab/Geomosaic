@@ -1,55 +1,49 @@
 # GeoMosaic: A flexible metagenomic pipeline combining read-based, assemblies and MAGs with downstream analysis
 
-Create the conda environment:
+The first step is to install the conda environment of Geomosaic.
 ```
 conda env create -f environment.yaml
 ```
+Then activate it
+```
+conda activate geomosaic
+```
 
-
-## Modules
+## Integrated Modules
 
 This pipeline is organized in modules:
 <ul>
-  <li>Module 1: reads quality check</li>
-  <li>Module 2: Taxonomic Classification [Read-Based]</li>
-  <li>Module 3: Assembly</li>
-  <li>Module 4: Quality assessment of assembly</li>
-  <li>Module 5: Functional Classification [Read-Based]</li>
+  <li>Pre-processing</li>
+  <li>Assembly</li>
+  <li>Assembly Evaluation: Quality Check</li>
+  <li>Assembly Evaluation: Read Mapping</li>
+  <li>Binning</li>
+  <li>Functional Classification [Read-based]</li>
+  <li>Taxonomic Classification [Read-based]</li>
 </ul>
 
 
-### Module 1: Reads quality check
-trim-galore
-```
-conda install -c bioconda trim-galore
-```
+### Pre-processing
+Integrated modules:
+- fastp
+- trim-galore
+- trimmomatic
 
-### Module 2: 
-Kaiju (Taxonomic classification [Read-based])
-```
-conda install -c bioconda kaiju
-```
+### Assembly: 
+- Metaspades
+- MegaHit
 
-### Module 3
-metaSPAdes (Assembly)
-```
-conda install -c bioconda spades
-```
+### Assembly Evaluation: Quality Check
+- MetaQuast
 
-Megahit
-```
-conda install -c bioconda megahit
-```
+### Assembly Evaluation: Read Mapping
+- BBmap
 
-### Module 4
-MetaQuast - Quality Assessment Tool for Genome Assemblies
-```
-conda install -c bioconda quast
-```
+### Binning
+- MaxBin2
 
-### Module 5
-mifaser (Functional classification [Read-based])
-```
-conda install -c bioconda diamond
-pip install mifaser
-```
+### Functional classification [Read-Based]
+- mi-faser
+
+### Taxonomic classification [Read-Based]
+- Kaiju
