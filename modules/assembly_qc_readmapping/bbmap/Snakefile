@@ -1,15 +1,15 @@
 
 rule run_bbmap:
     input:
-        r1=expand("{wdir}/{sample}/{pre_processing}/R1.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"], pre_processing=config["pre_processing"]),
-        r2=expand("{wdir}/{sample}/{pre_processing}/R2.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"], pre_processing=config["pre_processing"]),
-        contig_path=expand("{wdir}/{sample}/{assembly}", wdir=config["WDIR"], sample=config["SAMPLES"], assembly=config["assembly"]),
+        r1=expand("{wdir}/{sample}/{pre_processing}/R1.fastq.gz", pre_processing=config["pre_processing"], allow_missing=True),
+        r2=expand("{wdir}/{sample}/{pre_processing}/R2.fastq.gz", pre_processing=config["pre_processing"], allow_missing=True),
+        contig_path=expand("{wdir}/{sample}/{assembly}", assembly=config["assembly"], allow_missing=True)
     output:
         folder=directory("{wdir}/{sample}/bbmap"),
         sam_file="{wdir}/{sample}/bbmap/bbmap_result.sam",
     threads: 5
     run:
-        shell("mkdir -p {output.folder}/stats")
+        shell("mkdir -p {output.folder}/stats {output.folder}/pileup")
         shell("""bbmap.sh threads={threads} ref={input.contig_path}/contigs.fasta \
             in={input.r1} in2={input.r2} bamscript=sam2bam.sh out={output.sam_file} nodisk \
             bhist={output.folder}/stats/base_composition_by_pos_hist.txt \
@@ -25,3 +25,4 @@ rule run_bbmap:
             idhist={output.folder}/stats/read_count_vs_perc_identity_hist.txt \
             scafstats={output.folder}/stats/reads_mapped_to_scaffold.txt
         """)
+        shell("pileup.sh in={output.sam_file} out={output.folder}/pileup/covstats.tsv")

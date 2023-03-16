@@ -1,8 +1,8 @@
 
 rule run_trimgalore:
     input:
-        r1=expand("{wdir}/{sample}/R1.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"]),
-        r2=expand("{wdir}/{sample}/R2.fastq.gz", wdir=config["WDIR"], sample=config["SAMPLES"]),
+        r1="{wdir}/{sample}/R1.fastq.gz",
+        r2="{wdir}/{sample}/R2.fastq.gz",
     output:
         dir=directory("{wdir}/{sample}/trimgalore"),
         r1="{wdir}/{sample}/trimgalore/R1.fastq.gz", 
