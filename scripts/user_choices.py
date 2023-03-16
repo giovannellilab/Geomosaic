@@ -13,7 +13,6 @@ import networkx as nx
 from networkx.drawing.nx_pydot import graphviz_layout
 
 
-
 def main():
     args = parse_args()
 
@@ -37,7 +36,7 @@ def main():
 
     config_filename = "config.yaml"
     config = {}
-    config["SAMPLES"] = samples_list[:1]
+    config["SAMPLES"] = samples_list
     config["WDIR"] = wdir_geomosaic
 
     for module_name, pckg_info in user_choices.items():
