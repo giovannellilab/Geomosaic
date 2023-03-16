@@ -28,9 +28,9 @@
         "pre_processing": {
             "description": "Module: Pre processing with quality check",
             "choices": {
+                "fastp": "fastp",
                 "Trim-Galore": "trimgalore",
-                "Trimmomatic": "trimmomatic",
-                "fastp": "fastp"
+                "Trimmomatic": "trimmomatic"
             }
     
         },
