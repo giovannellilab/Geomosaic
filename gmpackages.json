@@ -14,14 +14,17 @@
             "assembly", 
             "func_classification_rb", 
             "tax_classification_rb", 
-            "assembly_qc_readmapping",
-            "binning"
+            "assembly_qc_readmapping"
         ],
         "assembly": [
             "assembly_qc",
             "assembly_qc_readmapping",
             "binning"
+        ],
+        "assembly_qc_readmapping": [
+            "binning"
         ]
+
     },
 
     "modules": {
