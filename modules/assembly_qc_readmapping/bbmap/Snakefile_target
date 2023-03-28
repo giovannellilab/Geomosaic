@@ -3,3 +3,5 @@ rule all_bbmap:
     input:
         expand("{wdir}/{sample}/bbmap", sample=config["SAMPLES"], wdir=config["WDIR"]),
         expand("{wdir}/{sample}/bbmap/bbmap_result.sam", sample=config["SAMPLES"], wdir=config["WDIR"]),
+        expand("{wdir}/{sample}/bbmap/bbmap_result.bam", wdir=config["WDIR"], sample=config["SAMPLES"]),
+        expand("{wdir}/{sample}/bbmap/bbmap_result_sorted.bam", wdir=config["WDIR"], sample=config["SAMPLES"]),
