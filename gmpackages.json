@@ -73,7 +73,8 @@
         "binning": {
             "description": "Module: Binning",
             "choices": {
-                "MaxBin2": "maxbin2"
+                "MaxBin2": "maxbin2",
+                "MetaBat2": "metabat2"
             }
     
         },

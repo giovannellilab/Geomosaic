@@ -41,6 +41,7 @@ Integrated modules:
 
 ### Binning
 - MaxBin2
+- MetaBat2
 
 ### Functional classification [Read-Based]
 - mi-faser
