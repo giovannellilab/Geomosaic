@@ -5,6 +5,7 @@
         "assembly_qc",
         "assembly_qc_readmapping",
         "binning",
+        "binning_qa",
         "func_classification_rb",
         "tax_classification_rb"
     ],
@@ -19,10 +20,14 @@
         "assembly": [
             "assembly_qc",
             "assembly_qc_readmapping",
-            "binning"
+            "binning",
+            "binning_qa"
         ],
         "assembly_qc_readmapping": [
             "binning"
+        ],
+        "binning": [
+            "binning_qa"
         ]
 
     },
@@ -75,8 +80,14 @@
             "choices": {
                 "MaxBin2": "maxbin2",
                 "MetaBat2": "metabat2"
+            }    
+        },
+
+        "binning_qa": {
+            "description": "Module: Binning Quality Evaluation",
+            "choices": {
+                "CheckM": "checkm"
             }
-    
         },
 
         "assembly_qc_readmapping": {
