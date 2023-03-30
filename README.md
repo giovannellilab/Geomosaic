@@ -11,20 +11,18 @@ conda activate geomosaic
 
 ## Integrated Modules
 
-This pipeline is organized in modules:
 <ul>
   <li>Pre-processing</li>
+  <li>Functional Classification [Read-based]</li>
+  <li>Taxonomic Classification [Read-based]</li>
   <li>Assembly</li>
   <li>Assembly Evaluation: Quality Check</li>
   <li>Assembly Evaluation: Read Mapping</li>
   <li>Binning</li>
-  <li>Functional Classification [Read-based]</li>
-  <li>Taxonomic Classification [Read-based]</li>
+  <li>Binning Quality Assessment</li>
 </ul>
 
-
 ### Pre-processing
-Integrated modules:
 - fastp
 - trim-galore
 - trimmomatic
@@ -42,6 +40,9 @@ Integrated modules:
 ### Binning
 - MaxBin2
 - MetaBat2
+
+### Binning Quality Assessment
+- CheckM
 
 ### Functional classification [Read-Based]
 - mi-faser
