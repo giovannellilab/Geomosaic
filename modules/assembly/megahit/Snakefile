@@ -6,10 +6,8 @@ rule run_metagahit:
     output:
         directory("{wdir}/{sample}/megahit")
     threads: 10
-    resources:
-        mem_gb=45
     params:
         complex_metagenome="--presets meta-large"
     run:
-        shell("megahit {params.complex_metagenome} -t {threads} -m 0.5 -1 {input.r1} -2 {input.r2} -o {output}")
+        shell("megahit {params.complex_metagenome} -t {threads} --memory 0.7 -1 {input.r1} -2 {input.r2} -o {output}")
         shell("mv {output}/final.contigs.fa {output}/contigs.fasta")
