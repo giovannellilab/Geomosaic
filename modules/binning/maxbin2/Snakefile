@@ -7,5 +7,6 @@ rule run_maxbin2:
         folder=directory("{wdir}/{sample}/maxbin2")
     threads: 5
     run:
-        shell("mkdir -p {output.folder}")
+        shell("mkdir -p {output.folder}/bins")
         shell("run_MaxBin.pl -contig {input.contig_path}/contigs.fasta -abund {input.folder_readmap}/maxbin2_abundance.txt -thread {threads} -out {output.folder}/output")
+        shell("mv {output.folder}/*.fasta {output.folder}/bins/")
