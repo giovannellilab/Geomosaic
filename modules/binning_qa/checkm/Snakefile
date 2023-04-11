@@ -15,7 +15,7 @@ rule run_checkm:
         shell("mkdir -p {output}/plots {output}/database")
         shell("(cd {output}/database && wget {params.checkm_db} && tar -x -f *.tar.gz)")
         shell("checkm data setRoot {output}/database")
-        shell("checkm lineage_wf --threads {threads} {params.tab_format} {params.reduced_tree} {params.extension} --file {output}/check_output.tsv {input.bins_path}/bins {output}")
+        shell("checkm lineage_wf --threads {threads} {params.tab_format} {params.reduced_tree} {params.extension} --file {output}/checkm_output.tsv {input.bins_path}/bins {output}")
         shell("checkm tetra -t {threads} --quiet {input.assembly_path}/contigs.fasta {output}/tetra.tsv")
         shell("checkm tetra_plot {params.extension} {output} {input.bins_path}/bins {output}/plots {output}/tetra.tsv 95")
         shell("checkm dist_plot {params.extension} {output} {input.bins_path}/bins {output}/plots {output}/tetra.tsv 95")
