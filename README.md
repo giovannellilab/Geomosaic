@@ -18,6 +18,7 @@ conda activate geomosaic
   <li>Assembly</li>
   <li>Assembly Evaluation: Quality Check</li>
   <li>Assembly Evaluation: Read Mapping</li>
+  <li>ORF Prediction</li>
   <li>Binning</li>
   <li>Binning Quality Assessment</li>
 </ul>
@@ -46,6 +47,10 @@ conda activate geomosaic
 
 ### Functional classification [Read-Based]
 - mi-faser
+- MetaPhlAn
 
 ### Taxonomic classification [Read-Based]
 - Kaiju
+
+### ORF Prediction
+- Prodigal
