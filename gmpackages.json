@@ -4,6 +4,7 @@
         "assembly",
         "assembly_qc",
         "assembly_qc_readmapping",
+        "orf_prediction",
         "binning",
         "binning_qa",
         "func_classification_rb",
@@ -21,7 +22,8 @@
             "assembly_qc",
             "assembly_qc_readmapping",
             "binning",
-            "binning_qa"
+            "binning_qa",
+            "orf_prediction"
         ],
         "assembly_qc_readmapping": [
             "binning"
@@ -63,7 +65,8 @@
         "func_classification_rb": {
             "description": "Module: Functional classification [Read-based]",
             "choices": {
-                "mi-faser": "mifaser"
+                "mi-faser": "mifaser",
+                "MetaPhlAn": "metaphlan"
             }
         },
     
@@ -96,6 +99,13 @@
                 "BBMap": "bbmap"
             }
     
+        },
+
+        "orf_prediction": {
+            "description": "ORF prediction analysis",
+            "choices": {
+                "Prodigal": "prodigal"
+            }
         }
     }    
 }
