@@ -18,6 +18,7 @@ conda activate geomosaic
   <li>Assembly</li>
   <li>Assembly Evaluation: Quality Check</li>
   <li>Assembly Evaluation: Read Mapping</li>
+  <li>Gene Coverage</li>
   <li>ORF Prediction</li>
   <li>Binning</li>
   <li>Binning Quality Assessment</li>
@@ -54,3 +55,7 @@ conda activate geomosaic
 
 ### ORF Prediction
 - Prodigal
+
+### Gene Coverage
+HMMSearch on prodigal results and pileup.sh (from BBMap tool) to get the coverage per ORF
+- HMMSearch-Pileup(BBmap)

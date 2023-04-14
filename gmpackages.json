@@ -5,6 +5,7 @@
         "assembly_qc",
         "assembly_qc_readmapping",
         "orf_prediction",
+        "gene_coverage",
         "binning",
         "binning_qa",
         "func_classification_rb",
@@ -26,8 +27,13 @@
             "orf_prediction"
         ],
         "assembly_qc_readmapping": [
-            "binning"
+            "binning",
+            "gene_coverage"
         ],
+        "orf_prediction": [
+            "gene_coverage"
+        ],
+
         "binning": [
             "binning_qa"
         ]
@@ -101,11 +107,24 @@
     
         },
 
+        "gene_coverage": {
+            "description": "Module: tracking coverage for genes of interest",
+            "choices": {
+                "HMMSearch-Pileup(BBmap)": "pileup"
+            }
+        },
+
         "orf_prediction": {
             "description": "ORF prediction analysis",
             "choices": {
                 "Prodigal": "prodigal"
             }
         }
-    }    
+    },
+    
+    "additional_input": {
+        "gene_coverage": {
+            "hmm_folder": "Description: you need to specify also an absolute path to the folder containing the HMM files"
+        }
+    }
 }
