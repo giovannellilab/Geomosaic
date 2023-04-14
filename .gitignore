@@ -8,3 +8,4 @@
 config.yaml
 dag_snakefile.sh
 /wdir_geomosaic
+/hmms_folder
