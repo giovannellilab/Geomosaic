@@ -30,14 +30,24 @@ def main():
     G = import_graph(gmpackages["graph"])
     collected_modules = gmpackages["modules"]
     order = gmpackages["order"]
+    additional_input = gmpackages["additional_input"]
 
     mstart = "pre_processing"
-    user_choices, dependencies, modified_G = build_pipeline_modules(G, collected_modules, order, mstart=mstart)
+    user_choices, dependencies, modified_G, additional_parameters = build_pipeline_modules(
+        graph=G,
+        collected_modules=collected_modules, 
+        order=order, 
+        additional_input=additional_input,
+        mstart=mstart
+    )
 
     config_filename = "config.yaml"
     config = {}
     config["SAMPLES"] = samples_list
     config["WDIR"] = wdir_geomosaic
+
+    for ap, ap_input in additional_parameters.items():
+        config[ap] = ap_input
 
     for module_name, pckg_info in user_choices.items():
         config[module_name] = pckg_info['package']
@@ -66,7 +76,7 @@ def main():
                 fd.write(sf.read())
 
 
-def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list, mstart: str="m1"):
+def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list, additional_input: dict, mstart: str="m1"):
     G = graph.copy()
     assert mstart in G.nodes()
 
@@ -89,6 +99,8 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
 
     # Defining order
     queue = deque([elem for elem in order if elem in raw_queue])
+
+    additional_parameters = {}
 
     while queue:
         status = False
@@ -121,6 +133,12 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
             queue.popleft()
             continue
         
+        if my_module in additional_input:
+            for adt_param, adt_param_desc in additional_input[my_module].items():
+                print(adt_param_desc)
+                input_adt_param=input()
+                additional_parameters[adt_param] = input_adt_param
+
         user_choices[my_module] = {"package": module_choices[parse_input]["package"]}
         queue.popleft()
     
@@ -130,7 +148,7 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
     # nx.draw(G, pos, with_labels=True, arrows=True)
     # plt.show()
 
-    return user_choices, dependencies, G
+    return user_choices, dependencies, G, additional_parameters
 
 
 def import_graph(edges: dict) -> DiGraph:
