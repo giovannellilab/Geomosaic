@@ -52,7 +52,7 @@ def get_user_choices(folder_raw_reads, geomosaic_dir, sample_table, pipeline):
 
     config = {}
     config["SAMPLES"] = samples_list
-    config["WDIR"] = wdir_geomosaic
+    config["WDIR"] = os.path.abspath(wdir_geomosaic)
 
     for ap, ap_input in additional_parameters.items():
         config[ap] = ap_input
@@ -64,7 +64,7 @@ def get_user_choices(folder_raw_reads, geomosaic_dir, sample_table, pipeline):
         yaml.dump(config, fd_config)
 
     with open(snakefile_filename, "wt") as fd:
-        fd.write(f"configfile: {str(repr(config_filename))}\n")
+        fd.write(f"configfile: {str(repr(os.path.abspath(config_filename)))}\n")
 
         # Rule ALL
         fd.write("\nrule all:\n\tinput:\n\t\t")
@@ -83,6 +83,10 @@ def get_user_choices(folder_raw_reads, geomosaic_dir, sample_table, pipeline):
             v = user_choices[i]
             with open(os.path.join(modules_folder, i, v['package'], "Snakefile.smk")) as sf:
                 fd.write(sf.read())
+    
+    # Draw DAG
+    dag_image = os.path.join(geomosaic_dir, "dag.pdf")
+    subprocess.check_call(f"snakemake -s {snakefile_filename} --dag | dot -Tpdf > {dag_image}", shell=True)
 
 
 def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list, additional_input: dict, mstart: str="m1"):
