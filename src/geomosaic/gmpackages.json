@@ -1,0 +1,130 @@
+{
+    "order": [
+        "pre_processing",
+        "assembly",
+        "assembly_qc",
+        "assembly_qc_readmapping",
+        "orf_prediction",
+        "gene_coverage",
+        "binning",
+        "binning_qa",
+        "func_classification_rb",
+        "tax_classification_rb"
+    ],
+
+    "graph": {
+        "pre_processing": [
+            "assembly", 
+            "func_classification_rb", 
+            "tax_classification_rb", 
+            "assembly_qc_readmapping"
+        ],
+        "assembly": [
+            "assembly_qc",
+            "assembly_qc_readmapping",
+            "binning",
+            "binning_qa",
+            "orf_prediction"
+        ],
+        "assembly_qc_readmapping": [
+            "binning",
+            "gene_coverage"
+        ],
+        "orf_prediction": [
+            "gene_coverage"
+        ],
+
+        "binning": [
+            "binning_qa"
+        ]
+
+    },
+
+    "modules": {
+        "pre_processing": {
+            "description": "Module: Pre processing with quality check",
+            "choices": {
+                "fastp": "fastp",
+                "Trim-Galore": "trimgalore",
+                "Trimmomatic": "trimmomatic"
+            }
+    
+        },
+    
+        "assembly": {
+            "description": "Module: Assembly",
+            "choices": {
+                "MetaSpades": "metaspades",
+                "MegaHit": "megahit"
+            }
+    
+        },
+    
+        "assembly_qc": {
+            "description": "Module: Assembly evaluation with metrics",
+            "choices": {
+                "MetaQuast": "metaquast"
+            }
+    
+        },
+    
+        "func_classification_rb": {
+            "description": "Module: Functional classification [Read-based]",
+            "choices": {
+                "mi-faser": "mifaser",
+                "MetaPhlAn": "metaphlan"
+            }
+        },
+    
+        "tax_classification_rb": {
+            "description": "Module: Taxonomic classification [Read-based]",
+            "choices": {
+                "Kaiju": "kaiju"
+            }
+    
+        },
+
+        "binning": {
+            "description": "Module: Binning",
+            "choices": {
+                "MaxBin2": "maxbin2",
+                "MetaBat2": "metabat2"
+            }    
+        },
+
+        "binning_qa": {
+            "description": "Module: Binning Quality Evaluation",
+            "choices": {
+                "CheckM": "checkm"
+            }
+        },
+
+        "assembly_qc_readmapping": {
+            "description": "Module: Assembly evaluation by read mapping",
+            "choices": {
+                "BBMap": "bbmap"
+            }
+    
+        },
+
+        "gene_coverage": {
+            "description": "Module: tracking coverage for genes of interest",
+            "choices": {
+                "HMMSearch-Pileup(BBmap)": "pileup"
+            }
+        },
+
+        "orf_prediction": {
+            "description": "ORF prediction analysis",
+            "choices": {
+                "Prodigal": "prodigal"
+            }
+        }
+    },
+    
+    "additional_input": {
+        "gene_coverage": {
+            "hmm_folder": "Description: you need to specify also an absolute path to the folder containing the HMM files"
+        }
+    }
+}

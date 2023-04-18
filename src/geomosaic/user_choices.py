@@ -1,30 +1,24 @@
-#!/usr/bin/env python3
-#
-
 import networkx as nx
 import json
 from networkx.classes import DiGraph
 import yaml
-from parse_sample_table import parse_sample_table
+from geomosaic.parse_sample_table import parse_sample_table
 from argparse import ArgumentParser
 from collections import deque
 import matplotlib.pyplot as plt
 import networkx as nx
 from networkx.drawing.nx_pydot import graphviz_layout
+import os
+import subprocess
 
 
-def main():
-    args = parse_args()
+def get_user_choices(folder_raw_reads, geomosaic_dir, sample_table, pipeline):
+    samples_list, wdir_geomosaic = parse_sample_table(folder_raw_reads, geomosaic_dir, sample_table)
 
-    folder_raw_reads = args.directory
-    working_dir = args.working_dir
-    sample_table = args.sample_table
+    modules_folder = os.path.join(os.path.dirname(__file__), 'modules')    
+    gmpackages_path = os.path.join(os.path.dirname(__file__), 'gmpackages.json')
 
-    samples_list, wdir_geomosaic = parse_sample_table(folder_raw_reads, working_dir, sample_table)
-
-    modules_folder = "modules"
-    
-    with open('gmpackages.json', 'r') as f:
+    with open(gmpackages_path, 'rt') as f:
         gmpackages = json.load(f)
 
     G = import_graph(gmpackages["graph"])
@@ -32,16 +26,30 @@ def main():
     order = gmpackages["order"]
     additional_input = gmpackages["additional_input"]
 
-    mstart = "pre_processing"
-    user_choices, dependencies, modified_G, additional_parameters = build_pipeline_modules(
-        graph=G,
-        collected_modules=collected_modules, 
-        order=order, 
-        additional_input=additional_input,
-        mstart=mstart
-    )
+    if pipeline:
+        # TODO: Adding additional parameters to default pipeline
+        with open(os.path.join(os.path.dirname(__file__), 'pipeline.json')) as default_pipeline:
+            pipe = json.load(default_pipeline)
+            user_choices = pipe["user_choices"]
+            order_writing = pipe["order_writing"]
+    else:
+        mstart = "pre_processing"
+        user_choices, dependencies, modified_G, order_writing = build_pipeline_modules(
+            graph=G,
+            collected_modules=collected_modules, 
+            order=order, 
+            additional_input=additional_input,
+            mstart=mstart
+        )
+    
+    additional_parameters = ask_additional_parameters(additional_input, order_writing)
 
-    config_filename = "config.yaml"
+    # with open("pipeline.json", "wt") as default_pipeline:
+    #     json.dump({"user_choices": user_choices, "order_writing": order_writing}, default_pipeline)
+    
+    config_filename = os.path.join(geomosaic_dir, "config.yaml")
+    snakefile_filename = os.path.join(geomosaic_dir, "Snakefile.smk")
+
     config = {}
     config["SAMPLES"] = samples_list
     config["WDIR"] = wdir_geomosaic
@@ -55,14 +63,14 @@ def main():
     with open(config_filename, 'w') as fd_config:
         yaml.dump(config, fd_config)
 
-    with open("Snakefile", "wt") as fd:
+    with open(snakefile_filename, "wt") as fd:
         fd.write(f"configfile: {str(repr(config_filename))}\n")
 
         # Rule ALL
         fd.write("\nrule all:\n\tinput:\n\t\t")
-        for m in sorted(user_choices.keys()):
+        for m in order_writing:
             package = user_choices[m]["package"]
-            snakefile_target = f"{modules_folder}/{m}/{package}/Snakefile_target"
+            snakefile_target = os.path.join(modules_folder, m, package, "Snakefile_target.smk")
 
             with open(snakefile_target) as file:
                 target = yaml.load(file, Loader=yaml.FullLoader)
@@ -71,8 +79,9 @@ def main():
             fd.write(f"{input_target}\n\t\t")
                     
         # Rule for each package
-        for i, v in user_choices.items():
-            with open(f"{modules_folder}/{i}/{v['package']}/Snakefile") as sf:
+        for i in order_writing:
+            v = user_choices[i]
+            with open(os.path.join(modules_folder, i, v['package'], "Snakefile.smk")) as sf:
                 fd.write(sf.read())
 
 
@@ -99,8 +108,6 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
 
     # Defining order
     queue = deque([elem for elem in order if elem in raw_queue])
-
-    additional_parameters = {}
 
     while queue:
         status = False
@@ -133,12 +140,6 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
             queue.popleft()
             continue
         
-        if my_module in additional_input:
-            for adt_param, adt_param_desc in additional_input[my_module].items():
-                print(adt_param_desc)
-                input_adt_param=input()
-                additional_parameters[adt_param] = input_adt_param
-
         user_choices[my_module] = {"package": module_choices[parse_input]["package"]}
         queue.popleft()
     
@@ -147,8 +148,33 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
     # pos = graphviz_layout(G, prog="dot")
     # nx.draw(G, pos, with_labels=True, arrows=True)
     # plt.show()
+    order_writing = list(nx.bfs_tree(G, source=mstart).nodes())
 
-    return user_choices, dependencies, G, additional_parameters
+    return user_choices, dependencies, G, order_writing
+
+
+def ask_additional_parameters(additional_input, order_writing):
+    additional_parameters = {}
+
+    for module in order_writing:
+        if module in additional_input:
+            for adt_param, adt_param_desc in additional_input[module].items():
+                input_adt_param = get_user_path(adt_param_desc)
+                additional_parameters[adt_param] = input_adt_param
+    
+    return additional_parameters
+
+
+def get_user_path(description):
+    try:
+        raw_path = subprocess.check_output(f'read -e -p "{description}: \n" var; echo $var', shell=True, executable='/bin/bash')
+        path = raw_path.rstrip().decode('utf-8')
+        return path
+    except Exception as e:
+        print(description)
+        input_adt_param=input()
+        return input_adt_param
+
 
 
 def import_graph(edges: dict) -> DiGraph:
@@ -173,15 +199,3 @@ def check_user_input(input, list_ints):
         return false_payload
     
     return True, user_input
-
-
-def parse_args():
-    parser = ArgumentParser(description="Script to parse user samples table")
-    parser.add_argument("-d", "--directory", required=True, type=str, help="Path to the directory containing raw reads (fastq.gz files)")
-    parser.add_argument("-w", "--working_dir", required=True, type=str, help="Path to the working directory for geomosaic")
-    parser.add_argument("-s", "--sample_table", required=True, type=str, help="Path to the user sample table")
-    return parser.parse_args()
-
-
-if __name__ == "__main__":
-    main()

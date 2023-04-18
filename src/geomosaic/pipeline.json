@@ -1,0 +1,42 @@
+{
+    "user_choices": {
+        "pre_processing": {
+            "package": "fastp"
+        },
+        "assembly": {
+            "package": "metaspades"
+        },
+        "assembly_qc": {
+            "package": "metaquast"
+        },
+        "assembly_qc_readmapping": {
+            "package": "bbmap"
+        },
+        "orf_prediction": {
+            "package": "prodigal"
+        },
+        "binning": {
+            "package": "metabat2"
+        },
+        "binning_qa": {
+            "package": "checkm"
+        },
+        "func_classification_rb": {
+            "package": "mifaser"
+        },
+        "tax_classification_rb": {
+            "package": "kaiju"
+        }
+    },
+    "order_writing": [
+        "pre_processing",
+        "assembly",
+        "func_classification_rb",
+        "tax_classification_rb",
+        "assembly_qc_readmapping",
+        "assembly_qc",
+        "binning",
+        "binning_qa",
+        "orf_prediction"
+    ]
+}

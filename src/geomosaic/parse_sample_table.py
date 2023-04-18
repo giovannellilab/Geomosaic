@@ -1,6 +1,5 @@
 
 import pandas as pd
-from subprocess import check_call
 
 
 def parse_sample_table(folder_raw_reads, working_dir, sample_table):
@@ -23,7 +22,7 @@ def group_read_by_sample(filename, rawreads_folder, wdir):
 
     samples_list = []
 
-    for i in list(grp.itertuples())[:2]:        
+    for i in list(grp.itertuples())[:1]:        
         samples_list.append(i.sample)
 
         all_r1 = " ".join([f"{rawreads_folder}/{x}" for x in i.r1])
