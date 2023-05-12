@@ -3,13 +3,13 @@ import json
 from networkx.classes import DiGraph
 import yaml
 from geomosaic.parse_sample_table import parse_sample_table
-from argparse import ArgumentParser
 from collections import deque
 import matplotlib.pyplot as plt
 import networkx as nx
 from networkx.drawing.nx_pydot import graphviz_layout
 import os
 import subprocess
+from geomosaic.validator import validator_hmms_folder
 
 
 def get_user_choices(folder_raw_reads, geomosaic_dir, sample_table, pipeline):
@@ -42,6 +42,7 @@ def get_user_choices(folder_raw_reads, geomosaic_dir, sample_table, pipeline):
             mstart=mstart
         )
     
+    ## ASK ADDITIONAL PARAMETERS
     additional_parameters = ask_additional_parameters(additional_input, order_writing)
 
     # with open("pipeline.json", "wt") as default_pipeline:
@@ -50,6 +51,7 @@ def get_user_choices(folder_raw_reads, geomosaic_dir, sample_table, pipeline):
     config_filename = os.path.join(geomosaic_dir, "config.yaml")
     snakefile_filename = os.path.join(geomosaic_dir, "Snakefile.smk")
 
+    ## CONFIG FILE SETUP
     config = {}
     config["SAMPLES"] = samples_list
     config["WDIR"] = os.path.abspath(wdir_geomosaic)
@@ -60,9 +62,11 @@ def get_user_choices(folder_raw_reads, geomosaic_dir, sample_table, pipeline):
     for module_name, pckg_info in user_choices.items():
         config[module_name] = pckg_info['package']
 
+    ## WRITING CONFIG FILE
     with open(config_filename, 'w') as fd_config:
         yaml.dump(config, fd_config)
 
+    ## WRITING SNAKEFILE
     with open(snakefile_filename, "wt") as fd:
         fd.write(f"configfile: {str(repr(os.path.abspath(config_filename)))}\n")
 
@@ -148,10 +152,6 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
         queue.popleft()
     
     dependencies = list(G.edges())
-
-    # pos = graphviz_layout(G, prog="dot")
-    # nx.draw(G, pos, with_labels=True, arrows=True)
-    # plt.show()
     order_writing = list(nx.bfs_tree(G, source=mstart).nodes())
 
     return user_choices, dependencies, G, order_writing
@@ -162,8 +162,13 @@ def ask_additional_parameters(additional_input, order_writing):
 
     for module in order_writing:
         if module in additional_input:
-            for adt_param, adt_param_desc in additional_input[module].items():
-                input_adt_param = get_user_path(adt_param_desc)
+            for adt_param, adt_param_tokens in additional_input[module].items():
+                input_adt_param = get_user_path(adt_param_tokens["description"])
+
+                if adt_param_tokens["type"] == "folder" and not validator_hmms_folder(input_adt_param):
+                    print("GeoMosaic Error - Exit Code 1")
+                    exit(1)
+                    
                 additional_parameters[adt_param] = input_adt_param
     
     return additional_parameters
