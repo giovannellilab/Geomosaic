@@ -9,6 +9,6 @@
 /Snakefile*
 config.yaml
 dag_snakefile.sh
-/test_geomosaic
+/old_test_geomosaic
 /hmms_folder
 /temp
