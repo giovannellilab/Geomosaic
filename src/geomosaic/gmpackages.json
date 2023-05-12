@@ -108,9 +108,9 @@
         },
 
         "gene_coverage": {
-            "description": "Module: tracking coverage for genes of interest",
+            "description": "Module: tracking coverage for genes of interest through HMM models",
             "choices": {
-                "HMMSearch-Pileup(BBmap)": "pileup"
+                "HMMs Coverage": "hmms_cov"
             }
         },
 
@@ -124,7 +124,10 @@
     
     "additional_input": {
         "gene_coverage": {
-            "hmm_folder": "Description: you need to specify also an absolute path to the folder containing the HMM files"
+            "hmm_folder": {
+                "description": "Description: you need to specify also an absolute path to the folder containing the HMM files",
+                "type": "folder"
+            }
         }
     }
 }
