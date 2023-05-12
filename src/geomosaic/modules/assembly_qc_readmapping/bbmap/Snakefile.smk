@@ -11,9 +11,9 @@ rule run_bbmap:
         sorted_bam="{wdir}/{sample}/bbmap/read_mapping_sorted.bam"
     threads: 5
     run:
-        shell("mkdir -p {output.folder}/stats {output.folder}/pileup")
+        shell("mkdir -p {output.folder}/stats")
         shell("""bbmap.sh threads={threads} ref={input.contig_path}/contigs.fasta \
-            in={input.r1} in2={input.r2} out={output.sam_file} nodisk \
+            in={input.r1} in2={input.r2} out={output.sam_file} covstats={output.folder}/covstats.tsv nodisk \
             bhist={output.folder}/stats/base_composition_by_pos_hist.txt \
             qhist={output.folder}/stats/quality_by_pos_hist.txt \
             aqhist={output.folder}/stats/average_read_quality_hist.txt \
@@ -27,8 +27,7 @@ rule run_bbmap:
             idhist={output.folder}/stats/read_count_vs_perc_identity_hist.txt \
             scafstats={output.folder}/stats/reads_mapped_to_scaffold.txt
         """)
-        shell("pileup.sh in={output.sam_file} out={output.folder}/pileup/covstats.tsv")
         shell("samtools view -S -b {output.sam_file} > {output.bam_file}")
         shell("samtools sort {output.bam_file} -o {output.sorted_bam}")
         shell("jgi_summarize_bam_contig_depths --outputDepth {output.folder}/metabat2_depth.txt {output.sorted_bam}")
-        shell("awk '{{print $1\"\t\"$2}}' {output.folder}/pileup/covstats.tsv | grep -v '^#' > {output.folder}/maxbin2_abundance.txt")
+        shell("awk '{{print $1\"\t\"$2}}' {output.folder}/covstats.tsv | grep -v '^#' > {output.folder}/maxbin2_abundance.txt")
