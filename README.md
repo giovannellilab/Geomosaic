@@ -40,18 +40,21 @@ conda activate geomosaic
 - BBmap
 
 ### Binning
-- MaxBin2
-- MetaBat2
+- MaxBin2 + MetaBat2 + Concoct
+
+### Binning De-replication
+- DAS_Tool
+
 
 ### Binning Quality Assessment
 - CheckM
 
 ### Functional classification [Read-Based]
 - mi-faser
-- MetaPhlAn
 
 ### Taxonomic classification [Read-Based]
 - Kaiju
+- MetaPhlAn
 
 ### ORF Prediction
 - Prodigal
