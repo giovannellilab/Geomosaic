@@ -5,10 +5,9 @@
 /**/__pycache__
 /**/*.egg-info
 *.pdf
-/test_modules
+/*test*
 /Snakefile*
 config.yaml
 dag_snakefile.sh
-/old_test_geomosaic
 /hmms_folder
 /temp
