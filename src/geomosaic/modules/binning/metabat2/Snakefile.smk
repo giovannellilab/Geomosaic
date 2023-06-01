@@ -10,4 +10,3 @@ rule run_metabat2:
         shell("mkdir -p {output.folder}/bins")
         shell("metabat2 --inFile {input.contig_path}/contigs.fasta --abdFile {input.folder_readmap}/metabat2_depth.txt -o {output.folder}/output")
         shell("mv {output.folder}/*.fa {output.folder}/bins/")
-        shell('for file in {output.folder}/bins/*.fa; do  mv -- "$file" "${{file%.fa}}.fasta"; done;')
