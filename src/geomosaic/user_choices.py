@@ -186,11 +186,10 @@ def get_user_path(description):
 
 
 
-def import_graph(edges: dict) -> DiGraph:
+def import_graph(edges: list) -> DiGraph:
     g = nx.DiGraph()
-    for s, targets in edges.items():
-        for t in targets:
-            g.add_edge(s, t)
+    for source, target in edges:
+        g.add_edge(source, target)
     
     return g
 

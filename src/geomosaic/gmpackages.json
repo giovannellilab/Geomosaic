@@ -7,38 +7,35 @@
         "orf_prediction",
         "gene_coverage",
         "binning",
+        "binning_derep",
         "binning_qa",
         "func_classification_rb",
         "tax_classification_rb"
     ],
 
-    "graph": {
-        "pre_processing": [
-            "assembly", 
-            "func_classification_rb", 
-            "tax_classification_rb", 
-            "assembly_qc_readmapping"
-        ],
-        "assembly": [
-            "assembly_qc",
-            "assembly_qc_readmapping",
-            "binning",
-            "binning_qa",
-            "orf_prediction"
-        ],
-        "assembly_qc_readmapping": [
-            "binning",
-            "gene_coverage"
-        ],
-        "orf_prediction": [
-            "gene_coverage"
-        ],
+    "graph": [
+        ["pre_processing", "func_classification_rb"],
+        ["pre_processing", "tax_classification_rb"],
+        ["pre_processing", "assembly"],
+        ["pre_processing", "assembly_qc_readmapping"],
+        
+        ["assembly", "assembly_qc"],
+        ["assembly", "assembly_qc_readmapping"],
+        ["assembly", "orf_prediction"],
+        ["assembly", "binning"],
+        ["assembly", "binning_derep"],
+        ["assembly", "binning_qa"],
 
-        "binning": [
-            "binning_qa"
-        ]
+        ["assembly_qc_readmapping", "gene_coverage"],
+        ["assembly_qc_readmapping", "binning"],
 
-    },
+        ["orf_prediction", "gene_coverage"],
+
+        ["binning", "binning_derep"],
+
+        ["binning_derep", "binning_qa"]
+
+    ],
 
     "modules": {
         "pre_processing": {
@@ -71,15 +68,15 @@
         "func_classification_rb": {
             "description": "Module: Functional classification [Read-based]",
             "choices": {
-                "mi-faser": "mifaser",
-                "MetaPhlAn": "metaphlan"
+                "mi-faser": "mifaser"                
             }
         },
     
         "tax_classification_rb": {
             "description": "Module: Taxonomic classification [Read-based]",
             "choices": {
-                "Kaiju": "kaiju"
+                "Kaiju": "kaiju",
+                "MetaPhlAn": "metaphlan"
             }
     
         },
@@ -87,9 +84,15 @@
         "binning": {
             "description": "Module: Binning",
             "choices": {
-                "MaxBin2": "maxbin2",
-                "MetaBat2": "metabat2"
+                "MaxBin2 + MetaBat2 + Concoct": "multi_binners"
             }    
+        },
+
+        "binning_derep": {
+            "description": "Module: Binning Deeplication",
+            "choices": {
+                "DAS_tool": "das_tool"
+            }  
         },
 
         "binning_qa": {
