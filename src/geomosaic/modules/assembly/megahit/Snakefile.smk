@@ -11,3 +11,10 @@ rule run_metagahit:
     run:
         shell("megahit {params.complex_metagenome} -t {threads} --memory 0.7 -1 {input.r1} -2 {input.r2} -o {output}")
         shell("mv {output}/final.contigs.fa {output}/contigs.fasta")
+
+        contigs_fasta  = os.path.join(str(output), "contigs.fasta")
+        output_fasta   = os.path.join(str(output), "geomosaic_contigs.fasta")
+        output_mapping = os.path.join(str(output), "mapping.tsv")
+
+        from geomosaic.parsing_output.rename_contigs import rename_contigs
+        rename_contigs(contigs_fasta, output_fasta, output_mapping)
