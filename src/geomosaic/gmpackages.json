@@ -1,6 +1,8 @@
 {
     "order": [
         "pre_processing",
+        "func_classification_rb",
+        "tax_classification_rb",
         "assembly",
         "assembly_qc",
         "assembly_qc_readmapping",
@@ -9,8 +11,7 @@
         "binning",
         "binning_derep",
         "binning_qa",
-        "func_classification_rb",
-        "tax_classification_rb"
+        "mags_orf_prediction"
     ],
 
     "graph": [
@@ -33,7 +34,9 @@
 
         ["binning", "binning_derep"],
 
-        ["binning_derep", "binning_qa"]
+        ["binning_derep", "binning_qa"],
+
+        ["binning_qa", "mags_orf_prediction"]
 
     ],
 
@@ -60,7 +63,7 @@
         "assembly_qc": {
             "description": "Module: Assembly evaluation with metrics",
             "choices": {
-                "MetaQuast": "metaquast"
+                "Quast": "quast"
             }
     
         },
@@ -122,14 +125,32 @@
             "choices": {
                 "Prodigal": "prodigal"
             }
+        },
+
+        "mags_orf_prediction": {
+            "description": "ORF prediction analysis for each retrieved MAG",
+            "choices": {
+                "Prodigal": "prodigal"
+            }
         }
     },
     
     "additional_input": {
         "gene_coverage": {
             "hmm_folder": {
-                "description": "Description: you need to specify also an absolute path to the folder containing the HMM files",
+                "description": "\n[Additional Parameter for Gene Coverage] Description: you need to specify also an absolute path to the folder containing the HMM files\nRequired parameter: Absolute path",
                 "type": "folder"
+            }
+        },
+
+        "binning_qa": {
+            "completness_threshold":{
+                "description": "\n[Additional Parameter for Binning Quality Assessment] Description: COMPLETENESS parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 90",
+                "type": "integer"
+            },
+            "contamination_threshold":{
+                "description": "\n[Additional Parameter for Binning Quality Assessment] Description: CONTAMINATION parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 10",
+                "type": "integer"
             }
         }
     }
