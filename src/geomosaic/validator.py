@@ -37,4 +37,18 @@ def validator_hmms_folder(hmms_folder):
 
         unique.append(f)
 
-    return True    
+    return True
+
+
+def validator_completeness_contamination_integer(param):
+    try:
+        integer_param = int(param)
+    except Exception as e:
+        print(f"GeoMosaic Error: cannot convert inserted parameter to integer value")
+        return False
+
+    if not (integer_param <= 100 and integer_param >= 0):
+        print(f"GeoMosaic Error: inserted parameter must be 0 <= X <= 100")
+        return False
+
+    return True

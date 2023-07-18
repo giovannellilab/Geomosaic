@@ -9,7 +9,7 @@ import networkx as nx
 from networkx.drawing.nx_pydot import graphviz_layout
 import os
 import subprocess
-from geomosaic.validator import validator_hmms_folder
+from geomosaic.validator import validator_hmms_folder, validator_completeness_contamination_integer
 
 
 def get_user_choices(folder_raw_reads, geomosaic_dir, sample_table, pipeline):
@@ -165,11 +165,23 @@ def ask_additional_parameters(additional_input, order_writing):
             for adt_param, adt_param_tokens in additional_input[module].items():
                 input_adt_param = get_user_path(adt_param_tokens["description"])
 
-                if adt_param_tokens["type"] == "folder" and not validator_hmms_folder(input_adt_param):
+                if adt_param == "hmm_folder" and not validator_hmms_folder(input_adt_param):
                     print("GeoMosaic Error - Exit Code 1")
                     exit(1)
-                    
-                additional_parameters[adt_param] = input_adt_param
+                
+                if adt_param == "completness_threshold" and not validator_completeness_contamination_integer(input_adt_param):
+                    print("GeoMosaic Error - Exit Code 1 - completeness")
+                    exit(1)
+
+                if adt_param == "contamination_threshold" and not validator_completeness_contamination_integer(input_adt_param):
+                    print("GeoMosaic Error - Exit Code 1")
+                    exit(1)
+                
+                # INSERT PARAM FOR CONFIG FILE
+                if adt_param_tokens["type"] in ["integer"]:
+                    additional_parameters[adt_param] = int(input_adt_param)
+                else:
+                    additional_parameters[adt_param] = input_adt_param
     
     return additional_parameters
 
