@@ -9,7 +9,12 @@ rule run_prodigal:
         quiet="-q"
     run:
         shell("mkdir -p {output}")
-        shell("prodigal -i {input.contig_path}/contigs.fasta -o {output}/genes.out -a {output}/protein_translations.faa {params.extra} {params.quiet}")
+        shell("prodigal -i {input.contig_path}/contigs.fasta \
+                -o {output}/genes.gff \
+                -a {output}/protein_translations.faa \
+                -f gff \
+                {params.extra} \
+                {params.quiet}")
 
         from geomosaic.parsing_output.prodigal_orf_mapping import parsing_prodigal_orfs
 
