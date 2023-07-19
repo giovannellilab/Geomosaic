@@ -18,9 +18,9 @@ rule run_prodigal:
 
         from geomosaic.parsing_output.prodigal_orf_mapping import parsing_prodigal_orfs
 
-        fasta_input = f"{output}/protein_translations.faa"
-        output_mapping = f"{output}/orf_contig_mapping.tsv"
-        output_fasta = f"{output}/orf_predicted.faa"
-        output_simple_mapping = f"{output}/simple_orf_contig_mapping.tsv"
+        fasta_input = str(os.path.join(str(output), "protein_translations.faa"))
+        output_mapping = str(os.path.join(str(output), "orf_contig_mapping.tsv"))
+        output_fasta = str(os.path.join(str(output), "orf_predicted.faa"))
+        output_simple_mapping = str(os.path.join(str(output), "simple_orf_contig_mapping.tsv"))
 
         parsing_prodigal_orfs(fasta_input, output_mapping, output_fasta, output_simple_mapping)
