@@ -11,6 +11,7 @@
         "binning",
         "binning_derep",
         "binning_qa",
+        "mags_retrieval",
         "mags_orf_prediction"
     ],
 
@@ -35,8 +36,11 @@
         ["binning", "binning_derep"],
 
         ["binning_derep", "binning_qa"],
+        ["binning_derep", "mags_retrieval"],
 
-        ["binning_qa", "mags_orf_prediction"]
+        ["binning_qa", "mags_retrieval"],
+
+        ["mags_retrieval", "mags_orf_prediction"]
 
     ],
 
@@ -121,16 +125,23 @@
         },
 
         "orf_prediction": {
-            "description": "ORF prediction analysis",
+            "description": "Module: perform ORF prediction",
             "choices": {
                 "Prodigal": "prodigal"
             }
         },
 
-        "mags_orf_prediction": {
-            "description": "ORF prediction analysis for each retrieved MAG",
+        "mags_retrieval": {
+            "description": "Module: get MAGs based on Contamination and Completeness threshold",
             "choices": {
-                "Prodigal": "prodigal"
+                "MAGs HQ": "mags"
+            }
+        },
+
+        "mags_orf_prediction": {
+            "description": "Module: perform ORF prediction for each retrieved MAG",
+            "choices": {
+                "Prodigal on MAGs": "mags_prodigal"
             }
         }
     },
@@ -143,13 +154,13 @@
             }
         },
 
-        "binning_qa": {
+        "mags_retrieval": {
             "completness_threshold":{
-                "description": "\n[Additional Parameter for Binning Quality Assessment] Description: COMPLETENESS parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 90",
+                "description": "\n[Additional Parameter to retrieve HQ MAGs] Description: COMPLETENESS parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 90",
                 "type": "integer"
             },
             "contamination_threshold":{
-                "description": "\n[Additional Parameter for Binning Quality Assessment] Description: CONTAMINATION parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 10",
+                "description": "\n[Additional Parameter to retrieve HQ MAGs] Description: CONTAMINATION parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 10",
                 "type": "integer"
             }
         }
