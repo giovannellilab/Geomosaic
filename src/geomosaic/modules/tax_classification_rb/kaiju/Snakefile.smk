@@ -19,10 +19,8 @@ rule run_kaiju:
     output:
         fout="{wdir}/{sample}/kaiju/kaiju.out"
     threads: 5
-    shell:
-        """
-        kaiju -v -t {input.kaijudb}/nodes.dmp -f {input.kaijudb}/kaiju_db.fmi \
-        -z {threads} \
-        -i {input.r1} -j {input.r2} \
-        -o {output.fout}
-        """
+    run:
+        shell("kaiju -v -t {input.kaijudb}/nodes.dmp -f {input.kaijudb}/kaiju_db.fmi \
+                -z {threads} \
+                -i {input.r1} -j {input.r2} \
+                -o {output.fout}")

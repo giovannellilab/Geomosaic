@@ -3,7 +3,7 @@ rule run_checkm_db:
     params:
         db_link="https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz"    
     output:
-        db_folder="{wdir}/checkm_db",
+        db_folder=directory("{wdir}/checkm_db"),
     run:
         shell("mkdir -p {output.db_folder}")
         shell("(cd {output.db_folder} && wget {params.db_link} && tar -x -f *.tar.gz)")
