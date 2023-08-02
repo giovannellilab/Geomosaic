@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "geomosaic"
 version = "0.0.1"
 authors = [
-  { name="Davide Corso", email="davidecrs92@gmail.com" },
+  { name = "Davide Corso", email = "davidecrs92@gmail.com" },
 ]
 description = "A flexible metagenomic pipeline combining read-based, assemblies and MAGs with downstream analysis"
 readme = "README.md"
@@ -39,3 +39,4 @@ where = ["src"]
 [tool.setuptools.package-data]
 geomosaic = ["*.json"]
 "geomosaic.modules" = ["**/*.smk"]
+"geomosaic.envs" = ["*.yaml"]
