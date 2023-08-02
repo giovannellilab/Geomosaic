@@ -12,6 +12,8 @@
         "binning_derep",
         "binning_qa",
         "mags_retrieval",
+        "mags_func_annotation",
+        "mags_tax_annotation",
         "mags_orf_prediction"
     ],
 
@@ -40,7 +42,9 @@
 
         ["binning_qa", "mags_retrieval"],
 
-        ["mags_retrieval", "mags_orf_prediction"]
+        ["mags_retrieval", "mags_orf_prediction"],
+        ["mags_retrieval", "mags_func_annotation"],
+        ["mags_retrieval", "mags_tax_annotation"]
 
     ],
 
@@ -52,7 +56,6 @@
                 "Trim-Galore": "trimgalore",
                 "Trimmomatic": "trimmomatic"
             }
-    
         },
     
         "assembly": {
@@ -61,7 +64,6 @@
                 "MetaSpades": "metaspades",
                 "MegaHit": "megahit"
             }
-    
         },
     
         "assembly_qc": {
@@ -69,7 +71,6 @@
             "choices": {
                 "Quast": "quast"
             }
-    
         },
     
         "func_classification_rb": {
@@ -138,6 +139,20 @@
             }
         },
 
+        "mags_func_annotation": {
+            "description": "Module: Perform annotation of filtered MAGs",
+            "choices": {
+                "DRAM on MAGs": "mags_dram"
+            }
+        },
+
+        "mags_tax_annotation": {
+            "description": "Module: Perform taxonomic annotation of filtered MAGs",
+            "choices": {
+                "GTDBTK on MAGs": "mags_gtdbtk"
+            }
+        },
+
         "mags_orf_prediction": {
             "description": "Module: perform ORF prediction for each retrieved MAG",
             "choices": {
@@ -164,5 +179,9 @@
                 "type": "integer"
             }
         }
+    },
+
+    "envs": {
+        "mags_gtdbtk": "gtdbtk.yaml"
     }
 }
