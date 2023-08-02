@@ -28,7 +28,8 @@ rule run_mags_dram:
                 --threads {threads}")
         shell("mkdir -p {output}/dram_distillation")
         shell("DRAM.py distill \
-                -i {output}/annotations.tsv \
-                -o {output}/dram_distillation \
+                --input_file {output}/annotations.tsv \
+                --output_dir {output}/dram_distillation \
+                --config_loc {input.dram_config_folder}/dram_config.json \
                 --trna_path {output}/trnas.tsv \
                 --rrna_path {output}/rrnas.tsv")
