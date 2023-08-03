@@ -29,6 +29,6 @@ rule gtdbtk_classify:
             --genome_dir {input.mags_folder}/fasta \
             --out_dir {output} \
             --cpus {threads} \
-            --skip_ani_screen \
+            --mash_db {input.db}/mash_db_gtdbtk_r207_vs.msh \
             --extension {params.extension}
         """
