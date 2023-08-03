@@ -3,13 +3,12 @@ rule dram_setup_db:
     params:
         prepare_databases="prepare_databases"
     output:
-        dram_config_folder=directory("{wdir}/dram_config"),
-        db_folder=directory("/mnt/data/bigdata/dram_db")
+        dram_config_folder=directory("{wdir}/dram_config")
     run:
-        shell("mkdir -p {output.dram_config_folder}")
+        shell("mkdir -p {output.dram_config_folder}/dram_db")
         shell("DRAM-setup.py {params.prepare_databases} \
             --skip_uniref \
-            --output_dir {output.db_folder}")
+            --output_dir {output.dram_config_folder}/dram_db")
         shell("DRAM-setup.py export_config > {output.dram_config_folder}/dram_config.json")
 
 rule run_mags_dram:
@@ -26,7 +25,6 @@ rule run_mags_dram:
                 --output_dir {output} \
                 --config_loc {input.dram_config_folder}/dram_config.json \
                 --threads {threads}")
-        shell("mkdir -p {output}/dram_distillation")
         shell("DRAM.py distill \
                 --input_file {output}/annotations.tsv \
                 --output_dir {output}/dram_distillation \
