@@ -1,3 +1,4 @@
+name: geomosaic_gtdbtk
 channels:
    - conda-forge
    - bioconda
