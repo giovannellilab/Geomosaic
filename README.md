@@ -21,6 +21,7 @@ conda activate geomosaic
   <li>Gene Coverage</li>
   <li>ORF Prediction</li>
   <li>Binning</li>
+  <li>Binning De-replication</li>
   <li>Binning Quality Assessment</li>
 </ul>
 
@@ -34,7 +35,7 @@ conda activate geomosaic
 - MegaHit
 
 ### Assembly Evaluation: Quality Check
-- MetaQuast
+- quast
 
 ### Assembly Evaluation: Read Mapping
 - BBmap
