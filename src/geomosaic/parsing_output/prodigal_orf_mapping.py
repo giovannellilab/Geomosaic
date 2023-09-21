@@ -19,7 +19,7 @@ def parsing_prodigal_orfs(fasta_input, output_mapping, output_fasta, output_simp
             gc_cont     = _gc_cont.split("=")[1]
 
 
-            id_orf = f"ORF_{_id.split('=')[1]}"
+            id_orf = f"contig_{_id.split('=')[1].split('_')[0]}_orf_{_id.split('=')[1].split('_')[1]}"
 
             fom.write(f"{id_orf}\t{contig}\t{leftmost_coord}\t{rightmost_coord}\t{strand}\t{orf_seq}\t{partial}\t{start_type}\t{rbs_motif}\t{rbs_spacer}\t{gc_cont}\n")
             fos.write(f"{id_orf}\t{contig}\n")
