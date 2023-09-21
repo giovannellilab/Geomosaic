@@ -2,22 +2,27 @@ import json
 import yaml
 import os
 import subprocess
-from geomosaic._utils import GEOMOSAIC_ERROR
+from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_NOTE
 from geomosaic._build_pipelines_module import import_graph, build_pipeline_modules, ask_additional_parameters
+import time
 
 
 def geo_workflow(args):
-    config_file = args.config_file
+    print(f"{GEOMOSAIC_PROCESS}: Loading variables from GeoMosaic setup file... ", end="", flush=True)
+    setup_file  = args.setup_file
     pipeline    = args.pipeline
 
-    with open(config_file) as file:
-        geomosaic_config_setup = yaml.load(file, Loader=yaml.FullLoader)
+    with open(setup_file) as file:
+        geomosaic_setup = yaml.load(file, Loader=yaml.FullLoader)
 
-    assert "SAMPLES" in geomosaic_config_setup, f"\n{GEOMOSAIC_ERROR}: sample list must be provided with the key 'SAMPLES'"
-    assert "GEOMOSAIC_WDIR" in geomosaic_config_setup, f"\n{GEOMOSAIC_ERROR}: geomosaic working directory must be provided with the key 'GEOMOSAIC_WDIR'"
+    assert "SAMPLES" in geomosaic_setup, f"\n{GEOMOSAIC_ERROR}: sample list must be provided with the key 'SAMPLES'"
+    assert "GEOMOSAIC_WDIR" in geomosaic_setup, f"\n{GEOMOSAIC_ERROR}: geomosaic working directory must be provided with the key 'GEOMOSAIC_WDIR'"
+    assert os.path.isdir(geomosaic_setup["GEOMOSAIC_WDIR"]), f"\n{GEOMOSAIC_ERROR}: GeoMosaic working directory does not exists."
 
-    samples_list    = geomosaic_config_setup["SAMPLES"]
-    geomosaic_dir   = geomosaic_config_setup["GEOMOSAIC_WDIR"]
+    samples_list    = geomosaic_setup["SAMPLES"]
+    geomosaic_dir   = geomosaic_setup["GEOMOSAIC_WDIR"]
+    time.sleep(1)
+    print(GEOMOSAIC_OK)
 
     ## READ SETUPS FOLDERS AND FILE
     modules_folder  = os.path.join(os.path.dirname(__file__), 'modules')
