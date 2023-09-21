@@ -7,7 +7,7 @@ from geomosaic._utils import GEOMOSAIC_ERROR
 from geomosaic._validator import validator_hmms_folder, validator_completeness_contamination_integer
 
 
-def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list, additional_input: dict, mstart: str="m1"):
+def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list, additional_input: dict, mstart: str="pre_processing"):
     G = graph.copy()
     assert mstart in G.nodes()
 
@@ -24,7 +24,7 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
     modules_descendants = {}
     for m in G.nodes():
         modules_descendants[m] = list(nx.descendants(G, m))
-    
+
     user_choices = {}
     raw_queue = list(nx.bfs_tree(G, source=mstart).nodes())
 
@@ -57,7 +57,8 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
             G.remove_node(my_module)
             G.remove_nodes_from(modules_descendants[my_module])
             for desc in modules_descendants[my_module]:
-                queue.remove(desc)
+                if desc in queue:
+                    queue.remove(desc)
             
             queue.popleft()
             continue
