@@ -17,21 +17,21 @@ def main():
     # infer_parser = subparsers.add_parser("infer", help="this command it will help the user to create a \
     #                                      sample table needed for geomosaic to prepare the working directory",
     #                                      formatter_class=ArgumentDefaultsHelpFormatter)
-    setup_parser = subparsers.add_parser("setup", help="this command creates the working directory for geomosaic, \
-                                         and the relative sample folder based on the sample table provided by the user",
+    setup_parser = subparsers.add_parser("setup", help="It creates the geomosaic working directory \
+                                         and the relative samples folders based on the provided sample table",
                                          formatter_class=ArgumentDefaultsHelpFormatter,
                                          add_help=False)
-    workflow_parser = subparsers.add_parser("workflow", help="this command allow the user to choose the desired \
-                                            modules and the relative packages, then it will create a graph of the modules and start the execution",
+    workflow_parser = subparsers.add_parser("workflow", help="It allows to choose the desired \
+                                            modules and the relative packages. Based on you choices, the command will create a Snakefile (in the geomosaic directory) with the chosen modules, the config file for snakemake, and a graph image to show the created workflow",
                                          formatter_class=ArgumentDefaultsHelpFormatter,
                                          add_help=False)
-    unit_parser = subparsers.add_parser("unit", help="this command allow the user to choose and run just one module \
-                                        in order execute an alternative package for that module",
+    unit_parser = subparsers.add_parser("unit", help="It allows to choose and run just one module \
+                                        to execute an alternative package for that module. The command create another Snakefile a config file (both in the geomosaic directory) with the chosen module",
                                          formatter_class=ArgumentDefaultsHelpFormatter,
                                          add_help=False)
-    run_parser = subparsers.add_parser("run", help="Execute the create snakefile",
-                                         formatter_class=ArgumentDefaultsHelpFormatter,
-                                         add_help=False)
+    # run_parser = subparsers.add_parser("run", help="Execute the create snakefile",
+    #                                      formatter_class=ArgumentDefaultsHelpFormatter,
+    #                                      add_help=False)
     
 
     # Adding parameters for each subcommamd
@@ -99,11 +99,11 @@ def main():
     ####################
     ## RUN Parameters ##
     ####################
-    run_parser.add_argument("-c", "--config_file", required=True, default="geomosaic_setup_config.yaml", type=str, 
-                              help="Path and output filename for the geomosaic config file (yaml extension).")
-    run_parser.add_argument("-t", "--threads", required=True, default=8, help="Number of threads to use to execute the workflow for all the samples")
-    run_parser.add_argument("-s", "--threads_per_sample", required=True, default=4, help="Threads to use per each sample. It must be lower than the 'threads' \
-                            parameter")
+    # run_parser.add_argument("-c", "--config_file", required=True, default="geomosaic_setup_config.yaml", type=str, 
+    #                           help="Path and output filename for the geomosaic config file (yaml extension).")
+    # run_parser.add_argument("-t", "--threads", required=True, default=8, help="Number of threads to use to execute the workflow for all the samples")
+    # run_parser.add_argument("-s", "--threads_per_sample", required=True, default=4, help="Threads to use per each sample. It must be lower than the 'threads' \
+    #                         parameter")
 
     if len(sys.argv)==1:
         parser.print_help(sys.stderr)
