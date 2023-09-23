@@ -1,65 +1,40 @@
-# GeoMosaic: A flexible metagenomic pipeline combining read-based, assemblies and MAGs with downstream analysis
+![GeoMosaic](images/geomosaic_logo_multicolor_300dpi.png)
 
-The first step is to install the conda environment of Geomosaic.
-```
-conda env create -f environment.yaml
-```
-Then activate it
-```
-conda activate geomosaic
-```
+# About
 
-## Integrated Modules
+`Work In Progress... Stay tuned`
 
-<ul>
-  <li>Pre-processing</li>
-  <li>Functional Classification [Read-based]</li>
-  <li>Taxonomic Classification [Read-based]</li>
-  <li>Assembly</li>
-  <li>Assembly Evaluation: Quality Check</li>
-  <li>Assembly Evaluation: Read Mapping</li>
-  <li>Gene Coverage</li>
-  <li>ORF Prediction</li>
-  <li>Binning</li>
-  <li>Binning De-replication</li>
-  <li>Binning Quality Assessment</li>
-</ul>
+__GEOMOSAIC__ is a flexible metagenomic pipeline combining biological and geochemical data to outline biosphere and geosphere interactions.
 
-### Pre-processing
-- fastp
-- trim-galore
-- trimmomatic
+It has been designed to be user friendly and higly customizable, with no bioinformatic expertise required.
 
-### Assembly: 
-- Metaspades
-- MegaHit
-
-### Assembly Evaluation: Quality Check
-- quast
-
-### Assembly Evaluation: Read Mapping
-- BBmap
-
-### Binning
-- MaxBin2 + MetaBat2 + Concoct
-
-### Binning De-replication
-- DAS_Tool
+However, it has been developed to be easy to integrate with new modules and packages. See our section [Contributions](#contributes).
 
 
-### Binning Quality Assessment
-- CheckM
+# Documentation
 
-### Functional classification [Read-Based]
-- mi-faser
+Full documentation available at the [GitHub Wiki](https://github.com/giovannellilab/GeoMosaic/wiki) pages.
 
-### Taxonomic classification [Read-Based]
-- Kaiju
-- MetaPhlAn
+# Contributes
 
-### ORF Prediction
-- Prodigal
+__GEOMOSAIC__ allows an easy possibility to be integrated with innovatives modules. It is based on a graph structure which can be updated with new packages at any time.
 
-### Gene Coverage
-HMMSearch on prodigal results and pileup.sh (from BBMap tool) to get the coverage per ORF
-- HMMSearch-Pileup(BBmap)
+Follow our guide at the [GitHub Wiki](https://github.com/giovannellilab/GeoMosaic/wiki).
+
+# Issues
+
+For any bug, feature request, comments and question, you can use the corresponding [GitHub issue]() section.
+
+# Development Timeline
+...Coming soon:
+- Functional annotation for Assembly Based
+- Taxonomic annotation for Assembly Based
+- Script to merge multiple sample analysis
+- Integration of geochemical scripts
+
+
+# Citation
+
+If you used __GEOMOSAIC__ for your analysis, please cite:
+
+>[PLACEHOLDER] Corso D., Barosa B., Cordone A., Giovannelli D., "GeoMosaic: a flexible metagenomic pipeline combining biological and geochemical data to outline biosphere and geosphere interactions." 
