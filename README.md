@@ -13,7 +13,7 @@ However, it has been developed to be easy to integrate with new modules and pack
 
 # Documentation
 
-Full documentation available at the [GitHub Wiki](https://github.com/giovannellilab/GeoMosaic/wiki) pages.
+Full documentation available at the [GitHub Wiki](https://github.com/giovannellilab/GeoMosaic/wiki/Documentation) pages.
 
 # Contributes
 
