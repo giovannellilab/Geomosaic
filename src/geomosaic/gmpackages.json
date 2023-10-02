@@ -14,7 +14,8 @@
         "mags_retrieval",
         "mags_func_annotation",
         "mags_tax_annotation",
-        "mags_orf_prediction"
+        "mags_orf_prediction",
+        "mags_domain_annotation"
     ],
 
     "graph": [
@@ -44,8 +45,9 @@
 
         ["mags_retrieval", "mags_orf_prediction"],
         ["mags_retrieval", "mags_func_annotation"],
-        ["mags_retrieval", "mags_tax_annotation"]
+        ["mags_retrieval", "mags_tax_annotation"],
 
+        ["mags_orf_prediction", "mags_domain_annotation"]
     ],
 
     "modules": {
@@ -157,6 +159,13 @@
             "description": "Module: perform ORF prediction for each retrieved MAG",
             "choices": {
                 "Prodigal on MAGs": "mags_prodigal"
+            }
+        },
+
+        "mags_domain_annotation": {
+            "description": "Module: perform domain-based annotation for each retrieved MAG",
+            "choices": {
+                "reCOGnizer on MAGs": "mags_recognizer"
             }
         }
     },
