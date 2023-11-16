@@ -1,7 +1,7 @@
-name: geomosaic_recognizer
+name: geomosaic_checkm_genome
 channels:
    - conda-forge
    - bioconda
    - defaults
 dependencies:
-   - recognizer
+   - checkm-genome

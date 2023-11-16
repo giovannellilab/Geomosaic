@@ -1,7 +1,7 @@
-name: geomosaic_recognizer
+name: geomosaic_das_tool
 channels:
    - conda-forge
    - bioconda
    - defaults
 dependencies:
-   - recognizer
+   - das_tool

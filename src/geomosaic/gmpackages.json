@@ -191,6 +191,22 @@
     },
 
     "envs": {
+        "bbmap": "bbmap.yaml",
+        "checkm": "checkm.yaml",
+        "das_tool": "das_tool.yaml",
+        "mags_dram": "dram.yaml",
+        "fastp": "fastp.yaml",
+        "gtdbtk": "gtdbtk.yaml",
+        "kaiju": "kaiju.yaml",
+        "megahit": "megahit.yaml",
+        "metaphlan": "metaphlan.yaml",
+        "metaspades": "metaspades.yaml",
+        "multi_binners": "multi_binners.yaml",
+        "prodigal": "prodigal.yaml",
+        "quast": "quast.yaml",
+        "mags_recognizer": "recognizer.yaml",
+        "trimgalore": "trimgalore.yaml",
+        "trimmomatic": "trimmomatic.yaml",
         "mags_gtdbtk": "gtdbtk.yaml"
     }
 }

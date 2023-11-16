@@ -1,7 +1,7 @@
-name: geomosaic_recognizer
+name: geomosaic_quast
 channels:
    - conda-forge
    - bioconda
    - defaults
 dependencies:
-   - recognizer
+   - quast
