@@ -5,6 +5,7 @@ from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_NOTE, GEOMOSAIC_OK, GEOM
 from geomosaic._validator import validate_working_dir
 import pkg_resources
 import time
+import re
 
 
 def geo_setup(args):
@@ -52,15 +53,19 @@ def geo_setup(args):
 def group_read_by_sample(filename, rawreads_folder, wdir, nocopy):
     df = pd.read_csv(filename, sep="\t")
 
+    for i in df.itertuples():
+        check_special_characters(i.sample)
+
     grp = df.groupby(by="sample").agg(list)
     grp.reset_index(inplace=True)
 
-    if nocopy:
-        for i in list(grp.itertuples()):
+    
+    for i in list(grp.itertuples()):
+        if nocopy:
             if len(i.r1) > 1 or len(i.r2) > 1:
                 print(f"{GEOMOSAIC_ERROR}: '--nocopy' flag cannot be used as there are multiple reads file for the sample '{i.sample}'.")
                 exit(1)
-
+        
     samples_list = []
 
     for i in list(grp.itertuples())[:1]:        
@@ -83,3 +88,30 @@ def group_read_by_sample(filename, rawreads_folder, wdir, nocopy):
             # check_call(f"cat {all_r2} > {os.path.join(wdir,i.sample,'R2.fastq.gz')}", shell=True)
     
     return samples_list
+
+
+def check_special_characters(s):
+    # Make own character set and pass 
+    # this as argument in compile method    
+    na1 = ',["@!#$%^&*()<>?/\|}{~:;]'
+    na2 = "'`€¹²³¼½¬="
+
+    regex1 = re.compile(na1)
+    regex2 = re.compile(na2)
+     
+    # Pass the string in search 
+    # method of regex object.    
+    if(regex1.search(s) != None):
+        print(f"{GEOMOSAIC_ERROR}: Your sample name contains a special character that is not allows: {str(repr(s))}\n\
+              The following special characters are not allowed in sample name: {na1[0]} {na1[1:]}{na2}")
+        exit(1)
+
+    if(regex2.search(s) != None):
+        print(f"{GEOMOSAIC_ERROR}: Your sample name contains a special character that is not allows: {str(repr(s))}\n\
+              The following special characters are not allowed in sample name: {na1[0]} {na1[1:]}{na2}")
+        exit(1)
+    
+    if " " in s:
+        print(f"{GEOMOSAIC_ERROR}: Your sample name contains a space which is not allows: {str(repr(s))}.\n\
+              The following special characters are not allowed in sample name: {na1[0]} {na1[1:]}{na2}")
+        exit(1)
