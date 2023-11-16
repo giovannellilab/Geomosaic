@@ -1,5 +1,5 @@
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
-from geomosaic._utils import GEOMOSAIC_DESCRIPTION
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, RawDescriptionHelpFormatter
+from geomosaic._utils import GEOMOSAIC_DESCRIPTION, GEOMOSAIC_MODULES
 from geomosaic.geo_infer import geo_infer
 from geomosaic.geo_setup import geo_setup
 from geomosaic.geo_workflow import geo_workflow
@@ -25,9 +25,9 @@ def main():
                                             modules and the relative packages. Based on you choices, the command will create a Snakefile (in the geomosaic directory) with the chosen modules, the config file for snakemake, and a graph image to show the created workflow",
                                          formatter_class=ArgumentDefaultsHelpFormatter,
                                          add_help=False)
-    unit_parser = subparsers.add_parser("unit", help="It allows to choose and run just one module \
+    unit_parser = subparsers.add_parser("unit", help="It allows to choose and run just one module, for example \
                                         to execute an alternative package for that module. The command create another Snakefile a config file (both in the geomosaic directory) with the chosen module",
-                                         formatter_class=ArgumentDefaultsHelpFormatter,
+                                         formatter_class=RawDescriptionHelpFormatter,
                                          add_help=False)
     # run_parser = subparsers.add_parser("run", help="Execute the create snakefile",
     #                                      formatter_class=ArgumentDefaultsHelpFormatter,
@@ -89,11 +89,17 @@ def main():
     #####################
     ## UNIT Parameters ##
     #####################
-    unit_parser.add_argument("-c", "--config_file", required=True, default="geomosaic_setup_config.yaml", type=str, 
-                              help="Path and output filename for the geomosaic config file (yaml extension).")
-    unit_parser.add_argument("-m", "--module", required=True, default=None, type=str, 
-                              help="Modules to execute")
-    ## UNIT set default function
+    
+    unit_required = unit_parser.add_argument_group("Required Arguments")
+    unit_required.add_argument("-s", "--setup_file", required=True, type=str, 
+                                help="Geomosaic setup file created from the 'geomosaic setup ...' command.")
+    unit_required.add_argument("-m", "--module", required=True, default=None, type=str, 
+                                help=f"Modules to execute.")
+    unit_required = unit_parser.add_argument_group("Available Modules", GEOMOSAIC_MODULES)
+
+    unit_help = unit_parser.add_argument_group("Help Arguments")
+    unit_help.add_argument("-h", "--help", action="help", help=f"show this help message and exit")
+    ## unit set default function
     unit_parser.set_defaults(func=geo_unit)
 
     ####################
