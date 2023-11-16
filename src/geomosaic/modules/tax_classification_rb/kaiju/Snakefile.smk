@@ -22,5 +22,6 @@ rule run_kaiju:
     run:
         shell("kaiju -v -t {input.kaijudb}/nodes.dmp -f {input.kaijudb}/kaiju_db.fmi \
                 -z {threads} \
-                -i {input.r1} -j {input.r2} \
+                -i {input.r1} \
+                -j {input.r2} \
                 -o {output.fout}")
