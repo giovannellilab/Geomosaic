@@ -1,23 +1,28 @@
 import json
 import yaml
 import os
-from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_NOTE
-from geomosaic._build_pipelines_module import import_graph, check_user_input, ask_additional_parameters
+from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_NOTE, GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_MODULES
+from geomosaic._build_pipelines_module import import_graph, build_pipeline_modules, ask_additional_parameters
 import subprocess
+import time
 
 
 def geo_unit(args):
-    config_file = args.config_file
+    print(f"{GEOMOSAIC_PROCESS}: Loading variables from GeoMosaic setup file... ", end="", flush=True)
+    setup_file  = args.setup_file
     module      = args.module
 
-    with open(config_file) as file:
-        geomosaic_config_setup = yaml.load(file, Loader=yaml.FullLoader)
+    with open(setup_file) as file:
+        geomosaic_setup = yaml.load(file, Loader=yaml.FullLoader)
 
-    assert "SAMPLES" in geomosaic_config_setup, f"\n{GEOMOSAIC_ERROR}: sample list must be provided with the key 'SAMPLES'"
-    assert "GEOMOSAIC_WDIR" in geomosaic_config_setup, f"\n{GEOMOSAIC_ERROR}: geomosaic working directory must be provided with the key 'GEOMOSAIC_WDIR'"
+    assert "SAMPLES" in geomosaic_setup, f"\n{GEOMOSAIC_ERROR}: sample list must be provided with the key 'SAMPLES'"
+    assert "GEOMOSAIC_WDIR" in geomosaic_setup, f"\n{GEOMOSAIC_ERROR}: geomosaic working directory must be provided with the key 'GEOMOSAIC_WDIR'"
+    assert os.path.isdir(geomosaic_setup["GEOMOSAIC_WDIR"]), f"\n{GEOMOSAIC_ERROR}: GeoMosaic working directory does not exists."
 
-    samples_list    = geomosaic_config_setup["SAMPLES"]
-    geomosaic_dir   = geomosaic_config_setup["GEOMOSAIC_WDIR"]
+    samples_list    = geomosaic_setup["SAMPLES"]
+    geomosaic_dir   = geomosaic_setup["GEOMOSAIC_WDIR"]
+    time.sleep(1)
+    print(GEOMOSAIC_OK)
 
     ## READ SETUPS FOLDERS AND FILE
     modules_folder  = os.path.join(os.path.dirname(__file__), 'modules')
@@ -35,36 +40,39 @@ def geo_unit(args):
     additional_input    = gmpackages["additional_input"]
     envs                = gmpackages["envs"]
 
-    assert module in collected_modules, f"\n{GEOMOSAIC_ERROR}: chosen module does not exists. Please choose of the the following" + "\n".join(collected_modules)
+    assert module in collected_modules, f"\n\n{GEOMOSAIC_ERROR}: chosen module does not exists. Please choose of the the following\n {GEOMOSAIC_MODULES}"
     
     mstart = module
+    order_writing = [mstart]
+    raw_user_choices, _, _, _ = build_pipeline_modules(
+        graph               = G,
+        collected_modules   = collected_modules, 
+        order               = order, 
+        additional_input    = additional_input,
+        mstart              = mstart,
+        unit                = True
+    )
+
     module_dependencies = list(G.predecessors(mstart))
+    print(f"{GEOMOSAIC_NOTE}: It is assumed also that those modules dependencies have already been run with GeoMosaic")
     print(f"{GEOMOSAIC_NOTE}: '{mstart}' depends on the following modules:\n"+"\n".join(map(lambda x: f"\t- {x}", module_dependencies)))
-    print("\nIt is assumed also that those modules dependencies have already been run with GeoMosaic")
-
+    print("You need to specify the package/s that you used for those dependencis.")
+    
+    for dep in module_dependencies:
+        temp_user_choices, _, _, _ = build_pipeline_modules(
+            graph               = G,
+            collected_modules   = collected_modules, 
+            order               = order, 
+            additional_input    = additional_input,
+            mstart              = dep,
+            unit                = True
+        )
+        raw_user_choices[dep] = temp_user_choices[dep]
+    
     user_choices = {}
-    order_writing = module_dependencies + [mstart]
-    for dep in order_writing:
-        status = False
-        module_descr = collected_modules[dep]["description"]
-        module_choices = {}
-        for indice, raw_package in enumerate(collected_modules[dep]["choices"].items(), start=1):
-            pckg_display, pckg_name = raw_package
-            module_choices[indice] = {"display": pckg_display, "package": pckg_name}
-
-        prompt_display = f"\n{module_descr}\n" + "\n".join([f"{integer}) {pck_info['display']}" for integer, pck_info in module_choices.items()])
-        while not status:
-            print(prompt_display)
-            
-            raw_input = input()
-
-            status, obj = check_user_input(raw_input, list(module_choices.keys()))
-            if not status:
-                print(obj)
-        
-        parse_input = obj
-        
-        user_choices[dep] = module_choices[parse_input]["package"]
+    for m in order:
+        if m in raw_user_choices:
+            user_choices[m] = raw_user_choices[m]
     
     chosen_packages = user_choices.values()
 

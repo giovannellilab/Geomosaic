@@ -7,7 +7,7 @@ from geomosaic._utils import GEOMOSAIC_ERROR
 from geomosaic._validator import validator_hmms_folder, validator_completeness_contamination_integer
 
 
-def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list, additional_input: dict, mstart: str="pre_processing"):
+def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list, additional_input: dict, mstart: str="pre_processing", unit=False):
     G = graph.copy()
     assert mstart in G.nodes()
 
@@ -26,7 +26,11 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
         modules_descendants[m] = list(nx.descendants(G, m))
 
     user_choices = {}
-    raw_queue = list(nx.bfs_tree(G, source=mstart).nodes())
+    
+    if unit:
+        raw_queue = [mstart]
+    else:
+        raw_queue = list(nx.bfs_tree(G, source=mstart).nodes())
 
     # Defining order
     queue = deque([elem for elem in order if elem in raw_queue])
