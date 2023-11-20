@@ -1,0 +1,5 @@
+# Memory adjustment
+--memory 0.7
+
+# Complex metagenomes
+--presets meta-large
