@@ -1,6 +1,4 @@
 das_tool:
-- --write_bin_evals
-- --write_bins
 - --score_threshold 0.6
 - --search_engine diamond
 -

@@ -11,9 +11,9 @@ rule run_multi_binners:
     threads: 5
     conda: config["ENVS"]["multi_binners"]
     params:
-        concoct_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["multi_binners"]["concoct"])) ) (config["USER_PARAMS"]["multi_binners"]),
-        maxbin_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["multi_binners"]["maxbin2"])) ) (config["USER_PARAMS"]["multi_binners"]),
-        metabat_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["multi_binners"]["metabat2"])) ) (config["USER_PARAMS"]["multi_binners"])
+        concoct_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["concoct"])) ) (config["USER_PARAMS"]["multi_binners"]),
+        maxbin_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["maxbin2"])) ) (config["USER_PARAMS"]["multi_binners"]),
+        metabat_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["metabat2"])) ) (config["USER_PARAMS"]["multi_binners"])
     log: "{wdir}/{sample}/multi_binners/gm_log.out"
     shell:
         """

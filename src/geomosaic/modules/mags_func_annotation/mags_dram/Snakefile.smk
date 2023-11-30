@@ -1,21 +1,19 @@
 
 rule dram_setup_db:
     params:
-        prepare_databases="prepare_databases",
-        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["dram-setup"])) ) (config["USER_PARAMS"]["dram"]) 
+        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["dram-setup"])) ) (config["USER_PARAMS"]["mags_dram"]) 
     output:
         dram_config_folder=directory("{wdir}/dram_config")
-    conda: config["ENVS"]["dram"]
+    conda: config["ENVS"]["mags_dram"]
     shell:
         """
         mkdir -p {output.dram_config_folder}/dram_db
-        DRAM-setup.py {params.prepare_databases} \
+        DRAM-setup.py prepare_databases \
             --skip_uniref \
             --output_dir {output.dram_config_folder}/dram_db
         
         DRAM-setup.py export_config > {output.dram_config_folder}/dram_config.json
         """
-        
 
 rule run_mags_dram:
     input:
@@ -23,7 +21,7 @@ rule run_mags_dram:
         dram_config_folder="{wdir}/dram_config"
     output:
         directory("{wdir}/{sample}/mags_dram")
-    conda: config["ENVS"]["dram"]
+    conda: config["ENVS"]["mags_dram"]
     threads: 15
     shell:
         """
