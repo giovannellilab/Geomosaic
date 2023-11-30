@@ -1,0 +1,7 @@
+name: geomosaic_trimgalore
+channels:
+   - conda-forge
+   - bioconda
+   - defaults
+dependencies:
+   - trim-galore

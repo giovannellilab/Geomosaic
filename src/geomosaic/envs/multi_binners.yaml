@@ -1,0 +1,9 @@
+name: geomosaic_multi_binners
+channels:
+   - conda-forge
+   - bioconda
+   - defaults
+dependencies:
+   - maxbin2
+   - metabat2
+   - concoct

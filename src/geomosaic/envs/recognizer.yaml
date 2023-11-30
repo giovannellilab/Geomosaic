@@ -1,0 +1,7 @@
+name: geomosaic_recognizer
+channels:
+   - conda-forge
+   - bioconda
+   - defaults
+dependencies:
+   - recognizer

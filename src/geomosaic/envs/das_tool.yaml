@@ -1,0 +1,7 @@
+name: geomosaic_das_tool
+channels:
+   - conda-forge
+   - bioconda
+   - defaults
+dependencies:
+   - das_tool

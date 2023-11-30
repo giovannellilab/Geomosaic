@@ -1,0 +1,8 @@
+name: geomosaic_bbmap
+channels:
+   - conda-forge
+   - bioconda
+   - defaults
+dependencies:
+   - bbmap
+   - samtools

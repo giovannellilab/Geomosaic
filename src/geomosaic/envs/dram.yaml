@@ -1,0 +1,7 @@
+name: geomosaic_dram
+channels:
+   - conda-forge
+   - bioconda
+   - defaults
+dependencies:
+   - dram

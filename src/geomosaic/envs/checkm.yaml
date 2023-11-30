@@ -1,0 +1,7 @@
+name: geomosaic_checkm_genome
+channels:
+   - conda-forge
+   - bioconda
+   - defaults
+dependencies:
+   - checkm-genome

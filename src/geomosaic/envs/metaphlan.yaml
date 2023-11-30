@@ -1,0 +1,7 @@
+name: geomosaic_metaphlan
+channels:
+   - conda-forge
+   - bioconda
+   - defaults
+dependencies:
+   - metaphlan
