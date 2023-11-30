@@ -1,5 +1,5 @@
+megahit:
 # Memory adjustment
---memory 0.7
-
+- --memory 0.7
 # Complex metagenomes
---presets meta-large
+- --presets meta-large
