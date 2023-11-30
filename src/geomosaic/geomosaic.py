@@ -1,9 +1,8 @@
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, RawDescriptionHelpFormatter
-from geomosaic._utils import GEOMOSAIC_DESCRIPTION, GEOMOSAIC_MODULES
-from geomosaic.geo_infer import geo_infer
-from geomosaic.geo_setup import geo_setup
-from geomosaic.geo_workflow import geo_workflow
-from geomosaic.geo_unit import geo_unit
+from geomosaic._utils import GEOMOSAIC_DESCRIPTION, GEOMOSAIC_MODULES_DESCRIPTION, GEOMOSAIC_MODULES
+from geomosaic.gm_setup import geo_setup
+from geomosaic.gm_workflow import geo_workflow
+from geomosaic.gm_unit import geo_unit
 import sys
 
 
@@ -23,7 +22,7 @@ def main():
                                          add_help=False)
     workflow_parser = subparsers.add_parser("workflow", help="It allows to choose the desired \
                                             modules and the relative packages. Based on you choices, the command will create a Snakefile (in the geomosaic directory) with the chosen modules, the config file for snakemake, and a graph image to show the created workflow",
-                                         formatter_class=ArgumentDefaultsHelpFormatter,
+                                         formatter_class=RawDescriptionHelpFormatter,
                                          add_help=False)
     unit_parser = subparsers.add_parser("unit", help="It allows to choose and run just one module, for example \
                                         to execute an alternative package for that module. The command create another Snakefile a config file (both in the geomosaic directory) with the chosen module",
@@ -80,6 +79,10 @@ def main():
     
     workflow_optional = workflow_parser.add_argument_group("Optional Arguments")
     workflow_optional.add_argument('-p' ,'--pipeline', action='store_true', help="Execute the default pipeline of geomosaic.")
+    workflow_optional.add_argument("-m", "--module_start", required=True, type=str, default="pre_processing",
+                                help=f"Module where to start creating the workflow (Default: pre_processing)", choices=GEOMOSAIC_MODULES, metavar="MODULE")
+    
+    workflow_parser.add_argument_group("Available Modules", GEOMOSAIC_MODULES_DESCRIPTION)
     
     workflow_help = workflow_parser.add_argument_group("Help Arguments")
     workflow_help.add_argument("-h", "--help", action="help", help="show this help message and exit")
@@ -93,9 +96,9 @@ def main():
     unit_required = unit_parser.add_argument_group("Required Arguments")
     unit_required.add_argument("-s", "--setup_file", required=True, type=str, 
                                 help="Geomosaic setup file created from the 'geomosaic setup ...' command.")
-    unit_required.add_argument("-m", "--module", required=True, default=None, type=str, 
-                                help=f"Modules to execute.")
-    unit_required = unit_parser.add_argument_group("Available Modules", GEOMOSAIC_MODULES)
+    unit_required.add_argument("-m", "--module", required=True, type=str, 
+                                help=f"Modules to execute.", choices=GEOMOSAIC_MODULES, metavar="MODULE")
+    unit_parser.add_argument_group("Available Modules", GEOMOSAIC_MODULES_DESCRIPTION)
 
     unit_help = unit_parser.add_argument_group("Help Arguments")
     unit_help.add_argument("-h", "--help", action="help", help=f"show this help message and exit")

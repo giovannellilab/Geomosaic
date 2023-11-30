@@ -58,7 +58,6 @@ def group_read_by_sample(filename, rawreads_folder, wdir, nocopy):
 
     grp = df.groupby(by="sample").agg(list)
     grp.reset_index(inplace=True)
-
     
     for i in list(grp.itertuples()):
         if nocopy:

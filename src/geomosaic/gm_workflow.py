@@ -11,6 +11,7 @@ def geo_workflow(args):
     print(f"{GEOMOSAIC_PROCESS}: Loading variables from GeoMosaic setup file... ", end="", flush=True)
     setup_file  = args.setup_file
     pipeline    = args.pipeline
+    mstart      = args.module_start
 
     with open(setup_file) as file:
         geomosaic_setup = yaml.load(file, Loader=yaml.FullLoader)
@@ -48,7 +49,6 @@ def geo_workflow(args):
             order_writing   = pipe["order_writing"]
     else:
         # NOTE: BUILDING PIPELINE BASED ON USER CHOICES
-        mstart = "pre_processing"
         user_choices, dependencies, modified_G, order_writing = build_pipeline_modules(
             graph               = G,
             collected_modules   = collected_modules, 
