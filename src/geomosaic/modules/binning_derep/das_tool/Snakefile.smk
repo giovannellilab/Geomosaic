@@ -1,9 +1,9 @@
 
 rule run_das_tool:
     input:
-        concoct_bins=expand("{wdir}/{sample}/{binning}/concoct/bins", binning=config["binning"], allow_missing=True),
-        maxbin_bins=expand("{wdir}/{sample}/{binning}/maxbin2/bins", binning=config["binning"], allow_missing=True),
-        metabat_bins=expand("{wdir}/{sample}/{binning}/metabat2/bins", binning=config["binning"], allow_missing=True),
+        concoct_bins=expand("{wdir}/{sample}/{binning}/geomosaic_concoct_bins", binning=config["binning"], allow_missing=True),
+        maxbin_bins=expand("{wdir}/{sample}/{binning}/geomosaic_maxbin2_bins", binning=config["binning"], allow_missing=True),
+        metabat_bins=expand("{wdir}/{sample}/{binning}/geomosaic_metabat2_bins", binning=config["binning"], allow_missing=True),
         gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["assembly"], allow_missing=True)
     output:
         folder=directory("{wdir}/{sample}/das_tool")

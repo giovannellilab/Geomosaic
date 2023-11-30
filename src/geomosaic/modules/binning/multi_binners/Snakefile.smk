@@ -17,7 +17,7 @@ rule run_multi_binners:
     log: "{wdir}/{sample}/multi_binners/gm_log.out"
     shell:
         """
-        mkdir -p {output.folder}
+        mkdir -p {output.concoct_folder} {output.maxbin_folder} {output.metabat_folder}
 
         echo "Executing Concoct..."
         cut_up_fasta.py {input.gm_contigs} {params.concoct_user_params} -o 0 -b {output.concoct_folder}/contigs_10K.bed > {output.concoct_folder}/contigs_10K.fa
@@ -34,16 +34,15 @@ rule run_multi_binners:
         run_MaxBin.pl {params.maxbin_user_params} -contig {input.gm_contigs} -abund {output.maxbin_folder}/maxbin2_depth.txt -thread {threads} -out {output.maxbin_folder}/output >> {log} 2>&1
         """
 
-
 rule run_multi_binners_parser:
     input:
-        concoct_folder="{wdir}/{sample}/multi_binners/concoct",
-        maxbin_folder="{wdir}/{sample}/multi_binners/maxbin2",
-        metabat_folder="{wdir}/{sample}/multi_binners/metabat2"
+        concoct_folder = rules.run_multi_binners.output.concoct_folder,
+        maxbin_folder = rules.run_multi_binners.output.maxbin_folder,
+        metabat_folder = rules.run_multi_binners.output.metabat_folder,
     output:
-        concoct_bins=directory("{wdir}/{sample}/multi_binners/concoct/bins"),
-        maxbin_bins=directory("{wdir}/{sample}/multi_binners/maxbin2/bins"),
-        metabat_bins=directory("{wdir}/{sample}/multi_binners/metabat2/bins")
+        concoct_bins=directory("{wdir}/{sample}/multi_binners/geomosaic_concoct_bins"),
+        maxbin_bins=directory("{wdir}/{sample}/multi_binners/geomosaic_maxbin2_bins"),
+        metabat_bins=directory("{wdir}/{sample}/multi_binners/geomosaic_metabat2_bins")
     run:
         from geomosaic.parsing_output.rename_bins import rename_bins
         
@@ -57,19 +56,19 @@ rule run_multi_binners_parser:
         shell("mv {input.maxbin_folder}/*.fasta {output.maxbin_bins}/")
 
         rename_bins(
-            folder = os.path.join(str(input.concoct_folder), "bins"), 
+            folder = str(output.concoct_bins), 
             extension = "fa", 
             binner = "concoct"
         )
 
         rename_bins(
-            folder = os.path.join(str(input.metabat_folder), "bins"), 
+            folder = str(output.metabat_bins), 
             extension = "fasta", 
             binner = "metabat2"
         )
     
         rename_bins(
-            folder = os.path.join(str(input.maxbin_folder), "bins"), 
+            folder = str(output.maxbin_bins), 
             extension = "fasta", 
             binner = "maxbin2"
         )
