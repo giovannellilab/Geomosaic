@@ -3,7 +3,7 @@ import yaml
 import os
 from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_NOTE, GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_MODULES
 from geomosaic._build_pipelines_module import import_graph, build_pipeline_modules, ask_additional_parameters
-from geomosaic._gm_compose import write_gmfiles, compose_config
+from geomosaic.gm_compose import write_gmfiles, compose_config
 import subprocess
 import time
 
@@ -45,8 +45,6 @@ def geo_unit(args):
     order               = gmpackages["order"]
     additional_input    = gmpackages["additional_input"]
     envs                = gmpackages["envs"]
-
-    assert module in collected_modules, f"\n\n{GEOMOSAIC_ERROR}: chosen module does not exists. Please choose of the the following\n {GEOMOSAIC_MODULES}"
     
     mstart = module
     order_writing = [mstart]

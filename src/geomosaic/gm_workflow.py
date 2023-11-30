@@ -2,8 +2,9 @@ import json
 import yaml
 import os
 import subprocess
-from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_NOTE
+from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROCESS, GEOMOSAIC_OK
 from geomosaic._build_pipelines_module import import_graph, build_pipeline_modules, ask_additional_parameters
+from geomosaic.gm_compose import write_gmfiles, compose_config
 import time
 
 
@@ -22,6 +23,11 @@ def geo_workflow(args):
 
     samples_list    = geomosaic_setup["SAMPLES"]
     geomosaic_dir   = geomosaic_setup["GEOMOSAIC_WDIR"]
+
+    geomosaic_user_parameters   = os.path.join(geomosaic_dir, "module_user_parameters")
+    if not os.path.isdir(geomosaic_user_parameters):
+        os.makedirs(geomosaic_user_parameters)
+
     time.sleep(1)
     print(GEOMOSAIC_OK)
 
@@ -44,9 +50,10 @@ def geo_workflow(args):
     if pipeline:
         # TODO: Adding additional parameters to default pipeline
         with open(os.path.join(os.path.dirname(__file__), 'pipeline.json')) as default_pipeline:
-            pipe            = json.load(default_pipeline)
-            user_choices    = pipe["user_choices"]
-            order_writing   = pipe["order_writing"]
+            pipe                    = json.load(default_pipeline)
+            user_choices            = pipe["user_choices"]
+            order_writing           = pipe["order_writing"]
+            additional_parameters   = pipe["additional_parameters"]
     else:
         # NOTE: BUILDING PIPELINE BASED ON USER CHOICES
         user_choices, dependencies, modified_G, order_writing = build_pipeline_modules(
@@ -56,63 +63,20 @@ def geo_workflow(args):
             additional_input    = additional_input,
             mstart              = mstart
         )
-    
-    chosen_packages = user_choices.values()
-
-    ## ASK ADDITIONAL PARAMETERS
-    additional_parameters = ask_additional_parameters(additional_input, order_writing)
-
-    # with open("pipeline.json", "wt") as default_pipeline:
-    #     json.dump({"user_choices": user_choices, "order_writing": order_writing}, default_pipeline)
+        ## ASK ADDITIONAL PARAMETERS
+        additional_parameters = ask_additional_parameters(additional_input, order_writing)
     
     config_filename     = os.path.join(geomosaic_dir, "config.yaml")
     snakefile_filename  = os.path.join(geomosaic_dir, "Snakefile.smk")
 
     ## CONFIG FILE SETUP
-    config = {}
+    config = compose_config(geomosaic_dir, samples_list, additional_parameters, 
+                            user_choices, modules_folder, geomosaic_user_parameters, envs, envs_folder)
 
-    config["SAMPLES"]   = samples_list
-    config["WDIR"]      = os.path.abspath(geomosaic_dir)    
-
-    for ap, ap_input in additional_parameters.items():
-        config[ap] = ap_input
-
-    for module_name, pckg in user_choices.items():
-        config[module_name] = pckg
-
-    for env_pkg, env_file in envs.items():
-        if env_pkg in chosen_packages:
-            if "ENVS" not in config:
-                config["ENVS"] = {}
-
-            config["ENVS"][env_pkg] = os.path.join(envs_folder, env_file)
-
-    # WRITING CONFIG FILE
-    with open(config_filename, 'w') as fd_config:
-        yaml.dump(config, fd_config)
-
-    ## WRITING SNAKEFILE
-    with open(snakefile_filename, "wt") as fd:
-        fd.write(f"configfile: {str(repr(os.path.abspath(config_filename)))}\n")
-
-        # Rule ALL
-        fd.write("\nrule all:\n\tinput:\n\t\t")
-        for m in order_writing:
-            package = user_choices[m]
-            snakefile_target = os.path.join(modules_folder, m, package, "Snakefile_target.smk")
-
-            with open(snakefile_target) as file:
-                target = yaml.load(file, Loader=yaml.FullLoader)
-            
-            input_target = target[f"rule all_{package}"]["input"]
-            fd.write(f"{input_target}\n\t\t")
-                    
-        # Rule for each package
-        for i in order_writing:
-            pckg_chosen = user_choices[i]
-            with open(os.path.join(modules_folder, i, pckg_chosen, "Snakefile.smk")) as sf:
-                fd.write(sf.read())
+    ## SNAKEFILE FILE SETUP
+    write_gmfiles(config_filename, config, snakefile_filename, user_choices, order_writing, modules_folder)
     
     # Draw DAG
     dag_image = os.path.join(geomosaic_dir, "dag.pdf")
     subprocess.check_call(f"snakemake -s {snakefile_filename} --rulegraph | dot -Tpdf > {dag_image}", shell=True)
+

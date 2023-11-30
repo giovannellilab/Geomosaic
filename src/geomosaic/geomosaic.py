@@ -79,7 +79,7 @@ def main():
     
     workflow_optional = workflow_parser.add_argument_group("Optional Arguments")
     workflow_optional.add_argument('-p' ,'--pipeline', action='store_true', help="Execute the default pipeline of geomosaic.")
-    workflow_optional.add_argument("-m", "--module_start", required=True, type=str, default="pre_processing",
+    workflow_optional.add_argument("-m", "--module_start", required=False, type=str, default="pre_processing",
                                 help=f"Module where to start creating the workflow (Default: pre_processing)", choices=GEOMOSAIC_MODULES, metavar="MODULE")
     
     workflow_parser.add_argument_group("Available Modules", GEOMOSAIC_MODULES_DESCRIPTION)
