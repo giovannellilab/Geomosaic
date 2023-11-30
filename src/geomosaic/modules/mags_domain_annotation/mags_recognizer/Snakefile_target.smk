@@ -1,4 +1,4 @@
 
 rule all_mags_recognizer:
     input:
-        expand("{wdir}/{sample}/mags_recognizer", sample=config["SAMPLES"], wdir=config["WDIR"]),
+        expand("{wdir}/{sample}/recognizer/reCOGnizer_results.tsv", sample=config["SAMPLES"], wdir=config["WDIR"]),

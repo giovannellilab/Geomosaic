@@ -2,35 +2,52 @@
 rule run_recognizer_db:
     output:
         directory("{wdir}/reCOGnizer_DB")
+    params:
+        download_resource="--download-resources"
     run:
-        shell("mkdir -p {output}")
-        shell("(cd {output} & recognizer --resources-directory {output} --download-resources)")
-
+        shell("mkdir -p {output}/null_results")
+        shell("(cd {output} & recognizer --resources-directory {output} {params.download_resource} --output {output}/null_results)")
 
 rule run_mags_recognizer:
     input:
-        mags_orf=expand("{wdir}/{sample}/{mags_orf_prediction}", mags_orf_prediction=config["mags_orf_prediction"], allow_missing=True),
+        mags_orf=expand("{wdir}/{sample}/{mags_orf_prediction}/{mag}/orf_predicted.faa", mags_orf_prediction=config["mags_orf_prediction"], allow_missing=True),
         recognizer_db={rules.run_recognizer_db.output}
     output:
-        directory("{wdir}/{sample}/mags_recognizer")
+        recognizer_result="{wdir}/{sample}/mags_recognizer/{mag}/reCOGnizer_results.tsv",
+    conda: config["ENVS"]["mags_recognizer"]
     params:
-        skip_download="--skip-downloaded"
+        user_params= ( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags_recognizer"])) ) (config["USER_PARAMS"]["mags_recognizer"]) 
     threads: 5
-    run:
-        mags_list = []
-        mags_list_file = os.path.join(str(input.mags_orf), "mags_list.txt")
+    shell:
+        """
+        recognizer_folder=$(dirname {output.recognizer_result})
+
+        mkdir -p $recognizer_folder
+
+        (cd $recognizer_folder & recognizer \
+                --file {input.mags_orf} \
+                --output $recognizer_folder \
+                --resources-directory {input.recognizer_db} \
+                {params.user_params} \
+                --threads {threads})
+        """
+
+def get_recognizer_inputs(f_string): 
+    def _f(wildcards):
+        import pandas as pd
+
+        mags_file = checkpoints.gather_mags_prodigal_outputs.get(**wildcards).output.mags_file
+        df_mags = pd.read_csv(mags_file, sep="\t")
         
-        with open(mags_list_file) as fd:
-            for line in fd:
-                mags_list.append(line.rstrip("\n"))
-    
-        for mag in mags_list:
-            orf_mag_file=os.path.join(str(input.mags_orf), mag, "orf_predicted.faa")
-            mag_output=os.path.join(str(output), mag)
-            shell("mkdir -p {mag_output}")
-            shell("cd {mag_output} & recognizer \
-                    --file {orf_mag_file} \
-                    --output {mag_output} \
-                    --resources-directory {input.recognizer_db} \
-                    {params.skip_download} \
-                    --threads {threads}")
+        _temp = []
+        for m in df_mags.MAGs:
+            _temp.append(f_string.format(mag=m, **wildcards) )
+
+        return _temp
+    return _f
+
+rule gather_mags_recognizer_inputs:
+    input: get_recognizer_inputs("{wdir}/{sample}/mags_recognizer/{mag}/reCOGnizer_results.tsv")
+    output: touch("{wdir}/{sample}/mags_recognizer/gather_OK.txt")
+    threads: 1
+
