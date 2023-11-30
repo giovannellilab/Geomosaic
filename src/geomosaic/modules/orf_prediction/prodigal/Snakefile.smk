@@ -1,26 +1,34 @@
 
 rule run_prodigal:
     input:
-        contig_path=expand("{wdir}/{sample}/{assembly}", assembly=config["assembly"], allow_missing=True),
+        gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["assembly"], allow_missing=True),
     output:
-        directory("{wdir}/{sample}/prodigal")
+        proteins="{wdir}/{sample}/prodigal/protein_translations.faa",
+        genes="{wdir}/{sample}/prodigal/genes.gff",
+        folder=directory("{wdir}/{sample}/prodigal")
     params:
-        extra="-p meta",
-        quiet="-q"
-    run:
-        shell("mkdir -p {output}")
-        shell("prodigal -i {input.contig_path}/contigs.fasta \
-                -o {output}/genes.gff \
-                -a {output}/protein_translations.faa \
+        meta="-p meta",
+        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["prodigal"])) ) (config["USER_PARAMS"]["prodigal"])
+    conda: config["ENVS"]["prodigal"]
+    shell:
+        """
+        mkdir -p {output.folder}
+        prodigal -i {input.gm_contigs} \
+                -o {output.genes} \
+                -a {output.proteins} \
                 -f gff \
-                {params.extra} \
-                {params.quiet}")
+                {params.meta} \
+                {params.user_params}
+        """
 
+rule parse_prodigal:
+    input:
+        protein_fasta=rules.run_prodigal.output.proteins
+    output:
+        output_mapping = "{wdir}/{sample}/prodigal/orf_contig_mapping.tsv",
+        output_fasta = "{wdir}/{sample}/prodigal/orf_predicted.faa",
+        output_simple_mapping = "{wdir}/{sample}/prodigal/simple_orf_contig_mapping.tsv", 
+    threads: 1
+    run:
         from geomosaic.parsing_output.prodigal_orf_mapping import parsing_prodigal_orfs
-
-        fasta_input = str(os.path.join(str(output), "protein_translations.faa"))
-        output_mapping = str(os.path.join(str(output), "orf_contig_mapping.tsv"))
-        output_fasta = str(os.path.join(str(output), "orf_predicted.faa"))
-        output_simple_mapping = str(os.path.join(str(output), "simple_orf_contig_mapping.tsv"))
-
-        parsing_prodigal_orfs(fasta_input, output_mapping, output_fasta, output_simple_mapping)
+        parsing_prodigal_orfs(str(input.protein_fasta), str(output.output_mapping), str(output.output_fasta), str(output.output_simple_mapping))
