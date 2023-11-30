@@ -5,11 +5,12 @@ rule db_kaiju:
         filename="kaiju_db.tgz"
     output:
         directory("{wdir}/kaijudb")
-    run:
-        shell("mkdir -p {output}")
-        shell("curl --output {output}/{params.filename} {params.db}")
-        shell("(cd {output} && tar --extract --file={params.filename} && mv kaiju_db_*.fmi kaiju_db.fmi && rm {params.filename})")
-
+    shell:
+        """
+        mkdir -p {output}
+        curl --output {output}/{params.filename} {params.db}
+        (cd {output} && tar --extract --file={params.filename} && mv kaiju_db_*.fmi kaiju_db.fmi && rm {params.filename})
+        """
 
 rule run_kaiju:
     input:
@@ -18,10 +19,15 @@ rule run_kaiju:
         kaijudb={rules.db_kaiju.output}
     output:
         fout="{wdir}/{sample}/kaiju/kaiju.out"
+    params:
+        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["kaiju"])) ) (config["USER_PARAMS"]["kaiju"])
     threads: 5
-    run:
-        shell("kaiju -v -t {input.kaijudb}/nodes.dmp -f {input.kaijudb}/kaiju_db.fmi \
-                -z {threads} \
-                -i {input.r1} \
-                -j {input.r2} \
-                -o {output.fout}")
+    conda: config["ENVS"]["kaiju"]
+    shell:
+        """
+        kaiju -v -t {input.kaijudb}/nodes.dmp -f {input.kaijudb}/kaiju_db.fmi \
+            -z {threads} \
+            -i {input.r1} \
+            -j {input.r2} \
+            -o {output.fout}
+        """
