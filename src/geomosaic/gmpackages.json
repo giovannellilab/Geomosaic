@@ -7,6 +7,7 @@
         "assembly_qc",
         "assembly_qc_readmapping",
         "orf_prediction",
+        "domain_annotation",
         "gene_coverage",
         "binning",
         "binning_derep",
@@ -35,6 +36,7 @@
         ["assembly_qc_readmapping", "binning"],
 
         ["orf_prediction", "gene_coverage"],
+        ["orf_prediction", "domain_annotation"],
 
         ["binning", "binning_derep"],
 
@@ -59,22 +61,7 @@
                 "Trimmomatic": "trimmomatic"
             }
         },
-    
-        "assembly": {
-            "description": "Module: Assembly",
-            "choices": {
-                "MetaSpades": "metaspades",
-                "MegaHit": "megahit"
-            }
-        },
-    
-        "assembly_qc": {
-            "description": "Module: Assembly evaluation with metrics",
-            "choices": {
-                "Quast": "quast"
-            }
-        },
-    
+            
         "func_classification_rb": {
             "description": "Module: Functional classification [Read-based]",
             "choices": {
@@ -89,6 +76,21 @@
                 "MetaPhlAn": "metaphlan"
             }
     
+        },
+    
+        "assembly": {
+            "description": "Module: Assembly",
+            "choices": {
+                "MetaSpades": "metaspades",
+                "MegaHit": "megahit"
+            }
+        },
+    
+        "assembly_qc": {
+            "description": "Module: Assembly evaluation with metrics",
+            "choices": {
+                "Quast": "quast"
+            }
         },
 
         "binning": {
@@ -131,6 +133,13 @@
             "description": "Module: perform ORF prediction",
             "choices": {
                 "Prodigal": "prodigal"
+            }
+        },
+
+        "domain_annotation": {
+            "description": "Module: Domain annotation on Assembly",
+            "choices": {
+                "reCOGnizer": "recognizer"
             }
         },
 
@@ -194,7 +203,6 @@
         "bbmap": "bbmap.yaml",
         "checkm": "checkm.yaml",
         "das_tool": "das_tool.yaml",
-        "mags_dram": "dram.yaml",
         "fastp": "fastp.yaml",
         "gtdbtk": "gtdbtk.yaml",
         "kaiju": "kaiju.yaml",
@@ -204,9 +212,12 @@
         "multi_binners": "multi_binners.yaml",
         "prodigal": "prodigal.yaml",
         "quast": "quast.yaml",
-        "mags_recognizer": "recognizer.yaml",
+        "recognizer": "recognizer.yaml",
         "trimgalore": "trimgalore.yaml",
         "trimmomatic": "trimmomatic.yaml",
-        "mags_gtdbtk": "gtdbtk.yaml"
+        "mags_dram": "dram.yaml",
+        "mags_gtdbtk": "gtdbtk.yaml",
+        "mags_prodigal": "prodigal.yaml",
+        "mags_recognizer": "recognizer.yaml"
     }
 }
