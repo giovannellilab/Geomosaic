@@ -1,12 +1,14 @@
 
 rule run_quast:
     input:
-        contig_path=expand("{wdir}/{sample}/{assembly}", assembly=config["assembly"], allow_missing=True),
+        gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["assembly"], allow_missing=True),
     output:
         directory("{wdir}/{sample}/quast")
     threads: 5
+    conda: config["ENVS"]["quast"]
     params:
-        extra="--contig-thresholds 0,1000,10000,100000,1000000",
-        label="--labels metaspades"
-    run:
-        shell("quast --threads {threads} {params.extra} -o {output} {input.contig_path}/contigs.fasta")
+        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["quast"])) ) (config["USER_PARAMS"]["quast"]) 
+    shell:
+        """
+        quast {params.user_params} --threads {threads} -o {output} {input.gm_contigs}
+        """
