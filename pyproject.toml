@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "geomosaic"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name = "Davide Corso", email = "davidecrs92@gmail.com" },
 ]
@@ -37,5 +37,4 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 geomosaic = ["*.json"]
-"geomosaic.modules" = ["**/*.smk"]
-"geomosaic.envs" = ["*.yaml"]
+"geomosaic.modules" = ["**/*.smk", "**/*.yaml"]

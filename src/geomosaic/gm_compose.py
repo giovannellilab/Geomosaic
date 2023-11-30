@@ -40,7 +40,7 @@ def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choi
     return config
 
 
-def write_gmfiles(config_filename, config, snakefile_filename, user_choices, order_writing, modules_folder):
+def write_gmfiles(config_filename, config, snakefile_filename, user_choices, order_writing, modules_folder, gmpackages_extdb, gmpackages_extdb_path):
     # WRITING CONFIG FILE
     with open(config_filename, 'w') as fd_config:
         yaml.dump(config, fd_config)
@@ -61,7 +61,16 @@ def write_gmfiles(config_filename, config, snakefile_filename, user_choices, ord
             
             input_target = target[f"rule all_{package}"]["input"]
             fd.write(f"{input_target}\n\t\t")
-                    
+        
+        # Rule for external DB
+        external_added = set()
+        for e in order_writing:
+            tool = user_choices[e]
+            if tool in gmpackages_extdb and gmpackages_extdb[tool] not in external_added:
+                external_added.add(gmpackages_extdb[tool])
+                with open(os.path.join(gmpackages_extdb_path, gmpackages_extdb[tool])) as ext_sf:
+                    fd.write(ext_sf.read())
+
         # Rule for each package
         for i in order_writing:
             pckg_chosen = user_choices[i]

@@ -28,13 +28,14 @@ def geo_workflow(args):
     if not os.path.isdir(geomosaic_user_parameters):
         os.makedirs(geomosaic_user_parameters)
 
-    time.sleep(1)
+    # time.sleep(1)
     print(GEOMOSAIC_OK)
 
     ## READ SETUPS FOLDERS AND FILE
-    modules_folder  = os.path.join(os.path.dirname(__file__), 'modules')
-    gmpackages_path = os.path.join(os.path.dirname(__file__), 'gmpackages.json')
-    envs_folder     = os.path.join(os.path.dirname(__file__), 'envs')
+    modules_folder          = os.path.join(os.path.dirname(__file__), 'modules')
+    gmpackages_path         = os.path.join(os.path.dirname(__file__), 'gmpackages.json')
+    envs_folder             = os.path.join(os.path.dirname(__file__), 'envs')
+    gmpackages_extdb_path   = os.path.join(os.path.dirname(__file__), 'modules_extdb') 
 
     with open(gmpackages_path, 'rt') as f:
         gmpackages = json.load(f)
@@ -46,6 +47,7 @@ def geo_workflow(args):
     order               = gmpackages["order"]
     additional_input    = gmpackages["additional_input"]
     envs                = gmpackages["envs"]
+    gmpackages_extdb    = gmpackages["external_db"]
 
     if pipeline:
         # TODO: Adding additional parameters to default pipeline
@@ -74,7 +76,11 @@ def geo_workflow(args):
                             user_choices, modules_folder, geomosaic_user_parameters, envs, envs_folder)
 
     ## SNAKEFILE FILE SETUP
-    write_gmfiles(config_filename, config, snakefile_filename, user_choices, order_writing, modules_folder)
+    write_gmfiles(config_filename, config, 
+                  snakefile_filename, 
+                  user_choices, order_writing, 
+                  modules_folder, 
+                  gmpackages_extdb, gmpackages_extdb_path)
     
     # Draw DAG
     dag_image = os.path.join(geomosaic_dir, "dag.pdf")
