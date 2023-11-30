@@ -1,0 +1,6 @@
+trimmomatic:
+- LEADING:3
+- TRAILING:3
+- SLIDINGWINDOW:4:15
+- MINLEN:36
+-

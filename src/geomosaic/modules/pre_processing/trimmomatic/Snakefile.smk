@@ -8,18 +8,15 @@ rule m1_trimmomatic:
         r2_paired="{wdir}/{sample}/trimmomatic/r2_paired.fastq.gz",
         r1_unpaired="{wdir}/{sample}/trimmomatic/r1_unpaired.fastq.gz",
         r2_unpaired="{wdir}/{sample}/trimmomatic/r2_unpaired.fastq.gz",
+    conda: config["ENVS"]["trimmomatic"]
     params:
         type_end="PE",
-        leading=3,
-        trailing=3,
-        slidingwindow="4:15",
-        minlen=36
-    run:
-        shell("trimmomatic {params.type_end} \
+        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["trimmomatic"])) ) (config["USER_PARAMS"]["trimmomatic"]),
+    shell:
+        """
+        trimmomatic {params.type_end} \
                 {input.r1} {input.r2} \
                 {output.r1_paired} {output.r1_unpaired} \
                 {output.r2_paired} {output.r2_unpaired} \
-                LEADING:{params.leading} \
-                TRAILING:{params.trailing} \
-                SLIDINGWINDOW:{params.slidingwindow} \
-                MINLEN:{params.minlen}")
+                {params.user_params}
+        """
