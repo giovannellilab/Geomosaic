@@ -1,3 +1,3 @@
-mags_recognizer:
+recognizer:
 - --skip-downloaded
 -
