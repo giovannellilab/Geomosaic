@@ -17,7 +17,8 @@ rule gtdbtk_classify:
     output:
         directory("{wdir}/{sample}/mags_gtdbtk")
     params:
-        extension="fa"
+        extension="fa",
+        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags_gtdbtk"])) ) (config["USER_PARAMS"]["mags_gtdbtk"]) 
     benchmark: "{wdir}/benchmark/{sample}_gtdbtk.txt"
     threads: 20
     conda: config["ENVS"]["mags_gtdbtk"]
