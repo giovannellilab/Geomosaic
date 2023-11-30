@@ -1,13 +1,4 @@
 
-rule run_recognizer_db:
-    output:
-        directory("{wdir}/reCOGnizer_DB")
-    params:
-        download_resource="--download-resources"
-    run:
-        shell("mkdir -p {output}/null_results")
-        shell("(cd {output} & recognizer --resources-directory {output} {params.download_resource} --output {output}/null_results)")
-
 rule run_mags_recognizer:
     input:
         mags_orf=expand("{wdir}/{sample}/{mags_orf_prediction}/{mag}/orf_predicted.faa", mags_orf_prediction=config["mags_orf_prediction"], allow_missing=True),

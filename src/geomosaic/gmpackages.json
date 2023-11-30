@@ -219,5 +219,14 @@
         "mags_gtdbtk": "gtdbtk.yaml",
         "mags_prodigal": "prodigal.yaml",
         "mags_recognizer": "recognizer.yaml"
+    },
+    
+    "external_db": {
+        "checkm": "checkm.smk",
+        "kaiju": "kaiju.smk",
+        "mags_dram": "mags_dram.smk",
+        "mags_gtdbtk": "mags_gtdbtk.smk",
+        "mags_recognizer": "recognizer.smk",
+        "recognizer": "recognizer.smk"
     }
 }
