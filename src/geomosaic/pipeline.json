@@ -1,42 +1,40 @@
 {
     "user_choices": {
-        "pre_processing": {
-            "package": "fastp"
-        },
-        "assembly": {
-            "package": "metaspades"
-        },
-        "assembly_qc": {
-            "package": "metaquast"
-        },
-        "assembly_qc_readmapping": {
-            "package": "bbmap"
-        },
-        "orf_prediction": {
-            "package": "prodigal"
-        },
-        "binning": {
-            "package": "metabat2"
-        },
-        "binning_qa": {
-            "package": "checkm"
-        },
-        "func_classification_rb": {
-            "package": "mifaser"
-        },
-        "tax_classification_rb": {
-            "package": "kaiju"
-        }
+        "pre_processing": "fastp", 
+        "tax_classification_rb": "kaiju", 
+        "assembly": "metaspades", 
+        "assembly_qc": "quast", 
+        "assembly_qc_readmapping": "bbmap", 
+        "orf_prediction": "prodigal", 
+        "domain_annotation": "recognizer", 
+        "binning": "multi_binners", 
+        "binning_derep": "das_tool", 
+        "binning_qa": "checkm", 
+        "mags_retrieval": "mags", 
+        "mags_func_annotation": "mags_dram", 
+        "mags_tax_annotation": "mags_gtdbtk", 
+        "mags_orf_prediction": "mags_prodigal", 
+        "mags_domain_annotation": "mags_recognizer"
+    },
+    "additional_parameters": {
+        "completness_threshold": 90, 
+        "contamination_threshold": 10
     },
     "order_writing": [
-        "pre_processing",
-        "assembly",
-        "func_classification_rb",
-        "tax_classification_rb",
-        "assembly_qc_readmapping",
-        "assembly_qc",
-        "binning",
-        "binning_qa",
-        "orf_prediction"
+        "pre_processing", 
+        "tax_classification_rb", 
+        "assembly", 
+        "assembly_qc_readmapping", 
+        "assembly_qc", 
+        "orf_prediction", 
+        "binning", 
+        "binning_derep", 
+        "binning_qa", 
+        "domain_annotation", 
+        "mags_retrieval", 
+        "mags_orf_prediction", 
+        "mags_func_annotation", 
+        "mags_tax_annotation", 
+        "mags_domain_annotation"
     ]
 }
