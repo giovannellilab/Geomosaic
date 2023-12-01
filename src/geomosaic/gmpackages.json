@@ -222,11 +222,29 @@
     },
     
     "external_db": {
-        "checkm": "checkm.smk",
-        "kaiju": "kaiju.smk",
-        "mags_dram": "mags_dram.smk",
-        "mags_gtdbtk": "mags_gtdbtk.smk",
-        "mags_recognizer": "recognizer.smk",
-        "recognizer": "recognizer.smk"
+        "checkm": {
+            "inpfolder": "checkm",
+            "outfolder": "checkm_extdb"
+        },
+        "kaiju": {
+            "inpfolder": "kaiju",
+            "outfolder": "kaiju_extdb"
+        }, 
+        "mags_dram": {
+            "inpfolder": "mags_dram",
+            "outfolder": "mags_dram_extdb"
+        },
+        "mags_gtdbtk": {
+            "inpfolder": "mags_gtdbtk",
+            "outfolder": "mags_gtdbtk_extdb"
+        },
+        "mags_recognizer": {
+            "inpfolder": "recognizer",
+            "outfolder": "recognizer_extdb"
+        },
+        "recognizer": {
+            "inpfolder": "recognizer",
+            "outfolder": "recognizer_extdb"
+        }
     }
 }

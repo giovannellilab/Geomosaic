@@ -24,9 +24,13 @@ def geo_workflow(args):
     samples_list    = geomosaic_setup["SAMPLES"]
     geomosaic_dir   = geomosaic_setup["GEOMOSAIC_WDIR"]
 
-    geomosaic_user_parameters   = os.path.join(geomosaic_dir, "module_user_parameters")
+    geomosaic_user_parameters   = os.path.join(geomosaic_dir, "gm_user_parameters")
     if not os.path.isdir(geomosaic_user_parameters):
         os.makedirs(geomosaic_user_parameters)
+
+    geomosaic_externaldb_folder   = os.path.join(geomosaic_dir, "gm_external_db")
+    if not os.path.isdir(geomosaic_externaldb_folder):
+        os.makedirs(geomosaic_externaldb_folder)
 
     # time.sleep(1)
     print(GEOMOSAIC_OK)
@@ -70,14 +74,18 @@ def geo_workflow(args):
     
     config_filename     = os.path.join(geomosaic_dir, "config.yaml")
     snakefile_filename  = os.path.join(geomosaic_dir, "Snakefile.smk")
+    snakefile_extdb     = os.path.join(geomosaic_dir, "Snakefile_extdb.smk")
 
     ## CONFIG FILE SETUP
     config = compose_config(geomosaic_dir, samples_list, additional_parameters, 
-                            user_choices, modules_folder, geomosaic_user_parameters, envs, envs_folder)
+                            user_choices, modules_folder, 
+                            geomosaic_user_parameters, 
+                            envs, envs_folder,
+                            geomosaic_externaldb_folder, gmpackages_extdb)
 
     ## SNAKEFILE FILE SETUP
     write_gmfiles(config_filename, config, 
-                  snakefile_filename, 
+                  snakefile_filename, snakefile_extdb, 
                   user_choices, order_writing, 
                   modules_folder, 
                   gmpackages_extdb, gmpackages_extdb_path)
