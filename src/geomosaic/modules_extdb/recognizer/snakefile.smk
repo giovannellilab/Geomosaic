@@ -1,7 +1,7 @@
 
-rule run_recognizer_db:
+rule recognizer_db:
     output:
-        directory("{wdir}/reCOGnizer_DB")
+        directory(expand("{recognizer_extdb_folder}", recognizer_extdb_folder = config["EXT_DB"]["recognizer"]))
     params:
         download_resource="--download-resources"
     run:

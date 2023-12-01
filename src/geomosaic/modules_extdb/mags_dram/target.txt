@@ -1,0 +1,1 @@
+expand("{mags_dram_extdb_folder}", mags_dram_extdb_folder=config["EXT_DB"]["mags_dram"]),

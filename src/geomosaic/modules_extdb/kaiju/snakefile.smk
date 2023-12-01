@@ -1,10 +1,10 @@
 
-rule db_kaiju:
+rule kaiju_db:
     params: 
         db="https://kaiju.binf.ku.dk/database/kaiju_db_viruses_2022-03-29.tgz",
         filename="kaiju_db.tgz"
     output:
-        directory("{wdir}/kaijudb")
+        directory(expand("{kaiju_extdb_folder}", kaiju_extdb_folder=config["EXT_DB"]["kaiju"]))
     shell:
         """
         mkdir -p {output}

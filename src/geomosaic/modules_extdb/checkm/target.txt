@@ -1,0 +1,1 @@
+expand("{checkm_extdb_folder}", checkm_extdb_folder=config["EXT_DB"]["checkm"]),

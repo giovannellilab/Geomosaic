@@ -1,0 +1,1 @@
+expand("{recognizer_extdb_folder}", recognizer_extdb_folder = config["EXT_DB"]["recognizer"]),

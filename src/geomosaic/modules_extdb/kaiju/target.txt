@@ -1,0 +1,1 @@
+expand("{kaiju_extdb_folder}", kaiju_extdb_folder=config["EXT_DB"]["kaiju"]),
