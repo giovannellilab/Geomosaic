@@ -209,6 +209,7 @@
         "megahit": "megahit.yaml",
         "metaphlan": "metaphlan.yaml",
         "metaspades": "metaspades.yaml",
+        "mifaser": "mifaser.yaml",
         "multi_binners": "multi_binners.yaml",
         "prodigal": "prodigal.yaml",
         "quast": "quast.yaml",
@@ -241,6 +242,10 @@
         "mags_recognizer": {
             "inpfolder": "recognizer",
             "outfolder": "recognizer_extdb"
+        },
+        "mifaser": {
+            "inpfolder": "mifaser",
+            "outfolder": "mifaser_extdb"
         },
         "recognizer": {
             "inpfolder": "recognizer",
