@@ -9,8 +9,9 @@ import subprocess
 
 def geo_unit(args):
     print(f"{GEOMOSAIC_PROCESS}: Loading variables from GeoMosaic setup file... ", end="", flush=True)
-    setup_file  = args.setup_file
-    module      = args.module
+    setup_file      = args.setup_file
+    module          = args.module
+    threads         = args.threads
 
     with open(setup_file) as file:
         geomosaic_setup = yaml.load(file, Loader=yaml.FullLoader)
@@ -22,7 +23,7 @@ def geo_unit(args):
     samples_list                = geomosaic_setup["SAMPLES"]
     geomosaic_dir               = geomosaic_setup["GEOMOSAIC_WDIR"]
 
-    geomosaic_user_parameters   = os.path.join(geomosaic_dir, "module_user_parameters")
+    geomosaic_user_parameters   = os.path.join(geomosaic_dir, "gm_user_parameters")
     if not os.path.isdir(geomosaic_user_parameters):
         os.makedirs(geomosaic_user_parameters)
 
@@ -94,7 +95,7 @@ def geo_unit(args):
                             user_choices, modules_folder, 
                             geomosaic_user_parameters, 
                             envs, envs_folder,
-                            geomosaic_externaldb_folder, gmpackages_extdb)
+                            geomosaic_externaldb_folder, gmpackages_extdb, threads)
 
     ## SNAKEFILE FILE SETUP
     write_gmfiles(config_filename, config, 

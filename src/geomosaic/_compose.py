@@ -5,12 +5,15 @@ from geomosaic._utils import GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_NOTE
 
 
 def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choices, \
-                   modules_folder, geomosaic_user_parameters, envs, envs_folder, geomosaic_externaldb_folder, gmpackages_extdb):
+                   modules_folder, geomosaic_user_parameters, envs, envs_folder, \
+                    geomosaic_externaldb_folder, gmpackages_extdb, \
+                        threads):
     ## CONFIG FILE SETUP
     config = {}
 
     config["SAMPLES"]   = samples_list
     config["WDIR"]      = os.path.abspath(geomosaic_dir)
+    config["threads"]   = threads
 
     for ap, ap_input in additional_parameters.items():
         config[ap] = ap_input

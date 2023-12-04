@@ -12,6 +12,7 @@ def geo_workflow(args):
     setup_file  = args.setup_file
     pipeline    = args.pipeline
     mstart      = args.module_start
+    threads     = args.threads
 
     with open(setup_file) as file:
         geomosaic_setup = yaml.load(file, Loader=yaml.FullLoader)
@@ -79,7 +80,7 @@ def geo_workflow(args):
                             user_choices, modules_folder, 
                             geomosaic_user_parameters, 
                             envs, envs_folder,
-                            geomosaic_externaldb_folder, gmpackages_extdb)
+                            geomosaic_externaldb_folder, gmpackages_extdb, threads)
 
     ## SNAKEFILE FILE SETUP
     write_gmfiles(config_filename, config, 
