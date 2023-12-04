@@ -3,9 +3,8 @@ import yaml
 import os
 from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_NOTE, GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_MODULES
 from geomosaic._build_pipelines_module import import_graph, build_pipeline_modules, ask_additional_parameters
-from geomosaic.gm_compose import write_gmfiles, compose_config
+from geomosaic._compose import write_gmfiles, compose_config
 import subprocess
-import time
 
 
 def geo_unit(args):
@@ -31,7 +30,6 @@ def geo_unit(args):
     if not os.path.isdir(geomosaic_externaldb_folder):
         os.makedirs(geomosaic_externaldb_folder)
     
-    time.sleep(1)
     print(GEOMOSAIC_OK)
 
     ## READ SETUPS FOLDERS AND FILE

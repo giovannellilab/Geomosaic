@@ -15,6 +15,7 @@ def geo_setup(args):
     setup_file          = args.setup_file
     project_name        = args.project_name
     nocopy              = args.nocopy
+    format_table         = args.format_table
 
     if not os.path.isdir(working_dir):
         os.makedirs(working_dir)
@@ -27,6 +28,7 @@ def geo_setup(args):
     print(f"{GEOMOSAIC_PROCESS}: Mapping samples to filenames... ", end="", flush=True)
     samples_list = group_read_by_sample(
         filename        = sample_table,
+        format          = format_table,
         rawreads_folder = os.path.abspath(folder_raw_reads),
         wdir            = geo_wdir,
         nocopy          = nocopy
@@ -50,8 +52,13 @@ def geo_setup(args):
     print(f"\n{GEOMOSAIC_NOTE}: You can now create your pipeline (or use the default one) by executing:\ngeomosaic workflow -s {os.path.abspath(setup_file)}")
 
 
-def group_read_by_sample(filename, rawreads_folder, wdir, nocopy):
-    df = pd.read_csv(filename, sep="\t")
+def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):
+    if format == "tsv":
+        df = pd.read_csv(filename, sep="\t")
+    elif format == "csv":
+        df = pd.read_csv(filename, sep=",")
+    else:
+        df = pd.read_excel(filename)
 
     for i in df.itertuples():
         check_special_characters(i.sample)
