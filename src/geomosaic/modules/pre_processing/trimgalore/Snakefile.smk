@@ -7,7 +7,7 @@ rule run_trimgalore:
         dir=directory("{wdir}/{sample}/trimgalore"),
         r1="{wdir}/{sample}/trimgalore/R1.fastq.gz", 
         r2="{wdir}/{sample}/trimgalore/R2.fastq.gz"
-    threads: 5
+    threads: config["threads"]
     conda: config["ENVS"]["trimgalore"]
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["trimgalore"])) ) (config["USER_PARAMS"]["trimgalore"]) 

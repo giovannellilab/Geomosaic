@@ -8,7 +8,7 @@ rule run_multi_binners:
         concoct_folder=directory("{wdir}/{sample}/multi_binners/concoct"),
         maxbin_folder=directory("{wdir}/{sample}/multi_binners/maxbin2"),
         metabat_folder=directory("{wdir}/{sample}/multi_binners/metabat2")
-    threads: 5
+    threads: config["threads"]
     conda: config["ENVS"]["multi_binners"]
     params:
         concoct_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["concoct"])) ) (config["USER_PARAMS"]["multi_binners"]),

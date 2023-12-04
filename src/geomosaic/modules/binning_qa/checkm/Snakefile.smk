@@ -6,7 +6,7 @@ rule run_checkm:
         db_folder=expand("{checkm_extdb_folder}", checkm_extdb_folder=config["EXT_DB"]["checkm"])
     output:
         folder=directory("{wdir}/{sample}/checkm")
-    threads: 5
+    threads: config["threads"]
     conda: config["ENVS"]["checkm"]
     params:
         extension="--extension fa",

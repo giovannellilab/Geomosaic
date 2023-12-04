@@ -9,7 +9,7 @@ rule gtdbtk_classify:
         extension="fa",
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags_gtdbtk"])) ) (config["USER_PARAMS"]["mags_gtdbtk"]) 
     benchmark: "{wdir}/benchmark/{sample}_gtdbtk.txt"
-    threads: 20
+    threads: config["threads"]
     conda: config["ENVS"]["mags_gtdbtk"]
     shell:
         """

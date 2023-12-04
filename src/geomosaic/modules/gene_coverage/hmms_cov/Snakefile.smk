@@ -8,7 +8,7 @@ rule hmms_cov:
         folder=directory("{wdir}/{sample}/hmms_cov")
     params:
         hmm_folder=config["hmm_folder"]
-    threads: 5
+    threads: config["threads"]
     run:
         shell("mkdir -p {output.folder}")
         

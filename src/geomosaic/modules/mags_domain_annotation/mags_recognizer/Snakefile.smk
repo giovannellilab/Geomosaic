@@ -8,7 +8,7 @@ rule run_mags_recognizer:
     conda: config["ENVS"]["mags_recognizer"]
     params:
         user_params= ( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags_recognizer"])) ) (config["USER_PARAMS"]["mags_recognizer"]) 
-    threads: 5
+    threads: config["threads"]
     shell:
         """
         recognizer_folder=$(dirname {output.recognizer_result})

@@ -7,7 +7,7 @@ rule run_das_tool:
         gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["assembly"], allow_missing=True)
     output:
         folder=directory("{wdir}/{sample}/das_tool")
-    threads: 5
+    threads: config["threads"]
     conda: config["ENVS"]["das_tool"]
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["das_tool"])) ) (config["USER_PARAMS"]["das_tool"]),

@@ -7,7 +7,7 @@ rule run_fastp:
         dir=directory("{wdir}/{sample}/fastp"),
         r1="{wdir}/{sample}/fastp/R1.fastq.gz", 
         r2="{wdir}/{sample}/fastp/R2.fastq.gz"
-    threads: 5
+    threads: config["threads"]
     conda: config["ENVS"]["fastp"]
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["fastp"])) ) (config["USER_PARAMS"]["fastp"]) 

@@ -6,7 +6,7 @@ rule run_metaspades:
     output:
         folder = directory("{wdir}/{sample}/metaspades"),
         contigs_fasta = "{wdir}/{sample}/metaspades/contigs.fasta"
-    threads: 5
+    threads: config["threads"]
     conda: config["ENVS"]["metaspades"]
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["metaspades"])) ) (config["USER_PARAMS"]["metaspades"]) 

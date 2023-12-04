@@ -6,7 +6,7 @@ rule run_mags_dram:
     output:
         directory("{wdir}/{sample}/mags_dram")
     conda: config["ENVS"]["mags_dram"]
-    threads: 15
+    threads: config["threads"]
     shell:
         """
         DRAM.py annotate \

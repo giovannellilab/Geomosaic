@@ -6,7 +6,7 @@ rule run_megahit:
     output:
         folder = directory("{wdir}/{sample}/megahit"),
         contigs_fasta = "{wdir}/{sample}/megahit/contigs.fasta"
-    threads: 10
+    threads: config["threads"]
     conda: config["ENVS"]["megahit"]
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["megahit"])) ) (config["USER_PARAMS"]["megahit"]) 

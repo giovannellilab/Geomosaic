@@ -8,7 +8,7 @@ rule run_recognizer:
     conda: config["ENVS"]["recognizer"]
     params:
         user_params= ( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["recognizer"])) ) (config["USER_PARAMS"]["recognizer"]) 
-    threads: 5
+    threads: config["threads"]
     shell:
         """
         recognizer_folder=$(dirname {output.recognizer_result})

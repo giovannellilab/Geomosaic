@@ -9,7 +9,7 @@ rule run_mags_prodigal:
         meta="-p meta",
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags_prodigal"])) ) (config["USER_PARAMS"]["mags_prodigal"]) 
     conda: config["ENVS"]["mags_prodigal"]
-    threads: 1
+    threads: config["threads"]
     shell:
         """
         prodigal -i {input.fasta} \

@@ -7,7 +7,7 @@ rule run_metaphlan:
         directory("{wdir}/{sample}/metaphlan")
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["metaphlan"])) ) (config["USER_PARAMS"]["metaphlan"]) 
-    threads: 5
+    threads: config["threads"]
     conda: config["ENVS"]["metaphlan"]
     shell:
         """

@@ -8,7 +8,7 @@ rule run_kaiju:
         fout="{wdir}/{sample}/kaiju/kaiju.out"
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["kaiju"])) ) (config["USER_PARAMS"]["kaiju"])
-    threads: 5
+    threads: config["threads"]
     conda: config["ENVS"]["kaiju"]
     shell:
         """

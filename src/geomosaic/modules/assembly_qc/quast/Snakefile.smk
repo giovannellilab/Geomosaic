@@ -4,7 +4,7 @@ rule run_quast:
         gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["assembly"], allow_missing=True),
     output:
         directory("{wdir}/{sample}/quast")
-    threads: 5
+    threads: config["threads"]
     conda: config["ENVS"]["quast"]
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["quast"])) ) (config["USER_PARAMS"]["quast"]) 

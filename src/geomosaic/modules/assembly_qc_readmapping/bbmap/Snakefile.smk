@@ -10,7 +10,7 @@ rule run_bbmap:
         bam_file="{wdir}/{sample}/bbmap/read_mapping.bam",
         sorted_bam="{wdir}/{sample}/bbmap/read_mapping_sorted.bam",
         indexed_bam="{wdir}/{sample}/bbmap/read_mapping_sorted.bam.bai"
-    threads: 5
+    threads: config["threads"]
     conda: config["ENVS"]["bbmap"]
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["bbmap"])) ) (config["USER_PARAMS"]["bbmap"]) 
