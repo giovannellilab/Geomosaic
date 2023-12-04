@@ -2,7 +2,7 @@
 rule run_recognizer:
     input:
         orf_predicted = expand("{wdir}/{sample}/{orf_prediction}/orf_predicted.faa", orf_prediction=config["orf_prediction"], allow_missing=True),
-        recognizer_db={rules.run_recognizer_db.output}
+        recognizer_db=expand("{recognizer_extdb_folder}", recognizer_extdb_folder = config["EXT_DB"]["recognizer"])
     output:
         recognizer_result="{wdir}/{sample}/recognizer/reCOGnizer_results.tsv",
     conda: config["ENVS"]["recognizer"]

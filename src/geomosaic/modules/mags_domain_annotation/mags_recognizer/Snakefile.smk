@@ -2,7 +2,7 @@
 rule run_mags_recognizer:
     input:
         mags_orf=expand("{wdir}/{sample}/{mags_orf_prediction}/{mag}/orf_predicted.faa", mags_orf_prediction=config["mags_orf_prediction"], allow_missing=True),
-        recognizer_db={rules.run_recognizer_db.output}
+        recognizer_db=expand("{recognizer_extdb_folder}", recognizer_extdb_folder = config["EXT_DB"]["recognizer"])
     output:
         recognizer_result="{wdir}/{sample}/mags_recognizer/{mag}/reCOGnizer_results.tsv",
     conda: config["ENVS"]["mags_recognizer"]

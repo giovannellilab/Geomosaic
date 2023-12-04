@@ -3,7 +3,7 @@ rule run_checkm:
     input:
         dins_derep=expand("{wdir}/{sample}/{binning_derep}", binning_derep=config["binning_derep"], allow_missing=True),
         assembly_path=expand("{wdir}/{sample}/{assembly}", assembly=config["assembly"], allow_missing=True),
-        db_folder="{wdir}/checkm_db"
+        db_folder=expand("{checkm_extdb_folder}", checkm_extdb_folder=config["EXT_DB"]["checkm"])
     output:
         folder=directory("{wdir}/{sample}/checkm")
     threads: 5
@@ -13,6 +13,8 @@ rule run_checkm:
         tab_format="--tab_table",
     shell:
         """
+        checkm data setRoot {input.db_folder}
+
         mkdir -p {output.folder}/plots
         
         checkm lineage_wf \

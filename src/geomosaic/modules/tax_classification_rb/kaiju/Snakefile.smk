@@ -3,7 +3,7 @@ rule run_kaiju:
     input:
         r1=expand("{wdir}/{sample}/{pre_processing}/R1.fastq.gz", pre_processing=config["pre_processing"], allow_missing=True),
         r2=expand("{wdir}/{sample}/{pre_processing}/R2.fastq.gz", pre_processing=config["pre_processing"], allow_missing=True),
-        kaijudb={rules.db_kaiju.output}
+        kaijudb=expand("{kaiju_extdb_folder}", kaiju_extdb_folder=config["EXT_DB"]["kaiju"])
     output:
         fout="{wdir}/{sample}/kaiju/kaiju.out"
     params:

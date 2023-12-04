@@ -2,7 +2,7 @@
 rule run_mags_dram:
     input:
         mags_folder=expand("{wdir}/{sample}/{mags_retrieval}", mags_retrieval=config["mags_retrieval"], allow_missing=True),
-        dram_config_folder="{wdir}/dram_config"
+        dram_config_folder=expand("{mags_dram_extdb_folder}", mags_dram_extdb_folder=config["EXT_DB"]["mags_dram"])
     output:
         directory("{wdir}/{sample}/mags_dram")
     conda: config["ENVS"]["mags_dram"]
