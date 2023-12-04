@@ -1,6 +1,7 @@
 import yaml
 import os
 import shutil
+from geomosaic._utils import GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_NOTE
 
 
 def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choices, \
@@ -86,20 +87,25 @@ def write_extdb_snakefile(snakefile_extdb, config_filename, order_writing, user_
             extdb_snakefile = gmpackages_extdb[tool]["inpfolder"]
             external_added.add(extdb_snakefile)
 
-    ## WRITING SNAKEFILE EXTDB
-    with open(snakefile_extdb, "wt") as fd:
-        fd.write(f"import yaml\n\n")
-        fd.write(f"configfile: {str(repr(os.path.abspath(config_filename)))}\n")
+    if len(external_added) > 0:
+        print(f"{GEOMOSAIC_PROCESS}: Building preliminary workflow to prepare all the database of your workflow...", end="", flush=True)
+        ## WRITING SNAKEFILE EXTDB
+        with open(snakefile_extdb, "wt") as fd:
+            fd.write(f"import yaml\n\n")
+            fd.write(f"configfile: {str(repr(os.path.abspath(config_filename)))}\n")
 
-        fd.write("\nrule all:\n\tinput:\n\t\t")
-        for t in external_added:
-            t_extdb_snakefile = os.path.join(gmpackages_extdb_path, t, "target.txt")
-            with open(t_extdb_snakefile) as sf:
-                fd.write(sf.read())
-                fd.write("\n\t\t")
+            fd.write("\nrule all:\n\tinput:\n\t\t")
+            for t in external_added:
+                t_extdb_snakefile = os.path.join(gmpackages_extdb_path, t, "target.txt")
+                with open(t_extdb_snakefile) as sf:
+                    fd.write(sf.read())
+                    fd.write("\n\t\t")
 
 
-        for t in external_added:
-            t_extdb_snakefile = os.path.join(gmpackages_extdb_path, t, "snakefile.smk")
-            with open(t_extdb_snakefile) as sf:
-                fd.write(sf.read())
+            for t in external_added:
+                t_extdb_snakefile = os.path.join(gmpackages_extdb_path, t, "snakefile.smk")
+                with open(t_extdb_snakefile) as sf:
+                    fd.write(sf.read())
+        print(GEOMOSAIC_OK)
+    else:
+        print(f"{GEOMOSAIC_NOTE}: your workflow doesn't need the preparation of external database.")
