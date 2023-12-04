@@ -58,6 +58,8 @@ def main():
     setup_optional.add_argument("-s", "--setup_file", required=False, default="gmsetup.yaml", type=str, 
                               help="Output name for the geomosaic setup file (yaml extension). \
                                 This file is necessary for the < geomosaic workflow > command.")
+    setup_optional.add_argument("-f", "--format_table", required=False, default="tsv", type=str, choices=["tsv", "csv", "excel"],
+                              help="Format of the provided table. Allowed: tsv, csv, excel")
     setup_optional.add_argument("-w", "--working_dir", required=False, default="geomosaic", type=str, help="Path where geomosaic can create its working directory")
     setup_optional.add_argument("-n", "--project_name", required=False, default="GeoMosaic_Workflow", type=str, help="Name of the project (no-space)")
     setup_optional.add_argument('--skip_wdir_checks', action='store_true', required=False,  help="")
@@ -78,6 +80,7 @@ def main():
                               help="Geomosaic setup file created from the 'geomosaic setup ...' command.")
     
     workflow_optional = workflow_parser.add_argument_group("Optional Arguments")
+    workflow_optional.add_argument('-t' ,'--threads', default=10, type=int, help="Threads to use (per sample).")
     workflow_optional.add_argument('-p' ,'--pipeline', action='store_true', help="Execute the default pipeline of geomosaic.")
     workflow_optional.add_argument("-m", "--module_start", required=False, type=str, default="pre_processing",
                                 help=f"Module where to start creating the workflow (Default: pre_processing)", choices=GEOMOSAIC_MODULES, metavar="MODULE")
@@ -98,6 +101,9 @@ def main():
                                 help="Geomosaic setup file created from the 'geomosaic setup ...' command.")
     unit_required.add_argument("-m", "--module", required=True, type=str, 
                                 help=f"Modules to execute.", choices=GEOMOSAIC_MODULES, metavar="MODULE")
+    unit_optional = unit_parser.add_argument_group("Optional Arguments")
+    unit_optional.add_argument('-t' ,'--threads', default=10, type=int, help="Threads to use (per sample).")
+    
     unit_parser.add_argument_group("Available Modules", GEOMOSAIC_MODULES_DESCRIPTION)
 
     unit_help = unit_parser.add_argument_group("Help Arguments")
