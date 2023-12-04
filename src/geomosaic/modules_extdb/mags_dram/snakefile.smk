@@ -10,7 +10,7 @@ rule dram_db:
         mkdir -p {output.dram_config_folder}/dram_db
 
         DRAM-setup.py prepare_databases \
-            --skip_uniref \
+            {params.user_params} \
             --output_dir {output.dram_config_folder}/dram_db
         
         DRAM-setup.py export_config > {output.dram_config_folder}/dram_config.json
