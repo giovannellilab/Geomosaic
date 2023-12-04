@@ -15,7 +15,7 @@ def geo_setup(args):
     setup_file          = args.setup_file
     project_name        = args.project_name
     nocopy              = args.nocopy
-    format_table         = args.format_table
+    format_table        = args.format_table
 
     if not os.path.isdir(working_dir):
         os.makedirs(working_dir)
@@ -59,6 +59,8 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):
         df = pd.read_csv(filename, sep=",")
     else:
         df = pd.read_excel(filename)
+    
+    assert list(df.columns) == ["r1", "r2", "sample"], f"\n\n{GEOMOSAIC_ERROR}: the provided table should contains three columns, with the following header (case-sensitive): r1 r2 sample"
 
     for i in df.itertuples():
         check_special_characters(i.sample)
@@ -78,8 +80,8 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):
         samples_list.append(i.sample)
 
         if nocopy:
-            assert len(i.r1) == 1, f"{GEOMOSAIC_ERROR}: '--nocopy' flag cannot be used as there are multiple reads file for the sample '{i.sample}'."
-            assert len(i.r2) == 1, f"{GEOMOSAIC_ERROR}: '--nocopy' flag cannot be used as there are multiple reads file for the sample '{i.sample}'."
+            assert len(i.r1) == 1, f"{GEOMOSAIC_ERROR}: '--nocopy' flag cannot be used when there are multiple reads file for one sample '{i.sample}'."
+            assert len(i.r2) == 1, f"{GEOMOSAIC_ERROR}: '--nocopy' flag cannot be used when there are multiple reads file for one sample '{i.sample}'."
 
             # os.symlink(os.path.join(rawreads_folder, i.r1[0]), os.path.join(wdir, i.sample, "R1.fastq.gz"))
             # os.symlink(os.path.join(rawreads_folder, i.r2[0]), os.path.join(wdir, i.sample, "R2.fastq.gz"))
@@ -88,7 +90,7 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):
             all_r1 = " ".join([os.path.join(rawreads_folder,x) for x in i.r1])
             all_r2 = " ".join([os.path.join(rawreads_folder,x) for x in i.r2])
 
-            # check_call(f"mkdir -p {os.path.join(wdir,i.sample)}", shell=True)
+            # check_call(f"mkdir -p {os.path.join(wdir, i.sample)}", shell=True)
 
             # check_call(f"cat {all_r1} > {os.path.join(wdir,i.sample,'R1.fastq.gz')}", shell=True)
             # check_call(f"cat {all_r2} > {os.path.join(wdir,i.sample,'R2.fastq.gz')}", shell=True)
@@ -108,16 +110,16 @@ def check_special_characters(s):
     # Pass the string in search 
     # method of regex object.    
     if(regex1.search(s) != None):
-        print(f"{GEOMOSAIC_ERROR}: Your sample name contains a special character that is not allows: {str(repr(s))}\n\
+        print(f"{GEOMOSAIC_ERROR}: Your sample name contains a special character that is not allowed: {str(repr(s))}\n\
               The following special characters are not allowed in sample name: {na1[0]} {na1[1:]}{na2}")
         exit(1)
 
     if(regex2.search(s) != None):
-        print(f"{GEOMOSAIC_ERROR}: Your sample name contains a special character that is not allows: {str(repr(s))}\n\
+        print(f"{GEOMOSAIC_ERROR}: Your sample name contains a special character that is not allowed: {str(repr(s))}\n\
               The following special characters are not allowed in sample name: {na1[0]} {na1[1:]}{na2}")
         exit(1)
     
     if " " in s:
-        print(f"{GEOMOSAIC_ERROR}: Your sample name contains a space which is not allows: {str(repr(s))}.\n\
+        print(f"{GEOMOSAIC_ERROR}: Your sample name contains a space which is not allowed: {str(repr(s))}.\n\
               The following special characters are not allowed in sample name: {na1[0]} {na1[1:]}{na2}")
         exit(1)
