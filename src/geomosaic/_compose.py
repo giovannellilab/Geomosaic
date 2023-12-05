@@ -5,7 +5,7 @@ from geomosaic._utils import GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_NOTE
 
 
 def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choices, \
-                   modules_folder, geomosaic_user_parameters, envs, envs_folder, \
+                   modules_folder, geomosaic_user_parameters, envs, envs_folder, geomosaic_condaenvs_folder, \
                     geomosaic_externaldb_folder, gmpackages_extdb, \
                         threads):
     ## CONFIG FILE SETUP
@@ -23,29 +23,37 @@ def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choi
 
     ## COPY USER PARAMS on the CORRESPONDING LOCATION and SAVE ENVS location
     for um, up in user_choices.items():
+
+        ## USER PARAMS -- SECTION
+        if "USER_PARAMS" not in config:
+            config["USER_PARAMS"] = {}
+        
         up_src_param = os.path.join(modules_folder, um, up, "param.yaml")
         up_dst_param = os.path.join(geomosaic_user_parameters, f"{up}.yaml")
-
         if not os.path.isfile(up_dst_param):
             shutil.copyfile(up_src_param, up_dst_param)
+        
+        config["USER_PARAMS"][up] = up_dst_param
 
+        ## ENVS -- SECTION
+        if "ENVS" not in config:
+            config["ENVS"] = {}
+
+        if up in envs:
+            up_src_envs = os.path.join(envs_folder, envs[up])
+            up_dst_envs = os.path.join(geomosaic_condaenvs_folder, f"{up}_env.yaml")
+            
+            if not os.path.isfile(up_dst_envs):
+                shutil.copyfile(up_src_envs, up_dst_envs)
+            
+            config["ENVS"][up] = up_dst_envs
+
+        ## EXTDB -- SECTION
         if "EXT_DB" not in config:
             config["EXT_DB"] = {}
         
         if up in gmpackages_extdb:
             config["EXT_DB"][up] = str(os.path.join(geomosaic_externaldb_folder, gmpackages_extdb[up]["outfolder"]))
-
-        if "USER_PARAMS" not in config:
-            config["USER_PARAMS"] = {}
-
-        if "ENVS" not in config:
-            config["ENVS"] = {}
-
-        config["USER_PARAMS"][up] = up_dst_param
-
-        if up in envs:
-            up_env_location = os.path.join(envs_folder, envs[up])
-            config["ENVS"][up] = up_env_location
 
     return config
 

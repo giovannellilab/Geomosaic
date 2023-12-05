@@ -31,6 +31,10 @@ def geo_workflow(args):
     geomosaic_externaldb_folder   = os.path.join(geomosaic_dir, "gm_external_db")
     if not os.path.isdir(geomosaic_externaldb_folder):
         os.makedirs(geomosaic_externaldb_folder)
+    
+    geomosaic_condaenvs_folder   = os.path.join(geomosaic_dir, "gm_conda_envs")
+    if not os.path.isdir(geomosaic_condaenvs_folder):
+        os.makedirs(geomosaic_condaenvs_folder)
 
     print(GEOMOSAIC_OK)
 
@@ -79,7 +83,7 @@ def geo_workflow(args):
     config = compose_config(geomosaic_dir, samples_list, additional_parameters, 
                             user_choices, modules_folder, 
                             geomosaic_user_parameters, 
-                            envs, envs_folder,
+                            envs, envs_folder, geomosaic_condaenvs_folder,
                             geomosaic_externaldb_folder, gmpackages_extdb, threads)
 
     ## SNAKEFILE FILE SETUP
