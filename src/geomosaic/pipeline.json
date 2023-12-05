@@ -2,6 +2,7 @@
     "user_choices": {
         "pre_processing": "fastp", 
         "tax_classification_rb": "kaiju", 
+        "func_classification_rb": "mifaser", 
         "assembly": "metaspades", 
         "assembly_qc": "quast", 
         "assembly_qc_readmapping": "bbmap", 
@@ -17,12 +18,13 @@
         "mags_domain_annotation": "mags_recognizer"
     },
     "additional_parameters": {
-        "completness_threshold": 90, 
+        "completness_threshold": 70, 
         "contamination_threshold": 10
     },
     "order_writing": [
         "pre_processing", 
         "tax_classification_rb", 
+        "func_classification_rb",
         "assembly", 
         "assembly_qc_readmapping", 
         "assembly_qc", 
