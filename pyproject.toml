@@ -38,5 +38,6 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 geomosaic = ["*.json"]
+"geomosaic.envs" = ["*.yaml"]
 "geomosaic.modules" = ["**/*.smk", "**/*.yaml"]
 "geomosaic.modules_extdb" = ["**/*.smk", "**/*.txt"]
