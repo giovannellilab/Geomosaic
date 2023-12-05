@@ -6,6 +6,7 @@ from geomosaic._validator import validate_working_dir
 import pkg_resources
 import time
 import re
+from subprocess import check_call
 
 
 def geo_setup(args):
@@ -83,17 +84,17 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):
             assert len(i.r1) == 1, f"{GEOMOSAIC_ERROR}: '--nocopy' flag cannot be used when there are multiple reads file for one sample '{i.sample}'."
             assert len(i.r2) == 1, f"{GEOMOSAIC_ERROR}: '--nocopy' flag cannot be used when there are multiple reads file for one sample '{i.sample}'."
 
-            # os.symlink(os.path.join(rawreads_folder, i.r1[0]), os.path.join(wdir, i.sample, "R1.fastq.gz"))
-            # os.symlink(os.path.join(rawreads_folder, i.r2[0]), os.path.join(wdir, i.sample, "R2.fastq.gz"))
+            os.symlink(os.path.join(rawreads_folder, i.r1[0]), os.path.join(wdir, i.sample, "R1.fastq.gz"))
+            os.symlink(os.path.join(rawreads_folder, i.r2[0]), os.path.join(wdir, i.sample, "R2.fastq.gz"))
         
         else:
             all_r1 = " ".join([os.path.join(rawreads_folder,x) for x in i.r1])
             all_r2 = " ".join([os.path.join(rawreads_folder,x) for x in i.r2])
 
-            # check_call(f"mkdir -p {os.path.join(wdir, i.sample)}", shell=True)
+            check_call(f"mkdir -p {os.path.join(wdir, i.sample)}", shell=True)
 
-            # check_call(f"cat {all_r1} > {os.path.join(wdir,i.sample,'R1.fastq.gz')}", shell=True)
-            # check_call(f"cat {all_r2} > {os.path.join(wdir,i.sample,'R2.fastq.gz')}", shell=True)
+            check_call(f"cat {all_r1} > {os.path.join(wdir, str(i.sample), 'R1.fastq.gz')}", shell=True)
+            check_call(f"cat {all_r2} > {os.path.join(wdir, str(i.sample), 'R2.fastq.gz')}", shell=True)
     
     return samples_list
 
