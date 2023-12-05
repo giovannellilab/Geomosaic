@@ -5,7 +5,7 @@
         "tax_classification_rb",
         "assembly",
         "assembly_qc",
-        "assembly_qc_readmapping",
+        "assembly_readmapping",
         "orf_prediction",
         "domain_annotation",
         "gene_coverage",
@@ -23,17 +23,17 @@
         ["pre_processing", "func_classification_rb"],
         ["pre_processing", "tax_classification_rb"],
         ["pre_processing", "assembly"],
-        ["pre_processing", "assembly_qc_readmapping"],
+        ["pre_processing", "assembly_readmapping"],
         
         ["assembly", "assembly_qc"],
-        ["assembly", "assembly_qc_readmapping"],
+        ["assembly", "assembly_readmapping"],
         ["assembly", "orf_prediction"],
         ["assembly", "binning"],
         ["assembly", "binning_derep"],
         ["assembly", "binning_qa"],
 
-        ["assembly_qc_readmapping", "gene_coverage"],
-        ["assembly_qc_readmapping", "binning"],
+        ["assembly_readmapping", "gene_coverage"],
+        ["assembly_readmapping", "binning"],
 
         ["orf_prediction", "gene_coverage"],
         ["orf_prediction", "domain_annotation"],
@@ -114,7 +114,7 @@
             }
         },
 
-        "assembly_qc_readmapping": {
+        "assembly_readmapping": {
             "description": "Module: Assembly evaluation by read mapping",
             "choices": {
                 "BBMap": "bbmap"
