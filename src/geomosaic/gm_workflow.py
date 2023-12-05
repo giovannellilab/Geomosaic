@@ -93,7 +93,7 @@ def geo_workflow(args):
                   modules_folder, 
                   gmpackages_extdb, gmpackages_extdb_path)
     
-    # Draw DAG
-    dag_image = os.path.join(geomosaic_dir, "dag.pdf")
-    subprocess.check_call(f"snakemake -s {snakefile_filename} --rulegraph | dot -Tpdf > {dag_image}", shell=True)
+    # # Draw DAG
+    # dag_image = os.path.join(geomosaic_dir, "dag.pdf")
+    # subprocess.check_call(f"snakemake -s {snakefile_filename} --rulegraph | dot -Tpdf > {dag_image}", shell=True)
 
