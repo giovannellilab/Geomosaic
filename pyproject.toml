@@ -22,7 +22,8 @@ dependencies = [
     "pyyaml",
     "matplotlib",
     "snakemake",
-    "biopython"
+    "biopython",
+    "tqdm"
 ]
 
 [project.scripts]

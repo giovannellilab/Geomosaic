@@ -7,6 +7,7 @@ import pkg_resources
 import time
 import re
 from subprocess import check_call
+from tqdm import tqdm
 
 
 def geo_setup(args):
@@ -77,7 +78,7 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):
         
     samples_list = []
 
-    for i in list(grp.itertuples()):        
+    for i in tqdm(list(grp.itertuples())):
         samples_list.append(i.sample)
 
         if nocopy:

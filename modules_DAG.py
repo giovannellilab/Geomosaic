@@ -113,12 +113,20 @@ def main():
         pos_labels_attrs[node] = (coords[0], coords[1] + 4)
 
 
-    # MANUAL SHIFTING POSITIONS
+    ## ---> ## MANUAL SHIFTING POSITIONS ## <--- ##
+    # Gene Coverage
     old_genecoverage_y = new_pos["gene_coverage"][1]
     new_pos["gene_coverage"] = np.array([new_pos["assembly_qc_readmapping"][0], old_genecoverage_y])
 
     old_genecoverage_label_y = pos_labels_attrs["gene_coverage"][1]
     pos_labels_attrs["gene_coverage"] = np.array([pos_labels_attrs["assembly_qc_readmapping"][0], old_genecoverage_label_y])
+
+    # Domain annotation
+    old_domainannotation_y = new_pos["domain_annotation"][1]
+    new_pos["domain_annotation"] = np.array([new_pos["orf_prediction"][0], old_domainannotation_y])
+
+    old_domainannotation_label_y = pos_labels_attrs["domain_annotation"][1]
+    pos_labels_attrs["domain_annotation"] = np.array([pos_labels_attrs["orf_prediction"][0], old_domainannotation_label_y])
 
     print(new_pos)
 
