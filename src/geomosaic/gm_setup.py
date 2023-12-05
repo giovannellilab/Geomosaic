@@ -77,7 +77,7 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):
         
     samples_list = []
 
-    for i in list(grp.itertuples())[:1]:        
+    for i in list(grp.itertuples()):        
         samples_list.append(i.sample)
 
         if nocopy:
