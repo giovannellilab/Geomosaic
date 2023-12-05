@@ -3,7 +3,7 @@ rule hmms_cov:
     input:
         orf_predicted = expand("{wdir}/{sample}/{orf_prediction}/orf_predicted.faa", orf_prediction=config["orf_prediction"], allow_missing=True),
         orf_simple_mapping = expand("{wdir}/{sample}/{orf_prediction}/simple_orf_contig_mapping.tsv", orf_prediction=config["orf_prediction"], allow_missing=True), 
-        covstats_folder=expand("{wdir}/{sample}/{assembly_qc_readmapping}", assembly_qc_readmapping=config["assembly_qc_readmapping"], allow_missing=True)
+        covstats_folder=expand("{wdir}/{sample}/{assembly_readmapping}", assembly_readmapping=config["assembly_readmapping"], allow_missing=True)
     output:
         folder=directory("{wdir}/{sample}/hmms_cov")
     params:
