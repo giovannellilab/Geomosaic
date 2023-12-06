@@ -3,7 +3,9 @@ from geomosaic._utils import GEOMOSAIC_DESCRIPTION, GEOMOSAIC_MODULES_DESCRIPTIO
 from geomosaic.gm_setup import geo_setup
 from geomosaic.gm_workflow import geo_workflow
 from geomosaic.gm_unit import geo_unit
+from pathlib import Path
 import sys
+import pathlib
 
 
 def main():
@@ -81,6 +83,9 @@ def main():
     
     workflow_optional = workflow_parser.add_argument_group("Optional Arguments")
     workflow_optional.add_argument('-t' ,'--threads', default=10, type=int, help="Threads to use (per sample).")
+    workflow_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None,type=lambda p: pathlib.Path(p).resolve(),
+                                   help="If you have already downloaded and setup \
+                                   databases with geomosaic, here you can specify the path folder.")
     workflow_optional.add_argument('-g' ,'--glab', action='store_true', help="Execute the default Giovannelli's Lab pipeline of geomosaic.")
     workflow_optional.add_argument("-m", "--module_start", required=False, type=str, default="pre_processing",
                                 help=f"Module where to start creating the workflow (Default: pre_processing)", choices=GEOMOSAIC_MODULES, metavar="MODULE")
@@ -103,6 +108,9 @@ def main():
                                 help=f"Modules to execute.", choices=GEOMOSAIC_MODULES, metavar="MODULE")
     unit_optional = unit_parser.add_argument_group("Optional Arguments")
     unit_optional.add_argument('-t' ,'--threads', default=10, type=int, help="Threads to use (per sample).")
+    unit_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None,type=lambda p: pathlib.Path(p).resolve(),
+                                   help="If you have already downloaded and setup \
+                                   databases with geomosaic, here you can specify the path folder.")
     
     unit_parser.add_argument_group("Available Modules", GEOMOSAIC_MODULES_DESCRIPTION)
 

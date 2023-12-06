@@ -1,7 +1,6 @@
 import json
 import yaml
 import os
-import subprocess
 from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROCESS, GEOMOSAIC_OK
 from geomosaic._build_pipelines_module import import_graph, build_pipeline_modules, ask_additional_parameters
 from geomosaic._compose import write_gmfiles, compose_config
@@ -9,10 +8,11 @@ from geomosaic._compose import write_gmfiles, compose_config
 
 def geo_workflow(args):
     print(f"{GEOMOSAIC_PROCESS}: Loading variables from GeoMosaic setup file... ", end="", flush=True)
-    setup_file  = args.setup_file
-    glab        = args.glab
-    mstart      = args.module_start
-    threads     = args.threads
+    setup_file          = args.setup_file
+    glab                = args.glab
+    mstart              = args.module_start
+    threads             = args.threads
+    user_extdbfolder    = args.externaldb_gmfolder
 
     with open(setup_file) as file:
         geomosaic_setup = yaml.load(file, Loader=yaml.FullLoader)
@@ -28,13 +28,16 @@ def geo_workflow(args):
     if not os.path.isdir(geomosaic_user_parameters):
         os.makedirs(geomosaic_user_parameters)
 
-    geomosaic_externaldb_folder   = os.path.join(geomosaic_dir, "gm_external_db")
-    if not os.path.isdir(geomosaic_externaldb_folder):
-        os.makedirs(geomosaic_externaldb_folder)
-    
     geomosaic_condaenvs_folder   = os.path.join(geomosaic_dir, "gm_conda_envs")
     if not os.path.isdir(geomosaic_condaenvs_folder):
         os.makedirs(geomosaic_condaenvs_folder)
+    
+    if user_extdbfolder is None:
+        geomosaic_externaldb_folder   = os.path.join(geomosaic_dir, "gm_external_db")
+        if not os.path.isdir(geomosaic_externaldb_folder):
+            os.makedirs(geomosaic_externaldb_folder)
+    else:
+        geomosaic_externaldb_folder = user_extdbfolder
 
     print(GEOMOSAIC_OK)
 
@@ -55,6 +58,10 @@ def geo_workflow(args):
     additional_input    = gmpackages["additional_input"]
     envs                = gmpackages["envs"]
     gmpackages_extdb    = gmpackages["external_db"]
+
+    ##################################
+    ######### -- WORKFLOW -- #########
+    ##################################
 
     if glab:
         # TODO: Adding additional parameters to default pipeline
