@@ -6,6 +6,7 @@
         "assembly",
         "assembly_qc",
         "assembly_readmapping",
+        "assembly_coverage",
         "orf_prediction",
         "domain_annotation",
         "gene_coverage",
@@ -32,6 +33,7 @@
         ["assembly", "binning_derep"],
         ["assembly", "binning_qa"],
 
+        ["assembly_readmapping", "assembly_coverage"],
         ["assembly_readmapping", "gene_coverage"],
         ["assembly_readmapping", "binning"],
 
@@ -65,7 +67,7 @@
         "func_classification_rb": {
             "description": "Module: Functional classification [Read-based]",
             "choices": {
-                "mi-faser": "mifaser"                
+                "mi-faser (GS-21-all)": "mifaser"                
             }
         },
     
@@ -93,6 +95,43 @@
             }
         },
 
+        "assembly_readmapping": {
+            "description": "Module: Assembly evaluation by read mapping",
+            "choices": {
+                "BBMap": "bbmap"
+            }
+    
+        },
+
+        "assembly_coverage": {
+            "description": "Module: Assembly coverage computation",
+            "choices": {
+                "CoverM (Contigs)": "coverm"
+            }
+    
+        },
+
+        "orf_prediction": {
+            "description": "Module: perform ORF prediction",
+            "choices": {
+                "Prodigal": "prodigal"
+            }
+        },
+
+        "domain_annotation": {
+            "description": "Module: Domain annotation on Assembly",
+            "choices": {
+                "reCOGnizer": "recognizer"
+            }
+        },        
+
+        "gene_coverage": {
+            "description": "Module: tracking coverage for genes of interest through HMM models",
+            "choices": {
+                "HMMs Coverage": "hmms_cov"
+            }
+        },
+
         "binning": {
             "description": "Module: Binning",
             "choices": {
@@ -111,35 +150,6 @@
             "description": "Module: Binning Quality Evaluation",
             "choices": {
                 "CheckM": "checkm"
-            }
-        },
-
-        "assembly_readmapping": {
-            "description": "Module: Assembly evaluation by read mapping",
-            "choices": {
-                "BBMap": "bbmap"
-            }
-    
-        },
-
-        "gene_coverage": {
-            "description": "Module: tracking coverage for genes of interest through HMM models",
-            "choices": {
-                "HMMs Coverage": "hmms_cov"
-            }
-        },
-
-        "orf_prediction": {
-            "description": "Module: perform ORF prediction",
-            "choices": {
-                "Prodigal": "prodigal"
-            }
-        },
-
-        "domain_annotation": {
-            "description": "Module: Domain annotation on Assembly",
-            "choices": {
-                "reCOGnizer": "recognizer"
             }
         },
 
@@ -202,6 +212,7 @@
     "envs": {
         "bbmap": "bbmap.yaml",
         "checkm": "checkm.yaml",
+        "coverm": "coverm.yaml",
         "das_tool": "das_tool.yaml",
         "fastp": "fastp.yaml",
         "gtdbtk": "gtdbtk.yaml",

@@ -1,0 +1,7 @@
+name: geomosaic_coverm
+channels:
+   - conda-forge
+   - bioconda
+   - defaults
+dependencies:
+   - coverm
