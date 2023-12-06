@@ -6,6 +6,8 @@ rule recognizer_db:
         download_resource="--download-resources"
     conda: config["ENVS"]["recognizer"]
     message: "GEOMOSAIC MSG: Starting to setup the database for reCOGnizer"
-    run:
-        shell("mkdir -p {output}/null_results")
-        shell("(cd {output} & recognizer --resources-directory {output} {params.download_resource} --output {output}/null_results)")
+    shell:
+        """
+        mkdir -p {output}/null_results
+        (cd {output} & recognizer --resources-directory {output} {params.download_resource} --output {output}/null_results)
+        """
