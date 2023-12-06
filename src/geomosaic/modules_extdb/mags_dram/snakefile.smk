@@ -5,6 +5,7 @@ rule dram_db:
     output:
         dram_config_folder=directory(expand("{mags_dram_extdb_folder}", mags_dram_extdb_folder=config["EXT_DB"]["mags_dram"]))
     conda: config["ENVS"]["mags_dram"]
+    message: "GEOMOSAIC MSG: Starting to setup the database for DRAM"
     shell:
         """
         mkdir -p {output.dram_config_folder}/dram_db

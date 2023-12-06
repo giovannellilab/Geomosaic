@@ -5,6 +5,7 @@ rule kaiju_db:
         filename="kaiju_db.tgz"
     output:
         directory(expand("{kaiju_extdb_folder}", kaiju_extdb_folder=config["EXT_DB"]["kaiju"]))
+    message: "GEOMOSAIC MSG: Starting to setup the database for Kaiju"
     shell:
         """
         mkdir -p {output}

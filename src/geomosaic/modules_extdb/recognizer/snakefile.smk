@@ -4,6 +4,8 @@ rule recognizer_db:
         directory(expand("{recognizer_extdb_folder}", recognizer_extdb_folder = config["EXT_DB"]["recognizer"]))
     params:
         download_resource="--download-resources"
+    conda: config["ENVS"]["recognizer"]
+    message: "GEOMOSAIC MSG: Starting to setup the database for reCOGnizer"
     run:
         shell("mkdir -p {output}/null_results")
         shell("(cd {output} & recognizer --resources-directory {output} {params.download_resource} --output {output}/null_results)")

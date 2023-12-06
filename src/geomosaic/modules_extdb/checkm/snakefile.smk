@@ -5,6 +5,7 @@ rule checkm_db:
     output:
         db_folder=directory(expand("{checkm_extdb_folder}", checkm_extdb_folder=config["EXT_DB"]["checkm"])),
     conda: config["ENVS"]["checkm"]
+    message: "GEOMOSAIC MSG: Starting to setup the database for CheckM"
     shell:
         """
         mkdir -p {output.db_folder}
