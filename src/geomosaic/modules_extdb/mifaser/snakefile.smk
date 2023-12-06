@@ -12,6 +12,6 @@ rule mifaser_db:
     shell:
         """
         mkdir -p {output}/{params.db_version}
-        (cd {output}/{params.db_version} && wget {params.diamond_file} && wget {params.sequence_file} && wget {params.annotation_file} && wget {params.mapping_file})
+        (cd {output}/{params.db_version} && wget --quiet {params.diamond_file} && wget --quiet {params.sequence_file} && wget --quiet {params.annotation_file} && wget --quiet {params.mapping_file})
         """
 

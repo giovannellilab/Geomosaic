@@ -9,5 +9,5 @@ rule recognizer_db:
     shell:
         """
         mkdir -p {output}/null_results
-        (cd {output} & recognizer --resources-directory {output} {params.download_resource} --output {output}/null_results)
+        (cd {output} & recognizer --resources-directory {output} {params.download_resource} --output {output}/null_results )
         """

@@ -9,6 +9,6 @@ rule checkm_db:
     shell:
         """
         mkdir -p {output.db_folder}
-        (cd {output.db_folder} && wget {params.db_link} && tar -x -f *.tar.gz)
+        (cd {output.db_folder} && wget --quiet {params.db_link} && tar -x -f *.tar.gz)
         checkm data setRoot {output.db_folder}
         """
