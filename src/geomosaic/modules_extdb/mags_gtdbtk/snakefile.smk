@@ -7,5 +7,5 @@ rule gtdbtk_db:
     message: "GEOMOSAIC MSG: Starting to setup the database for GTDBTk"
     run:
         shell("mkdir -p {output}")
-        shell("wget --quiet {params.gtdbk_url} -O {output}/gtdbtk_r207_v2_data.tar.gz")
+        shell("(cd {output} && wget --quiet {params.gtdbk_url})")
         shell("tar -xzvf {output}/gtdbtk_r207_v2_data.tar.gz --directory {output}")
