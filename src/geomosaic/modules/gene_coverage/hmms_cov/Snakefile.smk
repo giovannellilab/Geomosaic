@@ -3,25 +3,31 @@ rule hmms_cov:
     input:
         orf_predicted = expand("{wdir}/{sample}/{orf_prediction}/orf_predicted.faa", orf_prediction=config["orf_prediction"], allow_missing=True),
         orf_simple_mapping = expand("{wdir}/{sample}/{orf_prediction}/simple_orf_contig_mapping.tsv", orf_prediction=config["orf_prediction"], allow_missing=True), 
-        covstats_folder=expand("{wdir}/{sample}/{assembly_readmapping}", assembly_readmapping=config["assembly_readmapping"], allow_missing=True)
+        coverage_folder = expand("{wdir}/{sample}/{assembly_coverage}", assembly_coverage=config["assembly_coverage"], allow_missing=True)
     output:
         folder=directory("{wdir}/{sample}/hmms_cov")
     params:
-        hmm_folder=config["hmm_folder"]
+        hmm_folder=config["hmm_folder"],
+        cvg_method="trimmed_mean",
+        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["hmms_cov"])) ) (config["USER_PARAMS"]["hmms_cov"]) 
     threads: config["threads"]
     run:
         shell("mkdir -p {output.folder}")
+        norm_method = str(params.cvg_method)
         
         import pandas as pd
-
-        df_mapping = pd.read_csv(str(input.orf_simple_mapping), sep="\t")
-        df_coverage = pd.read_csv(os.path.join(str(input.covstats_folder), "covstats.tsv"), sep="\t")
-        local_sample = output.folder.split("/")[-2]
-        total_length = int(df_coverage.Length.sum())
         
-        results_filename = f"{output.folder}/coverage_results.tsv"
+        df_mapping = pd.read_csv(str(input.orf_simple_mapping), sep="\t")
+        
+        coverage_filename = norm_method + ".tsv"
+        df_coverage = pd.read_csv(os.path.join(str(input.coverage_folder), coverage_filename), sep="\t")
+        df_coverage.columns = ['contig', norm_method]
+
+        local_sample = output.folder.split("/")[-2]
+        
+        results_filename = f"{output.folder}/coverage_results_" +norm_method+ ".tsv"
         with open(results_filename, "wt") as fd:
-            fd.write("name\ttotal_coverage\tnormalized_total_coverage\tsample\n")
+            fd.write("name\ttotal_coverage\tsample\n")
 
             for hmm in os.listdir(params.hmm_folder):
                 if not hmm.endswith('.hmm'):
@@ -43,16 +49,15 @@ rule hmms_cov:
                 df_hits.drop_duplicates(inplace=True)
 
                 m1 = df_hits.merge(df_mapping, on="orf_id", how="left")
-                m2 = m1.merge(df_coverage, left_on="contig", right_on="#ID", how="left")
+                m2 = m1.merge(df_coverage, on="contig", how="left")
 
-                subset = m2.loc[:, ["orf_id", "name", "contig", "Avg_fold"]]
-                subset["Avg_fold"] = subset["Avg_fold"].astype(float)
+                subset = m2.loc[:, ["orf_id", "name", "contig", norm_method]]
+                subset[norm_method] = subset[norm_method].astype(float)
 
-                total_coverage = subset["Avg_fold"].sum()
+                total_coverage = subset[norm_method].sum()
                 
                 name=list(subset.name.unique())[0]
-                normalized_total_cov = (total_coverage/total_length)*1000000
 
-                fd.write(f"{name}\t{total_coverage}\t{normalized_total_cov}\t{local_sample}\n")
+                fd.write(f"{name}\t{total_coverage}\t{local_sample}\n")
                 
                 subset.to_csv(os.path.join(out_path, "orf_coverage.tsv"), sep="\t", header=True, index=False)
