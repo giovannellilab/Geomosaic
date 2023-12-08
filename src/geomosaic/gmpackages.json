@@ -34,8 +34,9 @@
         ["assembly", "binning_qa"],
 
         ["assembly_readmapping", "assembly_coverage"],
-        ["assembly_readmapping", "gene_coverage"],
         ["assembly_readmapping", "binning"],
+
+        ["assembly_coverage", "gene_coverage"],
 
         ["orf_prediction", "gene_coverage"],
         ["orf_prediction", "domain_annotation"],
@@ -98,6 +99,7 @@
         "assembly_readmapping": {
             "description": "Module: Assembly evaluation by read mapping",
             "choices": {
+                "Bowtie2": "bowtie2",
                 "BBMap": "bbmap"
             }
     
@@ -211,6 +213,7 @@
 
     "envs": {
         "bbmap": "bbmap.yaml",
+        "bowtie2": "bowtie2.yaml",
         "checkm": "checkm.yaml",
         "coverm": "coverm.yaml",
         "das_tool": "das_tool.yaml",
@@ -262,5 +265,16 @@
             "inpfolder": "recognizer",
             "outfolder": "recognizer_extdb"
         }
+    },
+
+    "gathering": {
+        "mifaser": "mifaser",
+        "recognizer": "recognizer",
+        "mags_recognizer": "recognizer",
+        "kaiju": "kaiju",
+        "mags_gtdbtk": "mags_gtdbtk",
+        "hmms_cov": "hmms_cov"
     }
+
+
 }
