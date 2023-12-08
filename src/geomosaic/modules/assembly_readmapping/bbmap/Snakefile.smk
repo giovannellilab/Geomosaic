@@ -18,7 +18,7 @@ rule run_bbmap:
         """mkdir -p {output.folder}/stats"
         
         bbmap.sh {params.user_params} threads={threads} ref={input.gm_contigs} \
-            in={input.r1} in2={input.r2} out={output.sam_file} covstats={output.folder}/covstats.tsv nodisk \
+            in={input.r1} in2={input.r2} out={output.sam_file} covstats={output.folder}/covstats.tsv \
             bhist={output.folder}/stats/base_composition_by_pos_hist.txt \
             qhist={output.folder}/stats/quality_by_pos_hist.txt \
             aqhist={output.folder}/stats/average_read_quality_hist.txt \
@@ -32,9 +32,9 @@ rule run_bbmap:
             idhist={output.folder}/stats/read_count_vs_perc_identity_hist.txt \
             scafstats={output.folder}/stats/reads_mapped_to_scaffold.txt
         
-        samtools view -S -b {output.sam_file} > {output.bam_file}
+        samtools view -@ {threads} -S -b {output.sam_file} > {output.bam_file}
 
-        samtools sort {output.bam_file} -o {output.sorted_bam}
+        samtools sort -@ {threads} {output.bam_file} -o {output.sorted_bam}
 
-        samtools index {output.sorted_bam} {output.indexed_bam}
+        samtools index -@ {threads} {output.sorted_bam} {output.indexed_bam}
         """
