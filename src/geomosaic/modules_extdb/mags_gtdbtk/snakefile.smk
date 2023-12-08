@@ -9,4 +9,4 @@ rule gtdbtk_db:
     run:
         shell("mkdir -p {output}")
         shell("curl --silent {params.gtdbk_url} -o {output}/{params.filename}")
-        shell("tar -xzvf {output}/{params.filename} --directory {output}")
+        shell("tar -xzf {output}/{params.filename} --directory {output}")
