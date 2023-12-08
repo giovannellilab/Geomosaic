@@ -12,8 +12,11 @@ rule run_coverm:
         """
         mkdir -p {output.folder}
 
-        coverm contig --bam-files {input.folder_readmap}/read_mapping_sorted.bam \
-            --output-file {output.folder}/coverage.txt \
-            --threads {threads} \
-            {params.user_params}
+        for mtd in mean trimmed_mean count tpm; do
+            coverm contig --bam-files {input.folder_readmap}/read_mapping_sorted.bam \
+                --output-file {output.folder}/$mtd.tsv \
+                --threads {threads} \
+                --methods $mtd \
+                {params.user_params}
+        done;
         """
