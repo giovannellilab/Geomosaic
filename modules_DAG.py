@@ -91,13 +91,13 @@ def main():
             continue
         
         binning_x = pos["binning"][0]+0.6
-        
+
         flag_inserted = False
         for m in modules_list:
             pos[m] = np.array([binning_x, binning_y])
             binning_x += 0.6
             flag_inserted = True
-        
+
         if flag_inserted:
             binning_y += y_shift
 
@@ -112,21 +112,20 @@ def main():
     for node, coords in new_pos.items():
         pos_labels_attrs[node] = (coords[0], coords[1] + 4)
 
-
     ## ---> ## MANUAL SHIFTING POSITIONS ## <--- ##
-    # Gene Coverage
-    old_genecoverage_y = new_pos["gene_coverage"][1]
-    new_pos["gene_coverage"] = np.array([new_pos["assembly_readmapping"][0]+0.2, old_genecoverage_y])
-
-    old_genecoverage_label_y = pos_labels_attrs["gene_coverage"][1]
-    pos_labels_attrs["gene_coverage"] = np.array([pos_labels_attrs["assembly_readmapping"][0]+0.2, old_genecoverage_label_y])
-
     # Assembly coverage
     old_assemblycoverage_y = new_pos["assembly_coverage"][1]
-    new_pos["assembly_coverage"] = np.array([new_pos["assembly_readmapping"][0]-0.2, old_assemblycoverage_y])
+    new_pos["assembly_coverage"] = np.array([new_pos["assembly_readmapping"][0], old_assemblycoverage_y])
 
     old_assemblycoverage_label_y = pos_labels_attrs["assembly_coverage"][1]
-    pos_labels_attrs["assembly_coverage"] = np.array([pos_labels_attrs["assembly_readmapping"][0]-0.2, old_assemblycoverage_label_y])
+    pos_labels_attrs["assembly_coverage"] = np.array([pos_labels_attrs["assembly_readmapping"][0], old_assemblycoverage_label_y])
+
+    # Gene Coverage
+    old_genecoverage_y = new_pos["gene_coverage"][1]
+    new_pos["gene_coverage"] = np.array([new_pos["assembly_readmapping"][0]+0.3, old_genecoverage_y])
+
+    old_genecoverage_label_y = pos_labels_attrs["gene_coverage"][1]
+    pos_labels_attrs["gene_coverage"] = np.array([pos_labels_attrs["assembly_readmapping"][0]+0.35, old_genecoverage_label_y])
 
     # Domain annotation
     old_domainannotation_y = new_pos["domain_annotation"][1]
@@ -137,8 +136,19 @@ def main():
 
     print(new_pos)
 
-    plt.figure(figsize=(12, 10), dpi=300)
+    draw_graph(G, new_pos, pos_labels_attrs)
+
+
+def import_graph(edges: list):
+    g = nx.DiGraph()
+    for source, target in edges:
+        g.add_edge(source, target)
     
+    return g
+
+
+def draw_graph(G, new_pos, pos_labels_attrs):
+    plt.figure(figsize=(12, 10), dpi=300)
     nx.draw(G, 
         new_pos, 
         with_labels = False, 
@@ -153,15 +163,6 @@ def main():
     analysis_module_legend = mpatches.Patch(color='#82E0AA', label='Analysis stream modules')
     plt.legend(handles=[stream_module_legend, analysis_module_legend])
     plt.savefig('images/modules_DAG.png', bbox_inches='tight')
-    plt.savefig('images/modules_DAG.svg', bbox_inches='tight')
-
-
-def import_graph(edges: list):
-    g = nx.DiGraph()
-    for source, target in edges:
-        g.add_edge(source, target)
-    
-    return g
 
 
 if __name__ == "__main__":
