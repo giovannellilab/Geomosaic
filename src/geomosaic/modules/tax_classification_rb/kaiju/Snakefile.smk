@@ -5,7 +5,7 @@ rule run_kaiju:
         r2=expand("{wdir}/{sample}/{pre_processing}/R2.fastq.gz", pre_processing=config["pre_processing"], allow_missing=True),
         kaijudb=expand("{kaiju_extdb_folder}", kaiju_extdb_folder=config["EXT_DB"]["kaiju"])
     output:
-        folder="{wdir}/{sample}/kaiju",
+        folder=directory("{wdir}/{sample}/kaiju"),
         fout="{wdir}/{sample}/kaiju/kaiju.out"
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["kaiju"])) ) (config["USER_PARAMS"]["kaiju"])
@@ -25,7 +25,7 @@ rule run_kaiju:
             -t {input.kaijudb}/nodes.dmp \
             -n {input.kaijudb}/names.dmp \
             -r $level \
-            -o {output.folder}/$level_kaiju_summary.tsv \
+            -o {output.folder}/$level.tsv \
             {output.fout} ;
         done
         """
