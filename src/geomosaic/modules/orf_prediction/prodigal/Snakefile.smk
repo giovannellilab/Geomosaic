@@ -30,5 +30,5 @@ rule parse_prodigal:
         output_simple_mapping = "{wdir}/{sample}/prodigal/simple_orf_contig_mapping.tsv", 
     threads: 1
     run:
-        from geomosaic.parsing_output.prodigal_orf_mapping import parsing_prodigal_orfs
+        from geomosaic.parser.prodigal_orf_mapping import parsing_prodigal_orfs
         parsing_prodigal_orfs(str(input.protein_fasta), str(output.output_mapping), str(output.output_fasta), str(output.output_simple_mapping))

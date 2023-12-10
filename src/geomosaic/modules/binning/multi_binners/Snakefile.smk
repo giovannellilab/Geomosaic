@@ -44,7 +44,7 @@ rule run_multi_binners_parser:
         maxbin_bins=directory("{wdir}/{sample}/multi_binners/geomosaic_maxbin2_bins"),
         metabat_bins=directory("{wdir}/{sample}/multi_binners/geomosaic_metabat2_bins")
     run:
-        from geomosaic.parsing_output.rename_bins import rename_bins
+        from geomosaic.parser.rename_bins import rename_bins
         
         shell("mkdir -p {output.concoct_bins}")
         shell("extract_fasta_bins.py {input.gm_contigs} {input.concoct_folder}/clustering_merged.csv --output_path {output.concoct_bins}")

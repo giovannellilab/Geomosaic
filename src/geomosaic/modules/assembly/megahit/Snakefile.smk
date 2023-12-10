@@ -23,5 +23,5 @@ rule run_megahit_parser:
         output_fasta="{wdir}/{sample}/megahit/geomosaic_contigs.fasta",
         output_mapping="{wdir}/{sample}/megahit/mapping.tsv"
     run:
-        from geomosaic.parsing_output.rename_contigs import rename_contigs
+        from geomosaic.parser.rename_contigs import rename_contigs
         rename_contigs(str(input.contigs_fasta), str(output.output_fasta), str(output.output_mapping))
