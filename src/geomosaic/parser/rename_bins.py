@@ -3,7 +3,7 @@ from subprocess import check_call
 import os
 
 
-def rename_bins(folder, extension, binner):
+def rename_bins_to_fasta(folder, extension, binner):
     for idx, f in enumerate(sorted(os.listdir(folder)), start=1):
         if not f.endswith(f".{extension}"):
             continue
