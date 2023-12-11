@@ -55,10 +55,10 @@ rule run_multi_binners_parser:
         shell("cp {input.concoct_folder}/bins/*.fa {output.concoct_bins}/")
 
         shell("mkdir -p {output.metabat_bins}")
-        shell("mv {input.metabat_folder}/*.fa {output.metabat_bins}/")
+        shell("cp {input.metabat_folder}/*.fa {output.metabat_bins}/")
 
         shell("mkdir -p {output.maxbin_bins}")
-        shell("mv {input.maxbin_folder}/*.fasta {output.maxbin_bins}/")
+        shell("cp {input.maxbin_folder}/*.fasta {output.maxbin_bins}/")
 
         rename_bins_to_fasta(
             folder = str(output.concoct_bins), 
@@ -68,7 +68,7 @@ rule run_multi_binners_parser:
 
         rename_bins_to_fasta(
             folder = str(output.metabat_bins), 
-            extension = "fasta", 
+            extension = "fa", 
             binner = "metabat2"
         )
     
