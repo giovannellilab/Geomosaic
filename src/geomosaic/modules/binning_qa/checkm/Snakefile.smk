@@ -2,7 +2,7 @@
 rule run_checkm:
     input:
         dins_derep=expand("{wdir}/{sample}/{binning_derep}", binning_derep=config["binning_derep"], allow_missing=True),
-        assembly_path=expand("{wdir}/{sample}/{assembly}", assembly=config["assembly"], allow_missing=True),
+        gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["assembly"], allow_missing=True),
         db_folder=expand("{checkm_extdb_folder}", checkm_extdb_folder=config["EXT_DB"]["checkm"])
     output:
         folder=directory("{wdir}/{sample}/checkm")
@@ -25,12 +25,13 @@ rule run_checkm:
             {params.tab_format} \
             {params.extension} \
             {params.user_params} \
+            --quiet \
             --file {output.folder}/checkm_output.tsv \
             {input.dins_derep}/bins \
             {output.folder} >> {log} 2>&1
         
         echo "TETRA"
-        checkm tetra -t {threads} --quiet {input.assembly_path}/contigs.fasta {output.folder}/tetra.tsv >> {log} 2>&1
+        checkm tetra -t {threads} --quiet {input.gm_contigs} {output.folder}/tetra.tsv >> {log} 2>&1
         echo "TETRA_PLOT"
         checkm tetra_plot {params.extension} {output.folder} {input.dins_derep}/bins {output.folder}/plots {output.folder}/tetra.tsv 95 >> {log} 2>&1
         echo "DIST_PLOT"
