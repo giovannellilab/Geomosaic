@@ -8,6 +8,7 @@ rule run_checkm:
         folder=directory("{wdir}/{sample}/checkm")
     threads: config["threads"]
     conda: config["ENVS"]["checkm"]
+    log: "{wdir}/{sample}/checkm/gm_log.out"
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["checkm"])) ) (config["USER_PARAMS"]["checkm"]),
         extension="--extension fa",
@@ -25,12 +26,18 @@ rule run_checkm:
             {params.user_params} \
             --file {output.folder}/checkm_output.tsv \
             {input.dins_derep}/bins \
-            {output.folder}
+            {output.folder} >> {log} 2>&1
         
+        echo "TETRA"
         checkm tetra -t {threads} --quiet {input.assembly_path}/contigs.fasta {output.folder}/tetra.tsv
+        echo "TETRA_PLOT"
         checkm tetra_plot {params.extension} {output.folder} {input.dins_derep}/bins {output.folder}/plots {output.folder}/tetra.tsv 95
+        echo "DIST_PLOT"
         checkm dist_plot {params.extension} {output.folder} {input.dins_derep}/bins {output.folder}/plots {output.folder}/tetra.tsv 95
+        echo "NX_PLOT"
         checkm nx_plot {params.extension} {input.dins_derep}/bins {output.folder}/plots
+        echo "LEN_HIST"
         checkm len_hist {params.extension} {input.dins_derep}/bins {output.folder}/plots
+        echo "MARKER_PLOT"
         checkm marker_plot {params.extension} {output.folder} {input.dins_derep}/bins {output.folder}/plots
         """
