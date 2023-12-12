@@ -19,6 +19,7 @@ rule run_checkm:
 
         mkdir -p {output.folder}/plots
         
+        echo "LINEAGE_WF"
         checkm lineage_wf \
             --threads {threads} \
             {params.tab_format} \
@@ -29,15 +30,15 @@ rule run_checkm:
             {output.folder} >> {log} 2>&1
         
         echo "TETRA"
-        checkm tetra -t {threads} --quiet {input.assembly_path}/contigs.fasta {output.folder}/tetra.tsv
+        checkm tetra -t {threads} --quiet {input.assembly_path}/contigs.fasta {output.folder}/tetra.tsv >> {log} 2>&1
         echo "TETRA_PLOT"
-        checkm tetra_plot {params.extension} {output.folder} {input.dins_derep}/bins {output.folder}/plots {output.folder}/tetra.tsv 95
+        checkm tetra_plot {params.extension} {output.folder} {input.dins_derep}/bins {output.folder}/plots {output.folder}/tetra.tsv 95 >> {log} 2>&1
         echo "DIST_PLOT"
-        checkm dist_plot {params.extension} {output.folder} {input.dins_derep}/bins {output.folder}/plots {output.folder}/tetra.tsv 95
+        checkm dist_plot {params.extension} {output.folder} {input.dins_derep}/bins {output.folder}/plots {output.folder}/tetra.tsv 95 >> {log} 2>&1
         echo "NX_PLOT"
-        checkm nx_plot {params.extension} {input.dins_derep}/bins {output.folder}/plots
+        checkm nx_plot {params.extension} {input.dins_derep}/bins {output.folder}/plots >> {log} 2>&1
         echo "LEN_HIST"
-        checkm len_hist {params.extension} {input.dins_derep}/bins {output.folder}/plots
+        checkm len_hist {params.extension} {input.dins_derep}/bins {output.folder}/plots >> {log} 2>&1
         echo "MARKER_PLOT"
-        checkm marker_plot {params.extension} {output.folder} {input.dins_derep}/bins {output.folder}/plots
+        checkm marker_plot {params.extension} {output.folder} {input.dins_derep}/bins {output.folder}/plots >> {log} 2>&1
         """
