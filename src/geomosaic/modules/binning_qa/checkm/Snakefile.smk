@@ -9,7 +9,7 @@ rule run_checkm:
     threads: config["threads"]
     conda: config["ENVS"]["checkm"]
     params:
-        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["das_tool"])) ) (config["USER_PARAMS"]["das_tool"]),
+        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["checkm"])) ) (config["USER_PARAMS"]["checkm"]),
         extension="--extension fa",
         tab_format="--tab_table",
     shell:
