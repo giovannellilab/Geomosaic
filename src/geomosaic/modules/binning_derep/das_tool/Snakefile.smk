@@ -18,9 +18,9 @@ rule run_das_tool:
         """
         mkdir -p {output.folder}
 
-        Fasta_to_Contig2Bin.sh -i {input.concoct_bins} -e fasta > {output.folder}/concoct_dastool.tsv
-        Fasta_to_Contig2Bin.sh -i {input.maxbin_bins} -e fasta > {output.folder}/maxbin2_dastool.tsv
-        Fasta_to_Contig2Bin.sh -i {input.metabat_bins} -e fasta > {output.folder}/metabat2_dastool.tsv
+        LC_ALL=C Fasta_to_Contig2Bin.sh -i {input.concoct_bins} -e fasta > {output.folder}/concoct_dastool.tsv
+        LC_ALL=C Fasta_to_Contig2Bin.sh -i {input.maxbin_bins} -e fasta > {output.folder}/maxbin2_dastool.tsv
+        LC_ALL=C Fasta_to_Contig2Bin.sh -i {input.metabat_bins} -e fasta > {output.folder}/metabat2_dastool.tsv
 
         LC_ALL=C DAS_Tool -i {output.folder}/concoct_dastool.tsv,{output.folder}/maxbin2_dastool.tsv,{output.folder}/metabat2_dastool.tsv \
             -l concoct,maxbin2,metabat2 \
