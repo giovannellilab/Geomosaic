@@ -7,10 +7,10 @@ rule gtdbtk_classify:
         directory("{wdir}/{sample}/mags_gtdbtk")
     params:
         extension="fa",
-        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags_gtdbtk"])) ) (config["USER_PARAMS"]["mags_gtdbtk"]) 
-    benchmark: "{wdir}/benchmark/{sample}_gtdbtk.txt"
+        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags_gtdbtk"])) ) (config["USER_PARAMS"]["mags_gtdbtk"])
     threads: config["threads"]
     conda: config["ENVS"]["mags_gtdbtk"]
+    log: "{wdir}/{sample}/mags_gtdbtk/gm_log.out"
     shell:
         """
         mkdir -p {output}
@@ -20,5 +20,5 @@ rule gtdbtk_classify:
             --out_dir {output} \
             --cpus {threads} \
             --mash_db {input.db}/mash_db_gtdbtk_r207_vs.msh \
-            --extension {params.extension}
+            --extension {params.extension} >> {log} 2>&1
         """
