@@ -9,6 +9,7 @@ rule run_mags_dram:
     threads: config["threads"]
     shell:
         """
+        echo "DRAM Annotate"
         DRAM.py annotate \
                 --input_fasta '{input.mags_folder}/fasta/*.fa' \
                 --checkm_quality {input.mags_folder}/MAGs.tsv \
@@ -16,12 +17,11 @@ rule run_mags_dram:
                 --config_loc {input.dram_config_folder}/dram_config.json \
                 --threads {threads}
         
+        echo "DRAM Distill"
         DRAM.py distill \
                 --input_file {output}/annotations.tsv \
                 --output_dir {output}/dram_distillation \
-                --config_loc {input.dram_config_folder}/dram_config.json \
-                --trna_path {output}/trnas.tsv \
-                --rrna_path {output}/rrnas.tsv
+                --config_loc {input.dram_config_folder}/dram_config.json
         """
         
         
