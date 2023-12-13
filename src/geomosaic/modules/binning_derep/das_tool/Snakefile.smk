@@ -13,7 +13,7 @@ rule run_das_tool:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["das_tool"])) ) (config["USER_PARAMS"]["das_tool"]),
         write_bins_evals = "--write_bin_evals",
         write_bins = "--write_bins"
-    log: "{wdir}/{sample}/benchmark/das_tool.log"
+    log: "{wdir}/{sample}/das_tool/gm_log.out"
     shell:
         """
         mkdir -p {output.folder}
@@ -29,7 +29,7 @@ rule run_das_tool:
             --threads {threads} \
             {params.write_bins} \
             {params.write_bins_evals} \
-            {params.user_params}
+            {params.user_params} >> {log} 2>&1
         
         (cd {output.folder} && mv das_tool_DASTool_bins bins)
         """
