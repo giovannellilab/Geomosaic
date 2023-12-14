@@ -1,6 +1,8 @@
 
 import pandas as pd
 from Bio.SeqIO.FastaIO import SimpleFastaParser
+from geomosaic._utils import GEOMOSAIC_NOTE
+from subprocess import check_call
 
 
 def retrieve_survival_mags(checkm_table, das_tool_bins, completness_threshold, contamination_threshold, outfolder):
@@ -12,6 +14,10 @@ def retrieve_survival_mags(checkm_table, das_tool_bins, completness_threshold, c
     c2 = df["Contamination"] < contamination_threshold
 
     df_mags = df[c1 & c2].copy()
+    if df_mags.shape[0] == 0:
+        print(f"\n{GEOMOSAIC_NOTE}: There are no MAGs that satisfy the thresholds in Completeness and Contamination. Try to lower these values. SystemExit.\n")
+        exit(0)
+
     mags_col = [f"mag_{idx}" for idx in range(1, len(df_mags)+1)]
     df_mags.insert(0, 'MAGs', mags_col)
 

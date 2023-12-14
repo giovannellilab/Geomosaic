@@ -1,4 +1,4 @@
 das_tool:
-- --score_threshold 0.4
+- --score_threshold 0.0
 - --search_engine diamond
 -
