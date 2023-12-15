@@ -8,9 +8,9 @@ from geomosaic._compose import write_gmfiles, compose_config
 
 def geo_unit(args):
     print(f"{GEOMOSAIC_PROCESS}: Loading variables from GeoMosaic setup file... ", end="", flush=True)
-    setup_file      = args.setup_file
-    module          = args.module
-    threads         = args.threads
+    setup_file          = args.setup_file
+    module              = args.module
+    threads             = args.threads
     user_extdbfolder    = args.externaldb_gmfolder
 
     with open(setup_file) as file:

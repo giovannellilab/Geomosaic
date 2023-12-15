@@ -51,7 +51,7 @@ def geo_setup(args):
         yaml.dump(config_parameters, fd_config, sort_keys=False)
 
     print(f"\n{GEOMOSAIC_NOTE}: the geomosaic setup file has been created in the following path:\n{os.path.abspath(setup_file)}")
-    print(f"\n{GEOMOSAIC_NOTE}: You can now create your pipeline (or use the default one) by executing:\ngeomosaic workflow -s {os.path.abspath(setup_file)}")
+    print(f"\n{GEOMOSAIC_NOTE}: You can now create your pipeline (or use the default one) by executing:\ngeomosaic workflow -s {os.path.abspath(setup_file)}\nHowever, we suggest you to use\ngeomosaic workflow --help\nto required and optional parameters.\n")
 
 
 def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):

@@ -32,12 +32,12 @@ def read_modules(description: bool):
         return available_moules
 
 
-GEOMOSAIC_DESCRIPTION = f"{bcolors.BOLD}GeoMosaic: A flexible metagenomic pipeline combining read-based, assemblies and MAGs with downstream analysis{bcolors.ENDC}"
+GEOMOSAIC_DESCRIPTION = f"{bcolors.BOLD}Geomosaic: A flexible metagenomic pipeline combining read-based, assemblies and MAGs with downstream analysis{bcolors.ENDC}"
 
-GEOMOSAIC_ERROR     = f"{bcolors.FAIL}GeoMosaic Error{bcolors.ENDC}"
-GEOMOSAIC_WARNING   = f"{bcolors.WARNING}GeoMosaic Warning{bcolors.ENDC}"
-GEOMOSAIC_NOTE      = f"{bcolors.OKBLUE}GeoMosaic Note{bcolors.ENDC}"
-GEOMOSAIC_PROCESS   = f"{bcolors.HEADER}GeoMosaic Process{bcolors.ENDC}"
+GEOMOSAIC_ERROR     = f"{bcolors.FAIL}Geomosaic Error{bcolors.ENDC}"
+GEOMOSAIC_WARNING   = f"{bcolors.WARNING}Geomosaic Warning{bcolors.ENDC}"
+GEOMOSAIC_NOTE      = f"{bcolors.OKBLUE}Geomosaic Note{bcolors.ENDC}"
+GEOMOSAIC_PROCESS   = f"{bcolors.HEADER}Geomosaic Process{bcolors.ENDC}"
 
 GEOMOSAIC_OK        = f"\n--> {bcolors.OKGREEN}OK{bcolors.ENDC} <--"
 
