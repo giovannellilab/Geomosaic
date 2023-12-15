@@ -7,7 +7,9 @@
         "assembly_qc",
         "assembly_readmapping",
         "assembly_coverage",
+        "assembly_tax_annotation",
         "orf_prediction",
+        "assembly_func_annotation",
         "domain_annotation",
         "gene_coverage",
         "binning",
@@ -28,6 +30,7 @@
         
         ["assembly", "assembly_qc"],
         ["assembly", "assembly_readmapping"],
+        ["assembly", "assembly_tax_annotation"],
         ["assembly", "orf_prediction"],
         ["assembly", "binning"],
         ["assembly", "binning_derep"],
@@ -40,6 +43,7 @@
 
         ["orf_prediction", "gene_coverage"],
         ["orf_prediction", "domain_annotation"],
+        ["orf_prediction", "assembly_func_annotation"],
 
         ["binning", "binning_derep"],
 
@@ -110,7 +114,13 @@
             "choices": {
                 "CoverM (Contigs)": "coverm"
             }
-    
+        },
+
+        "assembly_tax_annotation": {
+            "description": "Module: Taxonomic Annotation on Assembly",
+            "choices": {
+                "Kraken2": "kraken2"
+            }
         },
 
         "orf_prediction": {
@@ -131,6 +141,13 @@
             "description": "Module: tracking coverage for genes of interest through HMM models",
             "choices": {
                 "HMMs Coverage": "hmms_cov"
+            }
+        },
+
+        "assembly_func_annotation": {
+            "description": "Module: Functional Annotation on Assembly",
+            "choices": {
+                "eggNOG-Mapper": "eggnog_mapper"
             }
         },
 
@@ -217,9 +234,11 @@
         "checkm": "checkm.yaml",
         "coverm": "coverm.yaml",
         "das_tool": "das_tool.yaml",
+        "eggnog_mapper": "eggnog_mapper.yaml",
         "fastp": "fastp.yaml",
         "gtdbtk": "gtdbtk.yaml",
         "kaiju": "kaiju.yaml",
+        "kraken2": "kraken2.yaml",
         "megahit": "megahit.yaml",
         "metaphlan": "metaphlan.yaml",
         "metaspades": "metaspades.yaml",
@@ -244,6 +263,14 @@
         "kaiju": {
             "inpfolder": "kaiju",
             "outfolder": "kaiju_extdb"
+        },
+        "kraken2": {
+            "inpfolder": "kraken2",
+            "outfolder": "kraken2_extdb"
+        },
+        "eggnog_mapper": {
+            "inpfolder": "eggnog_mapper",
+            "outfolder": "eggnog_mapper_extdb"
         }, 
         "mags_dram": {
             "inpfolder": "mags_dram",
