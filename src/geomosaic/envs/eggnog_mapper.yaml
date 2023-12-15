@@ -1,0 +1,8 @@
+name: geomosaic_eggnog_mapper
+channels:
+   - conda-forge
+   - bioconda
+   - defaults
+dependencies:
+   - python=3
+   - eggnog-mapper
