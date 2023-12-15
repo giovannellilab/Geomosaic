@@ -1,0 +1,1 @@
+expand("{eggnog_mapper_extdb_folder}", eggnog_mapper_extdb_folder=config["EXT_DB"]["eggnog_mapper"]),
