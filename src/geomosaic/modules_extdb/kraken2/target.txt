@@ -1,0 +1,1 @@
+expand("{kraken2_extdb_folder}", kraken2_extdb_folder=config["EXT_DB"]["kraken2"]),
