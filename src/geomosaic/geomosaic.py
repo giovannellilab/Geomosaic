@@ -3,6 +3,7 @@ from geomosaic._utils import GEOMOSAIC_DESCRIPTION, GEOMOSAIC_MODULES_DESCRIPTIO
 from geomosaic.gm_setup import geo_setup
 from geomosaic.gm_workflow import geo_workflow
 from geomosaic.gm_unit import geo_unit
+from geomosaic.gm_envinstall import geo_envinstall
 from pathlib import Path
 import sys
 import pathlib
@@ -28,6 +29,9 @@ def main():
                                          add_help=False)
     unit_parser = subparsers.add_parser("unit", help="It allows to choose and run just one module, for example \
                                         to execute an alternative package for that module. The command create another Snakefile a config file (both in the geomosaic directory) with the chosen module",
+                                         formatter_class=RawDescriptionHelpFormatter,
+                                         add_help=False)
+    envinstall_parser = subparsers.add_parser("envinstall", help="It will installation the required conda environments of your workflow/unit.",
                                          formatter_class=RawDescriptionHelpFormatter,
                                          add_help=False)
     # run_parser = subparsers.add_parser("run", help="Execute the create snakefile",
@@ -119,6 +123,24 @@ def main():
     ## unit set default function
     unit_parser.set_defaults(func=geo_unit)
 
+
+    #####################
+    ## ENVINSTALL Parameters ##
+    #####################
+
+    envinstall_required = envinstall_parser.add_argument_group("Required Arguments")
+    envinstall_required.add_argument("-s", "--setup_file", required=True, type=str, 
+                                help="Geomosaic setup file created from the 'geomosaic setup ...' command.")
+    envinstall_optional = envinstall_parser.add_argument_group("Optional Arguments")
+    envinstall_optional.add_argument('-u' ,'--unit', action='store_true', help="Install the conda environment of your geomosaic unit.")
+
+    envinstall_help = envinstall_parser.add_argument_group("Help Arguments")
+    envinstall_help.add_argument("-h", "--help", action="help", help=f"show this help message and exit")
+    ## envinstall set default function
+    envinstall_parser.set_defaults(func=geo_envinstall)
+
+
+    # envinstall_parser
     ####################
     ## RUN Parameters ##
     ####################
