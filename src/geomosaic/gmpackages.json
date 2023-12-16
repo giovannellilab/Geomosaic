@@ -4,8 +4,8 @@
         "func_classification_rb",
         "tax_classification_rb",
         "assembly",
-        "assembly_qc",
         "assembly_readmapping",
+        "assembly_qc",
         "assembly_coverage",
         "assembly_tax_annotation",
         "orf_prediction",
@@ -28,8 +28,8 @@
         ["pre_processing", "assembly"],
         ["pre_processing", "assembly_readmapping"],
         
-        ["assembly", "assembly_qc"],
         ["assembly", "assembly_readmapping"],
+        ["assembly", "assembly_qc"],
         ["assembly", "assembly_tax_annotation"],
         ["assembly", "orf_prediction"],
         ["assembly", "binning"],
@@ -94,14 +94,14 @@
         },
     
         "assembly_qc": {
-            "description": "Module: Assembly evaluation with metrics",
+            "description": "Module: Assembly evaluation with metrics [Assembly-based]",
             "choices": {
                 "Quast": "quast"
             }
         },
 
         "assembly_readmapping": {
-            "description": "Module: Assembly evaluation by read mapping",
+            "description": "Module: Assembly evaluation by read mapping [Assembly-based]",
             "choices": {
                 "Bowtie2": "bowtie2",
                 "BBMap": "bbmap"
@@ -110,42 +110,42 @@
         },
 
         "assembly_coverage": {
-            "description": "Module: Assembly coverage computation",
+            "description": "Module: Assembly coverage computation [Assembly-based]",
             "choices": {
                 "CoverM (Contigs)": "coverm"
             }
         },
 
         "assembly_tax_annotation": {
-            "description": "Module: Taxonomic Annotation on Assembly",
+            "description": "Module: Taxonomic Annotation on Assembly [Assembly-based]",
             "choices": {
                 "Kraken2": "kraken2"
             }
         },
 
         "orf_prediction": {
-            "description": "Module: perform ORF prediction",
+            "description": "Module: perform ORF prediction [Assembly-based]",
             "choices": {
                 "Prodigal": "prodigal"
             }
         },
 
         "domain_annotation": {
-            "description": "Module: Domain annotation on Assembly",
+            "description": "Module: Domain annotation on Assembly [Assembly-based]",
             "choices": {
                 "reCOGnizer": "recognizer"
             }
         },        
 
         "gene_coverage": {
-            "description": "Module: tracking coverage for genes of interest through HMM models",
+            "description": "Module: tracking coverage for genes of interest through HMM models [Assembly-based]",
             "choices": {
                 "HMMs Coverage": "hmms_cov"
             }
         },
 
         "assembly_func_annotation": {
-            "description": "Module: Functional Annotation on Assembly",
+            "description": "Module: Functional Annotation on Assembly [Assembly-based]",
             "choices": {
                 "eggNOG-Mapper": "eggnog_mapper"
             }
@@ -159,49 +159,49 @@
         },
 
         "binning_derep": {
-            "description": "Module: Binning Deeplication",
+            "description": "Module: Binning Deeplication [Binning-based]",
             "choices": {
                 "DAS_tool": "das_tool"
             }  
         },
 
         "binning_qa": {
-            "description": "Module: Binning Quality Evaluation",
+            "description": "Module: Binning Quality Evaluation [Binning-based]",
             "choices": {
                 "CheckM": "checkm"
             }
         },
 
         "mags_retrieval": {
-            "description": "Module: get MAGs based on Contamination and Completeness threshold",
+            "description": "Module: get MAGs based on Contamination and Completeness threshold [Binning-based]",
             "choices": {
                 "MAGs HQ": "mags"
             }
         },
 
         "mags_func_annotation": {
-            "description": "Module: Perform annotation of filtered MAGs",
+            "description": "Module: Perform annotation of filtered MAGs [Binning-based]",
             "choices": {
                 "DRAM on MAGs": "mags_dram"
             }
         },
 
         "mags_tax_annotation": {
-            "description": "Module: Perform taxonomic annotation of filtered MAGs",
+            "description": "Module: Perform taxonomic annotation of filtered MAGs [Binning-based]",
             "choices": {
                 "GTDBTK on MAGs": "mags_gtdbtk"
             }
         },
 
         "mags_orf_prediction": {
-            "description": "Module: perform ORF prediction for each retrieved MAG",
+            "description": "Module: perform ORF prediction for each retrieved MAG [Binning-based]",
             "choices": {
                 "Prodigal on MAGs": "mags_prodigal"
             }
         },
 
         "mags_domain_annotation": {
-            "description": "Module: perform domain-based annotation for each retrieved MAG",
+            "description": "Module: perform domain-based annotation for each retrieved MAG [Binning-based]",
             "choices": {
                 "reCOGnizer on MAGs": "mags_recognizer"
             }
