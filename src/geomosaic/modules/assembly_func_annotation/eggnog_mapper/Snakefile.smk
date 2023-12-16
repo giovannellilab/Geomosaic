@@ -21,16 +21,20 @@ rule run_eggnog_mapper:
             --cpu {threads} \
             --data_dir {input.db_folder}/ \
             -i {input.orf_predicted} \
+            {params.user_params_search} \
             --temp_dir {output}/tmp_search \
             -o {output}/gm_eggnog
 
         emapper.py \
             -m no_search \
-            --annotate_hits_table gm_eggnog.emapper.seed_orthologs \
-            -o gm_eggnog_annot \
+            --annotate_hits_table {output}/gm_eggnog.emapper.seed_orthologs \
+            -o {output}/gm_eggnog_annot \
             --data_dir {input.db_folder}/ \
             --temp_dir {output}/tmp_annot \
+            {params.user_params_annot} \
             --cpu {threads} \
             --excel \
             --dbmem
+        
+        (cd {output} && rm -r tmp_search {output}/tmp_annot)
         """
