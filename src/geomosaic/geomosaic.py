@@ -66,8 +66,8 @@ def main():
                                 This file is necessary for the < geomosaic workflow > command.")
     setup_optional.add_argument("-f", "--format_table", required=False, default="tsv", type=str, choices=["tsv", "csv", "excel"],
                               help="Format of the provided table. Allowed: tsv, csv, excel")
-    setup_optional.add_argument("-w", "--working_dir", required=False, default="geomosaic", type=str, help="Path where geomosaic can create its working directory")
-    setup_optional.add_argument("-n", "--project_name", required=False, default="GeoMosaic_Workflow", type=str, help="Name of the project (no-space)")
+    setup_optional.add_argument("-w", "--working_dir", required=False, default="geomosaic", type=str, help="Path where geomosaic can create its working directory. Default: './geomosaic' ")
+    setup_optional.add_argument("-n", "--project_name", required=False, default="Geomosaic_Workflow", type=str, help="Name of the project (no-space)")
     setup_optional.add_argument('--skip_wdir_checks', action='store_true', required=False,  help="")
     setup_optional.add_argument('--nocopy', action='store_true', required=False,  help="Suggested flag if the provided raw reads directory is an already backup of the original files. \
                               In this case, geomosaic will create only symbolic link of raw reads to its working directory. Note: This flag cannot be used if \
@@ -90,7 +90,7 @@ def main():
     workflow_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None,type=lambda p: pathlib.Path(p).resolve(),
                                    help="If you have already downloaded and setup \
                                    databases with geomosaic, here you can specify the path folder.")
-    workflow_optional.add_argument('-g' ,'--glab', action='store_true', help="Execute the default Giovannelli's Lab pipeline of geomosaic.")
+    workflow_optional.add_argument('-g' ,'--glab', action='store_true', help="Execute the default Giovannelli's Lab pipeline of Geomosaic.")
     workflow_optional.add_argument("-m", "--module_start", required=False, type=str, default="pre_processing",
                                 help=f"Module where to start creating the workflow (Default: pre_processing)", choices=GEOMOSAIC_MODULES, metavar="MODULE")
     
