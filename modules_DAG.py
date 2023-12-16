@@ -7,6 +7,7 @@ from networkx.drawing.nx_pydot import graphviz_layout
 import matplotlib.patches as mpatches
 import json
 import numpy as np
+import matplotlib.patheffects as pe
 
 
 def main():
@@ -112,31 +113,33 @@ def main():
     for node, coords in new_pos.items():
         pos_labels_attrs[node] = (coords[0], coords[1] + 4)
 
-    ## ---> ## MANUAL SHIFTING POSITIONS ## <--- ##
-    # Assembly coverage
-    old_assemblycoverage_y = new_pos["assembly_coverage"][1]
-    new_pos["assembly_coverage"] = np.array([new_pos["assembly_readmapping"][0], old_assemblycoverage_y])
+    # ## ---> ## MANUAL SHIFTING POSITIONS ## <--- ##
+    # # Assembly coverage
+    # old_assemblycoverage_y = new_pos["assembly_coverage"][1]
+    # new_pos["assembly_coverage"] = np.array([new_pos["assembly_readmapping"][0], old_assemblycoverage_y])
 
-    old_assemblycoverage_label_y = pos_labels_attrs["assembly_coverage"][1]
-    pos_labels_attrs["assembly_coverage"] = np.array([pos_labels_attrs["assembly_readmapping"][0], old_assemblycoverage_label_y])
+    # old_assemblycoverage_label_y = pos_labels_attrs["assembly_coverage"][1]
+    # pos_labels_attrs["assembly_coverage"] = np.array([pos_labels_attrs["assembly_readmapping"][0], old_assemblycoverage_label_y])
 
-    # Gene Coverage
-    old_genecoverage_y = new_pos["gene_coverage"][1]
-    new_pos["gene_coverage"] = np.array([new_pos["assembly_readmapping"][0]+0.3, old_genecoverage_y])
+    # # Gene Coverage
+    # old_genecoverage_y = new_pos["gene_coverage"][1]
+    # new_pos["gene_coverage"] = np.array([new_pos["assembly_readmapping"][0]+0.3, old_genecoverage_y])
 
-    old_genecoverage_label_y = pos_labels_attrs["gene_coverage"][1]
-    pos_labels_attrs["gene_coverage"] = np.array([pos_labels_attrs["assembly_readmapping"][0]+0.35, old_genecoverage_label_y])
+    # old_genecoverage_label_y = pos_labels_attrs["gene_coverage"][1]
+    # pos_labels_attrs["gene_coverage"] = np.array([pos_labels_attrs["assembly_readmapping"][0]+0.35, old_genecoverage_label_y])
 
-    # Domain annotation
-    old_domainannotation_y = new_pos["domain_annotation"][1]
-    new_pos["domain_annotation"] = np.array([new_pos["orf_prediction"][0]+0.2, old_domainannotation_y])
+    # # Domain annotation
+    # old_domainannotation_y = new_pos["domain_annotation"][1]
+    # new_pos["domain_annotation"] = np.array([new_pos["orf_prediction"][0]+0.2, old_domainannotation_y])
 
-    old_domainannotation_label_y = pos_labels_attrs["domain_annotation"][1]
-    pos_labels_attrs["domain_annotation"] = np.array([pos_labels_attrs["orf_prediction"][0]+0.2, old_domainannotation_label_y])
+    # old_domainannotation_label_y = pos_labels_attrs["domain_annotation"][1]
+    # pos_labels_attrs["domain_annotation"] = np.array([pos_labels_attrs["orf_prediction"][0]+0.2, old_domainannotation_label_y])
 
     print(new_pos)
 
     draw_graph(G, new_pos, pos_labels_attrs)
+    draw_white_graph(G, new_pos, pos_labels_attrs)
+    draw_workflow_graph(G, new_pos, pos_labels_attrs)
 
 
 def import_graph(edges: list):
@@ -149,20 +152,76 @@ def import_graph(edges: list):
 
 def draw_graph(G, new_pos, pos_labels_attrs):
     plt.figure(figsize=(12, 10), dpi=300)
+    
     nx.draw(G, 
         new_pos, 
         with_labels = False, 
         node_color=["#6699ff" if i in ["pre_processing", "assembly", "binning"] else "#82E0AA" for i in G.nodes() ], 
         alpha=0.8,
         # node_size = [len(v) * the_base_size for v in G.nodes()],
-        edge_color="#515151"
+        edge_color="#999999"
     )
-    
-    nx.draw_networkx_labels(G, pos_labels_attrs)
+
+    for lbl, coords in pos_labels_attrs.items():
+        plt.text(coords[0], coords[1], lbl, path_effects=[pe.withStroke(linewidth=4, foreground="white")], va="center", ha="center")
+
     stream_module_legend = mpatches.Patch(color='#6699ff', label='Main stream modules')
     analysis_module_legend = mpatches.Patch(color='#82E0AA', label='Analysis stream modules')
     plt.legend(handles=[stream_module_legend, analysis_module_legend])
     plt.savefig('images/modules_DAG.png', bbox_inches='tight')
+
+
+def draw_white_graph(G, new_pos, pos_labels_attrs):
+    plt.figure(figsize=(12, 10), dpi=300)
+    nx.draw(G, 
+        new_pos, 
+        with_labels = False, 
+        alpha=0.8,
+        edge_color="#515151"
+    )
+
+    nodes = nx.draw_networkx_nodes(G, new_pos, node_color=["white" for _ in G.nodes() ])
+    nodes.set_edgecolor('gray')
+
+    for lbl, coords in pos_labels_attrs.items():
+        plt.text(coords[0], coords[1], lbl, path_effects=[pe.withStroke(linewidth=4, foreground="white")], va="center", ha="center")
+        
+    plt.savefig('images/modules_DAG_white.png', bbox_inches='tight')
+
+
+def draw_workflow_graph(G, new_pos, pos_labels_attrs):
+    plt.figure(figsize=(12, 10), dpi=300)
+    choices = [
+        "pre_processing",
+        "assembly",
+        "assembly_readmapping",
+        "assembly_tax_annotation",
+        "orf_prediction",
+        "assembly_func_annotation",
+        "binning",
+        "binning_derep",
+        "binning_qa",
+        "mags_retrieval",
+        "mags_func_annotation",
+        "mags_tax_annotation",
+    ]
+
+    nx.draw(G, 
+        new_pos, 
+        with_labels = False, 
+        node_color=["#008000" if i in choices else "#cc0000" for i in G.nodes() ], 
+        alpha=0.8,
+        # node_size = [len(v) * the_base_size for v in G.nodes()],
+        edge_color="#515151"
+    )
+    
+    for lbl, coords in pos_labels_attrs.items():
+        plt.text(coords[0], coords[1], lbl, path_effects=[pe.withStroke(linewidth=4, foreground="white")], va="center", ha="center")
+        
+    stream_module_legend = mpatches.Patch(color='#008000', label='Accepted modules')
+    analysis_module_legend = mpatches.Patch(color='#cc0000', label='Ignored modules')
+    plt.legend(handles=[stream_module_legend, analysis_module_legend])
+    plt.savefig('images/modules_DAG_workflow.png', bbox_inches='tight')
 
 
 if __name__ == "__main__":
