@@ -13,11 +13,12 @@ rule run_kraken2:
         """
         mkdir -p {output}
 
-        kraken2 \
+        LC_ALL=C kraken2 \
             --db {input.db_folder} \
             --threads {threads} \
             --use-names \
             --output {output}/kraken_output.txt \
             --report {output}/kraken_report.txt \
+            --report-zero-counts \
             {input.gm_contigs}
         """
