@@ -39,6 +39,9 @@ GEOMOSAIC_WARNING   = f"{bcolors.WARNING}Geomosaic Warning{bcolors.ENDC}"
 GEOMOSAIC_NOTE      = f"{bcolors.OKBLUE}Geomosaic Note{bcolors.ENDC}"
 GEOMOSAIC_PROCESS   = f"{bcolors.HEADER}Geomosaic Process{bcolors.ENDC}"
 
+def GEOMOSAIC_PROMPT(command):
+    return f"{bcolors.BOLD}{command}{bcolors.ENDC}"
+
 GEOMOSAIC_OK        = f"\n--> {bcolors.OKGREEN}OK{bcolors.ENDC} <--"
 
 GEOMOSAIC_MODULES_DESCRIPTION = read_modules(description=True)

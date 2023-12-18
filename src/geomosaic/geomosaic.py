@@ -3,7 +3,7 @@ from geomosaic._utils import GEOMOSAIC_DESCRIPTION, GEOMOSAIC_MODULES_DESCRIPTIO
 from geomosaic.gm_setup import geo_setup
 from geomosaic.gm_workflow import geo_workflow
 from geomosaic.gm_unit import geo_unit
-from geomosaic.gm_envinstall import geo_envinstall
+from geomosaic.gm_prerun import geo_prerun
 from pathlib import Path
 import sys
 import pathlib
@@ -15,43 +15,22 @@ def main():
 
     subparsers = parser.add_subparsers(title="commands")
 
-    # Creating subcommands for geomosaic
-    # infer_parser = subparsers.add_parser("infer", help="this command it will help the user to create a \
-    #                                      sample table needed for geomosaic to prepare the working directory",
-    #                                      formatter_class=ArgumentDefaultsHelpFormatter)
-    setup_parser = subparsers.add_parser("setup", help="It creates the geomosaic working directory \
-                                         and the relative samples folders based on the provided sample table",
+    setup_parser = subparsers.add_parser("setup", help="It creates the geomosaic working directory and the relative samples folders based on the provided sample table",
+                                         description="It creates the geomosaic working directory and the relative samples folders based on the provided sample table",
                                          formatter_class=ArgumentDefaultsHelpFormatter,
                                          add_help=False)
-    workflow_parser = subparsers.add_parser("workflow", help="It allows to choose the desired \
-                                            modules and the relative packages. Based on you choices, the command will create a Snakefile (in the geomosaic directory) with the chosen modules, the config file for snakemake, and a graph image to show the created workflow",
-                                         formatter_class=RawDescriptionHelpFormatter,
-                                         add_help=False)
-    unit_parser = subparsers.add_parser("unit", help="It allows to choose and run just one module, for example \
-                                        to execute an alternative package for that module. The command create another Snakefile a config file (both in the geomosaic directory) with the chosen module",
-                                         formatter_class=RawDescriptionHelpFormatter,
-                                         add_help=False)
-    envinstall_parser = subparsers.add_parser("envinstall", help="It will installation the required conda environments of your workflow/unit.",
-                                         formatter_class=RawDescriptionHelpFormatter,
-                                         add_help=False)
-    # run_parser = subparsers.add_parser("run", help="Execute the create snakefile",
-    #                                      formatter_class=ArgumentDefaultsHelpFormatter,
-    #                                      add_help=False)
-    
-
-    # Adding parameters for each subcommamd
-    ######################
-    ## INFER Parameters ##
-    ######################
-    # infer_parser.add_argument("-d", "--directory", required=True, type=str, help="Path to the directory containing raw reads (fastq.gz files)")
-    # infer_parser.add_argument("-o", "--output_file", required=False, type=str, default="geomosaic_sample_table.xlsx", help="Output filenameof the sample table")
-    # infer_parser.add_argument("-s", "--split_token", required=False, type=str, default="_R1_,_R2_", 
-    #                     help="Part of the string filename that help to recognize paired end reads.\
-    #                     It need to be a string, comma separated with no space and two occurrences e.g _R1,_R2  or  R1_,R2_ .\
-    #                     It is also recommended to don't use 'R1' and 'R2' without any symbol, \
-    #                     cause 'R1' and 'R2' can occur also in the section of the filename that means the filename.")
-    # ## INFER set defaut function
-    # infer_parser.set_defaults(func=geo_infer)
+    workflow_parser = subparsers.add_parser("workflow", help="It allows to choose the desired modules and the relative packages. Based on you choices, the command will create a Snakefile (in the geomosaic directory) with the chosen modules, the config file for snakemake, and a graph image to show the created workflow",
+                                            description="It allows to choose the desired modules and the relative packages. Based on you choices, the command will create a Snakefile (in the geomosaic directory) with the chosen modules, the config file for snakemake, and a graph image to show the created workflow",
+                                            formatter_class=RawDescriptionHelpFormatter,
+                                            add_help=False)
+    unit_parser = subparsers.add_parser("unit", help="It allows to choose and run just one module, for example to execute an alternative package for that module. The command create another Snakefile a config file (both in the geomosaic directory) with the chosen module",
+                                        description="It allows to choose and run just one module, for example to execute an alternative package for that module. The command create another Snakefile a config file (both in the geomosaic directory) with the chosen module",
+                                        formatter_class=RawDescriptionHelpFormatter,
+                                        add_help=False)
+    prerun_parser = subparsers.add_parser("prerun", help="This command it is usefull to install the required conda environments of your workflow/unit and create required scripts to execute Geomosaic on a cluster using SLURM",
+                                          description="This command it is usefull to install the required conda environments of your workflow/unit and create required scripts to execute Geomosaic on a cluster using SLURM",
+                                          formatter_class=RawDescriptionHelpFormatter,
+                                          add_help=False)
 
     ######################
     ## SETUP Parameters ## 
@@ -104,7 +83,6 @@ def main():
     #####################
     ## UNIT Parameters ##
     #####################
-    
     unit_required = unit_parser.add_argument_group("Required Arguments")
     unit_required.add_argument("-s", "--setup_file", required=True, type=str, 
                                 help="Geomosaic setup file created from the 'geomosaic setup ...' command.")
@@ -125,30 +103,33 @@ def main():
 
 
     #####################
-    ## ENVINSTALL Parameters ##
+    ## PRERUN Parameters ##
     #####################
 
-    envinstall_required = envinstall_parser.add_argument_group("Required Arguments")
-    envinstall_required.add_argument("-s", "--setup_file", required=True, type=str, 
+    prerun_required = prerun_parser.add_argument_group("Required Arguments")
+    prerun_required.add_argument("-s", "--setup_file", required=True, type=str, 
                                 help="Geomosaic setup file created from the 'geomosaic setup ...' command.")
-    envinstall_optional = envinstall_parser.add_argument_group("Optional Arguments")
-    envinstall_optional.add_argument('-u' ,'--unit', action='store_true', help="Install the conda environment of your geomosaic unit.")
+    
+    prerun_optional = prerun_parser.add_argument_group("Optional Arguments")
+    prerun_optional.add_argument('-u' ,'--unit', action='store_true', help="Install the conda environment of your geomosaic unit.")
 
-    envinstall_help = envinstall_parser.add_argument_group("Help Arguments")
-    envinstall_help.add_argument("-h", "--help", action="help", help=f"show this help message and exit")
-    ## envinstall set default function
-    envinstall_parser.set_defaults(func=geo_envinstall)
+    prerun_optionalslurm = prerun_parser.add_argument_group("Optional Arguments for SLURM Specification")
+    prerun_optionalslurm.add_argument('--slurm', action='store_true', help="Use this option if you want to use Geomosaic on a cluster with slurm installed.")
+    prerun_optionalslurm.add_argument('-t', '--threads', default=10, type=int, help="Threads to use (per sample). This value will override the one specified in the workflow/unit (config file) and thus will replace threads value in the config file. (requires '--slurm' option)")
+    prerun_optionalslurm.add_argument('-m', '--memory', default=300, type=int, help="Memory specification (in GB) for slurm job. (requires '--slurm' option)")
+    prerun_optionalslurm.add_argument('-p', '--partition', default=None, type=str, help="Partition specification for slurm job in the cluster. (requires '--slurm' option)")
+    prerun_optionalslurm.add_argument('--mail_type', default=None, choices=["NONE", "BEGIN", "END", "FAIL", "REQUEUE", "ALL"], help="Mail type to notify user about occurred even type in slurm. Ignore this option if you are not interested to get(requires '--slurm' option)")
+    prerun_optionalslurm.add_argument('--mail_user', default=None, type=str, help="Email where to to receive slurm notification type specified in '--mail_type'. (requires '--slurm' option)")
+    prerun_optionalslurm.add_argument('-f', '--folder_logs', default=None, type=str, help="Folder for logs slurm. Default is None, but we suggest you to specify it and if it does not exists, Geomosaic will create it. (requires '--slurm' option)")
+    prerun_optionalslurm.add_argument('-l', '--list_sample_output', default="list_samples.txt", type=str, help="Filename where to write the list of samples. Default: list_samples.txt created in the current directory. (requires '--slurm' option)")
+    prerun_optionalslurm.add_argument('-o', '--output_script', default="slurm_geomosaic.sh", type=str, help="Filename for the slurm script. Default: slurm_geomosaic.sh created in the current directory. (requires '--slurm' option)")
+    prerun_optionalslurm.add_argument('-e', '--extdb_output_script', default="slurm_extdb_geomosaic.sh", type=str, help="Filename for the slurm script to execute external db setup. Default: slurm_extdb_geomosaic.sh created in the current directory. (requires '--slurm' option)")    
 
+    prerun_help = prerun_parser.add_argument_group("Help Arguments")
+    prerun_help.add_argument("-h", "--help", action="help", help=f"show this help message and exit")
+    ## prerun set default function
+    prerun_parser.set_defaults(func=geo_prerun)
 
-    # envinstall_parser
-    ####################
-    ## RUN Parameters ##
-    ####################
-    # run_parser.add_argument("-c", "--config_file", required=True, default="geomosaic_setup_config.yaml", type=str, 
-    #                           help="Path and output filename for the geomosaic config file (yaml extension).")
-    # run_parser.add_argument("-t", "--threads", required=True, default=8, help="Number of threads to use to execute the workflow for all the samples")
-    # run_parser.add_argument("-s", "--threads_per_sample", required=True, default=4, help="Threads to use per each sample. It must be lower than the 'threads' \
-    #                         parameter")
 
     if len(sys.argv)==1:
         parser.print_help(sys.stderr)
