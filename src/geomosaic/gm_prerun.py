@@ -81,10 +81,9 @@ def geo_prerun(args):
     
     envinstall(geomosaic_dir, gm_snakefile, unit)
 
-    prompt1 = GEOMOSAIC_PROMPT(f"$ sbatch {extdb_output_script}")
-    prompt2 = GEOMOSAIC_PROMPT(f"$ sbatch {output_script}")
-
     if slurm:
+        prompt1 = GEOMOSAIC_PROMPT(f"$ sbatch {extdb_output_script}")
+        prompt2 = GEOMOSAIC_PROMPT(f"$ sbatch {output_script}")
         print(f"\n{GEOMOSAIC_NOTE}: The following draft scripts for slurm execution were created (along with file containing the samples list):\n{output_script}\n{extdb_output_script}\n{list_sample_output}")
         print(f"\n{GEOMOSAIC_NOTE}: These script can be considered minimal for SLURM.\nIf you need you can modify them to add more SBATCH information. More details can be retrieved to official SLURM Documentation.")
         print(f"\n{GEOMOSAIC_NOTE}: So now you are ready to go!\nYour first step should be to setup the required databases of your pipeline, by executing:\n{prompt1}\n\nonce it is finished, you can execute the real pipeline:\n{prompt2}")

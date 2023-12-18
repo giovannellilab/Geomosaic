@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import yaml
-from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_NOTE, GEOMOSAIC_OK, GEOMOSAIC_PROCESS
+from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_NOTE, GEOMOSAIC_OK, GEOMOSAIC_PROCESS, GEOMOSAIC_PROMPT
 from geomosaic._validator import validate_working_dir
 import pkg_resources
 import time
@@ -50,8 +50,10 @@ def geo_setup(args):
     with open(setup_file, 'w') as fd_config:
         yaml.dump(config_parameters, fd_config, sort_keys=False)
 
+    prompt1 = GEOMOSAIC_PROMPT(f"geomosaic workflow -s {os.path.abspath(setup_file)}")
+    prompt2 = GEOMOSAIC_PROMPT(f"geomosaic workflow --help")
     print(f"\n{GEOMOSAIC_NOTE}: the geomosaic setup file has been created in the following path:\n{os.path.abspath(setup_file)}")
-    print(f"\n{GEOMOSAIC_NOTE}: You can now create your pipeline (or use the default one) by executing:\ngeomosaic workflow -s {os.path.abspath(setup_file)}\nHowever, we suggest you to use\ngeomosaic workflow --help\nto required and optional parameters.\n")
+    print(f"\n{GEOMOSAIC_NOTE}: You can now create your pipeline (or use the default one) by executing:\n{prompt1}\nHowever, we suggest you to use\n{prompt2}\nto required and optional parameters.\n")
 
 
 def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):
