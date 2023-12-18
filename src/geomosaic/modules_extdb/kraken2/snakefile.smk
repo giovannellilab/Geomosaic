@@ -5,6 +5,7 @@ rule kraken2_db:
     output:
         db_folder=directory(expand("{kraken2_extdb_folder}", kraken2_extdb_folder=config["EXT_DB"]["kraken2"])),
     message: "GEOMOSAIC MSG: Starting to setup the database for kraken2"
+    threads: 1
     shell:
         """
         mkdir -p {output.db_folder}
