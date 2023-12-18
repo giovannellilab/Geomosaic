@@ -3,7 +3,7 @@ from networkx.classes import DiGraph
 from collections import deque
 import networkx as nx
 import subprocess
-from geomosaic._utils import GEOMOSAIC_ERROR
+from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROMPT
 from geomosaic._validator import validator_hmms_folder, validator_completeness_contamination_integer
 
 
@@ -39,7 +39,7 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
         status = False
         my_module = queue[0]
 
-        module_descr = collected_modules[my_module]["description"]
+        module_descr = GEOMOSAIC_PROMPT(f"[{my_module}] - ".upper()) + f"{collected_modules[my_module]['description']}"
         module_choices = {}
         module_choices[0] = {"display": "-- Ignore this module (and all successors) --", "package": ""}
         for indice, raw_package in enumerate(collected_modules[my_module]["choices"].items(), start=1):
@@ -82,19 +82,18 @@ def ask_additional_parameters(additional_input, order_writing):
     for module in order_writing:
         if module in additional_input:
             for adt_param, adt_param_tokens in additional_input[module].items():
-                input_adt_param = get_user_path(adt_param_tokens["description"])
+                flag = False
+                while not flag:
+                    input_adt_param = get_user_path(adt_param_tokens["description"])
 
-                if adt_param == "hmm_folder" and not validator_hmms_folder(input_adt_param):
-                    print("GeoMosaic Error - Exit Code 1")
-                    exit(1)
-                
-                if adt_param == "completness_threshold" and not validator_completeness_contamination_integer(input_adt_param):
-                    print("GeoMosaic Error - Exit Code 1 - completeness")
-                    exit(1)
-
-                if adt_param == "contamination_threshold" and not validator_completeness_contamination_integer(input_adt_param):
-                    print("GeoMosaic Error - Exit Code 1")
-                    exit(1)
+                    if adt_param == "hmm_folder" and not validator_hmms_folder(input_adt_param):
+                        print(f"{GEOMOSAIC_ERROR}: Invalid input")
+                    elif adt_param == "completness_threshold" and not validator_completeness_contamination_integer(input_adt_param):
+                        print(f"{GEOMOSAIC_ERROR}: Invalid input")
+                    elif adt_param == "contamination_threshold" and not validator_completeness_contamination_integer(input_adt_param):
+                        print(f"{GEOMOSAIC_ERROR}: Invalid input")
+                    else:
+                        flag = True
                 
                 # INSERT PARAM FOR CONFIG FILE
                 if adt_param_tokens["type"] in ["integer"]:
@@ -126,7 +125,7 @@ def import_graph(edges: list) -> DiGraph:
 
 
 def check_user_input(input, list_ints):
-    false_payload = (False, "Wrong input")
+    false_payload = (False, f"{GEOMOSAIC_ERROR}: Invalid input")
 
     try:
         user_input = int(input)
