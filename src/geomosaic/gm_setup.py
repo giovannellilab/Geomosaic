@@ -82,6 +82,7 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):
 
     for i in tqdm(list(grp.itertuples())):
         samples_list.append(i.sample)
+        check_call(f"mkdir -p {os.path.join(wdir, i.sample)}", shell=True)
 
         if nocopy:
             assert len(i.r1) == 1, f"{GEOMOSAIC_ERROR}: '--nocopy' flag cannot be used when there are multiple reads file for one sample '{i.sample}'."
@@ -93,8 +94,6 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):
         else:
             all_r1 = " ".join([os.path.join(rawreads_folder,x) for x in i.r1])
             all_r2 = " ".join([os.path.join(rawreads_folder,x) for x in i.r2])
-
-            check_call(f"mkdir -p {os.path.join(wdir, i.sample)}", shell=True)
 
             check_call(f"cat {all_r1} > {os.path.join(wdir, str(i.sample), 'R1.fastq.gz')}", shell=True)
             check_call(f"cat {all_r2} > {os.path.join(wdir, str(i.sample), 'R2.fastq.gz')}", shell=True)
