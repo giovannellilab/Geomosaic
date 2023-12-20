@@ -64,8 +64,8 @@ def geo_prerun(args):
         prompt2 = GEOMOSAIC_PROMPT(f"$ bash {output_script}")
         print(f"\n{GEOMOSAIC_NOTE}: The following draft scripts for GNU Parallel execution are created (along with file containing the samples list):\n{output_script}\n{extdb_output_script}\n{list_sample_output}")
         print(f"\n{GEOMOSAIC_NOTE}: These script can be considered minimal for GNU Parallel.\nFeel free to modify them to add more complex codes. More details can be retrieved to official GNU Parallel Documentation.")
-        print(f"\n{GEOMOSAIC_NOTE}: So now you are ready to go!\nYour first step should be to setup the required databases of your pipeline, by executing:\n{prompt1}\n\nonce it is finished, you can execute the real pipeline:\n{prompt2}")
         print(f"\n{GEOMOSAIC_NOTE}: Since your using GNU Parallel, you should set the number of jobs to execute in parallel taking into account the number of cpus that you can use.\nFor instance, if 36 cores are available you can open the following file\n{GEOMOSAIC_PROMPT(output_script)}\n\nand modify the following variables\n{GEOMOSAIC_PROMPT('n_jobs_in_parallel=4')}\n{GEOMOSAIC_PROMPT('threads_per_job=9')}.")
+        print(f"\n{GEOMOSAIC_NOTE}: So now you are ready to go!\nYour first step should be to setup the required databases of your pipeline, by executing:\n{prompt1}\n\nonce it is finished, you can execute the real pipeline:\n{prompt2}")
     
     print(f"\n{GEOMOSAIC_PROCESS}: Installing all the conda environments of your workflow/unit. This may take a while...\n", end="", flush=True)
     envinstall(geomosaic_dir, gm_snakefile, unit)
