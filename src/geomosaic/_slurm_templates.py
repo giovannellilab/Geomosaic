@@ -47,7 +47,7 @@ def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit):
         partition = partition,
         mail_type = mail_type,
         mail_user = mail_user,
-        path_extdb_snakefile = str(os.path.join(geomosaic_dir, "Snakemake_extdb.smk"))
+        path_extdb_snakefile = str(os.path.join(geomosaic_dir, "Snakefile_extdb.smk"))
     )
     
     return output_script, sw, extdb_output_script, extdb, list_sample_output
@@ -75,8 +75,7 @@ def update_threads(unit, geomosaic_wdir, threads):
             yaml.dump(configs, fd_config)
 
 
-slurm_workflow = """
-#!/bin/bash
+slurm_workflow = """#!/bin/bash
 
 #SBATCH --job-name="Geomosaic"
 #SBATCH --time=96:00:00
@@ -99,8 +98,7 @@ single_sample="$(tail -n +$SLURM_ARRAY_TASK_ID {path_list_sample} | head -n1)"
 snakemake --use-conda --cores {threads} --config SAMPLES=$single_sample -s {path_geomosaic_snakefile}
 """
 
-slurm_extdb = """
-#!/bin/bash
+slurm_extdb = """#!/bin/bash
 
 #SBATCH --job-name="Extdb_GM"
 #SBATCH --time=96:00:00

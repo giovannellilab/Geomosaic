@@ -34,7 +34,7 @@ def exectype_gnuparalllel(args, geomosaic_dir, gm_snakefile, unit):
     )
 
     extdb = gnuparallel_extdb.format(
-        path_extdb_snakefile = str(os.path.join(geomosaic_dir, "Snakemake_extdb.smk"))
+        path_extdb_snakefile = str(os.path.join(geomosaic_dir, "Snakefile_extdb.smk"))
     )
     
     return output_script, sw, extdb_output_script, extdb, list_sample_output
