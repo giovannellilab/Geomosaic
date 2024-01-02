@@ -12,8 +12,9 @@ rule run_megahit:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["megahit"])) ) (config["USER_PARAMS"]["megahit"]) 
     shell:
         """
-        megahit {params.user_params} -t {threads} -1 {input.r1} -2 {input.r2} -o {output.folder}
-        mv {output.folder}/final.contigs.fa {output.contigs_fasta}
+        mkdir -p {output.folder}
+        megahit {params.user_params} -t {threads} -1 {input.r1} -2 {input.r2} -o {output.folder}/megahit_computation
+        cp {output.folder}/megahit_computation/final.contigs.fa {output.contigs_fasta}
         """
 
 rule run_megahit_parser:
