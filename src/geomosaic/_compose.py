@@ -120,3 +120,4 @@ def write_extdb_snakefile(snakefile_extdb, config_filename, order_writing, user_
         print(GEOMOSAIC_OK)
     else:
         print(f"{GEOMOSAIC_NOTE}: your workflow doesn't need the preparation of external database.")
+        print(GEOMOSAIC_OK)

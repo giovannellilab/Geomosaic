@@ -14,8 +14,8 @@ rule run_coverm_genome:
         """
         mkdir -p {output.folder}/tmp
 
-        for mtd in relative_abundance mean trimmed_mean count tpm; do
-            TMPDIR={output.folder}/tmp coverm genome -1 {input.r1} -2 {input.r2} \
+        for mtd in relative_abundance mean trimmed_mean tpm; do
+            TMPDIR={output.folder}/tmp coverm genome --coupled {input.r1} {input.r2} \
                 --genome-fasta-directory {input.mags_folder}/fasta \
                 --genome-fasta-extension fa \
                 --output-file {output.folder}/$mtd.tsv \
