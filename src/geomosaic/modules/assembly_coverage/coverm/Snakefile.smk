@@ -10,13 +10,15 @@ rule run_coverm:
     conda: config["ENVS"]["coverm"]
     shell:
         """
-        mkdir -p {output.folder}
+        mkdir -p {output.folder}/tmp
 
         for mtd in mean trimmed_mean count tpm; do
-            coverm contig --bam-files {input.folder_readmap}/read_mapping_sorted.bam \
+            TMPDIR={output.folder}/tmp coverm contig --bam-files {input.folder_readmap}/read_mapping_sorted.bam \
                 --output-file {output.folder}/$mtd.tsv \
                 --threads {threads} \
                 --methods $mtd \
                 {params.user_params}
         done;
+
+        (cd {output.folder} && rm -r tmp)
         """
