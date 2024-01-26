@@ -12,8 +12,10 @@ def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit):
     mail_user = "" if args.mail_user is None else f"#SBATCH --mail-user={args.mail_user}"
     samples_number = len(geomosaic_samples)
     path_geomosaic_snakefile = gm_snakefile
-    output_script = os.path.abspath("slurm_geomosaic.sh") if args.output_script is None else os.path.abspath(args.output_script)
+    unit_suffix = "_unit" if unit else ""
+    output_script = os.path.abspath(f"slurm{unit_suffix}_geomosaic.sh") if args.output_script is None else os.path.abspath(args.output_script)
     extdb_output_script = os.path.abspath("slurm_extdb_geomosaic.sh") if args.extdb_output_script is None else os.path.abspath(args.extdb_output_script)
+    singleSample_output_script = os.path.abspath("slurm_simpleSample_geomosaic.sh") if args.extdb_output_script is None else os.path.abspath(args.extdb_output_script)
     list_sample_output = os.path.abspath(args.list_sample_output)
     
     if args.folder_logs is not None:
@@ -49,8 +51,18 @@ def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit):
         mail_user = mail_user,
         path_extdb_snakefile = str(os.path.join(geomosaic_dir, "Snakefile_extdb.smk"))
     )
+
+    singleSample = slurm_workflow_singleSample.format(
+        threads = threads, 
+        memory = memory, 
+        partition = partition,
+        path_geomosaic_snakefile = path_geomosaic_snakefile,
+        mail_type = mail_type,
+        mail_user = mail_user,
+        slurm_logs = slurm_logs,
+    )
     
-    return output_script, sw, extdb_output_script, extdb, list_sample_output
+    return output_script, sw, extdb_output_script, extdb, singleSample_output_script, singleSample, list_sample_output
 
 
 def update_threads(unit, geomosaic_wdir, threads):
@@ -115,4 +127,33 @@ slurm_extdb = """#!/bin/bash
 
 
 snakemake --use-conda --cores 7 -s {path_extdb_snakefile}
+"""
+
+
+slurm_workflow_singleSample = """#!/bin/bash
+
+#SBATCH --job-name="GM_SingleSample"
+#SBATCH --time=96:00:00
+#SBATCH --cpus-per-task={threads}
+#SBATCH --mem={memory}G
+{slurm_logs}
+{partition}
+{mail_type}
+{mail_user}
+
+#
+# Created with Geomosaic
+# 
+
+if [[ $1 -eq 0 ]] ; then
+    echo 'No argument "SAMPLE" supplied.'
+    echo 'Execution type of this script: sbatch slurm_simpleSample_geomosaic MYSAMPLE'
+    echo 'Exit.'
+    exit 1
+fi
+
+single_sample=$1
+
+
+snakemake --use-conda --cores {threads} --config SAMPLES=$single_sample -s {path_geomosaic_snakefile}
 """

@@ -27,7 +27,8 @@ def geo_prerun(args):
     if exectype == "slurm":
         output_script, sw, \
             extdb_output_script, extdb, \
-                list_sample_output = exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit)
+                singleSample_output_script, singleSample, \
+                    list_sample_output = exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit)
 
         with open(list_sample_output, "wt") as fl:
             for s in geomosaic_setup["SAMPLES"]:
@@ -38,12 +39,16 @@ def geo_prerun(args):
 
         with open(extdb_output_script, "wt") as fd:
             fd.write(extdb)
+        
+        with open(singleSample_output_script, "wt") as fd:
+            fd.write(singleSample)
     
         prompt1 = GEOMOSAIC_PROMPT(f"$ sbatch {extdb_output_script}")
         prompt2 = GEOMOSAIC_PROMPT(f"$ sbatch {output_script}")
-        print(f"\n{GEOMOSAIC_NOTE}: The following draft scripts for slurm execution were created (along with file containing the samples list):\n{output_script}\n{extdb_output_script}\n{list_sample_output}")
+        prompt3 = GEOMOSAIC_PROMPT(f"$ sbatch {singleSample_output_script} MYSAMPLE")
+        print(f"\n{GEOMOSAIC_NOTE}: The following draft scripts for slurm execution were created (along with file containing the samples list):\n{output_script}\n{extdb_output_script}\n{singleSample_output_script}\n{list_sample_output}")
         print(f"\n{GEOMOSAIC_NOTE}: These script can be considered minimal for SLURM.\nIf you need you can modify them to add more SBATCH information. More details can be retrieved to official SLURM Documentation.")
-        print(f"\n{GEOMOSAIC_NOTE}: So now you are ready to go!\nYour first step should be to setup the required databases of your pipeline, by executing:\n{prompt1}\n\nonce it is finished, you can execute the real pipeline:\n{prompt2}")
+        print(f"\n{GEOMOSAIC_NOTE}: So now you are ready to go!\nYour first step should be to setup the required databases of your pipeline, by executing:\n{prompt1}\n\nonce it is finished, you can execute the real pipeline:\n{prompt2}\n\nfurthermore, if you need to execute your workflow/unit just for one sample you can execute the following script through sbatch (specifying your sample name of interest):\n{prompt3}")
     
     else:
         output_script, sw, \
