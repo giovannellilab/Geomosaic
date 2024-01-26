@@ -19,7 +19,8 @@
         "mags_func_annotation",
         "mags_tax_annotation",
         "mags_orf_prediction",
-        "mags_domain_annotation"
+        "mags_domain_annotation",
+        "mags_coverage"
     ],
 
     "graph": [
@@ -27,6 +28,7 @@
         ["pre_processing", "tax_classification_rb"],
         ["pre_processing", "assembly"],
         ["pre_processing", "assembly_readmapping"],
+        ["pre_processing", "mags_coverage"],
         
         ["assembly", "assembly_readmapping"],
         ["assembly", "assembly_qc"],
@@ -55,6 +57,7 @@
         ["mags_retrieval", "mags_orf_prediction"],
         ["mags_retrieval", "mags_func_annotation"],
         ["mags_retrieval", "mags_tax_annotation"],
+        ["mags_retrieval", "mags_coverage"],
 
         ["mags_orf_prediction", "mags_domain_annotation"]
     ],
@@ -205,6 +208,13 @@
             "choices": {
                 "reCOGnizer on MAGs": "mags_recognizer"
             }
+        },
+
+        "mags_coverage": {
+            "description": "Module: Computing read coverage for each retrieved MAG [Binning-based]",
+            "choices": {
+                "CoverM (Genome)": "coverm_genome"
+            }
         }
     },
     
@@ -252,7 +262,8 @@
         "mags_dram": "dram.yaml",
         "mags_gtdbtk": "gtdbtk.yaml",
         "mags_prodigal": "prodigal.yaml",
-        "mags_recognizer": "recognizer.yaml"
+        "mags_recognizer": "recognizer.yaml",
+        "coverm_genome": "coverm.yaml"
     },
     
     "external_db": {
@@ -300,6 +311,7 @@
         "mags_recognizer": "recognizer",
         "kaiju": "kaiju",
         "mags_gtdbtk": "mags_gtdbtk",
-        "hmms_cov": "hmms_cov"
+        "hmms_cov": "hmms_cov",
+        "coverm_genome": "coverm"
     }
 }
