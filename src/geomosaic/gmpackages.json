@@ -143,7 +143,8 @@
         "gene_coverage": {
             "description": "Module: tracking coverage for genes of interest through HMM models [Assembly-based]",
             "choices": {
-                "HMMs Coverage": "hmms_cov"
+                "HMMs Coverage": "hmms_cov",
+                "HMMs Coverage (NEW)": "hmms_search"
             }
         },
 
@@ -305,13 +306,18 @@
         }
     },
 
-    "gathering": {
-        "mifaser": "mifaser",
-        "recognizer": "recognizer",
-        "mags_recognizer": "recognizer",
-        "kaiju": "kaiju",
-        "mags_gtdbtk": "mags_gtdbtk",
-        "hmms_cov": "hmms_cov",
-        "coverm_genome": "coverm"
-    }
+    "gathering": [
+        "mifaser",
+        "kaiju",
+
+        "kraken2",
+        "eggnog_mapper",
+        "recognizer",
+        "hmms_cov",
+        
+        "mags_gtdbtk",
+        "mags_recognizer",
+        "mags_dram",
+        "coverm_genome"
+    ]
 }
