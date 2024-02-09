@@ -22,7 +22,7 @@ dependencies = [
     "pyyaml",
     "matplotlib",
     "snakemake",
-    "biopython",
+    "biopython>=1.82",
     "tqdm"
 ]
 
