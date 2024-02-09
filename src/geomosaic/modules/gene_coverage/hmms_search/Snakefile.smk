@@ -46,7 +46,7 @@ rule hmms_search:
         m1 = df_hmmresults.merge(df_mapping, on="orf_id", how="left")
 
         for mtd in coverage_methods:
-            df_coverage = pd.read_csv(os.path.join(str(input.coverage_folder), f"{mtd}.txt"), sep="\t")
+            df_coverage = pd.read_csv(os.path.join(str(input.coverage_folder), f"{mtd}.tsv"), sep="\t")
             df_coverage.columns = ['contig', mtd]
             temp = pd.merge(m1, df_coverage, how="left", on="contig")
             m1 = temp.copy()
