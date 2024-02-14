@@ -28,7 +28,7 @@ rule hmms_search:
                 continue
             
             filename=hmm.split(".hmm")[0]
-            out_path=os.path.join(output.folder, filename)
+            out_path=os.path.join(output.folder, "output_hmms", filename)
             shell("mkdir -p {out_path}")
 
             hmm_file=os.path.join(params.hmm_folder, hmm)
