@@ -14,6 +14,8 @@ rule run_coverm_genome:
         """
         mkdir -p {output.folder}/tmp
 
+        touch {output.folder}/list.txt
+
         for mtd in relative_abundance mean trimmed_mean tpm; do
             TMPDIR={output.folder}/tmp coverm genome --coupled {input.r1} {input.r2} \
                 --genome-fasta-directory {input.mags_folder}/fasta \
@@ -22,6 +24,8 @@ rule run_coverm_genome:
                 --threads {threads} \
                 --methods $mtd \
             {params.user_params}
+
+            echo $mtd >> {output.folder}/list.txt
         done;
 
         (cd {output.folder} && rm -r tmp)
