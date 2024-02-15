@@ -1,0 +1,3 @@
+mags_hmmsearch:
+- -E 0.00001
+-
