@@ -1,5 +1,5 @@
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, RawDescriptionHelpFormatter
-from geomosaic._utils import GEOMOSAIC_DESCRIPTION, GEOMOSAIC_MODULES_DESCRIPTION, GEOMOSAIC_MODULES, GEOMOSAIC_PROMPT
+from geomosaic._utils import GEOMOSAIC_DESCRIPTION, GEOMOSAIC_MODULES_DESCRIPTION, GEOMOSAIC_MODULES, GEOMOSAIC_PROMPT, csv_values, GEOMOSAIC_GATHER_PACKAGES, GEOMOSAIC_GATHER_PACKAGES_DESCRIPTION
 from geomosaic.gm_setup import geo_setup
 from geomosaic.gm_workflow import geo_workflow
 from geomosaic.gm_unit import geo_unit
@@ -26,8 +26,12 @@ def main():
                                         description=GEOMOSAIC_PROMPT("DESCRIPTION: It allows to choose and run just one module, for example to execute an alternative package for that module. The command create another Snakefile a config file (both in the geomosaic directory) with the chosen module"),
                                         formatter_class=RawDescriptionHelpFormatter,
                                         add_help=False)
-    prerun_parser = subparsers.add_parser("prerun", help="This command it is usefull to install the required conda environments of your workflow/unit and create required scripts to execute Geomosaic on a cluster using SLURM",
-                                          description=GEOMOSAIC_PROMPT("DESCRIPTION: This command it is usefull to install the required conda environments of your workflow/unit and create required scripts to execute Geomosaic on a cluster using SLURM"),
+    prerun_parser = subparsers.add_parser("prerun", help="This command is usefull to install the required conda environments of your workflow/unit and create required scripts to execute Geomosaic on a cluster using SLURM",
+                                          description=GEOMOSAIC_PROMPT("DESCRIPTION: This command is usefull to install the required conda environments of your workflow/unit and create required scripts to execute Geomosaic on a cluster using SLURM"),
+                                          formatter_class=RawDescriptionHelpFormatter,
+                                          add_help=False)
+    gather_parser = subparsers.add_parser("gather", help="This command is useful to gather all the results obtained from your workflow and create tables and data that are ready to use for downstream analysis.",
+                                          description=GEOMOSAIC_PROMPT("DESCRIPTION: This command is useful to gather all the results obtained from your workflow and create tables and data that are ready to use for downstream analysis."),
                                           formatter_class=RawDescriptionHelpFormatter,
                                           add_help=False)
 
@@ -61,7 +65,7 @@ def main():
     #########################
     workflow_required = workflow_parser.add_argument_group(GEOMOSAIC_PROMPT("Required Arguments"))
     workflow_required.add_argument("-s", "--setup_file", required=True, type=str, 
-                              help="Geomosaic setup file created from the 'geomosaic setup ...' command.")
+                              help=f"Geomosaic setup file created from the {GEOMOSAIC_PROMPT('geomosaic setup ...')} command.")
     
     workflow_optional = workflow_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments"))
     workflow_optional.add_argument('-t' ,'--threads', default=10, type=int, help="Threads to use (per sample).")
@@ -84,12 +88,12 @@ def main():
     #####################
     unit_required = unit_parser.add_argument_group(GEOMOSAIC_PROMPT("Required Arguments"))
     unit_required.add_argument("-s", "--setup_file", required=True, type=str, 
-                                help="Geomosaic setup file created from the 'geomosaic setup ...' command.")
+                                help=f"Geomosaic setup file created from the {GEOMOSAIC_PROMPT('geomosaic setup ...')} command.")
     unit_required.add_argument("-m", "--module", required=True, type=str, 
                                 help=f"Modules to execute.", choices=GEOMOSAIC_MODULES, metavar="MODULE")
     unit_optional = unit_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments"))
     unit_optional.add_argument('-t' ,'--threads', default=10, type=int, help="Threads to use (per sample).")
-    unit_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None,type=lambda p: pathlib.Path(p).resolve(),
+    unit_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None, type=lambda p: pathlib.Path(p).resolve(),
                                    help="If you have already downloaded and setup \
                                    databases with geomosaic, here you can specify the path folder.")
     
@@ -101,13 +105,13 @@ def main():
     unit_parser.set_defaults(func=geo_unit)
 
 
-    #####################
+    #######################
     ## PRERUN Parameters ##
-    #####################
+    #######################
 
     prerun_required = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Required Arguments"))
     prerun_required.add_argument("-s", "--setup_file", required=True, type=str, 
-                                help="Geomosaic setup file created from the 'geomosaic setup ...' command.")
+                                help=f"Geomosaic setup file created from the {GEOMOSAIC_PROMPT('geomosaic setup ...')} command.")
     
     prerun_optional = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments"))
     prerun_optional.add_argument('-u' ,'--unit', action='store_true', help="Install the conda environment of your geomosaic unit.")
@@ -121,7 +125,7 @@ def main():
     prerun_optionalslurm.add_argument('-p', '--partition', default=None, type=str, help="Partition specification for slurm job in the cluster. (requires '--exec_type slurm' option)")
     prerun_optionalslurm.add_argument('--mail_type', default=None, choices=["NONE", "BEGIN", "END", "FAIL", "REQUEUE", "ALL"], help="Mail type to notify user about occurred even type in slurm. Ignore this option if you are not interested to get(requires '--exec_type slurm' option)")
     prerun_optionalslurm.add_argument('--mail_user', default=None, type=str, help="Email where to to receive slurm notification type specified in '--mail_type'. (requires '--exec_type slurm' option)")
-    prerun_optionalslurm.add_argument('-f', '--folder_logs', default=None, type=str, help="Folder for logs files. Default is None, but we suggest you to specify it and if it does not exists, Geomosaic will create it. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
+    prerun_optionalslurm.add_argument('-f', '--folder_logs', default=None, type=str, help="Folder for logs files. Default value is None means that slurm logs are saved in your current directory. However we suggest you to specify it and if it does not exists, Geomosaic will create it. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
     prerun_optionalslurm.add_argument('-l', '--list_sample_output', default="list_samples.txt", type=str, help="Filename where to write the list of samples. Default: list_samples.txt created in the current directory. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
     prerun_optionalslurm.add_argument('-o', '--output_script', default=None, type=str, help="Filename for the SLURM or GNU Parallel script. As default it will be created as slurm_geomosaic.sh or parallel_geomosaic in the current directory (depending on the '--exec_type' option). (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
     prerun_optionalslurm.add_argument('-e', '--extdb_output_script', default=None, type=str, help="Filename for the SLURM or GNU Parallel script to execute external db setup. As default it will be created as slurm_extdb_geomosaic.sh or parallel_extdb_geomosaic.sh in the current directory (depending on the '--exec_type' option). (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
@@ -130,6 +134,23 @@ def main():
     prerun_help.add_argument("-h", "--help", action="help", help=f"show this help message and exit")
     ## prerun set default function
     prerun_parser.set_defaults(func=geo_prerun)
+
+    #######################
+    ## GATHER Parameters ##
+    #######################
+
+    gather_required = gather_parser.add_argument_group(GEOMOSAIC_PROMPT("Required Arguments"))
+    gather_required.add_argument("-s", "--setup_file", required=True, type=str, 
+                                help=f"Geomosaic setup file created from the {GEOMOSAIC_PROMPT('geomosaic setup ...')} command.")
+    
+    gather_optional = gather_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments"))
+    gather_optional.add_argument("-f", "--folder_gathering", required=False, default=None, type=str, help="Path where geomosaic can create the directory for gathering. As default the folder 'gm_gathering' is created in the working directory of Geomosaic.")
+    gather_optional.add_argument('-p' ,'--packages', default="_ALL_", type=csv_values, help='a comma separated list of packages. Check the available packages in the section below. Example: --packages mifaser,kaiju,mags_gtdbtk,mags_dram.')
+
+    gather_parser.add_argument_group(GEOMOSAIC_PROMPT("Available packages for Gathering"), GEOMOSAIC_GATHER_PACKAGES_DESCRIPTION)
+
+    gather_help = gather_parser.add_argument_group(GEOMOSAIC_PROMPT("Help Arguments"))
+    gather_help.add_argument("-h", "--help", action="help", help=f"show this help message and exit")
 
     if len(sys.argv)==1:
         parser.print_help(sys.stderr)

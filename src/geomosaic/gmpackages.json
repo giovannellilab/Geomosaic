@@ -20,7 +20,8 @@
         "mags_tax_annotation",
         "mags_orf_prediction",
         "mags_domain_annotation",
-        "mags_coverage"
+        "mags_coverage",
+        "mags_hmm_annotation"
     ],
 
     "graph": [
@@ -59,7 +60,10 @@
         ["mags_retrieval", "mags_tax_annotation"],
         ["mags_retrieval", "mags_coverage"],
 
-        ["mags_orf_prediction", "mags_domain_annotation"]
+        ["mags_orf_prediction", "mags_domain_annotation"],
+        ["mags_orf_prediction", "mags_hmm_annotation"],
+
+        ["mags_coverage", "mags_hmm_annotation"]        
     ],
 
     "modules": {
@@ -216,13 +220,20 @@
             "choices": {
                 "CoverM (Genome)": "coverm_genome"
             }
+        },
+
+        "mags_hmm_annotation": {
+            "description": "Module: tracking coverage for genes of interest through HMM models on MAGs [Binning-based]",
+            "choices": {
+                "HMMSearch on MAGs": "mags_hmmsearch"
+            }
         }
     },
     
     "additional_input": {
         "gene_coverage": {
             "hmm_folder": {
-                "description": "\n[Additional Parameter for Gene Coverage] Description: you need to specify also an absolute path to the folder containing the HMM files\nRequired parameter: Absolute path",
+                "description": "\n[Additional Parameter for Gene Coverage] Description: you need to specify also an absolute path to the folder containing the HMM files, which extension must be '.hmm'\nRequired parameter: Absolute path",
                 "type": "folder"
             }
         },
@@ -235,6 +246,13 @@
             "contamination_threshold":{
                 "description": "\n[Additional Parameter to retrieve HQ MAGs] Description: CONTAMINATION parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 10",
                 "type": "integer"
+            }
+        },
+
+        "mags_hmm_annotation": {
+            "hmm_folder": {
+                "description": "\n[Additional Parameter for Gene Coverage] Description: you need to specify also an absolute path to the folder containing the HMM files, which extension must be '.hmm'\nRequired parameter: Absolute path",
+                "type": "folder"
             }
         }
     },

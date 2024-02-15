@@ -1,5 +1,6 @@
 import os
 import json
+from argparse import ArgumentError
 
 
 class bcolors:
@@ -32,6 +33,38 @@ def read_modules(description: bool):
         return available_moules
 
 
+def read_gathering(description: bool):
+    gmpackages_path = os.path.join(os.path.dirname(__file__), 'gmpackages.json')
+
+    with open(gmpackages_path, 'rt') as f:
+        gmpackages = json.load(f)
+    
+    descr_available_packages = "\n"
+    available_packages = ["_ALL_"]
+    for package in gmpackages["gathering"]:
+        descr_available_packages += f"- {bcolors.OKBLUE}{package}{bcolors.ENDC}\n"
+        available_packages.append(package)
+    
+    if description:
+        return descr_available_packages
+    else:
+        return available_packages
+
+
+def csv_values(vstr, sep=','):
+    '''
+    @returns iterable of string after separated by comma
+    '''
+    values = []
+    for v0 in vstr.split(sep):
+        try:
+            v = str(v0)
+            values.append(v)
+        except ValueError as err:
+            raise ArgumentError('Invalid value %s' % v)
+    return values
+
+
 GEOMOSAIC_DESCRIPTION = f"{bcolors.BOLD}Geomosaic: A flexible metagenomic pipeline combining read-based, assemblies and MAGs with downstream analysis{bcolors.ENDC}"
 
 GEOMOSAIC_ERROR     = f"{bcolors.FAIL}Geomosaic Error{bcolors.ENDC}"
@@ -42,7 +75,10 @@ GEOMOSAIC_PROCESS   = f"{bcolors.HEADER}Geomosaic Process{bcolors.ENDC}"
 def GEOMOSAIC_PROMPT(command):
     return f"{bcolors.BOLD}{command}{bcolors.ENDC}"
 
-GEOMOSAIC_OK        = f"\n--> {bcolors.OKGREEN}OK{bcolors.ENDC} <--"
+GEOMOSAIC_OK = f"\n--> {bcolors.OKGREEN}OK{bcolors.ENDC} <--"
 
 GEOMOSAIC_MODULES_DESCRIPTION = read_modules(description=True)
 GEOMOSAIC_MODULES = read_modules(description=False)
+
+GEOMOSAIC_GATHER_PACKAGES = read_gathering(description=False)
+GEOMOSAIC_GATHER_PACKAGES_DESCRIPTION = read_gathering(description=True)
