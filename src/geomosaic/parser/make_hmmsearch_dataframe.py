@@ -5,7 +5,7 @@ import pandas as pd
 from tqdm import tqdm
 
 
-def make_hmmsearch_dataframe(list_hmmsearch_outputs):
+def make_hmmsearch_dataframe(list_hmmsearch_outputs, mags=False):
     l = []
     print(f"{GEOMOSAIC_PROCESS}: Processing all the output results from hmmsearch...")
     for pathfilename in tqdm(list_hmmsearch_outputs):
