@@ -204,6 +204,7 @@ def draw_workflow_graph(G, new_pos, pos_labels_attrs):
         "mags_retrieval",
         "mags_func_annotation",
         "mags_tax_annotation",
+        "mags_coverage",
     ]
 
     nx.draw(G, 
