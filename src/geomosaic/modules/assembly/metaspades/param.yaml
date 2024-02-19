@@ -1,2 +1,5 @@
 metaspades:
 -
+
+seqkit:
+- --min-len 1000
