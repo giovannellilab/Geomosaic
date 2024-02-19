@@ -3,3 +3,6 @@ megahit:
 - --memory 250000000000
 # Complex metagenomes
 - --presets meta-large
+
+seqkit:
+- --min-len 1000

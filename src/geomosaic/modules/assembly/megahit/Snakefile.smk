@@ -9,12 +9,13 @@ rule run_megahit:
     threads: config["threads"]
     conda: config["ENVS"]["megahit"]
     params:
-        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["megahit"])) ) (config["USER_PARAMS"]["megahit"]) 
+        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["megahit"])) ) (config["USER_PARAMS"]["megahit"]),
+        seqkit_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["seqkit"])) ) (config["USER_PARAMS"]["megahit"]) 
     shell:
         """
         mkdir -p {output.folder}
         megahit {params.user_params} -t {threads} -1 {input.r1} -2 {input.r2} -o {output.folder}/megahit_computation
-        cp {output.folder}/megahit_computation/final.contigs.fa {output.contigs_fasta}
+        seqkit seq {params.seqkit_params} {output.folder}/megahit_computation/final.contigs.fa -o {output.contigs_fasta}
         """
 
 rule run_megahit_parser:
