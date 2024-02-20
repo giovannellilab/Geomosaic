@@ -27,17 +27,19 @@ rule run_parse_mags_prodigal:
         output_mapping = "{wdir}/{sample}/mags_prodigal/{mag}/orf_contig_mapping.tsv",
         output_fasta = "{wdir}/{sample}/mags_prodigal/{mag}/orf_predicted.faa",
         output_simple_mapping = "{wdir}/{sample}/mags_prodigal/{mag}/simple_orf_contig_mapping.tsv",
+    params:
+        mag_n = "{mag}"
     threads: 1
     run:
-        from geomosaic.parser.prodigal_orf_mapping import parsing_prodigal_orfs    
-        parsing_prodigal_orfs(str(input.fasta_input), str(output.output_mapping), str(output.output_fasta), str(output.output_simple_mapping))
+        from geomosaic.parser.prodigal_orf_mapping import parsing_prodigal_orfs_MAGs    
+        parsing_prodigal_orfs_MAGs(str(input.fasta_input), str(output.output_mapping), str(output.output_fasta), str(output.output_simple_mapping), params.mag_n)
 
 def ls_collect_bins(f_string): 
     def _f(wildcards):
         import pandas as pd
 
-        mags_file = checkpoints.run_mags.get(**wildcards).output.mags_file
-        df_mags = pd.read_csv(mags_file, sep="\t")
+        mags_file = "{wdir}/{sample}/MAGs.tsv"
+        df_mags = pd.read_csv(mags_file.format(**wildcards), sep="\t")
         
         _temp = []
         for m in df_mags.MAGs:
