@@ -49,7 +49,7 @@ rule run_mags_hmmsearch:
         m1 = df_hmmresults.merge(df_mapping, on="orf_id", how="left")
 
         for mtd in coverage_methods:
-            df_coverage = pd.read_csv(os.path.join(str(input.coverage_folder), f"{mtd}.tsv"), sep="\t")
+            df_coverage = pd.read_csv(os.path.join(str(input.mags_cov), f"{mtd}.tsv"), sep="\t")
             df_coverage.columns = ['mags', mtd]
             temp = pd.merge(m1, df_coverage, how="left", on="mags")
             m1 = temp.copy()
@@ -58,12 +58,12 @@ rule run_mags_hmmsearch:
 
         m1.to_csv(os.path.join(output_folder, "HMMs_coverage_table.tsv"), sep="\t", header=True, index=False)
 
-def get_magshmmsearch_inputs(f_string): 
+def get_mags_hmmsearch_inputs(f_string): 
     def _f(wildcards):
         import pandas as pd
 
-        mags_file = checkpoints.gather_mags_prodigal_outputs.get(**wildcards).output.mags_file
-        df_mags = pd.read_csv(mags_file, sep="\t")
+        mags_file = "{wdir}/{sample}/MAGs.tsv"
+        df_mags = pd.read_csv(mags_file.format(**wildcards), sep="\t")
         
         _temp = []
         for m in df_mags.MAGs:
@@ -73,7 +73,7 @@ def get_magshmmsearch_inputs(f_string):
     return _f
 
 rule gather_mags_hmmsearch_inputs:
-    input: get_magshmmsearch_inputs("{wdir}/{sample}/mags_hmmsearch/{mag}/HMMs_coverage_table.tsv")
+    input: get_mags_hmmsearch_inputs("{wdir}/{sample}/mags_hmmsearch/{mag}/HMMs_coverage_table.tsv")
     output: touch("{wdir}/{sample}/mags_hmmsearch/gather_OK.txt")
     threads: 1
 
