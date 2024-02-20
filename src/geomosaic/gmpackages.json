@@ -232,25 +232,25 @@
     "additional_input": {
         "assembly_hmm_annotation": {
             "hmm_folder": {
-                "description": "\n[Additional Parameter for Gene Coverage] Description: you need to specify also an absolute path to the folder containing the HMM files, which extension must be '.hmm'\nRequired parameter: Absolute path",
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - ASSEMBLY HMM ANNOTATION] Description: you need to specify also an absolute path to the folder containing the HMM files, which extension must be '.hmm'\nRequired parameter: Absolute path",
                 "type": "folder"
             }
         },
 
         "mags_retrieval": {
             "completness_threshold":{
-                "description": "\n[Additional Parameter to retrieve HQ MAGs] Description: COMPLETENESS parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 90",
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - MAGS RETRIEVAL] Description: COMPLETENESS parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 90",
                 "type": "integer"
             },
             "contamination_threshold":{
-                "description": "\n[Additional Parameter to retrieve HQ MAGs] Description: CONTAMINATION parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 10",
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - MAGS RETRIEVAL] Description: CONTAMINATION parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 10",
                 "type": "integer"
             }
         },
 
         "mags_hmm_annotation": {
             "hmm_folder": {
-                "description": "\n[Additional Parameter for Gene Coverage] Description: you need to specify also an absolute path to the folder containing the HMM files, which extension must be '.hmm'\nRequired parameter: Absolute path",
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - MAGS HMM ANNOTATION] Description: you need to specify also an absolute path to the folder containing the HMM files, which extension must be '.hmm'\nRequired parameter: Absolute path",
                 "type": "folder"
             }
         }
