@@ -23,5 +23,3 @@ rule run_mags_dram:
                 --output_dir {output}/dram_distillation \
                 --config_loc {input.dram_config_folder}/dram_config.json
         """
-        
-        

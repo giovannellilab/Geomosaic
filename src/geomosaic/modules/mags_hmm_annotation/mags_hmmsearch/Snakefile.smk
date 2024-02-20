@@ -58,6 +58,7 @@ rule run_mags_hmmsearch:
 
         m1.to_csv(os.path.join(output_folder, "HMMs_coverage_table.tsv"), sep="\t", header=True, index=False)
 
+
 def get_mags_hmmsearch_inputs(f_string): 
     def _f(wildcards):
         import pandas as pd
@@ -72,8 +73,8 @@ def get_mags_hmmsearch_inputs(f_string):
         return _temp
     return _f
 
+
 rule gather_mags_hmmsearch_inputs:
     input: get_mags_hmmsearch_inputs("{wdir}/{sample}/mags_hmmsearch/{mag}/HMMs_coverage_table.tsv")
     output: touch("{wdir}/{sample}/mags_hmmsearch/gather_OK.txt")
     threads: 1
-
