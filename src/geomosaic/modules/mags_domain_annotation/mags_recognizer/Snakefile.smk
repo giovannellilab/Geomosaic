@@ -27,8 +27,8 @@ def get_recognizer_inputs(f_string):
     def _f(wildcards):
         import pandas as pd
 
-        mags_file = checkpoints.gather_mags_prodigal_outputs.get(**wildcards).output.mags_file
-        df_mags = pd.read_csv(mags_file, sep="\t")
+        mags_file = "{wdir}/{sample}/MAGs.tsv"
+        df_mags = pd.read_csv(mags_file.format(**wildcards), sep="\t")
         
         _temp = []
         for m in df_mags.MAGs:
