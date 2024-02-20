@@ -3,6 +3,7 @@ from networkx.classes import DiGraph
 from collections import deque
 import networkx as nx
 import subprocess
+import os
 from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROMPT
 from geomosaic._validator import validator_hmms_folder, validator_completeness_contamination_integer
 
@@ -82,6 +83,9 @@ def ask_additional_parameters(additional_input, order_writing):
     for module in order_writing:
         if module in additional_input:
             for adt_param, adt_param_tokens in additional_input[module].items():
+                if adt_param in additional_parameters:
+                    continue
+
                 flag = False
                 while not flag:
                     input_adt_param = get_user_path(adt_param_tokens["description"])
@@ -99,7 +103,7 @@ def ask_additional_parameters(additional_input, order_writing):
                 if adt_param_tokens["type"] in ["integer"]:
                     additional_parameters[adt_param] = int(input_adt_param)
                 else:
-                    additional_parameters[adt_param] = input_adt_param
+                    additional_parameters[adt_param] = os.path.abspath(input_adt_param)
     
     return additional_parameters
 
