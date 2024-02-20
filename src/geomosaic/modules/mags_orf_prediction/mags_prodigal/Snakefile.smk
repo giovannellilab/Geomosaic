@@ -1,7 +1,7 @@
 
 rule run_mags_prodigal:
     input:
-        fasta=expand("{wdir}/{sample}/{mags_retrieval}/fasta/{mag}.fa", mags_retrieval=config["mags_retrieval"], allow_missing=True)
+        fasta=expand("{wdir}/{sample}/{mags_retrieval}/fasta/{mag}.fa", mags_retrieval=config["MODULES"]["mags_retrieval"], allow_missing=True)
     output:
         genes_gff="{wdir}/{sample}/mags_prodigal/{mag}/genes.gff",
         protein_translations="{wdir}/{sample}/mags_prodigal/{mag}/protein_translations.faa",

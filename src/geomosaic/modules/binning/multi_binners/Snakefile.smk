@@ -1,8 +1,8 @@
 
 rule run_multi_binners:
     input:
-        folder_readmap=expand("{wdir}/{sample}/{assembly_readmapping}", assembly_readmapping=config["assembly_readmapping"], allow_missing=True),
-        gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["assembly"], allow_missing=True)
+        folder_readmap=expand("{wdir}/{sample}/{assembly_readmapping}", assembly_readmapping=config["MODULES"]["assembly_readmapping"], allow_missing=True),
+        gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["MODULES"]["assembly"], allow_missing=True)
     output:
         folder=directory("{wdir}/{sample}/multi_binners"),
         concoct_folder=directory("{wdir}/{sample}/multi_binners/concoct"),

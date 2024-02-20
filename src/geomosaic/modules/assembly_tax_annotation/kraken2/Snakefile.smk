@@ -1,7 +1,7 @@
 
 rule run_kraken2:
     input:
-        gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["assembly"], allow_missing=True),
+        gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["MODULES"]["assembly"], allow_missing=True),
         db_folder=expand("{kraken2_extdb_folder}", kraken2_extdb_folder=config["EXT_DB"]["kraken2"])
     output:
         directory("{wdir}/{sample}/kraken2")

@@ -1,9 +1,9 @@
 
 rule run_mags_hmmsearch:
     input:
-        mags_orf=expand("{wdir}/{sample}/{mags_orf_prediction}/{mag}/orf_predicted.faa", mags_orf_prediction=config["mags_orf_prediction"], allow_missing=True),
-        mags_orfmap=expand("{wdir}/{sample}/{mags_orf_prediction}/{mag}/simple_orf_contig_mapping.tsv", mags_orf_prediction=config["mags_orf_prediction"], allow_missing=True),
-        mags_cov=expand("{wdir}/{sample}/{mags_coverage}/", mags_coverage=config["mags_coverage"], allow_missing=True),
+        mags_orf=expand("{wdir}/{sample}/{mags_orf_prediction}/{mag}/orf_predicted.faa", mags_orf_prediction=config["MODULES"]["mags_orf_prediction"], allow_missing=True),
+        mags_orfmap=expand("{wdir}/{sample}/{mags_orf_prediction}/{mag}/simple_orf_contig_mapping.tsv", mags_orf_prediction=config["MODULES"]["mags_orf_prediction"], allow_missing=True),
+        mags_cov=expand("{wdir}/{sample}/{mags_coverage}/", mags_coverage=config["MODULES"]["mags_coverage"], allow_missing=True),
     output:
         hmms_search="{wdir}/{sample}/mags_hmmsearch/{mag}/HMMs_coverage_table.tsv",
     params:

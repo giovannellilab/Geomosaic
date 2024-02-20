@@ -1,7 +1,7 @@
 
 rule run_prodigal:
     input:
-        gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["assembly"], allow_missing=True),
+        gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["MODULES"]["assembly"], allow_missing=True),
     output:
         proteins="{wdir}/{sample}/prodigal/protein_translations.faa",
         genes="{wdir}/{sample}/prodigal/genes.gff",

@@ -1,8 +1,8 @@
 
 rule run_checkm:
     input:
-        dins_derep=expand("{wdir}/{sample}/{binning_derep}", binning_derep=config["binning_derep"], allow_missing=True),
-        gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["assembly"], allow_missing=True),
+        dins_derep=expand("{wdir}/{sample}/{binning_derep}", binning_derep=config["MODULES"]["binning_derep"], allow_missing=True),
+        gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["MODULES"]["assembly"], allow_missing=True),
         db_folder=expand("{checkm_extdb_folder}", checkm_extdb_folder=config["EXT_DB"]["checkm"])
     output:
         folder=directory("{wdir}/{sample}/checkm")

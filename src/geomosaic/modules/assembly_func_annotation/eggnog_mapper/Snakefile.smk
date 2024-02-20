@@ -1,7 +1,7 @@
 
 rule run_eggnog_mapper:
     input:
-        orf_predicted = expand("{wdir}/{sample}/{orf_prediction}/orf_predicted.faa", orf_prediction=config["orf_prediction"], allow_missing=True),
+        orf_predicted = expand("{wdir}/{sample}/{orf_prediction}/orf_predicted.faa", orf_prediction=config["MODULES"]["orf_prediction"], allow_missing=True),
         db_folder=expand("{eggnog_mapper_extdb_folder}", eggnog_mapper_extdb_folder=config["EXT_DB"]["eggnog_mapper"])
     output:
         directory("{wdir}/{sample}/eggnog_mapper"),

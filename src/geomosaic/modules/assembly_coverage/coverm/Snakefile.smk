@@ -1,7 +1,7 @@
 
 rule run_coverm:
     input:
-        folder_readmap=expand("{wdir}/{sample}/{assembly_readmapping}", assembly_readmapping=config["assembly_readmapping"], allow_missing=True),
+        folder_readmap=expand("{wdir}/{sample}/{assembly_readmapping}", assembly_readmapping=config["MODULES"]["assembly_readmapping"], allow_missing=True),
     output:
         folder=directory("{wdir}/{sample}/coverm"),
     params:

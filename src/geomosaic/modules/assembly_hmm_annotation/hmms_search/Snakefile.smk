@@ -1,9 +1,9 @@
 
 rule hmms_search:
     input:
-        orf_predicted = expand("{wdir}/{sample}/{orf_prediction}/orf_predicted.faa", orf_prediction=config["orf_prediction"], allow_missing=True),
-        orf_simple_mapping = expand("{wdir}/{sample}/{orf_prediction}/simple_orf_contig_mapping.tsv", orf_prediction=config["orf_prediction"], allow_missing=True), 
-        coverage_folder = expand("{wdir}/{sample}/{assembly_coverage}", assembly_coverage=config["assembly_coverage"], allow_missing=True)
+        orf_predicted = expand("{wdir}/{sample}/{orf_prediction}/orf_predicted.faa", orf_prediction=config["MODULES"]["orf_prediction"], allow_missing=True),
+        orf_simple_mapping = expand("{wdir}/{sample}/{orf_prediction}/simple_orf_contig_mapping.tsv", orf_prediction=config["MODULES"]["orf_prediction"], allow_missing=True), 
+        coverage_folder = expand("{wdir}/{sample}/{assembly_coverage}", assembly_coverage=config["MODULES"]["assembly_coverage"], allow_missing=True)
     output:
         folder=directory("{wdir}/{sample}/hmms_search")
     params:

@@ -1,7 +1,7 @@
 
 rule run_quast:
     input:
-        gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["assembly"], allow_missing=True),
+        gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["MODULES"]["assembly"], allow_missing=True),
     output:
         directory("{wdir}/{sample}/quast")
     threads: config["threads"]
