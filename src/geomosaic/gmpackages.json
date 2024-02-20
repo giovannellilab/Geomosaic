@@ -147,8 +147,7 @@
         "assembly_hmm_annotation": {
             "description": "Module: tracking coverage for genes of interest through HMM models [Assembly-based]",
             "choices": {
-                "HMMs Coverage": "hmms_cov",
-                "HMMs Coverage (NEW)": "hmms_search"
+                "HMMs Search on Assembly": "hmms_search"
             }
         },
 
