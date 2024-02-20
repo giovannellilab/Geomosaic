@@ -115,7 +115,6 @@ def get_user_path(description):
         return input_adt_param
 
 
-
 def import_graph(edges: list) -> DiGraph:
     g = nx.DiGraph()
     for source, target in edges:

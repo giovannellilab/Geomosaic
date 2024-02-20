@@ -1,7 +1,7 @@
 import json
 import yaml
 import os
-from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROCESS, GEOMOSAIC_OK
+from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_NOTE
 from geomosaic._build_pipelines_module import import_graph, build_pipeline_modules, ask_additional_parameters
 from geomosaic._compose import write_gmfiles, compose_config
 
@@ -72,13 +72,18 @@ def geo_workflow(args):
             additional_parameters   = pipe["additional_parameters"]
     else:
         # NOTE: BUILDING PIPELINE BASED ON USER CHOICES
-        user_choices, dependencies, modified_G, order_writing = build_pipeline_modules(
-            graph               = G,
-            collected_modules   = collected_modules, 
-            order               = order, 
-            additional_input    = additional_input,
-            mstart              = mstart
-        )
+        if mstart != "pre_processing":
+            user_choices, dependencies, \
+                modified_G, order_writing = middle_start(mstart, G, collected_modules, order, additional_input)
+        else:    
+            user_choices, dependencies, modified_G, order_writing = build_pipeline_modules(
+                graph               = G,
+                collected_modules   = collected_modules, 
+                order               = order, 
+                additional_input    = additional_input,
+                mstart              = mstart
+            )
+
         ## ASK ADDITIONAL PARAMETERS
         additional_parameters = ask_additional_parameters(additional_input, order_writing)
     
@@ -99,8 +104,37 @@ def geo_workflow(args):
                   user_choices, order_writing, 
                   modules_folder, 
                   gmpackages_extdb, gmpackages_extdb_path)
-    
-    # # Draw DAG
-    # dag_image = os.path.join(geomosaic_dir, "dag.pdf")
-    # subprocess.check_call(f"snakemake -s {snakefile_filename} --rulegraph | dot -Tpdf > {dag_image}", shell=True)
 
+
+def middle_start(mstart, G, collected_modules, order, additional_input):
+    raw_user_choices, dependencies, modified_G, order_writing = build_pipeline_modules(
+        graph               = G,
+        collected_modules   = collected_modules, 
+        order               = order, 
+        additional_input    = additional_input,
+        mstart              = mstart,
+        unit                = False
+    )
+
+    module_dependencies = list(G.predecessors(mstart))
+    print(f"{GEOMOSAIC_NOTE}: You've chosen to start the workflow from a different node. It is assumed also that those modules dependencies have already been run with GeoMosaic")
+    print(f"{GEOMOSAIC_NOTE}: '{mstart}' depends on the following modules:\n"+"\n".join(map(lambda x: f"\t- {x}", module_dependencies)))
+    print("\nNow you need to specify the package/s that you used for those dependencies.")
+    
+    for dep in module_dependencies:
+        temp_user_choices, _, _, _ = build_pipeline_modules(
+            graph               = G,
+            collected_modules   = collected_modules, 
+            order               = order, 
+            additional_input    = additional_input,
+            mstart              = dep,
+            unit                = True
+        )
+        raw_user_choices[dep] = temp_user_choices[dep]
+    
+    user_choices = {}
+    for m in order:
+        if m in raw_user_choices:
+            user_choices[m] = raw_user_choices[m]
+
+    return user_choices, dependencies, modified_G, order_writing
