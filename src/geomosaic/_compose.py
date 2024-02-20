@@ -15,11 +15,13 @@ def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choi
     config["WDIR"]      = os.path.abspath(geomosaic_dir)
     config["threads"]   = threads
 
+    config["ADDITIONAL_PARAM"] = {}
     for ap, ap_input in additional_parameters.items():
-        config[ap] = ap_input
+        config["ADDITIONAL_PARAM"][ap] = ap_input
 
+    config["MODULES"]   = {}
     for module_name, pckg in user_choices.items():
-        config[module_name] = pckg
+        config["MODULES"][module_name] = pckg
 
     ## COPY USER PARAMS on the CORRESPONDING LOCATION and SAVE ENVS location
     for um, up in user_choices.items():
