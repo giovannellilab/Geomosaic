@@ -6,6 +6,7 @@ checkpoint run_mags:
     output:
         folder = directory("{wdir}/{sample}/mags"),
         mags_file = "{wdir}/{sample}/mags/MAGs.tsv",
+        mags_general_file = "{wdir}/{sample}/MAGs.tsv",
     params:
         completness_threshold=config["completness_threshold"],
         contamination_threshold=config["contamination_threshold"],
@@ -19,4 +20,4 @@ checkpoint run_mags:
         das_tool_bins = os.path.join(str(input.dins_derep), "bins")
         mags_outfolder = str(output.folder)
 
-        retrieve_survival_mags(checkm_table, das_tool_bins, params.completness_threshold, params.contamination_threshold, mags_outfolder)
+        retrieve_survival_mags(checkm_table, das_tool_bins, params.completness_threshold, params.contamination_threshold, mags_outfolder, output.mags_general_file)
