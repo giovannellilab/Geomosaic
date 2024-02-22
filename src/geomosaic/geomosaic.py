@@ -112,23 +112,25 @@ def main():
     prerun_required = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Required Arguments"))
     prerun_required.add_argument("-s", "--setup_file", required=True, type=str, 
                                 help=f"Geomosaic setup file created from the {GEOMOSAIC_PROMPT('geomosaic setup ...')} command.")
+    prerun_required.add_argument('--exec_type', type=str, required=True, choices=["slurm", "gnu_parallel"], help="Use this option to specify how do you want execute geomosaic. If SLURM is available on your cluster we suggest to use '--exec_type slurm'. If not, you can use '--exec_type gnu_parallel'. " +\
+                                      "More details on the Geomosaic Documentation.")
     
-    prerun_optional = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments"))
+    prerun_optional = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments for BOTH SLURM and GNU PARALLEL"))
     prerun_optional.add_argument('-u' ,'--unit', action='store_true', help="Install the conda environment of your geomosaic unit.")
+    prerun_optional.add_argument('-t', '--threads', default=10, type=int, help="Threads to use (per sample). This value will override the one specified in the workflow/unit (config file) and thus will replace threads value in the config file. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
+    prerun_optional.add_argument('-f', '--folder_logs', default=None, type=str, help="Folder for logs files. Default value is None means that slurm logs are saved in your current directory. However we suggest you to specify it and if it does not exists, Geomosaic will create it. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
+    prerun_optional.add_argument('-l', '--list_sample_output', default="list_samples.txt", type=str, help="Filename where to write the list of samples. Default: list_samples.txt created in the current directory. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
+    prerun_optional.add_argument('-o', '--output_script', default=None, type=str, help="Filename for the SLURM or GNU Parallel script. As default it will be created as slurm_geomosaic.sh or parallel_geomosaic in the current directory (depending on the '--exec_type' option). (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
+    prerun_optional.add_argument('-e', '--extdb_output_script', default=None, type=str, help="Filename for the SLURM or GNU Parallel script to execute external db setup. As default it will be created as slurm_extdb_geomosaic.sh or parallel_extdb_geomosaic.sh in the current directory (depending on the '--exec_type' option). (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
 
-    prerun_optionalslurm = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments for SLURM Specification or GNU Parallel"))
-    prerun_optionalslurm.add_argument('--exec_type', type=str, default="slurm", choices=["slurm", "gnu_parallel"], help="Use this option to specify how do you want execute geomosaic. If SLURM is available on your cluster we suggest to use '--exec_type slurm', otherwise GNU Parallel will be used ('--exec_type gnu_parallel')." +\
-                                      "More details on the Geomosaic Documentation. (Default: slurm)")
-    prerun_optionalslurm.add_argument('-t', '--threads', default=10, type=int, help="Threads to use (per sample). This value will override the one specified in the workflow/unit (config file) and thus will replace threads value in the config file. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
-    prerun_optionalslurm.add_argument('-n', '--n_jobs', default=2, type=int, help="Number of jobs to execute in parallel using GNU Parallel. More details on the Geomosaic Documentation. This option is available only for '--exec_type gnu_parallel'.")
+    prerun_optionalslurm = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments ONLY for SLURM Specification"))
     prerun_optionalslurm.add_argument('-m', '--memory', default=300, type=int, help="Memory specification (in GB) for slurm job. (requires '--exec_type slurm' option)")
     prerun_optionalslurm.add_argument('-p', '--partition', default=None, type=str, help="Partition specification for slurm job in the cluster. (requires '--exec_type slurm' option)")
     prerun_optionalslurm.add_argument('--mail_type', default=None, choices=["NONE", "BEGIN", "END", "FAIL", "REQUEUE", "ALL"], help="Mail type to notify user about occurred even type in slurm. Ignore this option if you are not interested to get(requires '--exec_type slurm' option)")
     prerun_optionalslurm.add_argument('--mail_user', default=None, type=str, help="Email where to to receive slurm notification type specified in '--mail_type'. (requires '--exec_type slurm' option)")
-    prerun_optionalslurm.add_argument('-f', '--folder_logs', default=None, type=str, help="Folder for logs files. Default value is None means that slurm logs are saved in your current directory. However we suggest you to specify it and if it does not exists, Geomosaic will create it. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
-    prerun_optionalslurm.add_argument('-l', '--list_sample_output', default="list_samples.txt", type=str, help="Filename where to write the list of samples. Default: list_samples.txt created in the current directory. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
-    prerun_optionalslurm.add_argument('-o', '--output_script', default=None, type=str, help="Filename for the SLURM or GNU Parallel script. As default it will be created as slurm_geomosaic.sh or parallel_geomosaic in the current directory (depending on the '--exec_type' option). (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
-    prerun_optionalslurm.add_argument('-e', '--extdb_output_script', default=None, type=str, help="Filename for the SLURM or GNU Parallel script to execute external db setup. As default it will be created as slurm_extdb_geomosaic.sh or parallel_extdb_geomosaic.sh in the current directory (depending on the '--exec_type' option). (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
+    
+    prerun_optionalparallel = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments for GNU Parallel"))
+    prerun_optionalparallel.add_argument('-n', '--n_jobs', default=2, type=int, help="Number of jobs to execute in parallel using GNU Parallel. More details on the Geomosaic Documentation. This option is available only for '--exec_type gnu_parallel'.")
 
     prerun_help = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Help Arguments"))
     prerun_help.add_argument("-h", "--help", action="help", help=f"show this help message and exit")

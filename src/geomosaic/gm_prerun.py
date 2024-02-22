@@ -22,6 +22,7 @@ def geo_prerun(args):
     geomosaic_samples = geomosaic_setup["SAMPLES"]
 
     name_snakefile = "Snakefile_unit.smk" if unit else "Snakefile.smk"
+    exists_extdb = check_extdb_snakefile(geomosaic_dir, unit)
     gm_snakefile = str(os.path.join(geomosaic_dir, name_snakefile))
     
     if exectype == "slurm":
@@ -37,18 +38,14 @@ def geo_prerun(args):
         with open(output_script, "wt") as fd:
             fd.write(sw)
 
-        with open(extdb_output_script, "wt") as fd:
-            fd.write(extdb)
+        if exists_extdb:
+            with open(extdb_output_script, "wt") as fd:
+                fd.write(extdb)
         
         with open(singleSample_output_script, "wt") as fd:
             fd.write(singleSample)
     
-        prompt1 = GEOMOSAIC_PROMPT(f"$ sbatch {extdb_output_script}")
-        prompt2 = GEOMOSAIC_PROMPT(f"$ sbatch {output_script}")
-        prompt3 = GEOMOSAIC_PROMPT(f"$ sbatch {singleSample_output_script} MYSAMPLE")
-        print(f"\n{GEOMOSAIC_NOTE}: The following draft scripts for slurm execution were created (along with file containing the samples list):\n{output_script}\n{extdb_output_script}\n{singleSample_output_script}\n{list_sample_output}")
-        print(f"\n{GEOMOSAIC_NOTE}: These script can be considered minimal for SLURM.\nIf you need you can modify them to add more SBATCH information. More details can be retrieved to official SLURM Documentation.")
-        print(f"\n{GEOMOSAIC_NOTE}: So now you are ready to go!\nYour first step should be to setup the required databases of your pipeline, by executing:\n{prompt1}\n\nonce it is finished, you can execute the real pipeline:\n{prompt2}\n\nfurthermore, if you need to execute your workflow/unit just for one sample you can execute the following script through sbatch (specifying your sample name of interest):\n{prompt3}")
+        show_slurm_message(exists_extdb, extdb_output_script, output_script, singleSample_output_script, list_sample_output)
     
     else:
         output_script, sw, \
@@ -68,7 +65,7 @@ def geo_prerun(args):
         prompt1 = GEOMOSAIC_PROMPT(f"$ bash {extdb_output_script}")
         prompt2 = GEOMOSAIC_PROMPT(f"$ bash {output_script}")
         print(f"\n{GEOMOSAIC_NOTE}: The following draft scripts for GNU Parallel execution are created (along with file containing the samples list):\n{output_script}\n{extdb_output_script}\n{list_sample_output}")
-        print(f"\n{GEOMOSAIC_NOTE}: These script can be considered minimal for GNU Parallel.\nFeel free to modify them to add more complex codes. More details can be retrieved to official GNU Parallel Documentation.")
+        print(f"\nThese script can be considered minimal for GNU Parallel.\nFeel free to modify them to add more complex codes. More details can be retrieved to official GNU Parallel Documentation.")
         print(f"\n{GEOMOSAIC_NOTE}: Since your using GNU Parallel, you should set the number of jobs to execute in parallel taking into account the number of cpus that you can use.\nFor instance, if 36 cores are available you can open the following file\n{GEOMOSAIC_PROMPT(output_script)}\n\nand modify the following variables\n{GEOMOSAIC_PROMPT('n_jobs_in_parallel=4')}\n{GEOMOSAIC_PROMPT('threads_per_job=9')}.")
         print(f"\n{GEOMOSAIC_NOTE}: So now you are ready to go!\nYour first step should be to setup the required databases of your pipeline, by executing:\n{prompt1}\n\nonce it is finished, you can execute the real pipeline:\n{prompt2}")
     
@@ -109,3 +106,63 @@ def envinstall(geomosaic_wdir, gm_snakefile, unit):
             pass
 
     print(GEOMOSAIC_OK)
+
+
+def show_slurm_message(exists_extdb, extdb_output_script, output_script, singleSample_output_script, list_sample_output):
+    if exists_extdb:
+        existing_files = [output_script, extdb_output_script, singleSample_output_script, list_sample_output]
+        prompt1 = GEOMOSAIC_PROMPT(f"$ sbatch {extdb_output_script}")
+        prompt2 = GEOMOSAIC_PROMPT(f"$ sbatch {output_script}")
+        prompt3 = GEOMOSAIC_PROMPT(f"$ sbatch {singleSample_output_script} MYSAMPLE")
+
+        steps = [
+            (f"{GEOMOSAIC_PROMPT('STEP 1)')}: setup the required databases of your pipeline, by executing:", prompt1),
+            (f"{GEOMOSAIC_PROMPT('STEP 2)')}: once it is finished, you can execute the real pipeline:", prompt2),
+            (f"{GEOMOSAIC_PROMPT('EVENTUALLY)')}: if you need to execute your workflow/unit just for one sample you can execute the following script through sbatch (specifying your sample name of interest):", prompt3),
+        ]
+    else:
+        existing_files = [output_script, singleSample_output_script, list_sample_output]
+        prompt1 = GEOMOSAIC_PROMPT(f"$ sbatch {extdb_output_script}")
+        prompt2 = GEOMOSAIC_PROMPT(f"$ sbatch {output_script}")
+        prompt3 = GEOMOSAIC_PROMPT(f"$ sbatch {singleSample_output_script} MYSAMPLE")
+
+        steps = [
+            (f"{GEOMOSAIC_PROMPT('STEP 1)')}: you can execute the real pipeline due to the fact that you don't need to setup any database:", prompt2),
+            (f"{GEOMOSAIC_PROMPT('EVENTUALLY)')}: if you need to execute your workflow/unit just for one sample you can execute the following script through sbatch (specifying your sample name of interest):", prompt3),
+        ]
+
+    list_files = "\n\t- ".join(existing_files)
+
+    merging_steps = ""
+    for descr, cmd in steps:
+        merging_steps += descr
+        merging_steps += f"\n\t{cmd}\n\n"
+    
+    print(f"\n{GEOMOSAIC_NOTE}: The following draft scripts for slurm execution were created (along with file containing the samples list):\n\t- {list_files}")
+    print(f"\nThese script can be considered minimal for SLURM. If you need you can modify them to add more SBATCH information.\nMore details can be retrieved to official SLURM Documentation.")
+    print(f"\n{GEOMOSAIC_NOTE}: So now you are ready to go!\n\n{merging_steps}")
+
+
+# dag_image = os.path.join(geomosaic_dir, "dag.pdf")
+    # subprocess.check_call(f"snakemake -s {snakefile_filename} --rulegraph | dot -Tpdf > {dag_image}", shell=True)
+
+
+def check_extdb_snakefile(geomosaic_wdir, unit):
+    filename = "config_unit.yaml" if unit else "config.yaml"
+    config_file = os.path.join(geomosaic_wdir, filename)
+
+    # CHECK CONFIG FILE EXISTS
+    if not os.path.isfile(config_file):
+        print(f"\n{GEOMOSAIC_ERROR}: '{filename}' does not exists in the Geomosaic WDIR: {geomosaic_wdir}")
+        exit(1)
+    
+    # OPEN CONFIG FILE
+    with open(config_file) as file:
+        config = yaml.load(file, Loader=yaml.FullLoader)
+    
+    extdbs = config["EXT_DB"]
+
+    if len(extdbs.items()) == 0:
+        return False
+    else:
+        return True
