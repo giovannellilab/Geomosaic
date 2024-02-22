@@ -8,8 +8,8 @@ checkpoint run_mags:
         mags_file = "{wdir}/{sample}/mags/MAGs.tsv",
         mags_general_file = "{wdir}/{sample}/MAGs.tsv",
     params:
-        completness_threshold=config["completness_threshold"],
-        contamination_threshold=config["contamination_threshold"],
+        completness_threshold=config["ADDITIONAL_PARAM"]["completness_threshold"],
+        contamination_threshold=config["ADDITIONAL_PARAM"]["contamination_threshold"],
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags"])) ) (config["USER_PARAMS"]["mags"]) 
     run:
         shell("mkdir -p {output.folder}/fasta")
