@@ -5,9 +5,9 @@ rule run_mags_hmmsearch:
         mags_orfmap=expand("{wdir}/{sample}/{mags_orf_prediction}/{mag}/simple_orf_contig_mapping.tsv", mags_orf_prediction=config["MODULES"]["mags_orf_prediction"], allow_missing=True),
         mags_cov=expand("{wdir}/{sample}/{mags_coverage}/", mags_coverage=config["MODULES"]["mags_coverage"], allow_missing=True),
     output:
-        hmms_search="{wdir}/{sample}/mags_hmmsearch/{mag}/HMMs_coverage_table.tsv",
+        hmms_search="{wdir}/{sample}/{mags_hmmsearch_output_folder}/{mag}/HMMs_coverage_table.tsv",
     params:
-        hmm_folder=config["hmm_folder"],
+        hmm_folder=config["ADDITIONAL_PARAM"]["hmm_folder"],
         local_sample="{sample}",
         user_params= ( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags_hmmsearch"])) ) (config["USER_PARAMS"]["mags_hmmsearch"]) 
     threads: config["threads"]
@@ -16,6 +16,7 @@ rule run_mags_hmmsearch:
         output_folder = os.path.dirname(str(output.hmms_search))
 
         shell("mkdir -p {output_folder}")
+        shell("echo '{params.hmm_folder}' > {output_folder}/hmm_folder_path.txt")
 
         import pandas as pd
         df_mapping = pd.read_csv(str(input.mags_orfmap), sep="\t")
@@ -75,6 +76,6 @@ def get_mags_hmmsearch_inputs(f_string):
 
 
 rule gather_mags_hmmsearch_inputs:
-    input: get_mags_hmmsearch_inputs("{wdir}/{sample}/mags_hmmsearch/{mag}/HMMs_coverage_table.tsv")
-    output: touch("{wdir}/{sample}/mags_hmmsearch/gather_OK.txt")
+    input: get_mags_hmmsearch_inputs("{wdir}/{sample}/{mags_hmmsearch_output_folder}/{mag}/HMMs_coverage_table.tsv")
+    output: touch("{wdir}/{sample}/{mags_hmmsearch_output_folder}/gather_OK.txt")
     threads: 1
