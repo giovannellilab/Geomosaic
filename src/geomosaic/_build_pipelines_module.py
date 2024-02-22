@@ -5,7 +5,7 @@ import networkx as nx
 import subprocess
 import os
 from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROMPT
-from geomosaic._validator import validator_hmms_folder, validator_completeness_contamination_integer
+from geomosaic._validator import validator_hmms_folder, validator_completeness_contamination_integer, validator_hmmsearch_output_folder
 
 
 def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list, additional_input: dict, mstart: str="pre_processing", unit=False):
@@ -96,12 +96,18 @@ def ask_additional_parameters(additional_input, order_writing):
                         print(f"{GEOMOSAIC_ERROR}: Invalid input")
                     elif adt_param == "contamination_threshold" and not validator_completeness_contamination_integer(input_adt_param):
                         print(f"{GEOMOSAIC_ERROR}: Invalid input")
+                    elif adt_param == "assembly_hmmsearch_output_folder" and not validator_hmmsearch_output_folder(input_adt_param, additional_parameters):
+                        print(f"{GEOMOSAIC_ERROR}: Invalid input")
+                    elif adt_param == "mags_hmmsearch_output_folder" and not validator_hmmsearch_output_folder(input_adt_param, additional_parameters):
+                        print(f"{GEOMOSAIC_ERROR}: Invalid input")
                     else:
                         flag = True
                 
                 # INSERT PARAM FOR CONFIG FILE
                 if adt_param_tokens["type"] in ["integer"]:
                     additional_parameters[adt_param] = int(input_adt_param)
+                elif adt_param_tokens["type"] in ["string"]:
+                    additional_parameters[adt_param] = str(input_adt_param)
                 else:
                     additional_parameters[adt_param] = os.path.abspath(input_adt_param)
     

@@ -234,6 +234,10 @@
             "hmm_folder": {
                 "description": "\n[ADDITIONAL PARAMETER REQUEST - ASSEMBLY HMM ANNOTATION] Description: you need to specify also an absolute path to the folder containing the HMM files, which extension must be '.hmm'\nRequired parameter: Absolute path",
                 "type": "folder"
+            },
+            "assembly_hmmsearch_output_folder": {
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - ASSEMBLY HMM ANNOTATION] Description: you need to specify a name for the output folder",
+                "type": "string"
             }
         },
 
@@ -252,6 +256,10 @@
             "hmm_folder": {
                 "description": "\n[ADDITIONAL PARAMETER REQUEST - MAGS HMM ANNOTATION] Description: you need to specify also an absolute path to the folder containing the HMM files, which extension must be '.hmm'\nRequired parameter: Absolute path",
                 "type": "folder"
+            },
+            "mags_hmmsearch_output_folder": {
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - MAGS HMM ANNOTATION] Description: you need to specify a name for the output folder",
+                "type": "string"
             }
         }
     },
