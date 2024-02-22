@@ -51,7 +51,7 @@ def ls_collect_bins(f_string):
 checkpoint gather_mags_prodigal_outputs:
     input: 
         collected=ls_collect_bins("{wdir}/{sample}/mags_prodigal/{mag}/orf_predicted.faa"),
-        mags_tsv=expand("{wdir}/{sample}/{mags_retrieval}/MAGs.tsv", mags_retrieval=config["mags_retrieval"], allow_missing=True)
+        mags_tsv=expand("{wdir}/{sample}/{mags_retrieval}/MAGs.tsv", mags_retrieval=config["MODULES"]["mags_retrieval"], allow_missing=True)
     output: 
         gather=touch("{wdir}/{sample}/mags_prodigal/gather_OK.txt"),
         mags_file="{wdir}/{sample}/mags_prodigal/MAGs.tsv"
