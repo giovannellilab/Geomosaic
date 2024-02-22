@@ -85,7 +85,8 @@ def geo_unit(args):
             order               = order, 
             additional_input    = additional_input,
             mstart              = dep,
-            unit                = True
+            unit                = True,
+            dependencies        = True
         )
         raw_user_choices[dep] = temp_user_choices[dep]
     

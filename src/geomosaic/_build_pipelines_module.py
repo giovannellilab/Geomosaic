@@ -8,7 +8,7 @@ from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROMPT
 from geomosaic._validator import validator_hmms_folder, validator_completeness_contamination_integer, validator_hmmsearch_output_folder
 
 
-def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list, additional_input: dict, mstart: str="pre_processing", unit=False):
+def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list, additional_input: dict, mstart: str="pre_processing", unit=False, dependencies=False):
     G = graph.copy()
     assert mstart in G.nodes()
 
@@ -42,7 +42,8 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
 
         module_descr = GEOMOSAIC_PROMPT(f"[{my_module}] - ".upper()) + f"{collected_modules[my_module]['description']}"
         module_choices = {}
-        module_choices[0] = {"display": "-- Ignore this module (and all successors) --", "package": ""}
+        if not dependencies:
+            module_choices[0] = {"display": "-- Ignore this module (and all successors) --", "package": ""}
         for indice, raw_package in enumerate(collected_modules[my_module]["choices"].items(), start=1):
             pckg_display, pckg_name = raw_package
             module_choices[indice] = {"display": pckg_display, "package": pckg_name}
