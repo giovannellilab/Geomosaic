@@ -5,7 +5,8 @@ rule hmms_search:
         orf_simple_mapping = expand("{wdir}/{sample}/{orf_prediction}/simple_orf_contig_mapping.tsv", orf_prediction=config["MODULES"]["orf_prediction"], allow_missing=True), 
         coverage_folder = expand("{wdir}/{sample}/{assembly_coverage}", assembly_coverage=config["MODULES"]["assembly_coverage"], allow_missing=True)
     output:
-        folder=directory("{wdir}/{sample}/{assembly_hmmsearch_output_folder}/HMMs_coverage_table.tsv")
+        folder=directory("{wdir}/{sample}/{assembly_hmmsearch_output_folder}"),
+        cov_file="{wdir}/{sample}/{assembly_hmmsearch_output_folder}/HMMs_coverage_table.tsv",
     params:
         hmm_folder=config["ADDITIONAL_PARAM"]["hmm_folder"],
         local_sample="{sample}",
