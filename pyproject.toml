@@ -23,7 +23,8 @@ dependencies = [
     "matplotlib",
     "snakemake",
     "biopython>=1.82",
-    "tqdm"
+    "tqdm",
+    "openpyxl"
 ]
 
 [project.scripts]
