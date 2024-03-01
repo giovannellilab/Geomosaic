@@ -21,7 +21,6 @@ rule run_bowtie2:
         
         bowtie2 {params.user_params} \
             --threads {threads} \
-            --sensitive \
             -x {output.folder}/b_index/gmindex \
             -1 {input.r1} \
             -2 {input.r2} \

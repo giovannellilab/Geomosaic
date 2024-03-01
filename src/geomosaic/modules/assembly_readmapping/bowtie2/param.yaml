@@ -1,3 +1,4 @@
 bowtie2:
 - --quiet
+- --sensitive
 -
