@@ -22,7 +22,7 @@ def gather_hmms_search(config_file, geomosaic_wdir, output_base_folder):
 
 
 def complete_hmmsearch(folder, hmmsearch_outfolder, output_folder, samples):
-    DF_NORM = parse_hmmsearch_results(folder, hmmsearch_outfolder, output_folder, samples)
+    DF_NORM = parse_hmmsearch_results(folder, hmmsearch_outfolder, samples)
 
     for n in DF_NORM:
         norm_merged = merge_results_by_norm(DF_NORM, norm_method=n)

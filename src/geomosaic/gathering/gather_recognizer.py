@@ -4,6 +4,7 @@ from subprocess import check_call
 import os
 from os import listdir
 import yaml
+from numpy import float64
 
 
 
@@ -36,7 +37,7 @@ def complete_recognizer(folder, output_folder, samples):
             flag = False
             break
             
-        df = pd.read_csv(f"{folder_data}/reCOGnizer_results.tsv", sep="\t")
+        df = pd.read_csv(f"{folder_data}/reCOGnizer_results.tsv", sep="\t", dtype=get_dtypes())
         c1 = df["pident"] > 80
         c2 = df["gapopen"] < 5
         
@@ -111,3 +112,32 @@ def parse_recognizer_quantification(folder, samples, filename, pivot):
     finalm = m.replace(np.nan, 0, regex=True)
     return finalm
 
+
+
+def get_dtypes():
+    return {
+    "qseqid":  object,
+    "DB ID":  object,
+    "Protein description":  object,
+    "DB description":  object,
+    "EC number":  object,
+    "CDD ID":  object,
+    "taxonomic_range_name":  object,
+    "taxonomic_range": float64,
+    "Superfamilies":  object,
+    "Sites":  object,
+    "Motifs":  object,
+    "pident": float64,
+    "length": float64,
+    "mismatch": float64,
+    "gapopen": float64,
+    "qstart": float64,
+    "qend": float64,
+    "sstart": float64,
+    "send": float64,
+    "evalue": float64,
+    "bitscore": float64,
+    "General functional category":  object,
+    "Functional category":  object,
+    "KO":  object,
+}

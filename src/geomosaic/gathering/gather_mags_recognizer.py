@@ -4,6 +4,7 @@ from subprocess import check_call
 from os import listdir
 import os
 import yaml
+from geomosaic.gathering.gather_recognizer import get_dtypes
 
 
 def gather_mags_recognizer(config_file, geomosaic_wdir, output_base_folder):
@@ -49,7 +50,7 @@ def parse_mags_recognizer_EC_KO(folder, output_folder, s):
         if "reCOGnizer_results.tsv" not in listdir(f"{folder_data}"):
             continue
             
-        df = pd.read_csv(f"{folder_data}/reCOGnizer_results.tsv", sep="\t")
+        df = pd.read_csv(f"{folder_data}/reCOGnizer_results.tsv", sep="\t", dtype=get_dtypes())
         c1 = df["pident"] > 80
         c2 = df["gapopen"] < 5
         
