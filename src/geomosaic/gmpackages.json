@@ -338,11 +338,11 @@
         "kraken2",
         "eggnog_mapper",
         "recognizer",
-        "hmms_cov",
+        "hmms_search",
         
         "mags_gtdbtk",
         "mags_recognizer",
         "mags_dram",
-        "coverm_genome"
+        "mags_hmmsearch"
     ]
 }

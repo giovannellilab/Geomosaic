@@ -4,6 +4,7 @@ from geomosaic.gm_setup import geo_setup
 from geomosaic.gm_workflow import geo_workflow
 from geomosaic.gm_unit import geo_unit
 from geomosaic.gm_prerun import geo_prerun
+from geomosaic.gm_gather import geo_gather
 import sys
 import pathlib
 
@@ -104,7 +105,6 @@ def main():
     ## unit set default function
     unit_parser.set_defaults(func=geo_unit)
 
-
     #######################
     ## PRERUN Parameters ##
     #######################
@@ -146,13 +146,16 @@ def main():
                                 help=f"Geomosaic setup file created from the {GEOMOSAIC_PROMPT('geomosaic setup ...')} command.")
     
     gather_optional = gather_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments"))
-    gather_optional.add_argument("-f", "--folder_gathering", required=False, default=None, type=str, help="Path where geomosaic can create the directory for gathering. As default the folder 'gm_gathering' is created in the working directory of Geomosaic.")
-    gather_optional.add_argument('-p' ,'--packages', default="_ALL_", type=csv_values, help='a comma separated list of packages. Check the available packages in the section below. Example: --packages mifaser,kaiju,mags_gtdbtk,mags_dram.')
+    gather_optional.add_argument("-f", "--gather_folder", required=False, default=None, type=str, help="Path where geomosaic can create the directory for gathering. Without any input, as default the folder 'gm_gathering' is created in the working directory of Geomosaic.")
+    gather_optional.add_argument('-p' ,'--packages', default="_ALL_", type=csv_values, help='a comma separated list of packages. Check the available packages in the section below. If you want to execute gather for specific packages you can use this option as: --packages mifaser,kaiju,mags_gtdbtk,mags_dram.')
+    gather_optional.add_argument('-u' ,'--unit', action='store_true', help="Execute geomosaic gather considering the UNIT config file.")
 
     gather_parser.add_argument_group(GEOMOSAIC_PROMPT("Available packages for Gathering"), GEOMOSAIC_GATHER_PACKAGES_DESCRIPTION)
 
     gather_help = gather_parser.add_argument_group(GEOMOSAIC_PROMPT("Help Arguments"))
     gather_help.add_argument("-h", "--help", action="help", help=f"show this help message and exit")
+
+    gather_parser.set_defaults(func=geo_gather)
 
     if len(sys.argv)==1:
         parser.print_help(sys.stderr)
