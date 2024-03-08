@@ -26,10 +26,14 @@ rule hmms_search:
 
         list_output_files = []
         for hmm in os.listdir(params.hmm_folder):
-            if not hmm.endswith('.hmm'):
+            if not hmm.endswith(('.hmm', '.HMM')):
                 continue
             
-            filename=hmm.split(".hmm")[0]
+            if hmm.endswith('.hmm'):
+                filename=hmm.split(".hmm")[0]
+            else:
+                filename=hmm.split(".HMM")[0]
+
             out_path=os.path.join(output.folder, "output_hmms", filename)
             shell("mkdir -p {out_path}")
 

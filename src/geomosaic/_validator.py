@@ -25,8 +25,8 @@ def validator_hmms_folder(hmms_folder):
     
     unique = []
     for f in os.listdir(hmms_folder):
-        if not f.endswith(".hmm"):
-            print(f"{GEOMOSAIC_ERROR}: The file:\n\n'{f}'\n\n inside the folder:\n\n'{hmms_folder}'\n\ndoesn't have the '.hmm' extension.")
+        if not f.endswith((".hmm", ".HMM")):
+            print(f"{GEOMOSAIC_ERROR}: The file:\n\n'{f}'\n\n inside the folder:\n\n'{hmms_folder}'\n\ndoesn't have the '.hmm' or '.HMM' extension.")
             return False
         
         if " " in f:
