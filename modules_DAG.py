@@ -207,10 +207,25 @@ def draw_workflow_graph(G, new_pos, pos_labels_attrs):
         "mags_coverage",
     ]
 
+    nc = []
+    skipped = ["assembly_hmm_annotation", "mags_hmm_annotation"]
+
+    col_accepted = "#26CA94"
+    col_ignored = "#F45F53"
+    col_removed = "#B1B8BD"
+
+    for i in G.nodes():
+        if i in choices and i not in skipped :
+            nc.append(col_accepted)
+        elif i in skipped:
+            nc.append(col_removed)
+        else:
+            nc.append(col_ignored)
+
     nx.draw(G, 
         new_pos, 
         with_labels = False, 
-        node_color=["#008000" if i in choices else "#cc0000" for i in G.nodes() ], 
+        node_color=nc, 
         alpha=0.8,
         # node_size = [len(v) * the_base_size for v in G.nodes()],
         edge_color="#515151"
@@ -219,9 +234,10 @@ def draw_workflow_graph(G, new_pos, pos_labels_attrs):
     for lbl, coords in pos_labels_attrs.items():
         plt.text(coords[0], coords[1], lbl, path_effects=[pe.withStroke(linewidth=4, foreground="white")], va="center", ha="center")
         
-    stream_module_legend = mpatches.Patch(color='#008000', label='Accepted modules')
-    analysis_module_legend = mpatches.Patch(color='#cc0000', label='Ignored modules')
-    plt.legend(handles=[stream_module_legend, analysis_module_legend])
+    stream_module_legend = mpatches.Patch(color=col_accepted, label='Accepted modules')
+    analysis_module_legend = mpatches.Patch(color=col_ignored, label='Ignored modules')
+    skipped_module_legend = mpatches.Patch(color=col_removed, label='Removed modules due to ignored dependencies')
+    plt.legend(handles=[stream_module_legend, analysis_module_legend, skipped_module_legend])
     plt.savefig('images/modules_DAG_workflow.png', bbox_inches='tight')
 
 
