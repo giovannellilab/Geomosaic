@@ -16,6 +16,7 @@ However, it has been developed to be easy to integrate with new modules and pack
 Full documentation available at the [GitHub Wiki](https://github.com/giovannellilab/Geomosaic/wiki/Documentation) pages.
 
 # Contributes
+`[...coming soon]`
 
 __GEOMOSAIC__ allows an easy possibility to be integrated with innovatives modules. It is based on a graph structure which can be updated with new packages at any time.
 
@@ -27,7 +28,6 @@ For any bug, feature request, comments and question, you can use the correspondi
 
 # Development Timeline
 ...Coming soon:
-- `geomosaic gather` - Script to merge multiple sample analysis (Coming soon...)
 - Integration of geochemical scripts
 
 
