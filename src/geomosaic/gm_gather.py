@@ -12,6 +12,7 @@ from geomosaic.gathering.gather_mags_hmmsearch import gather_mags_hmmsearch
 from geomosaic.gathering.gather_mags_recognizer import gather_mags_recognizer
 from geomosaic.gathering.gather_mifaser import gather_mifaser
 from geomosaic.gathering.gather_recognizer import gather_recognizer
+from geomosaic.gathering.gather_coverm_genome import gather_coverm_genome
 
 
 def geo_gather(args):
@@ -35,15 +36,11 @@ def geo_gather(args):
 
     output_gather_folder = create_gathering_folder(geomosaic_dir,gather_folder)
 
-    if packages == ["_ALL_"]:
-        user_packages = GEOMOSAIC_GATHER_PACKAGES
-
-    else:
-        user_packages = []
-        failed_user_packages = []
-
-        for i in packages:
-            user_packages.append(i) if i in GEOMOSAIC_GATHER_PACKAGES else failed_user_packages.append(i)
+    user_packages = order_gathering(packages)
+    
+    if "coverm_genome" in user_packages and "mags_gtdbtk" not in user_packages:
+        print(f"{GEOMOSAIC_ERROR}: The gathering for 'coverm_genome' need also to include 'mags_gtdbtk' in the gathering list.")
+        exit(1)
 
     gathering = gather_functions()
 
@@ -53,6 +50,20 @@ def geo_gather(args):
 
         print(f"{GEOMOSAIC_PROCESS}: gathering results for {pckg}...")
         gathering[pckg](gm_config, geomosaic_dir, output_gather_folder)
+
+
+def order_gathering(packages):
+    if packages == ["_ALL_"]:
+        user_packages = GEOMOSAIC_GATHER_PACKAGES
+
+    else:
+        user_packages = []
+        failed_user_packages = []
+
+        for i in GEOMOSAIC_GATHER_PACKAGES:
+            user_packages.append(i) if i in packages else failed_user_packages.append(i)
+    
+    return user_packages
 
 
 def gather_functions():
@@ -68,7 +79,8 @@ def gather_functions():
         "mags_gtdbtk": gather_mags_gtdbtk,
         "mags_recognizer": gather_mags_recognizer,
         "mags_dram": gather_mags_dram,
-        "mags_hmmsearch": gather_mags_hmmsearch
+        "mags_hmmsearch": gather_mags_hmmsearch,
+        "coverm_genome": gather_coverm_genome
     }
 
 

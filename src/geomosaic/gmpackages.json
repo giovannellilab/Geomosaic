@@ -343,6 +343,7 @@
         "mags_gtdbtk",
         "mags_recognizer",
         "mags_dram",
-        "mags_hmmsearch"
+        "mags_hmmsearch",
+        "coverm_genome"
     ]
 }
