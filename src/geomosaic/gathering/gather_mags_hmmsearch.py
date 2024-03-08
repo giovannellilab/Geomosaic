@@ -14,7 +14,7 @@ def gather_mags_hmmsearch(config_file, geomosaic_wdir, output_base_folder):
     
     samples = config["SAMPLES"]
 
-    mags_hmmsearch_outfolder = config["ADDITIONAL_PARAM"]["assembly_hmmsearch_output_folder"]
+    mags_hmmsearch_outfolder = config["ADDITIONAL_PARAM"]["mags_hmmsearch_output_folder"]
 
     output_folder = os.path.join(output_base_folder, pckg)
 
