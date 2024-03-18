@@ -15,7 +15,7 @@ def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit):
     unit_suffix = "_unit" if unit else ""
     output_script = os.path.abspath(f"slurm{unit_suffix}_geomosaic.sh") if args.output_script is None else os.path.abspath(args.output_script)
     extdb_output_script = os.path.abspath("slurm_extdb_geomosaic.sh") if args.extdb_output_script is None else os.path.abspath(args.extdb_output_script)
-    singleSample_output_script = os.path.abspath("slurm_simpleSample_geomosaic.sh") if args.extdb_output_script is None else os.path.abspath(args.extdb_output_script)
+    singleSample_output_script = os.path.abspath("slurm_singleSample_geomosaic.sh")
     list_sample_output = os.path.abspath(args.list_sample_output)
     
     if args.folder_logs is not None:

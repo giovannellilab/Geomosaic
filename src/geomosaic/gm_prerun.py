@@ -63,6 +63,9 @@ def geo_prerun(args):
         with open(extdb_output_script, "wt") as fd:
             fd.write(extdb)
         
+        with open(singleSample_output_script, "wt") as fd:
+            fd.write(singleSample)
+        
         show_gnuparallel_message(exists_extdb, extdb_output_script, output_script, singleSample_output_script, list_sample_output)
     
     print(f"\n{GEOMOSAIC_PROCESS}: Installing all the conda environments of your workflow/unit. This may take a while...\n", end="", flush=True)

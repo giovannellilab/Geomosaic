@@ -10,7 +10,7 @@ def exectype_gnuparalllel(args, geomosaic_dir, gm_snakefile, unit):
     path_geomosaic_snakefile = gm_snakefile
     output_script = os.path.abspath("parallel_geomosaic.sh") if args.output_script is None else os.path.abspath(args.output_script)
     extdb_output_script = os.path.abspath("parallel_extdb_geomosaic.sh") if args.extdb_output_script is None else os.path.abspath(args.extdb_output_script)
-    singleSample_output_script = os.path.abspath("parallel_simpleSample_geomosaic.sh") if args.extdb_output_script is None else os.path.abspath(args.extdb_output_script)
+    singleSample_output_script = os.path.abspath("parallel_singleSample_geomosaic.sh")
     list_sample_output = os.path.abspath(args.list_sample_output)
     
     if args.folder_logs is not None:
