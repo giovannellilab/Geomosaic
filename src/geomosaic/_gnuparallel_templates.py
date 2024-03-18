@@ -10,6 +10,7 @@ def exectype_gnuparalllel(args, geomosaic_dir, gm_snakefile, unit):
     path_geomosaic_snakefile = gm_snakefile
     output_script = os.path.abspath("parallel_geomosaic.sh") if args.output_script is None else os.path.abspath(args.output_script)
     extdb_output_script = os.path.abspath("parallel_extdb_geomosaic.sh") if args.extdb_output_script is None else os.path.abspath(args.extdb_output_script)
+    singleSample_output_script = os.path.abspath("parallel_simpleSample_geomosaic.sh") if args.extdb_output_script is None else os.path.abspath(args.extdb_output_script)
     list_sample_output = os.path.abspath(args.list_sample_output)
     
     if args.folder_logs is not None:
@@ -36,8 +37,14 @@ def exectype_gnuparalllel(args, geomosaic_dir, gm_snakefile, unit):
     extdb = gnuparallel_extdb.format(
         path_extdb_snakefile = str(os.path.join(geomosaic_dir, "Snakefile_extdb.smk"))
     )
+
+    singleSample = gnuparallel_singleSample.format(
+        threads = threads,
+        path_geomosaic_snakefile = path_geomosaic_snakefile,
+        gnuparallel_logs = gnuparallel_logs
+    )
     
-    return output_script, sw, extdb_output_script, extdb, list_sample_output
+    return output_script, sw, extdb_output_script, extdb, singleSample_output_script, singleSample, list_sample_output
 
 
 gnuparallel_workflow="""
@@ -68,5 +75,31 @@ gnuparallel_extdb="""
 
 
 snakemake --use-conda --cores 4 -s {path_extdb_snakefile}
+
+"""
+
+gnuparallel_singleSample="""
+#!/bin/bash
+
+#
+# Created with Geomosaic
+#
+
+if [[ $1 -eq 0 ]] ; then
+    echo 'No argument "SAMPLE" supplied.'
+    echo 'Execution type of this script: bash parallel_simpleSample_geomosaic MYSAMPLE'
+    echo 'Exit.'
+    exit 1
+fi
+
+single_sample=$1
+
+threads_per_job={threads}
+
+parallel -j 1 \\
+    snakemake --use-conda \\
+    --cores $threads_per_job \\
+    -s {path_geomosaic_snakefile} \\
+    --config SAMPLES=$single_sample ">" {gnuparallel_logs} 2>&1
 
 """

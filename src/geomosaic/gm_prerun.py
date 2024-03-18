@@ -50,7 +50,8 @@ def geo_prerun(args):
     else:
         output_script, sw, \
             extdb_output_script, extdb, \
-                list_sample_output = exectype_gnuparalllel(args, geomosaic_dir, gm_snakefile, unit)
+                singleSample_output_script, singleSample, \
+                    list_sample_output = exectype_gnuparalllel(args, geomosaic_dir, gm_snakefile, unit)
 
         with open(list_sample_output, "wt") as fl:
             for s in geomosaic_setup["SAMPLES"]:
@@ -62,12 +63,7 @@ def geo_prerun(args):
         with open(extdb_output_script, "wt") as fd:
             fd.write(extdb)
         
-        prompt1 = GEOMOSAIC_PROMPT(f"$ bash {extdb_output_script}")
-        prompt2 = GEOMOSAIC_PROMPT(f"$ bash {output_script}")
-        print(f"\n{GEOMOSAIC_NOTE}: The following draft scripts for GNU Parallel execution are created (along with file containing the samples list):\n{output_script}\n{extdb_output_script}\n{list_sample_output}")
-        print(f"\nThese script can be considered minimal for GNU Parallel.\nFeel free to modify them to add more complex codes. More details can be retrieved to official GNU Parallel Documentation.")
-        print(f"\n{GEOMOSAIC_NOTE}: Since your using GNU Parallel, you should set the number of jobs to execute in parallel taking into account the number of cpus that you can use.\nFor instance, if 36 cores are available you can open the following file\n{GEOMOSAIC_PROMPT(output_script)}\n\nand modify the following variables\n{GEOMOSAIC_PROMPT('n_jobs_in_parallel=4')}\n{GEOMOSAIC_PROMPT('threads_per_job=9')}.")
-        print(f"\n{GEOMOSAIC_NOTE}: So now you are ready to go!\nYour first step should be to setup the required databases of your pipeline, by executing:\n{prompt1}\n\nonce it is finished, you can execute the real pipeline:\n{prompt2}")
+        show_gnuparallel_message(exists_extdb, extdb_output_script, output_script, singleSample_output_script, list_sample_output)
     
     print(f"\n{GEOMOSAIC_PROCESS}: Installing all the conda environments of your workflow/unit. This may take a while...\n", end="", flush=True)
     envinstall(geomosaic_dir, gm_snakefile, unit)
@@ -140,6 +136,42 @@ def show_slurm_message(exists_extdb, extdb_output_script, output_script, singleS
     
     print(f"\n{GEOMOSAIC_NOTE}: The following draft scripts for slurm execution were created (along with file containing the samples list):\n\t- {list_files}")
     print(f"\nThese script can be considered minimal for SLURM. If you need you can modify them to add more SBATCH information.\nMore details can be retrieved to official SLURM Documentation.")
+    print(f"\n{GEOMOSAIC_NOTE}: So now you are ready to go!\n\n{merging_steps}")
+
+
+def show_gnuparallel_message(exists_extdb, extdb_output_script, output_script, singleSample_output_script, list_sample_output):
+    if exists_extdb:
+        existing_files = [output_script, extdb_output_script, singleSample_output_script, list_sample_output]
+        prompt1 = GEOMOSAIC_PROMPT(f"$ bash {extdb_output_script}")
+        prompt2 = GEOMOSAIC_PROMPT(f"$ bash {output_script}")
+        prompt3 = GEOMOSAIC_PROMPT(f"$ bash {singleSample_output_script} MYSAMPLE")
+
+        steps = [
+            (f"{GEOMOSAIC_PROMPT('STEP 1)')}: setup the required databases of your pipeline, by executing:", prompt1),
+            (f"{GEOMOSAIC_PROMPT('STEP 2)')}: once it is finished, you can execute the real pipeline:", prompt2),
+            (f"{GEOMOSAIC_PROMPT('EVENTUALLY)')}: if you need to execute your workflow/unit just for one sample you can execute the following script through bash (specifying your sample name of interest):", prompt3),
+        ]
+    else:
+        existing_files = [output_script, singleSample_output_script, list_sample_output]
+        prompt1 = GEOMOSAIC_PROMPT(f"$ bash {extdb_output_script}")
+        prompt2 = GEOMOSAIC_PROMPT(f"$ bash {output_script}")
+        prompt3 = GEOMOSAIC_PROMPT(f"$ bash {singleSample_output_script} MYSAMPLE")
+
+        steps = [
+            (f"{GEOMOSAIC_PROMPT('STEP 1)')}: you can execute the real pipeline due to the fact that you don't need to setup any database:", prompt2),
+            (f"{GEOMOSAIC_PROMPT('EVENTUALLY)')}: if you need to execute your workflow/unit just for one sample you can execute the following script through bash (specifying your sample name of interest):", prompt3),
+        ]
+
+    list_files = "\n\t- ".join(existing_files)
+
+    merging_steps = ""
+    for descr, cmd in steps:
+        merging_steps += descr
+        merging_steps += f"\n\t{cmd}\n\n"
+    
+    print(f"\n{GEOMOSAIC_NOTE}: The following draft scripts for GNU Parallel execution were created (along with file containing the samples list):\n\t- {list_files}")
+    print(f"\nThese script can be considered minimal for GNU Parallel. Feel free to modify them to add more complex codes.\nMore details can be retrieved to official GNU Parallel Documentation.")
+    print(f"\n{GEOMOSAIC_NOTE}: Since your using GNU Parallel, you should set the number of jobs to execute in parallel taking into account the number of cpus that you can use.\nFor instance, if 36 cores are available you can open the following file\n{GEOMOSAIC_PROMPT(output_script)}\n\nand modify the following variables\n{GEOMOSAIC_PROMPT('n_jobs_in_parallel=4')}\n{GEOMOSAIC_PROMPT('threads_per_job=9')}.")
     print(f"\n{GEOMOSAIC_NOTE}: So now you are ready to go!\n\n{merging_steps}")
 
 
