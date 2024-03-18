@@ -24,7 +24,8 @@ dependencies = [
     "snakemake",
     "biopython>=1.82",
     "tqdm",
-    "openpyxl"
+    "openpyxl",
+    "pulp<2.8"
 ]
 
 [project.scripts]
