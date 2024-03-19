@@ -6,8 +6,8 @@ rule run_bowtie2:
         gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["MODULES"]["assembly"], allow_missing=True)
     output:
         folder=directory("{wdir}/{sample}/bowtie2"),
-        sam_file="{wdir}/{sample}/bowtie2/read_mapping.sam",
-        bam_file="{wdir}/{sample}/bowtie2/read_mapping.bam",
+        sam_file=temp("{wdir}/{sample}/bowtie2/read_mapping.sam"),
+        bam_file=temp("{wdir}/{sample}/bowtie2/read_mapping.bam"),
         sorted_bam="{wdir}/{sample}/bowtie2/read_mapping_sorted.bam",
         indexed_bam="{wdir}/{sample}/bowtie2/read_mapping_sorted.bam.bai"
     threads: config["threads"]
