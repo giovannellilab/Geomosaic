@@ -35,4 +35,4 @@ For any bug, feature request, comments and question, you can use the correspondi
 
 If you used __GEOMOSAIC__ for your analysis, please cite:
 
->[PLACEHOLDER] Corso D., Barosa B., Cordone A., Giovannelli D., "Geomosaic: a flexible metagenomic pipeline combining biological and geochemical data to outline biosphere and geosphere interactions." 
+>[PLACEHOLDER] Corso D., et al., "Geomosaic: a flexible metagenomic pipeline combining biological and geochemical data to outline biosphere and geosphere interactions." 
