@@ -49,7 +49,7 @@ def main():
         if l == 0:
             continue
         
-        preproc_x = pos["pre_processing"][0] + 0.4
+        preproc_x = pos["pre_processing"][0] + 0.5
         
         flag_inserted = False
         for m in modules_list:
@@ -57,7 +57,7 @@ def main():
                 continue
 
             pos[m] = np.array([preproc_x, preproc_y])
-            preproc_x += 0.4
+            preproc_x += 0.5
             flag_inserted = True
         
         if flag_inserted:
@@ -163,12 +163,15 @@ def draw_graph(G, new_pos, pos_labels_attrs):
     )
 
     for lbl, coords in pos_labels_attrs.items():
-        plt.text(coords[0], coords[1], lbl, path_effects=[pe.withStroke(linewidth=4, foreground="white")], va="center", ha="center")
+        plt.text(coords[0], coords[1], lbl, 
+                 path_effects=[pe.withStroke(linewidth=4, foreground="white")], 
+                 va="center", ha="center", weight='bold')
 
     stream_module_legend = mpatches.Patch(color='#6699ff', label='Main stream modules')
     analysis_module_legend = mpatches.Patch(color='#82E0AA', label='Analysis stream modules')
     plt.legend(handles=[stream_module_legend, analysis_module_legend])
     plt.savefig('images/modules_DAG.png', bbox_inches='tight')
+    plt.savefig('images/modules_DAG.svg', bbox_inches='tight', format="svg")
 
 
 def draw_white_graph(G, new_pos, pos_labels_attrs):
@@ -187,6 +190,7 @@ def draw_white_graph(G, new_pos, pos_labels_attrs):
         plt.text(coords[0], coords[1], lbl, path_effects=[pe.withStroke(linewidth=4, foreground="white")], va="center", ha="center")
         
     plt.savefig('images/modules_DAG_white.png', bbox_inches='tight')
+    plt.savefig('images/modules_DAG_white.svg', bbox_inches='tight', format="svg")
 
 
 def draw_workflow_graph(G, new_pos, pos_labels_attrs):
@@ -239,6 +243,7 @@ def draw_workflow_graph(G, new_pos, pos_labels_attrs):
     skipped_module_legend = mpatches.Patch(color=col_removed, label='Removed modules due to ignored dependencies')
     plt.legend(handles=[stream_module_legend, analysis_module_legend, skipped_module_legend])
     plt.savefig('images/modules_DAG_workflow.png', bbox_inches='tight')
+    plt.savefig('images/modules_DAG_workflow.svg', bbox_inches='tight', format="svg")
 
 
 if __name__ == "__main__":
