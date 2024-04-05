@@ -73,7 +73,8 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
         queue.popleft()
     
     dependencies = list(G.edges())
-    order_writing = list(nx.bfs_tree(G, source=mstart).nodes())
+    order_writing = [elem for elem in order if elem in user_choices]
+    print(order_writing)
 
     return user_choices, dependencies, G, order_writing
 
