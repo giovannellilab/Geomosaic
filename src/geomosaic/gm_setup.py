@@ -64,7 +64,7 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):
     else:
         df = pd.read_excel(filename)
     
-    assert list(df.columns) == ["r1", "r2", "sample"], f"\n\n{GEOMOSAIC_ERROR}: the provided table should contains three columns, with the following header (case-sensitive): r1 r2 sample"
+    assert list(df.columns) == ["r1", "r2", "sample"], f"\n\n{GEOMOSAIC_ERROR}: the provided table should contains three columns, with the following header all lower-case: r1 r2 sample"
 
     for i in df.itertuples():
         check_special_characters(i.sample)
