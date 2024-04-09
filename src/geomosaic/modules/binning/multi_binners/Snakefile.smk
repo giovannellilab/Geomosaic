@@ -1,7 +1,8 @@
 
 rule run_multi_binners:
     input:
-        folder_readmap=expand("{wdir}/{sample}/{assembly_readmapping}", assembly_readmapping=config["MODULES"]["assembly_readmapping"], allow_missing=True),
+        sorted_bam=expand("{wdir}/{sample}/{assembly_readmapping}/read_mapping_sorted.bam", assembly_readmapping=config["MODULES"]["assembly_readmapping"], allow_missing=True),
+        indexed_bam=expand("{wdir}/{sample}/{assembly_readmapping}/read_mapping_sorted.bam.bai", assembly_readmapping=config["MODULES"]["assembly_readmapping"], allow_missing=True),
         gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["MODULES"]["assembly"], allow_missing=True)
     output:
         folder=directory("{wdir}/{sample}/multi_binners"),
@@ -22,7 +23,7 @@ rule run_multi_binners:
         echo "Executing Concoct..."
         cut_up_fasta.py {input.gm_contigs} {params.concoct_user_params} -o 0 -b {output.concoct_folder}/contigs_10K.bed > {output.concoct_folder}/contigs_10K.fa
         echo "concoct_coverage_table.py"
-        concoct_coverage_table.py {output.concoct_folder}/contigs_10K.bed {input.folder_readmap}/read_mapping_sorted.bam > {output.concoct_folder}/coverage_table.tsv
+        concoct_coverage_table.py {output.concoct_folder}/contigs_10K.bed {input.sorted_bam} > {output.concoct_folder}/coverage_table.tsv
         echo "concoct"
         concoct --threads {threads} --composition_file {output.concoct_folder}/contigs_10K.fa --coverage_file {output.concoct_folder}/coverage_table.tsv -b {output.concoct_folder}/ >> {log} 2>&1
         echo "merge_cutup_clustering.py"
@@ -31,7 +32,7 @@ rule run_multi_binners:
         extract_fasta_bins.py {input.gm_contigs} {output.concoct_folder}/clustering_merged.csv --output_path {output.concoct_folder}/bins
         
         echo "Executing MetaBat2..."
-        jgi_summarize_bam_contig_depths --outputDepth {output.metabat_folder}/metabat2_depth.txt {input.folder_readmap}/read_mapping_sorted.bam
+        jgi_summarize_bam_contig_depths --outputDepth {output.metabat_folder}/metabat2_depth.txt {input.sorted_bam}
         metabat2 {params.metabat_user_params} --inFile {input.gm_contigs} --abdFile {output.metabat_folder}/metabat2_depth.txt -o {output.metabat_folder}/output --numThreads {threads} >> {log} 2>&1
 
         echo "Executing MaxBin2..."

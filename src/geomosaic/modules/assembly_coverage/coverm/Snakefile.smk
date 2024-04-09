@@ -1,7 +1,8 @@
 
 rule run_coverm:
     input:
-        folder_readmap=expand("{wdir}/{sample}/{assembly_readmapping}", assembly_readmapping=config["MODULES"]["assembly_readmapping"], allow_missing=True),
+        sorted_bam=expand("{wdir}/{sample}/{assembly_readmapping}/read_mapping_sorted.bam", assembly_readmapping=config["MODULES"]["assembly_readmapping"], allow_missing=True),
+        indexed_bam=expand("{wdir}/{sample}/{assembly_readmapping}/read_mapping_sorted.bam.bai", assembly_readmapping=config["MODULES"]["assembly_readmapping"], allow_missing=True),
     output:
         folder=directory("{wdir}/{sample}/coverm"),
     params:
@@ -15,7 +16,7 @@ rule run_coverm:
         touch {output.folder}/list.txt
 
         for mtd in mean trimmed_mean count tpm; do
-            TMPDIR={output.folder}/tmp coverm contig --bam-files {input.folder_readmap}/read_mapping_sorted.bam \
+            TMPDIR={output.folder}/tmp coverm contig --bam-files {input.sorted_bam} \
                 --output-file {output.folder}/$mtd.tsv \
                 --threads {threads} \
                 --methods $mtd \

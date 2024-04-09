@@ -8,8 +8,8 @@ rule run_bowtie2:
         folder=directory("{wdir}/{sample}/bowtie2"),
         sam_file=temp("{wdir}/{sample}/bowtie2/read_mapping.sam"),
         bam_file=temp("{wdir}/{sample}/bowtie2/read_mapping.bam"),
-        sorted_bam="{wdir}/{sample}/bowtie2/read_mapping_sorted.bam",
-        indexed_bam="{wdir}/{sample}/bowtie2/read_mapping_sorted.bam.bai"
+        sorted_bam=temp("{wdir}/{sample}/bowtie2/read_mapping_sorted.bam"),
+        indexed_bam=temp("{wdir}/{sample}/bowtie2/read_mapping_sorted.bam.bai")
     threads: config["threads"]
     conda: config["ENVS"]["bowtie2"]
     params:
