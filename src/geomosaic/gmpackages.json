@@ -161,7 +161,7 @@
         "binning": {
             "description": "Module: Binning",
             "choices": {
-                "MaxBin2 + MetaBat2 + Concoct": "multi_binners"
+                "MaxBin2 + MetaBat2 + SemiBin2": "multi_binners"
             }    
         },
 

@@ -74,7 +74,6 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
     
     dependencies = list(G.edges())
     order_writing = [elem for elem in order if elem in user_choices]
-    print(order_writing)
 
     return user_choices, dependencies, G, order_writing
 
