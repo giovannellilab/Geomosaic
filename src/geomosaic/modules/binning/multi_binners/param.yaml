@@ -1,9 +1,9 @@
-concoct:
-- -c 10000
-- --merge_last
-
 maxbin2:
 -
 
 metabat2:
+-
+
+semibin2:
+- --environment global
 -
