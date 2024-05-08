@@ -97,7 +97,7 @@ def envinstall(geomosaic_wdir, gm_snakefile, unit):
     #     check_call(f"(cd {path_extdb_folder} && mkdir -p {extdb_dir})", shell=True)
     
     dummy_filename = os.path.join(geomosaic_wdir, "dummy_snakefile.smk")
-    create_dummy_snakefile(config_file, config_file, dummy_filename)
+    create_dummy_snakefile(geomosaic_wdir, config_file, dummy_filename)
     check_call(["snakemake", "--use-conda", "--conda-create-envs-only", "--cores", "1", "-s", dummy_filename])
 
     # # REMOVE TEST FOLDERS

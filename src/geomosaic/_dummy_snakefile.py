@@ -4,7 +4,7 @@ import yaml
 def dummy_rule(geomosaic_wdir, package, condaenv):
     outfilename = "{wdir}/geomosaic_temp_{package}.txt".format(wdir=geomosaic_wdir, package=package)
 
-    dummy_rule = """
+    dr = """
 
 rule dummy_{package}:
     output:
@@ -13,7 +13,7 @@ rule dummy_{package}:
         {condaenv}
     shell:
         """
-    s = dummy_rule.format(outfilename=outfilename, condaenv=condaenv) +'"touch {output.file}"' + "\n\n"
+    s = dr.format(outfilename=outfilename, condaenv=condaenv) +'"touch {output.file}"' + "\n\n"
     return s, outfilename
 
 
@@ -28,13 +28,13 @@ def make_inputs_allrule(list_outfilenames):
     return s
 
 
-def dummy_snakefile(config_env, configpath):
+def dummy_snakefile(geomosaic_wdir, config_env, configpath):
     all_rules = ""
     all_outfilenames = []
 
     for pckg, _ in config_env.items():
         prefix = f'config["ENVS"]["{pckg}"]'
-        dr, of = dummy_rule(pckg, prefix)
+        dr, of = dummy_rule(geomosaic_wdir, pckg, prefix)
         all_rules += dr
         all_outfilenames.append(of)
 
@@ -48,11 +48,11 @@ rule all:
     return dummy_snakefile
 
 
-def create_dummy_snakefile(config_file, configpath, filename_dummy_snakefile):
-    with open(config_file) as file:
+def create_dummy_snakefile(geomosaic_wdir, config_file_path, filename_dummy_snakefile):
+    with open(config_file_path) as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
-    s = dummy_snakefile(config["ENVS"], configpath)
+    s = dummy_snakefile(geomosaic_wdir, config["ENVS"], config_file_path)
 
     with open(filename_dummy_snakefile, "wt") as fd:
         fd.write(s)
