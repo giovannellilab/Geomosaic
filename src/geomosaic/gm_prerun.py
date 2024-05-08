@@ -4,6 +4,7 @@ from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROCESS, GEOMOSAIC_OK, G
 from subprocess import check_call
 from geomosaic._slurm_templates import exectype_slurm
 from geomosaic._gnuparallel_templates import exectype_gnuparalllel
+from geomosaic._dummy_snakefile import create_dummy_snakefile
 
 
 def geo_prerun(args):
@@ -90,20 +91,22 @@ def envinstall(geomosaic_wdir, gm_snakefile, unit):
     extdbs = config["EXT_DB"]
     
     # CREATE TEST FOLDERS
-    for k, path in extdbs.items():
-        path_extdb_folder = os.path.dirname(path)
-        extdb_dir = path.split("/")[-1]
-        check_call(f"(cd {path_extdb_folder} && mkdir -p {extdb_dir})", shell=True)
+    # for k, path in extdbs.items():
+    #     path_extdb_folder = os.path.dirname(path)
+    #     extdb_dir = path.split("/")[-1]
+    #     check_call(f"(cd {path_extdb_folder} && mkdir -p {extdb_dir})", shell=True)
     
-    check_call(["snakemake", "--use-conda", "--conda-create-envs-only", "--cores", "1", "-s", gm_snakefile])
+    dummy_filename = os.path.join(geomosaic_wdir, "dummy_snakefile.smk")
+    create_dummy_snakefile(config_file, config_file, dummy_filename)
+    check_call(["snakemake", "--use-conda", "--conda-create-envs-only", "--cores", "1", "-s", dummy_filename])
 
-    # REMOVE TEST FOLDERS
-    for k, path in extdbs.items():
-        extdb_dir = path.split("/")[-1]
-        try:
-            os.rmdir(path)
-        except OSError:
-            pass
+    # # REMOVE TEST FOLDERS
+    # for k, path in extdbs.items():
+    #     extdb_dir = path.split("/")[-1]
+    #     try:
+    #         os.rmdir(path)
+    #     except OSError:
+    #         pass
 
     print(GEOMOSAIC_OK)
 
