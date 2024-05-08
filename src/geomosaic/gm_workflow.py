@@ -13,6 +13,7 @@ def geo_workflow(args):
     mstart              = args.module_start
     threads             = args.threads
     user_extdbfolder    = args.externaldb_gmfolder
+    user_condafolder    = args.condaenv_gmfolder
 
     with open(setup_file) as file:
         geomosaic_setup = yaml.load(file, Loader=yaml.FullLoader)
@@ -24,20 +25,17 @@ def geo_workflow(args):
     samples_list    = geomosaic_setup["SAMPLES"]
     geomosaic_dir   = geomosaic_setup["GEOMOSAIC_WDIR"]
 
-    geomosaic_user_parameters   = os.path.join(geomosaic_dir, "gm_user_parameters")
+    geomosaic_user_parameters = os.path.join(geomosaic_dir, "gm_user_parameters")
     if not os.path.isdir(geomosaic_user_parameters):
         os.makedirs(geomosaic_user_parameters)
 
-    geomosaic_condaenvs_folder   = os.path.join(geomosaic_dir, "gm_conda_envs")
+    geomosaic_condaenvs_folder = os.path.join(geomosaic_dir, "gm_conda_envs") if user_condafolder is None else user_condafolder
     if not os.path.isdir(geomosaic_condaenvs_folder):
         os.makedirs(geomosaic_condaenvs_folder)
-    
-    if user_extdbfolder is None:
-        geomosaic_externaldb_folder   = os.path.join(geomosaic_dir, "gm_external_db")
-        if not os.path.isdir(geomosaic_externaldb_folder):
-            os.makedirs(geomosaic_externaldb_folder)
-    else:
-        geomosaic_externaldb_folder = user_extdbfolder
+
+    geomosaic_externaldb_folder = os.path.join(geomosaic_dir, "gm_external_db") if user_extdbfolder is None else user_extdbfolder
+    if not os.path.isdir(geomosaic_externaldb_folder):
+        os.makedirs(geomosaic_externaldb_folder)
 
     print(GEOMOSAIC_OK)
 

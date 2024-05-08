@@ -69,6 +69,9 @@ def main():
     
     workflow_optional = workflow_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments"))
     workflow_optional.add_argument('-t' ,'--threads', default=10, type=int, help="Threads to use (per sample).")
+    workflow_optional.add_argument('-c' ,'--condaenv_gmfolder', default=None,type=lambda p: pathlib.Path(p).resolve(),
+                                   help="If you have already installed the conda environments, \
+                                   here you can specify the path folder.")
     workflow_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None,type=lambda p: pathlib.Path(p).resolve(),
                                    help="If you have already downloaded and setup \
                                    databases with geomosaic, here you can specify the path folder.")
