@@ -13,7 +13,7 @@ rule dummy_{package}:
         {condaenv}
     shell:
         """
-    s = dr.format(outfilename=outfilename, condaenv=condaenv) +'"touch {output.file}"' + "\n\n"
+    s = dr.format(outfilename=outfilename, condaenv=condaenv, package=package) +'"touch {output.file}"' + "\n\n"
     return s, outfilename
 
 
