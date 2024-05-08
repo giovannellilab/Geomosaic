@@ -91,7 +91,7 @@ def envinstall(geomosaic_wdir, gm_snakefile, unit):
     
     # CREATE TEST FOLDERS
     for k, path in extdbs.items():
-        path_extdb_folder = path.split("/")[0:-1]
+        path_extdb_folder = os.path.dirname(path)
         extdb_dir = path.split("/")[-1]
         check_call(f"(cd {path_extdb_folder} && mkdir -p {extdb_dir})", shell=True)
     
