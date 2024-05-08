@@ -75,8 +75,6 @@ def geo_prerun(args):
 
 
 def envinstall(geomosaic_wdir, gm_snakefile, unit):
-    path_extdb_folder = os.path.join(geomosaic_wdir, "gm_external_db")
-
     filename = "config_unit.yaml" if unit else "config.yaml"
     config_file = os.path.join(geomosaic_wdir, filename)
 
@@ -93,6 +91,7 @@ def envinstall(geomosaic_wdir, gm_snakefile, unit):
     
     # CREATE TEST FOLDERS
     for k, path in extdbs.items():
+        path_extdb_folder = path.split("/")[0:-1]
         extdb_dir = path.split("/")[-1]
         check_call(f"(cd {path_extdb_folder} && mkdir -p {extdb_dir})", shell=True)
     
