@@ -1,7 +1,7 @@
 
 rule run_das_tool:
     input:
-        concoct_bins=expand("{wdir}/{sample}/{binning}/geomosaic_concoct_bins", binning=config["MODULES"]["binning"], allow_missing=True),
+        semibin_bins=expand("{wdir}/{sample}/{binning}/geomosaic_semibin2_bins", binning=config["MODULES"]["binning"], allow_missing=True),
         maxbin_bins=expand("{wdir}/{sample}/{binning}/geomosaic_maxbin2_bins", binning=config["MODULES"]["binning"], allow_missing=True),
         metabat_bins=expand("{wdir}/{sample}/{binning}/geomosaic_metabat2_bins", binning=config["MODULES"]["binning"], allow_missing=True),
         gm_contigs=expand("{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta", assembly=config["MODULES"]["assembly"], allow_missing=True)
@@ -18,12 +18,12 @@ rule run_das_tool:
         """
         mkdir -p {output.folder}
 
-        LC_ALL=C Fasta_to_Contig2Bin.sh -i {input.concoct_bins} -e fasta > {output.folder}/concoct_dastool.tsv
+        LC_ALL=C Fasta_to_Contig2Bin.sh -i {input.semibin_bins} -e fasta > {output.folder}/semibin2_dastool.tsv
         LC_ALL=C Fasta_to_Contig2Bin.sh -i {input.maxbin_bins} -e fasta > {output.folder}/maxbin2_dastool.tsv
         LC_ALL=C Fasta_to_Contig2Bin.sh -i {input.metabat_bins} -e fasta > {output.folder}/metabat2_dastool.tsv
 
-        LC_ALL=C DAS_Tool -i {output.folder}/concoct_dastool.tsv,{output.folder}/maxbin2_dastool.tsv,{output.folder}/metabat2_dastool.tsv \
-            -l concoct,maxbin2,metabat2 \
+        LC_ALL=C DAS_Tool -i {output.folder}/semibin2_dastool.tsv,{output.folder}/maxbin2_dastool.tsv,{output.folder}/metabat2_dastool.tsv \
+            -l semibin2,maxbin2,metabat2 \
             -c {input.gm_contigs} \
             -o {output.folder}/das_tool \
             --threads {threads} \
