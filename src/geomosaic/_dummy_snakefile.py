@@ -21,9 +21,9 @@ def make_inputs_allrule(list_outfilenames):
     s = ""
     for f in list_outfilenames:
         if f == list_outfilenames[-1]:
-            s += f"\t\t{repr(f)}\n"
+            s += f"        {repr(f)}\n"
         else:
-            s += f"\t\t{repr(f)},"
+            s += f"        {repr(f)},\n"
     
     return s
 
