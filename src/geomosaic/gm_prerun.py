@@ -89,24 +89,11 @@ def envinstall(geomosaic_wdir, gm_snakefile, unit):
         config = yaml.load(file, Loader=yaml.FullLoader)
     
     extdbs = config["EXT_DB"]
-    
-    # CREATE TEST FOLDERS
-    # for k, path in extdbs.items():
-    #     path_extdb_folder = os.path.dirname(path)
-    #     extdb_dir = path.split("/")[-1]
-    #     check_call(f"(cd {path_extdb_folder} && mkdir -p {extdb_dir})", shell=True)
-    
+
     dummy_filename = os.path.join(geomosaic_wdir, "dummy_snakefile.smk")
     create_dummy_snakefile(geomosaic_wdir, config_file, dummy_filename)
     check_call(["snakemake", "--use-conda", "--conda-create-envs-only", "--cores", "1", "-s", dummy_filename])
-
-    # # REMOVE TEST FOLDERS
-    # for k, path in extdbs.items():
-    #     extdb_dir = path.split("/")[-1]
-    #     try:
-    #         os.rmdir(path)
-    #     except OSError:
-    #         pass
+    os.remove(dummy_filename)
 
     print(GEOMOSAIC_OK)
 
