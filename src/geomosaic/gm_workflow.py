@@ -1,21 +1,21 @@
 import json
 import yaml
 import os
-from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_NOTE
+from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_NOTE, append_to_gmsetupyaml
 from geomosaic._build_pipelines_module import import_graph, build_pipeline_modules, ask_additional_parameters
 from geomosaic._compose import write_gmfiles, compose_config
 
 
 def geo_workflow(args):
     print(f"{GEOMOSAIC_PROCESS}: Loading variables from GeoMosaic setup file... ", end="", flush=True)
-    setup_file          = args.setup_file
+    gmsetup             = args.setup_file
     glab                = args.glab
     mstart              = args.module_start
     threads             = args.threads
     user_extdbfolder    = args.externaldb_gmfolder
     user_condafolder    = args.condaenv_gmfolder
 
-    with open(setup_file) as file:
+    with open(gmsetup) as file:
         geomosaic_setup = yaml.load(file, Loader=yaml.FullLoader)
 
     assert "SAMPLES" in geomosaic_setup, f"\n{GEOMOSAIC_ERROR}: sample list must be provided with the key 'SAMPLES'"
@@ -36,6 +36,12 @@ def geo_workflow(args):
     geomosaic_externaldb_folder = os.path.join(geomosaic_dir, "gm_external_db") if user_extdbfolder is None else user_extdbfolder
     if not os.path.isdir(geomosaic_externaldb_folder):
         os.makedirs(geomosaic_externaldb_folder)
+
+    append_to_gmsetupyaml(gmsetup, {
+        "GM_CONDA_ENVS": geomosaic_condaenvs_folder,
+        "GM_USER_PARAMETERS": geomosaic_user_parameters,
+        "GM_EXTERNAL_DB": geomosaic_externaldb_folder
+    })
 
     print(GEOMOSAIC_OK)
 
