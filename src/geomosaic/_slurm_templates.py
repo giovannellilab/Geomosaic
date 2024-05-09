@@ -4,7 +4,7 @@ from geomosaic._utils import GEOMOSAIC_PROCESS, GEOMOSAIC_ERROR
 import yaml
 
 
-def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit):
+def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit, geomosaic_condaenvs_folder):
     threads = args.threads
     memory = args.memory
     partition = "" if args.partition is None else f"#SBATCH --partition={args.partition}"
@@ -26,8 +26,10 @@ def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit):
             check_call(["mkdir", "-p", folder_logs])
         
         slurm_logs = "#SBATCH --output=" +os.path.join(folder_logs, "slurm-%A_%a.out")
+        slurm_logs_extdb = "#SBATCH --output=" +os.path.join(folder_logs, "slurm-%A_GM_EXTDB.out")
     else:
         slurm_logs = ""
+        slurm_logs_extdb = ""
     
     update_threads(unit, geomosaic_dir, threads)
 
@@ -41,15 +43,17 @@ def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit):
         mail_type = mail_type,
         mail_user = mail_user,
         slurm_logs = slurm_logs,
+        geomosaic_condaenvs_folder = geomosaic_condaenvs_folder
     )
 
     extdb = slurm_extdb.format(
         memory = memory,
-        slurm_logs = slurm_logs,
+        slurm_logs = slurm_logs_extdb,
         partition = partition,
         mail_type = mail_type,
         mail_user = mail_user,
-        path_extdb_snakefile = str(os.path.join(geomosaic_dir, "Snakefile_extdb.smk"))
+        path_extdb_snakefile = str(os.path.join(geomosaic_dir, "Snakefile_extdb.smk")),
+        geomosaic_condaenvs_folder = geomosaic_condaenvs_folder
     )
 
     singleSample = slurm_workflow_singleSample.format(
@@ -60,6 +64,7 @@ def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit):
         mail_type = mail_type,
         mail_user = mail_user,
         slurm_logs = slurm_logs,
+        geomosaic_condaenvs_folder = geomosaic_condaenvs_folder
     )
     
     return output_script, sw, extdb_output_script, extdb, singleSample_output_script, singleSample, list_sample_output
@@ -107,14 +112,14 @@ slurm_workflow = """#!/bin/bash
 single_sample="$(tail -n +$SLURM_ARRAY_TASK_ID {path_list_sample} | head -n1)"
 
 
-snakemake --use-conda --cores {threads} --config SAMPLES=$single_sample -s {path_geomosaic_snakefile}
+snakemake --use-conda --conda-prefix {geomosaic_condaenvs_folder} --cores {threads} --config SAMPLES=$single_sample -s {path_geomosaic_snakefile}
 """
 
 slurm_extdb = """#!/bin/bash
 
 #SBATCH --job-name="Extdb_GM"
 #SBATCH --time=96:00:00
-#SBATCH --cpus-per-task=7
+#SBATCH --cpus-per-task=8
 #SBATCH --mem={memory}G
 {slurm_logs}
 {partition}
@@ -126,7 +131,7 @@ slurm_extdb = """#!/bin/bash
 # 
 
 
-snakemake --use-conda --cores 7 -s {path_extdb_snakefile}
+snakemake --use-conda --conda-prefix {geomosaic_condaenvs_folder} --cores 8 -s {path_extdb_snakefile}
 """
 
 
@@ -155,5 +160,5 @@ fi
 single_sample=$1
 
 
-snakemake --use-conda --cores {threads} --config SAMPLES=$single_sample -s {path_geomosaic_snakefile}
+snakemake --use-conda --conda-prefix {geomosaic_condaenvs_folder} --cores {threads} --config SAMPLES=$single_sample -s {path_geomosaic_snakefile}
 """

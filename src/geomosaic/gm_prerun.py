@@ -8,34 +8,37 @@ from geomosaic._dummy_snakefile import create_dummy_snakefile
 
 
 def geo_prerun(args):
-    setup_file  = args.setup_file
-    unit        = args.unit
-    exectype    = args.exec_type
-    noscript    = args.noscript
+    gmsetup_file    = args.setup_file
+    unit            = args.unit
+    exectype        = args.exec_type
+    noscript        = args.noscript
 
-    with open(setup_file) as file:
-        geomosaic_setup = yaml.load(file, Loader=yaml.FullLoader)
+    with open(gmsetup_file) as file:
+        gmsetup = yaml.load(file, Loader=yaml.FullLoader)
 
-    assert "SAMPLES" in geomosaic_setup, f"\n{GEOMOSAIC_ERROR}: sample list must be provided with the key 'SAMPLES'"
-    assert "GEOMOSAIC_WDIR" in geomosaic_setup, f"\n{GEOMOSAIC_ERROR}: geomosaic working directory must be provided with the key 'GEOMOSAIC_WDIR'"
-    assert os.path.isdir(geomosaic_setup["GEOMOSAIC_WDIR"]), f"\n{GEOMOSAIC_ERROR}: GeoMosaic working directory does not exists."
+    assert "SAMPLES" in gmsetup, f"\n{GEOMOSAIC_ERROR}: sample list must be provided with the key 'SAMPLES'"
+    assert "GEOMOSAIC_WDIR" in gmsetup, f"\n{GEOMOSAIC_ERROR}: geomosaic working directory must be provided with the key 'GEOMOSAIC_WDIR'"
+    assert "GM_CONDA_ENVS" in gmsetup, f"\n{GEOMOSAIC_ERROR}: geomosaic conda envs directory must be provided with the key 'GM_CONDA_ENVS'"
+    
+    assert os.path.isdir(gmsetup["GEOMOSAIC_WDIR"]), f"\n{GEOMOSAIC_ERROR}: GeoMosaic working directory does not exists."
 
-    geomosaic_dir = geomosaic_setup["GEOMOSAIC_WDIR"]
-    geomosaic_samples = geomosaic_setup["SAMPLES"]
+    geomosaic_wdir = gmsetup["GEOMOSAIC_WDIR"]
+    geomosaic_samples = gmsetup["SAMPLES"]
+    geomosaic_condaenvs_folder = gmsetup["GM_CONDA_ENVS"]
 
     name_snakefile = "Snakefile_unit.smk" if unit else "Snakefile.smk"
-    exists_extdb = check_extdb_snakefile(geomosaic_dir, unit)
-    gm_snakefile = str(os.path.join(geomosaic_dir, name_snakefile))
+    exists_extdb = check_extdb_snakefile(geomosaic_wdir, unit)
+    gm_snakefile = str(os.path.join(geomosaic_wdir, name_snakefile))
     
     if not noscript:
         if exectype == "slurm":
             output_script, sw, \
                 extdb_output_script, extdb, \
                     singleSample_output_script, singleSample, \
-                        list_sample_output = exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit)
+                        list_sample_output = exectype_slurm(args, geomosaic_samples, geomosaic_wdir, gm_snakefile, unit, geomosaic_condaenvs_folder)
 
             with open(list_sample_output, "wt") as fl:
-                for s in geomosaic_setup["SAMPLES"]:
+                for s in gmsetup["SAMPLES"]:
                     fl.write(f"{s}\n")
 
             with open(output_script, "wt") as fd:
@@ -54,10 +57,10 @@ def geo_prerun(args):
             output_script, sw, \
                 extdb_output_script, extdb, \
                     singleSample_output_script, singleSample, \
-                        list_sample_output = exectype_gnuparalllel(args, geomosaic_dir, gm_snakefile, unit)
+                        list_sample_output = exectype_gnuparalllel(args, geomosaic_wdir, gm_snakefile, unit, geomosaic_condaenvs_folder)
 
             with open(list_sample_output, "wt") as fl:
-                for s in geomosaic_setup["SAMPLES"]:
+                for s in gmsetup["SAMPLES"]:
                     fl.write(f"{s}\n")
 
             with open(output_script, "wt") as fd:
@@ -72,10 +75,10 @@ def geo_prerun(args):
             show_gnuparallel_message(exists_extdb, extdb_output_script, output_script, singleSample_output_script, list_sample_output)
     
     print(f"\n{GEOMOSAIC_PROCESS}: Installing all the conda environments of your workflow/unit. This may take a while...\n", end="", flush=True)
-    envinstall(geomosaic_dir, gm_snakefile, unit)
+    envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit)
 
 
-def envinstall(geomosaic_wdir, gm_snakefile, unit):
+def envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit):
     filename = "config_unit.yaml" if unit else "config.yaml"
     config_file = os.path.join(geomosaic_wdir, filename)
 
@@ -83,16 +86,10 @@ def envinstall(geomosaic_wdir, gm_snakefile, unit):
     if not os.path.isfile(config_file):
         print(f"\n{GEOMOSAIC_ERROR}: '{filename}' does not exists in the Geomosaic WDIR: {geomosaic_wdir}")
         exit(1)
-    
-    # OPEN CONFIG FILE
-    with open(config_file) as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-    
-    extdbs = config["EXT_DB"]
 
     dummy_filename = os.path.join(geomosaic_wdir, "dummy_snakefile.smk")
     create_dummy_snakefile(geomosaic_wdir, config_file, dummy_filename)
-    check_call(["snakemake", "--use-conda", "--conda-create-envs-only", "--cores", "1", "-s", dummy_filename])
+    check_call(["snakemake", "--use-conda", "--conda-prefix", geomosaic_condaenvs_folder, "--conda-create-envs-only", "--cores", "1", "-s", dummy_filename])
     os.remove(dummy_filename)
 
     print(GEOMOSAIC_OK)
@@ -169,7 +166,7 @@ def show_gnuparallel_message(exists_extdb, extdb_output_script, output_script, s
     print(f"\n{GEOMOSAIC_NOTE}: So now you are ready to go!\n\n{merging_steps}")
 
 
-# dag_image = os.path.join(geomosaic_dir, "dag.pdf")
+# dag_image = os.path.join(geomosaic_wdir, "dag.pdf")
     # subprocess.check_call(f"snakemake -s {snakefile_filename} --rulegraph | dot -Tpdf > {dag_image}", shell=True)
 
 
