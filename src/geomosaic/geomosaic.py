@@ -51,9 +51,10 @@ def main():
                               help="Format of the provided table. Allowed: tsv, csv, excel")
     setup_optional.add_argument("-w", "--working_dir", required=False, default="geomosaic", type=str, help="The Geomosaic working directory to create for its execution. Default: 'geomosaic' folder created in the current directory")
     setup_optional.add_argument("-n", "--project_name", required=False, default="Geomosaic_Workflow", type=str, help="Name of the project (no-space)")
-    setup_optional.add_argument('--nocopy', action='store_true', required=False,  help="Suggested flag if the provided raw reads directory is an already backup of the original files. \
+    setup_optional.add_argument('--nocopy', action='store_true', required=False, help="Suggested flag if the provided raw reads directory is an already backup of the original files. \
                               In this case, geomosaic will create only symbolic link of raw reads to its working directory. Note: This flag cannot be used if \
                               there are multiple files for each R1 and R2 sample reads, as geomosaic will 'cat' them to a single file.")
+    setup_optional.add_argument('--skip_checks', action='store_true', required=False, help="If you are sure that every file is in its correct location and the sample names are filled correcyly, you can skip checks with this flags. However we do not suggest to use it.")
     
     setup_help = setup_parser.add_argument_group(GEOMOSAIC_PROMPT("Help Arguments"))
     setup_help.add_argument("-h", "--help", action="help", help="show this help message and exit")
@@ -99,6 +100,9 @@ def main():
     unit_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None, type=lambda p: pathlib.Path(p).resolve(),
                                    help="If you have already downloaded and setup \
                                    databases with geomosaic, here you can specify the path folder.")
+    unit_optional.add_argument('-c' ,'--condaenv_gmfolder', default=None,type=lambda p: pathlib.Path(p).resolve(),
+                                   help="If you have already installed the conda environments, \
+                                   here you can specify the path folder.")
     
     unit_parser.add_argument_group(GEOMOSAIC_PROMPT("Available Modules"), GEOMOSAIC_MODULES_DESCRIPTION)
 

@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import yaml
-from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_NOTE, GEOMOSAIC_OK, GEOMOSAIC_PROCESS, GEOMOSAIC_PROMPT
+from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_NOTE, GEOMOSAIC_OK, GEOMOSAIC_PROCESS, GEOMOSAIC_PROMPT, GEOMOSAIC_WARNING
 from geomosaic._validator import validate_working_dir
 import pkg_resources
 import time
@@ -18,6 +18,7 @@ def geo_setup(args):
     project_name        = args.project_name
     nocopy              = args.nocopy
     format_table        = args.format_table
+    skip_checks         = args.skip_checks
 
     if not os.path.isdir(working_dir):
         os.makedirs(working_dir)
@@ -33,7 +34,8 @@ def geo_setup(args):
         format          = format_table,
         rawreads_folder = os.path.abspath(folder_raw_reads),
         wdir            = geo_wdir,
-        nocopy          = nocopy
+        nocopy          = nocopy,
+        skip_checks     = skip_checks
     )
     time.sleep(5)
     print(GEOMOSAIC_OK)
@@ -56,7 +58,9 @@ def geo_setup(args):
     print(f"\n{GEOMOSAIC_NOTE}: You can now create your pipeline (or use the default one) by executing:\n{prompt1}\nHowever, we suggest you to use\n{prompt2}\nto required and optional parameters.\n")
 
 
-def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):
+def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy, skip_checks):
+    rawreads_container = list(os.listdir(rawreads_folder))
+
     if format == "tsv":
         df = pd.read_csv(filename, sep="\t")
     elif format == "csv":
@@ -66,8 +70,13 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy):
     
     assert list(df.columns) == ["r1", "r2", "sample"], f"\n\n{GEOMOSAIC_ERROR}: the provided table should contains three columns, with the following header all lower-case: r1 r2 sample"
 
-    for i in df.itertuples():
-        check_special_characters(i.sample)
+    if not skip_checks:
+        for i in df.itertuples():
+            check_special_characters(i.sample)
+            check_space_reads(i.r1)
+            check_space_reads(i.r2)
+            check_presence_read(i.r1, rawreads_container)
+            check_presence_read(i.r2, rawreads_container)
 
     grp = df.groupby(by="sample").agg(list)
     grp.reset_index(inplace=True)
@@ -125,4 +134,18 @@ def check_special_characters(s):
     if " " in s:
         print(f"{GEOMOSAIC_ERROR}: Your sample name contains a space which is not allowed: {str(repr(s))}.\n\
               The following special characters are not allowed in sample name: {na1[0]} {na1[1:]}{na2}")
+        exit(1)
+
+
+def check_space_reads(r):
+    if " " in r:
+        print(f"{GEOMOSAIC_ERROR}: Your read name contains a space which may create problems: {str(repr(r))}.\n\
+              Please rename the read filename.")
+        exit(1)
+
+
+def check_presence_read(r, f):
+    if r not in f:
+        print(f"{GEOMOSAIC_ERROR}: The following read file {str(repr(r))} in the provided table is not present in the folder {str(repr(f))}\n\
+              Re-check if the folder of the rawreads does contain all the reads.")
         exit(1)
