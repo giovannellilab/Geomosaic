@@ -5,6 +5,7 @@ from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_NOTE, GEOMOSAIC_OK, GEOM
 from geomosaic._validator import validate_working_dir
 import pkg_resources
 import time
+import shutil
 import re
 from subprocess import check_call
 from tqdm import tqdm
@@ -16,7 +17,7 @@ def geo_setup(args):
     sample_table        = args.sample_table
     setup_file          = args.setup_file
     project_name        = args.project_name
-    nocopy              = args.nocopy
+    move_and_rename     = args.move_and_rename
     format_table        = args.format_table
     skip_checks         = args.skip_checks
 
@@ -34,7 +35,7 @@ def geo_setup(args):
         format          = format_table,
         rawreads_folder = os.path.abspath(folder_raw_reads),
         wdir            = geo_wdir,
-        nocopy          = nocopy,
+        move_and_rename = move_and_rename,
         skip_checks     = skip_checks
     )
     time.sleep(5)
@@ -58,7 +59,7 @@ def geo_setup(args):
     print(f"\n{GEOMOSAIC_NOTE}: You can now create your pipeline (or use the default one) by executing:\n{prompt1}\nHowever, we suggest you to use\n{prompt2}\nto required and optional parameters.\n")
 
 
-def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy, skip_checks):
+def group_read_by_sample(filename, format, rawreads_folder, wdir, move_and_rename, skip_checks):
     rawreads_container = list(os.listdir(rawreads_folder))
 
     if format == "tsv":
@@ -82,9 +83,9 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy, skip_c
     grp.reset_index(inplace=True)
     
     for i in list(grp.itertuples()):
-        if nocopy:
+        if move_and_rename:
             if len(i.r1) > 1 or len(i.r2) > 1:
-                print(f"{GEOMOSAIC_ERROR}: '--nocopy' flag cannot be used as there are multiple reads file for the sample '{i.sample}'.")
+                print(f"{GEOMOSAIC_ERROR}: '--move_and_rename' flag cannot be used as there are multiple reads file for the sample '{i.sample}'.")
                 exit(1)
         
     samples_list = []
@@ -93,12 +94,12 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, nocopy, skip_c
         samples_list.append(i.sample)
         check_call(f"mkdir -p {os.path.join(wdir, i.sample)}", shell=True)
 
-        if nocopy:
-            assert len(i.r1) == 1, f"{GEOMOSAIC_ERROR}: '--nocopy' flag cannot be used when there are multiple reads file for one sample '{i.sample}'."
-            assert len(i.r2) == 1, f"{GEOMOSAIC_ERROR}: '--nocopy' flag cannot be used when there are multiple reads file for one sample '{i.sample}'."
+        if move_and_rename:
+            assert len(i.r1) == 1, f"{GEOMOSAIC_ERROR}: '--move_and_rename' flag cannot be used when there are multiple reads file for one sample '{i.sample}'."
+            assert len(i.r2) == 1, f"{GEOMOSAIC_ERROR}: '--move_and_rename' flag cannot be used when there are multiple reads file for one sample '{i.sample}'."
 
-            os.symlink(os.path.join(rawreads_folder, i.r1[0]), os.path.join(wdir, i.sample, "R1.fastq.gz"))
-            os.symlink(os.path.join(rawreads_folder, i.r2[0]), os.path.join(wdir, i.sample, "R2.fastq.gz"))
+            shutil.move(os.path.join(rawreads_folder, i.r1[0]), os.path.join(wdir, i.sample, "R1.fastq.gz"))
+            shutil.move(os.path.join(rawreads_folder, i.r2[0]), os.path.join(wdir, i.sample, "R2.fastq.gz"))
         
         else:
             all_r1 = " ".join([os.path.join(rawreads_folder,x) for x in i.r1])

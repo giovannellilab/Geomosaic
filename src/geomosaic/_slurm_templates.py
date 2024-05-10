@@ -22,7 +22,7 @@ def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit, g
         folder_logs = os.path.abspath(args.folder_logs)
 
         if not os.path.isdir(folder_logs):
-            print(f"{GEOMOSAIC_PROCESS}: Creating the specified folder logs: 'mkdir -p {folder_logs}'")
+            print(f"{GEOMOSAIC_PROCESS}: Creating the specified folder logs: '{folder_logs}'")
             check_call(["mkdir", "-p", folder_logs])
         
         slurm_logs = "#SBATCH --output=" +os.path.join(folder_logs, "slurm-%A_%a.out")
