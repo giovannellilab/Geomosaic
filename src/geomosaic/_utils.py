@@ -86,12 +86,15 @@ GEOMOSAIC_GATHER_PACKAGES_DESCRIPTION = read_gathering(description=True)
 
 
 def append_to_gmsetupyaml(file_path, data_to_append):
-	with open(file_path, 'a+') as file:
-		file.seek(0)
-		existing_data = yaml.load(file, Loader=yaml.FullLoader) or []
-		existing_data.append(data_to_append)
-		file.seek(0)
-		yaml.dump(existing_data, file, default_flow_style=False)
+    with open(file_path) as file:
+        gmsetup = yaml.load(file, Loader=yaml.FullLoader)
+    
+    for k, v in data_to_append:
+        assert k not in gmsetup
+        gmsetup[k] = v
+    
+    with open(file_path, 'w') as fd_config:
+        yaml.dump(gmsetup, fd_config, sort_keys=False)
 
 # file_path = 'data.yaml'
 # data_to_append = {'key': 'value'}
