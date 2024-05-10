@@ -28,11 +28,11 @@ def geo_unit(args):
     if not os.path.isdir(geomosaic_user_parameters):
         os.makedirs(geomosaic_user_parameters)
 
-    geomosaic_condaenvs_folder = os.path.join(geomosaic_dir, "gm_conda_envs") if user_condafolder is None else user_condafolder
+    geomosaic_condaenvs_folder = os.path.join(geomosaic_dir, "gm_conda_envs") if user_condafolder is None else str(user_condafolder)
     if not os.path.isdir(geomosaic_condaenvs_folder):
         os.makedirs(geomosaic_condaenvs_folder)
 
-    geomosaic_externaldb_folder = os.path.join(geomosaic_dir, "gm_external_db") if user_extdbfolder is None else user_extdbfolder
+    geomosaic_externaldb_folder = os.path.join(geomosaic_dir, "gm_external_db") if user_extdbfolder is None else str(user_extdbfolder)
     if not os.path.isdir(geomosaic_externaldb_folder):
         os.makedirs(geomosaic_externaldb_folder)
 
