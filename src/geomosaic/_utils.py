@@ -89,8 +89,7 @@ def append_to_gmsetupyaml(file_path, data_to_append):
     with open(file_path) as file:
         gmsetup = yaml.load(file, Loader=yaml.FullLoader)
     
-    for k, v in data_to_append:
-        assert k not in gmsetup
+    for k, v in data_to_append.items():
         gmsetup[k] = v
     
     with open(file_path, 'w') as fd_config:
