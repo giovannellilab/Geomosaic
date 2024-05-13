@@ -70,10 +70,10 @@ def main():
     
     workflow_optional = workflow_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments"))
     workflow_optional.add_argument('-t' ,'--threads', default=10, type=int, help="Threads to use (per sample).")
-    workflow_optional.add_argument('-c' ,'--condaenv_gmfolder', default=None,type=lambda p: pathlib.Path(p).resolve(),
+    workflow_optional.add_argument('-c' ,'--condaenv_gmfolder', default=None, type=str,
                                    help="If you have already installed the conda environments, \
                                    here you can specify the path folder.")
-    workflow_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None,type=lambda p: pathlib.Path(p).resolve(),
+    workflow_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None, type=str,
                                    help="If you have already downloaded and setup \
                                    databases with geomosaic, here you can specify the path folder.")
     workflow_optional.add_argument('-g' ,'--glab', action='store_true', help="Execute the default Giovannelli's Lab pipeline of Geomosaic.")
@@ -97,10 +97,10 @@ def main():
                                 help=f"Modules to execute.", choices=GEOMOSAIC_MODULES, metavar="MODULE")
     unit_optional = unit_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments"))
     unit_optional.add_argument('-t' ,'--threads', default=10, type=int, help="Threads to use (per sample).")
-    unit_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None, type=lambda p: pathlib.Path(p).resolve(),
+    unit_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None, type=str,
                                    help="If you have already downloaded and setup \
                                    databases with geomosaic, here you can specify the path folder.")
-    unit_optional.add_argument('-c' ,'--condaenv_gmfolder', default=None,type=lambda p: pathlib.Path(p).resolve(),
+    unit_optional.add_argument('-c' ,'--condaenv_gmfolder', default=None,type=str,
                                    help="If you have already installed the conda environments, \
                                    here you can specify the path folder.")
     
