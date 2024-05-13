@@ -76,8 +76,8 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, move_and_renam
             check_special_characters(i.sample)
             check_space_reads(i.r1)
             check_space_reads(i.r2)
-            check_presence_read(i.r1, rawreads_container)
-            check_presence_read(i.r2, rawreads_container)
+            check_presence_read(i.r1, rawreads_container, rawreads_folder)
+            check_presence_read(i.r2, rawreads_container, rawreads_folder)
 
     grp = df.groupby(by="sample").agg(list)
     grp.reset_index(inplace=True)
@@ -85,7 +85,7 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, move_and_renam
     for i in list(grp.itertuples()):
         if move_and_rename:
             if len(i.r1) > 1 or len(i.r2) > 1:
-                print(f"{GEOMOSAIC_ERROR}: '--move_and_rename' flag cannot be used as there are multiple reads file for the sample '{i.sample}'.")
+                print(f"\n{GEOMOSAIC_ERROR}: '--move_and_rename' flag cannot be used as there are multiple reads file for the sample '{i.sample}'.")
                 exit(1)
         
     samples_list = []
@@ -123,30 +123,29 @@ def check_special_characters(s):
     # Pass the string in search 
     # method of regex object.    
     if(regex1.search(s) != None):
-        print(f"{GEOMOSAIC_ERROR}: Your sample name contains a special character that is not allowed: {str(repr(s))}\n\
+        print(f"\n\n{GEOMOSAIC_ERROR}: Your sample name contains a special character that is not allowed: {str(repr(s))}\n\
               The following special characters are not allowed in sample name: {na1[0]} {na1[1:]}{na2}")
         exit(1)
 
     if(regex2.search(s) != None):
-        print(f"{GEOMOSAIC_ERROR}: Your sample name contains a special character that is not allowed: {str(repr(s))}\n\
+        print(f"\n\n{GEOMOSAIC_ERROR}: Your sample name contains a special character that is not allowed: {str(repr(s))}\n\
               The following special characters are not allowed in sample name: {na1[0]} {na1[1:]}{na2}")
         exit(1)
     
     if " " in s:
-        print(f"{GEOMOSAIC_ERROR}: Your sample name contains a space which is not allowed: {str(repr(s))}.\n\
+        print(f"\n\n{GEOMOSAIC_ERROR}: Your sample name contains a space which is not allowed: {str(repr(s))}.\n\
               The following special characters are not allowed in sample name: {na1[0]} {na1[1:]}{na2}")
         exit(1)
 
 
 def check_space_reads(r):
     if " " in r:
-        print(f"{GEOMOSAIC_ERROR}: Your read name contains a space which may create problems: {str(repr(r))}.\n\
-              Please rename the read filename.")
+        print(f"\n\n{GEOMOSAIC_ERROR}: Your read name contains a space which may create problems: {str(repr(r))}.\nPlease rename the read filename.")
         exit(1)
 
 
-def check_presence_read(r, f):
-    if r not in f:
-        print(f"{GEOMOSAIC_ERROR}: The following read file {str(repr(r))} in the provided table is not present in the folder {str(repr(f))}\n\
+def check_presence_read(r, container, folder_path):
+    if r not in container:
+        print(f"\n\n{GEOMOSAIC_ERROR}: The following read file {str(repr(r))} in the provided table is not present in the folder {str(repr(folder_path))}\n\
               Re-check if the folder of the rawreads does contain all the reads.")
         exit(1)
