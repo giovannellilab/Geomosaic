@@ -11,36 +11,23 @@ def geo_unit(args):
     gmsetup             = args.setup_file
     module              = args.module
     threads             = args.threads
-    user_extdbfolder    = args.externaldb_gmfolder
-    user_condafolder    = args.condaenv_gmfolder
 
     with open(gmsetup) as file:
         geomosaic_setup = yaml.load(file, Loader=yaml.FullLoader)
 
     assert "SAMPLES" in geomosaic_setup, f"\n{GEOMOSAIC_ERROR}: sample list must be provided with the key 'SAMPLES'"
     assert "GEOMOSAIC_WDIR" in geomosaic_setup, f"\n{GEOMOSAIC_ERROR}: geomosaic working directory must be provided with the key 'GEOMOSAIC_WDIR'"
+    assert "GM_CONDA_ENVS" in geomosaic_setup, f"\n{GEOMOSAIC_ERROR}: Conda Env directory must be provided with the key 'GM_CONDA_ENVS'"
+    assert "GM_USER_PARAMETERS" in geomosaic_setup, f"\n{GEOMOSAIC_ERROR}: User parameters directory must be provided with the key 'GM_USER_PARAMETERS'"
+    assert "GM_EXTERNAL_DB" in geomosaic_setup, f"\n{GEOMOSAIC_ERROR}: External DB directory must be provided with the key 'GM_EXTERNAL_DB'"
+    
     assert os.path.isdir(geomosaic_setup["GEOMOSAIC_WDIR"]), f"\n{GEOMOSAIC_ERROR}: GeoMosaic working directory does not exists."
 
     samples_list                = geomosaic_setup["SAMPLES"]
     geomosaic_dir               = geomosaic_setup["GEOMOSAIC_WDIR"]
-
-    geomosaic_user_parameters = os.path.join(geomosaic_dir, "gm_user_parameters")
-    if not os.path.isdir(geomosaic_user_parameters):
-        os.makedirs(geomosaic_user_parameters)
-
-    geomosaic_condaenvs_folder = os.path.join(geomosaic_dir, "gm_conda_envs") if user_condafolder is None else str(user_condafolder)
-    if not os.path.isdir(geomosaic_condaenvs_folder):
-        os.makedirs(geomosaic_condaenvs_folder)
-
-    geomosaic_externaldb_folder = os.path.join(geomosaic_dir, "gm_external_db") if user_extdbfolder is None else str(user_extdbfolder)
-    if not os.path.isdir(geomosaic_externaldb_folder):
-        os.makedirs(geomosaic_externaldb_folder)
-
-    append_to_gmsetupyaml(gmsetup, {
-        "GM_CONDA_ENVS": geomosaic_condaenvs_folder,
-        "GM_USER_PARAMETERS": geomosaic_user_parameters,
-        "GM_EXTERNAL_DB": geomosaic_externaldb_folder
-    })
+    geomosaic_condaenvs_folder  = geomosaic_setup["GM_CONDA_ENVS"]
+    geomosaic_user_parameters   = geomosaic_setup["GM_USER_PARAMETERS"]
+    geomosaic_externaldb_folder = geomosaic_setup["GM_EXTERNAL_DB"]
     
     print(GEOMOSAIC_OK)
 
@@ -78,9 +65,11 @@ def geo_unit(args):
     )
 
     module_dependencies = list(G.predecessors(mstart))
-    print(f"{GEOMOSAIC_NOTE}: It is assumed also that those modules dependencies have already been run with GeoMosaic")
-    print(f"{GEOMOSAIC_NOTE}: '{mstart}' depends on the following modules:\n"+"\n".join(map(lambda x: f"\t- {x}", module_dependencies)))
-    print("\nNow you need to specify the package/s that you used for those dependencies.")
+
+    if mstart != "pre_processing":
+        print(f"{GEOMOSAIC_NOTE}: It is assumed also that those modules dependencies have already been run with GeoMosaic")
+        print(f"{GEOMOSAIC_NOTE}: '{mstart}' depends on the following modules:\n"+"\n".join(map(lambda x: f"\t- {x}", module_dependencies)))
+        print("\nNow you need to specify the package/s that you used for those dependencies.")
     
     for dep in module_dependencies:
         temp_user_choices, _, _, _ = build_pipeline_modules(

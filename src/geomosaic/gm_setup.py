@@ -4,7 +4,6 @@ import yaml
 from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_NOTE, GEOMOSAIC_OK, GEOMOSAIC_PROCESS, GEOMOSAIC_PROMPT, GEOMOSAIC_WARNING
 from geomosaic._validator import validate_working_dir
 import pkg_resources
-import time
 import shutil
 import re
 from subprocess import check_call
@@ -20,6 +19,8 @@ def geo_setup(args):
     move_and_rename     = args.move_and_rename
     format_table        = args.format_table
     skip_checks         = args.skip_checks
+    user_extdbfolder    = args.externaldb_gmfolder
+    user_condafolder    = args.condaenv_gmfolder
 
     if not os.path.isdir(working_dir):
         os.makedirs(working_dir)
@@ -27,27 +28,42 @@ def geo_setup(args):
         print(f"{GEOMOSAIC_ERROR}: In the provided path '{working_dir}' a geomosaic folder already exists")
         exit(1)
 
-    geo_wdir = os.path.abspath(working_dir)
+    geomosaic_dir = os.path.abspath(working_dir)
+
+    geomosaic_condaenvs_folder = os.path.join(geomosaic_dir, "gm_conda_envs") if user_condafolder is None else user_condafolder
+    if not os.path.isdir(geomosaic_condaenvs_folder):
+        os.makedirs(geomosaic_condaenvs_folder)
+
+    geomosaic_externaldb_folder = os.path.join(geomosaic_dir, "gm_external_db") if user_extdbfolder is None else user_extdbfolder
+    if not os.path.isdir(geomosaic_externaldb_folder):
+        os.makedirs(geomosaic_externaldb_folder)
+
+    geomosaic_user_parameters = os.path.join(geomosaic_dir, "gm_user_parameters")
+    if not os.path.isdir(geomosaic_user_parameters):
+        os.makedirs(geomosaic_user_parameters)
     
     print(f"{GEOMOSAIC_PROCESS}: Mapping samples to filenames... ", end="", flush=True)
     samples_list = group_read_by_sample(
         filename        = sample_table,
         format          = format_table,
         rawreads_folder = os.path.abspath(folder_raw_reads),
-        wdir            = geo_wdir,
+        wdir            = geomosaic_dir,
         move_and_rename = move_and_rename,
         skip_checks     = skip_checks
     )
-    time.sleep(5)
+
     print(GEOMOSAIC_OK)
     
     config_parameters = {
         "PROJECT_NAME": project_name,
         "GEOMOSAIC_VERSION": pkg_resources.get_distribution("geomosaic").version,
-        "GEOMOSAIC_WDIR": geo_wdir,
+        "GEOMOSAIC_WDIR": geomosaic_dir,
         "USER_RAWREADS_DIRECTORY": os.path.abspath(folder_raw_reads),
         "PROJECT_DESCRIPTION": "Metagenomics pipeline with GeoMosaic.",
         "SAMPLES": samples_list,
+        "GM_CONDA_ENVS": geomosaic_condaenvs_folder,
+        "GM_USER_PARAMETERS": geomosaic_user_parameters,
+        "GM_EXTERNAL_DB": geomosaic_externaldb_folder
     }
     
     with open(setup_file, 'w') as fd_config:

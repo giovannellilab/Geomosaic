@@ -47,6 +47,14 @@ def main():
     setup_optional.add_argument("-s", "--setup_file", required=False, default="gmsetup.yaml", type=str, 
                               help="Output name for the geomosaic setup file (yaml extension). \
                                 This file is necessary for the < geomosaic workflow > command.")
+    setup_optional.add_argument('-c' ,'--condaenv_gmfolder', default=None, type=str,
+                                help="This option allows to provide a path folder in which geomosaic is going to install all the conda environments of your workflow. \
+                                    This option is very useful if you want to execute Geomosaic for different set of reads, \
+                                        as here you can provide the same folder and prevent multiple installation of the same conda environments.")
+    setup_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None, type=str,
+                                help="This option allows to provide a path folder in which geomosaic is going to download all the external databases used by the packages of your workflow. \
+                                    This option is very useful if you want to execute Geomosaic for different set of reads, \
+                                        as here you can provide the same folder and prevent multiple donwload of the same external databases.")
     setup_optional.add_argument("-f", "--format_table", required=False, default="tsv", type=str, choices=["tsv", "csv", "excel"],
                               help="Format of the provided table. Allowed: tsv, csv, excel")
     setup_optional.add_argument("-w", "--working_dir", required=False, default="geomosaic", type=str, help="The Geomosaic working directory to create for its execution. Default: 'geomosaic' folder created in the current directory")
@@ -70,12 +78,6 @@ def main():
     
     workflow_optional = workflow_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments"))
     workflow_optional.add_argument('-t' ,'--threads', default=10, type=int, help="Threads to use (per sample).")
-    workflow_optional.add_argument('-c' ,'--condaenv_gmfolder', default=None, type=str,
-                                   help="If you have already installed the conda environments, \
-                                   here you can specify the path folder.")
-    workflow_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None, type=str,
-                                   help="If you have already downloaded and setup \
-                                   databases with geomosaic, here you can specify the path folder.")
     workflow_optional.add_argument('-g' ,'--glab', action='store_true', help="Execute the default Giovannelli's Lab pipeline of Geomosaic.")
     workflow_optional.add_argument("-m", "--module_start", required=False, type=str, default="pre_processing",
                                 help=f"Module where to start creating the workflow (Default: pre_processing)", choices=GEOMOSAIC_MODULES, metavar="MODULE")
@@ -97,12 +99,6 @@ def main():
                                 help=f"Modules to execute.", choices=GEOMOSAIC_MODULES, metavar="MODULE")
     unit_optional = unit_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments"))
     unit_optional.add_argument('-t' ,'--threads', default=10, type=int, help="Threads to use (per sample).")
-    unit_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None, type=str,
-                                   help="If you have already downloaded and setup \
-                                   databases with geomosaic, here you can specify the path folder.")
-    unit_optional.add_argument('-c' ,'--condaenv_gmfolder', default=None,type=str,
-                                   help="If you have already installed the conda environments, \
-                                   here you can specify the path folder.")
     
     unit_parser.add_argument_group(GEOMOSAIC_PROMPT("Available Modules"), GEOMOSAIC_MODULES_DESCRIPTION)
 
