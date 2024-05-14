@@ -58,7 +58,7 @@ def main():
     setup_optional.add_argument("-f", "--format_table", required=False, default="tsv", type=str, choices=["tsv", "csv", "excel"],
                               help="Format of the provided table. Allowed: tsv, csv, excel")
     setup_optional.add_argument("-w", "--working_dir", required=False, default="geomosaic", type=str, help="The Geomosaic working directory to create for its execution. Default: 'geomosaic' folder created in the current directory")
-    setup_optional.add_argument("-n", "--project_name", required=False, default="Geomosaic_Workflow", type=str, help="Name of the project (no-space)")
+    setup_optional.add_argument("-n", "--project_name", required=False, default="Geomosaic_Workflow", type=str, help="Name of the project. The first 8 Characters will be used for SLURM job name")
     setup_optional.add_argument('--move_and_rename', action='store_true', required=False, help="Suggested flag if the provided raw reads directory is an already backup of the original files. \
                               In this case, geomosaic will create only symbolic link of raw reads to its working directory. Note: This flag cannot be used if \
                               there are multiple files for each R1 and R2 sample reads, as geomosaic will 'cat' them to a single file.")

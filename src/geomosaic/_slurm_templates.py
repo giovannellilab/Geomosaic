@@ -4,7 +4,7 @@ from geomosaic._utils import GEOMOSAIC_PROCESS, GEOMOSAIC_ERROR
 import yaml
 
 
-def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit, geomosaic_condaenvs_folder):
+def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit, geomosaic_condaenvs_folder, jobname):
     threads = args.threads
     memory = args.memory
     partition = "" if args.partition is None else f"#SBATCH --partition={args.partition}"
@@ -15,7 +15,7 @@ def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit, g
     unit_suffix = "_unit" if unit else ""
     output_script = os.path.abspath(f"slurm{unit_suffix}_geomosaic.sh") if args.output_script is None else os.path.abspath(args.output_script)
     extdb_output_script = os.path.abspath("slurm_extdb_geomosaic.sh") if args.extdb_output_script is None else os.path.abspath(args.extdb_output_script)
-    singleSample_output_script = os.path.abspath("slurm_singleSample_geomosaic.sh")
+    singleSample_output_script = os.path.abspath(f"slurm{unit_suffix}_singleSample_geomosaic.sh")
     list_sample_output = os.path.abspath(args.list_sample_output)
     
     if args.folder_logs is not None:
@@ -27,13 +27,16 @@ def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit, g
         
         slurm_logs = "#SBATCH --output=" +os.path.join(folder_logs, "slurm-%A_%a.out")
         slurm_logs_extdb = "#SBATCH --output=" +os.path.join(folder_logs, "slurm-%A_GM_EXTDB.out")
+        slurm_logs_singleSlurm = "#SBATCH --output=" +os.path.join(folder_logs, "slurm-%A.out")
     else:
         slurm_logs = ""
         slurm_logs_extdb = ""
+        slurm_logs_singleSlurm = ""
     
     update_threads(unit, geomosaic_dir, threads)
 
     sw = slurm_workflow.format(
+        jobname = jobname,
         threads = threads, 
         memory = memory, 
         partition = partition, 
@@ -57,13 +60,14 @@ def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit, g
     )
 
     singleSample = slurm_workflow_singleSample.format(
+        jobname = jobname,
         threads = threads, 
         memory = memory, 
         partition = partition,
         path_geomosaic_snakefile = path_geomosaic_snakefile,
         mail_type = mail_type,
         mail_user = mail_user,
-        slurm_logs = slurm_logs,
+        slurm_logs = slurm_logs_singleSlurm,
         geomosaic_condaenvs_folder = geomosaic_condaenvs_folder
     )
     
@@ -94,7 +98,7 @@ def update_threads(unit, geomosaic_wdir, threads):
 
 slurm_workflow = """#!/bin/bash
 
-#SBATCH --job-name="Geomosaic"
+#SBATCH --job-name="{jobname}"
 #SBATCH --time=96:00:00
 #SBATCH --cpus-per-task={threads}
 #SBATCH --mem={memory}G
@@ -137,7 +141,7 @@ snakemake --use-conda --conda-prefix {geomosaic_condaenvs_folder} --cores 8 -s {
 
 slurm_workflow_singleSample = """#!/bin/bash
 
-#SBATCH --job-name="GM_SingleSample"
+#SBATCH --job-name="{jobname}_SingleSample"
 #SBATCH --time=96:00:00
 #SBATCH --cpus-per-task={threads}
 #SBATCH --mem={memory}G
@@ -150,7 +154,7 @@ slurm_workflow_singleSample = """#!/bin/bash
 # Created with Geomosaic
 # 
 
-if [[ $1 -eq 0 ]] ; then
+if [ -z $1 ] ; then
     echo 'No argument "SAMPLE" supplied.'
     echo 'Execution type of this script: sbatch slurm_simpleSample_geomosaic MYSAMPLE'
     echo 'Exit.'

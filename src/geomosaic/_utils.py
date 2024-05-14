@@ -94,7 +94,3 @@ def append_to_gmsetupyaml(file_path, data_to_append):
     
     with open(file_path, 'w') as fd_config:
         yaml.dump(gmsetup, fd_config, sort_keys=False)
-
-# file_path = 'data.yaml'
-# data_to_append = {'key': 'value'}
-# append_to_gmsetupyaml(file_path, data_to_append)

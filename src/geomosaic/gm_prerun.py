@@ -25,6 +25,7 @@ def geo_prerun(args):
     geomosaic_wdir = gmsetup["GEOMOSAIC_WDIR"]
     geomosaic_samples = gmsetup["SAMPLES"]
     geomosaic_condaenvs_folder = gmsetup["GM_CONDA_ENVS"]
+    jobname = gmsetup["PROJECT_NAME"][:8]
 
     name_snakefile = "Snakefile_unit.smk" if unit else "Snakefile.smk"
     exists_extdb = check_extdb_snakefile(geomosaic_wdir, unit)
@@ -35,7 +36,7 @@ def geo_prerun(args):
             output_script, sw, \
                 extdb_output_script, extdb, \
                     singleSample_output_script, singleSample, \
-                        list_sample_output = exectype_slurm(args, geomosaic_samples, geomosaic_wdir, gm_snakefile, unit, geomosaic_condaenvs_folder)
+                        list_sample_output = exectype_slurm(args, geomosaic_samples, geomosaic_wdir, gm_snakefile, unit, geomosaic_condaenvs_folder, jobname)
 
             with open(list_sample_output, "wt") as fl:
                 for s in gmsetup["SAMPLES"]:
