@@ -22,7 +22,7 @@
         "mags_coverage": "coverm_genome"
     },
     "additional_parameters": {
-        "completness_threshold": 70, 
+        "completness_threshold": 50, 
         "contamination_threshold": 10
     },
     "order_writing": [
