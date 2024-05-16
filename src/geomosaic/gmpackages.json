@@ -1,6 +1,7 @@
 {
     "order": [
         "pre_processing",
+        "reads_qc",
         "func_classification_rb",
         "tax_classification_rb",
         "assembly",
@@ -25,6 +26,7 @@
     ],
 
     "graph": [
+        ["pre_processing", "reads_qc"],
         ["pre_processing", "func_classification_rb"],
         ["pre_processing", "tax_classification_rb"],
         ["pre_processing", "assembly"],
@@ -75,11 +77,18 @@
                 "Trimmomatic": "trimmomatic"
             }
         },
+
+        "reads_qc": {
+            "description": "Module: Quality check (and/or Reads Count) of the reads after Pre-Processing",
+            "choices": {
+                "FastQC and Reads Count": "fastqc_readscount"
+            }
+        },
             
         "func_classification_rb": {
             "description": "Module: Functional classification [Read-based]",
             "choices": {
-                "mi-faser (GS-21-all)": "mifaser"                
+                "mi-faser (GS-21-all)": "mifaser"
             }
         },
     
@@ -272,6 +281,7 @@
         "das_tool": "das_tool.yaml",
         "eggnog_mapper": "eggnog_mapper.yaml",
         "fastp": "fastp.yaml",
+        "fastqc_readscount": "fastqc_readscount.yaml",
         "gtdbtk": "gtdbtk.yaml",
         "kaiju": "kaiju.yaml",
         "kraken2": "kraken2.yaml",

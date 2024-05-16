@@ -1,0 +1,7 @@
+name: geomosaic_fastqc_readscount
+channels:
+   - conda-forge
+   - bioconda
+   - defaults
+dependencies:
+   - fastqc
