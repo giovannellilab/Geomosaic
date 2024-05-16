@@ -115,6 +115,7 @@ slurm_workflow = """#!/bin/bash
 
 single_sample="$(tail -n +$SLURM_ARRAY_TASK_ID {path_list_sample} | head -n1)"
 
+echo "SAMPLE: $single_sample"
 
 snakemake --use-conda --conda-prefix {geomosaic_condaenvs_folder} --cores {threads} --config SAMPLES=$single_sample -s {path_geomosaic_snakefile}
 """
@@ -163,6 +164,7 @@ fi
 
 single_sample=$1
 
+echo "SAMPLE: $single_sample"
 
 snakemake --use-conda --conda-prefix {geomosaic_condaenvs_folder} --cores {threads} --config SAMPLES=$single_sample -s {path_geomosaic_snakefile}
 """
