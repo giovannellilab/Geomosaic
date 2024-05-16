@@ -22,6 +22,14 @@ def geo_setup(args):
     user_extdbfolder    = args.externaldb_gmfolder
     user_condafolder    = args.condaenv_gmfolder
 
+    grp_df = table_checks(
+        filename        = sample_table,
+        format          = format_table,
+        rawreads_folder = os.path.abspath(folder_raw_reads),
+        move_and_rename = move_and_rename,
+        skip_checks     = skip_checks
+    )
+
     if not os.path.isdir(working_dir):
         os.makedirs(working_dir)
     else:
@@ -43,13 +51,12 @@ def geo_setup(args):
         os.makedirs(geomosaic_user_parameters)
     
     print(f"{GEOMOSAIC_PROCESS}: Mapping samples to filenames... ", end="", flush=True)
+
     samples_list = group_read_by_sample(
-        filename        = sample_table,
-        format          = format_table,
-        rawreads_folder = os.path.abspath(folder_raw_reads),
+        groupby_df      = grp_df,
+        rawreads_folder = os.path.abspath(folder_raw_reads), 
         wdir            = geomosaic_dir,
         move_and_rename = move_and_rename,
-        skip_checks     = skip_checks
     )
 
     print(GEOMOSAIC_OK)
@@ -75,17 +82,21 @@ def geo_setup(args):
     print(f"\n{GEOMOSAIC_NOTE}: You can now create your pipeline (or use the default one) by executing:\n{prompt1}\nHowever, we suggest you to use\n{prompt2}\nto required and optional parameters.\n")
 
 
-def group_read_by_sample(filename, format, rawreads_folder, wdir, move_and_rename, skip_checks):
+def table_checks(filename, format, rawreads_folder, move_and_rename, skip_checks):
     rawreads_container = list(os.listdir(rawreads_folder))
 
     if format == "tsv":
-        df = pd.read_csv(filename, sep="\t")
+        rawdf = pd.read_csv(filename, sep="\t")
     elif format == "csv":
-        df = pd.read_csv(filename, sep=",")
+        rawdf = pd.read_csv(filename, sep=",")
     else:
-        df = pd.read_excel(filename)
+        rawdf = pd.read_excel(filename)
     
-    assert list(df.columns) == ["r1", "r2", "sample"], f"\n\n{GEOMOSAIC_ERROR}: the provided table should contains three columns, with the following header all lower-case: r1 r2 sample"
+    assert "r1" in list(rawdf.columns), f"\n\n{GEOMOSAIC_ERROR}: Column 'r1' not present in the provided table. It should contains three columns, with the following header (all lower-case): r1 r2 sample"
+    assert "r2" in list(rawdf.columns), f"\n\n{GEOMOSAIC_ERROR}: Column 'r2' not present in the provided table. It  contains three columns, with the following header (all lower-case): r1 r2 sample"
+    assert "sample" in list(rawdf.columns), f"\n\n{GEOMOSAIC_ERROR}: Column 'sample' not present in the provided table. It should contains three columns, with the following header (all lower-case): r1 r2 sample"
+
+    df = rawdf.loc[:, ["r1", "r2", "sample"]]
 
     if not skip_checks:
         for i in df.itertuples():
@@ -103,7 +114,12 @@ def group_read_by_sample(filename, format, rawreads_folder, wdir, move_and_renam
             if len(i.r1) > 1 or len(i.r2) > 1:
                 print(f"\n{GEOMOSAIC_ERROR}: '--move_and_rename' flag cannot be used as there are multiple reads file for the sample '{i.sample}'.")
                 exit(1)
-        
+    
+    return grp
+
+
+def group_read_by_sample(groupby_df, rawreads_folder, wdir, move_and_rename):
+    grp = groupby_df
     samples_list = []
 
     for i in tqdm(list(grp.itertuples())):
