@@ -64,13 +64,13 @@ def geo_setup(args):
     config_parameters = {
         "PROJECT_NAME": project_name,
         "GEOMOSAIC_VERSION": pkg_resources.get_distribution("geomosaic").version,
-        "GEOMOSAIC_WDIR": geomosaic_dir,
+        "GEOMOSAIC_WDIR": clean_directory_name(geomosaic_dir),
         "USER_RAWREADS_DIRECTORY": os.path.abspath(folder_raw_reads),
         "PROJECT_DESCRIPTION": "Metagenomics pipeline with GeoMosaic.",
         "SAMPLES": samples_list,
-        "GM_CONDA_ENVS": geomosaic_condaenvs_folder,
-        "GM_USER_PARAMETERS": geomosaic_user_parameters,
-        "GM_EXTERNAL_DB": geomosaic_externaldb_folder
+        "GM_CONDA_ENVS": clean_directory_name(geomosaic_condaenvs_folder),
+        "GM_USER_PARAMETERS": clean_directory_name(geomosaic_user_parameters),
+        "GM_EXTERNAL_DB": clean_directory_name(geomosaic_externaldb_folder)
     }
     
     with open(setup_file, 'w') as fd_config:
@@ -181,3 +181,12 @@ def check_presence_read(r, container, folder_path):
         print(f"\n\n{GEOMOSAIC_ERROR}: The following read file {str(repr(r))} in the provided table is not present in the folder {str(repr(folder_path))}\n\
               Re-check if the folder of the rawreads does contain all the reads.")
         exit(1)
+
+
+def clean_directory_name(s):
+    if s[-1] == "/":
+        cleaned = s[:-1]
+    else:
+        cleaned = s
+    
+    return cleaned
