@@ -103,6 +103,7 @@ def table_checks(filename, format, rawreads_folder, move_and_rename, skip_checks
             check_special_characters(i.sample)
             check_space_reads(i.r1)
             check_space_reads(i.r2)
+            check_r1r2_different(i.r1, i.r2, i.sample)
             check_presence_read(i.r1, rawreads_container, rawreads_folder)
             check_presence_read(i.r2, rawreads_container, rawreads_folder)
 
@@ -180,6 +181,12 @@ def check_presence_read(r, container, folder_path):
     if r not in container:
         print(f"\n\n{GEOMOSAIC_ERROR}: The following read file {str(repr(r))} in the provided table is not present in the folder {str(repr(folder_path))}\n\
               Re-check if the folder of the rawreads does contain all the reads.")
+        exit(1)
+
+
+def check_r1r2_different(r1, r2, samplename):
+    if r1 == r2:
+        print(f"\n\n{GEOMOSAIC_ERROR}: Reads Forward and Reverse are the same for your sample name '{samplename}'.\nr1: {str(repr(r1))}\nr2: {str(repr(r2))}")
         exit(1)
 
 
