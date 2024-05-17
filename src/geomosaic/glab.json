@@ -1,6 +1,7 @@
 {
     "user_choices": {
         "pre_processing": "fastp",
+        "reads_qc": "fastqc_readscount",
         "func_classification_rb": "mifaser",
         "tax_classification_rb": "kaiju",
         "assembly": "metaspades",
@@ -22,29 +23,30 @@
         "mags_coverage": "coverm_genome"
     },
     "additional_parameters": {
-        "completness_threshold": 50, 
+        "completness_threshold": 50,
         "contamination_threshold": 10
     },
     "order_writing": [
         "pre_processing",
+        "reads_qc",
         "func_classification_rb",
         "tax_classification_rb",
         "assembly",
         "assembly_readmapping",
-        "mags_coverage",
         "assembly_qc",
+        "assembly_coverage",
         "assembly_tax_annotation",
         "orf_prediction",
+        "assembly_func_annotation",
+        "domain_annotation",
         "binning",
         "binning_derep",
         "binning_qa",
-        "assembly_coverage",
-        "domain_annotation",
-        "assembly_func_annotation",
         "mags_retrieval",
-        "mags_orf_prediction",
         "mags_func_annotation",
         "mags_tax_annotation",
-        "mags_domain_annotation"
+        "mags_orf_prediction",
+        "mags_domain_annotation",
+        "mags_coverage"
     ]
 }
