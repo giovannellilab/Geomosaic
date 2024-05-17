@@ -45,8 +45,7 @@ def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choi
             up_src_envs = os.path.join(envs_folder, envs[up])
             up_dst_envs = os.path.join(geomosaic_condaenvs_folder, f"{up}_env.yaml")
             
-            if not os.path.isfile(up_dst_envs):
-                shutil.copyfile(up_src_envs, up_dst_envs)
+            shutil.copyfile(up_src_envs, up_dst_envs)
             
             config["ENVS"][up] = up_dst_envs
 
