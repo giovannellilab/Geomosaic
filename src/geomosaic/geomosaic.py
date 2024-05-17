@@ -78,7 +78,8 @@ def main():
     
     workflow_optional = workflow_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments"))
     workflow_optional.add_argument('-t' ,'--threads', default=10, type=int, help="Threads to use (per sample).")
-    workflow_optional.add_argument('-g' ,'--glab', action='store_true', help="Execute the default Giovannelli's Lab pipeline of Geomosaic.")
+    workflow_optional.add_argument('-p' ,'--pipeline', required=False, default=None, type=str, choices=["just_mags", "glab", None], help="Execute a default Giovannelli's Lab pipeline of Geomosaic (Completeness 50, Contamination 10). The pipeline 'glab' is a full pipeline without the two modules on HMM annotation (assemby and mags). \
+                                   The pipeline 'just_mags' is a minimal set of modules to retrieve MAGs without any annotation (Completeness: 50, Contamination: 10).")
     workflow_optional.add_argument("-m", "--module_start", required=False, type=str, default="pre_processing",
                                 help=f"Module where to start creating the workflow (Default: pre_processing)", choices=GEOMOSAIC_MODULES, metavar="MODULE")
     

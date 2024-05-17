@@ -1,0 +1,24 @@
+{
+    "user_choices": {
+        "pre_processing": "fastp",
+        "assembly": "metaspades",
+        "assembly_readmapping": "bowtie2",
+        "binning": "multi_binners",
+        "binning_derep": "das_tool",
+        "binning_qa": "checkm",
+        "mags_retrieval": "mags"
+    },
+    "additional_parameters": {
+        "completness_threshold": 50,
+        "contamination_threshold": 10
+    },
+    "order_writing": [
+        "pre_processing",
+        "assembly",
+        "assembly_readmapping",
+        "binning",
+        "binning_derep",
+        "binning_qa",
+        "mags_retrieval"
+    ]
+}

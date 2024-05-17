@@ -9,7 +9,7 @@ from geomosaic._compose import write_gmfiles, compose_config
 def geo_workflow(args):
     print(f"{GEOMOSAIC_PROCESS}: Loading variables from GeoMosaic setup file... ", end="", flush=True)
     gmsetup             = args.setup_file
-    glab                = args.glab
+    pipeline            = args.pipeline
     mstart              = args.module_start
     threads             = args.threads
 
@@ -55,9 +55,15 @@ def geo_workflow(args):
     ######### -- WORKFLOW -- #########
     ##################################
 
-    if glab:
+    if pipeline == "glab":
         # TODO: Adding additional parameters to default pipeline
-        with open(os.path.join(os.path.dirname(__file__), 'pipeline.json')) as default_pipeline:
+        with open(os.path.join(os.path.dirname(__file__), 'glab.json')) as default_pipeline:
+            pipe                    = json.load(default_pipeline)
+            user_choices            = pipe["user_choices"]
+            order_writing           = pipe["order_writing"]
+            additional_parameters   = pipe["additional_parameters"]
+    elif pipeline == "just_mags":
+        with open(os.path.join(os.path.dirname(__file__), 'just_mags.json')) as default_pipeline:
             pipe                    = json.load(default_pipeline)
             user_choices            = pipe["user_choices"]
             order_writing           = pipe["order_writing"]
