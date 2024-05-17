@@ -15,7 +15,7 @@ rule gtdbtk_classify:
         """
         mkdir -p {output}
 
-        GTDBTK_DATA_PATH={input.db}/release207_v2 gtdbtk classify_wf \
+        GTDBTK_DATA_PATH={input.db}/release220 gtdbtk classify_wf \
             --genome_dir {input.mags_folder}/fasta \
             --out_dir {output} \
             --cpus {threads} \
