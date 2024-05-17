@@ -10,5 +10,5 @@ rule recognizer_db:
 
         touch {output}/log.out
 
-        (cd {output} & recognizer --resources-directory {output} --download-resources --output {output}/null_results >> {output}/log.out 2>&1 ) || true
+        (cd {output} & recognizer --resources-directory {output} --output {output}/null_results >> {output}/log.out 2>&1 ) || true
         """
