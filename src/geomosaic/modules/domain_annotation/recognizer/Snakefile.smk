@@ -15,7 +15,7 @@ rule run_recognizer:
 
         mkdir -p $recognizer_folder
 
-        (cd $recognizer_folder & recognizer \
+        (cd $recognizer_folder && recognizer \
                 --file {input.orf_predicted} \
                 --output $recognizer_folder \
                 --resources-directory {input.recognizer_db} \

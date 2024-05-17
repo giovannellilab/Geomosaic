@@ -15,7 +15,7 @@ rule run_mags_recognizer:
 
         mkdir -p $recognizer_folder
 
-        (cd $recognizer_folder & recognizer \
+        (cd $recognizer_folder && recognizer \
                 --file {input.mags_orf} \
                 --output $recognizer_folder \
                 --resources-directory {input.recognizer_db} \
