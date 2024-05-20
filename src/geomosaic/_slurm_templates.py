@@ -74,7 +74,7 @@ def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit, g
     return output_script, sw, extdb_output_script, extdb, singleSample_output_script, singleSample, list_sample_output
 
 
-def update_threads(unit, geomosaic_wdir, threads):
+def update_threads(unit, geomosaic_wdir, changed_threads):
     filename = "config_unit.yaml" if unit else "config.yaml"
     config_file = os.path.join(geomosaic_wdir, filename)
 
@@ -87,11 +87,11 @@ def update_threads(unit, geomosaic_wdir, threads):
     with open(config_file) as file:
         configs = yaml.load(file, Loader=yaml.FullLoader)
 
-    # CHECK THREADS VALUE
-    if threads != configs["threads"]:
+    if changed_threads is not None:
+        # CHECK THREADS VALUE
         print(f"{GEOMOSAIC_PROCESS}: Geomosaic will overwite the 'threads' value in the config file since it is idifferent.")
 
-        configs["threads"] = threads
+        configs["threads"] = changed_threads
         with open(config_file, 'w') as fd_config:
             yaml.dump(configs, fd_config)
 
