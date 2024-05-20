@@ -19,6 +19,6 @@ rule gtdbtk_classify:
             --genome_dir {input.mags_folder}/fasta \
             --out_dir {output} \
             --cpus {threads} \
-            --mash_db {input.db}/mash_db_gtdbtk_r207_vs.msh \
+            --mash_db {input.db}/mash_db_gtdbtk.msh \
             --extension {params.extension} >> {log} 2>&1
         """
