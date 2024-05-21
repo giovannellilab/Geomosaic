@@ -114,8 +114,9 @@ def middle_start(mstart, G, collected_modules, order, additional_input):
         unit                = False
     )
 
-    module_dependencies = list(G.predecessors(mstart))
-    print(f"{GEOMOSAIC_NOTE}: You've chosen to start the workflow from a different node. It is assumed also that those modules dependencies have already been run with GeoMosaic")
+    module_dependencies = retrieve_all_dependencies(G, mstart, raw_user_choices, order)
+    
+    print(f"{GEOMOSAIC_NOTE}: You've chosen to start the workflow from a different node. It is assumed also the modules dependencies have already been run with GeoMosaic")
     print(f"{GEOMOSAIC_NOTE}: '{mstart}' depends on the following modules:\n"+"\n".join(map(lambda x: f"\t- {x}", module_dependencies)))
     print("\nNow you need to specify the package/s that you used for those dependencies.")
     
@@ -137,3 +138,17 @@ def middle_start(mstart, G, collected_modules, order, additional_input):
             user_choices[m] = raw_user_choices[m]
 
     return user_choices, dependencies, modified_G, order_writing
+
+
+def retrieve_all_dependencies(G, mstart, user_choices, order):
+    module_dependencies = set(G.predecessors(mstart))
+
+    for m, _ in user_choices.items():
+        preds = list(G.predecessors(m))
+        for x in preds:
+            if x not in user_choices:
+                module_dependencies.add(x)
+    
+    sorted_md = [o for o in order if o in module_dependencies]
+
+    return sorted_md
