@@ -50,7 +50,7 @@ def geo_setup(args):
     if not os.path.isdir(geomosaic_user_parameters):
         os.makedirs(geomosaic_user_parameters)
     
-    print(f"{GEOMOSAIC_PROCESS}: Mapping samples to filenames... ", end="", flush=True)
+    print(f"{GEOMOSAIC_PROCESS}: Mapping samples to filenames... ")
 
     samples_list = group_read_by_sample(
         groupby_df      = grp_df,
