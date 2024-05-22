@@ -20,7 +20,7 @@ rule run_metaspades:
         seqkit seq {params.seqkit_params} {output.contigs_fasta} -o {output.filtered_fasta}
         """
 
-rule run_metaspades_parser:
+checkpoint run_metaspades_parser:
     input: 
         filtered_fasta = rules.run_metaspades.output.filtered_fasta
     output:

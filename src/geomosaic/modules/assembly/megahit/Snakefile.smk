@@ -18,7 +18,7 @@ rule run_megahit:
         seqkit seq {params.seqkit_params} {output.folder}/megahit_computation/final.contigs.fa -o {output.contigs_fasta}
         """
 
-rule run_megahit_parser:
+checkpoint run_megahit_parser:
     input: 
         contigs_fasta = rules.run_megahit.output.contigs_fasta
     output:
