@@ -40,6 +40,4 @@ rule run_checkm:
         checkm nx_plot {params.extension} {input.dins_derep}/bins {output.folder}/plots >> {log} 2>&1
         echo "LEN_HIST"
         checkm len_hist {params.extension} {input.dins_derep}/bins {output.folder}/plots >> {log} 2>&1
-        echo "MARKER_PLOT"
-        checkm marker_plot {params.extension} {output.folder} {input.dins_derep}/bins {output.folder}/plots >> {log} 2>&1
         """
