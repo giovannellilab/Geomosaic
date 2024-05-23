@@ -6,7 +6,7 @@ from geomosaic.gm_unit import geo_unit
 from geomosaic.gm_prerun import geo_prerun
 from geomosaic.gm_gather import geo_gather
 import sys
-import pathlib
+import pkg_resources
 
 
 def main():
@@ -35,6 +35,8 @@ def main():
                                           description=GEOMOSAIC_PROMPT("DESCRIPTION: This command is useful to gather all the results obtained from your workflow and create tables and data that are ready to use for downstream analysis."),
                                           formatter_class=RawDescriptionHelpFormatter,
                                           add_help=False)
+
+    parser.add_argument("-v", "--version", action='version', version='%(prog)s '+ pkg_resources.get_distribution("geomosaic").version)
 
     ######################
     ## SETUP Parameters ## 
