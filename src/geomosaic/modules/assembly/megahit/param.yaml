@@ -1,6 +1,4 @@
 megahit:
-# Memory adjustment in bytes - 250 Gb
-- --memory 250000000000
 # Complex metagenomes
 - --presets meta-large
 
