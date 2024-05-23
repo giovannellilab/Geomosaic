@@ -36,7 +36,9 @@ def geo_prerun(args):
             output_script, sw, \
                 extdb_output_script, extdb, \
                     singleSample_output_script, singleSample, \
-                        list_sample_output = exectype_slurm(args, geomosaic_samples, geomosaic_wdir, gm_snakefile, unit, geomosaic_condaenvs_folder, jobname)
+                        list_sample_output = exectype_slurm(args, geomosaic_samples, geomosaic_wdir, 
+                                                            gm_snakefile, unit, 
+                                                            geomosaic_condaenvs_folder, jobname)
 
             with open(list_sample_output, "wt") as fl:
                 for s in gmsetup["SAMPLES"]:

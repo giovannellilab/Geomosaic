@@ -5,7 +5,7 @@ import yaml
 
 
 def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit, geomosaic_condaenvs_folder, jobname):
-    threads = args.threads
+    temp_threads = args.threads
     memory = args.memory
     partition = "" if args.partition is None else f"#SBATCH --partition={args.partition}"
     mail_type = "" if args.mail_type is None else f"#SBATCH --mail-type={args.mail_type}"
@@ -33,7 +33,7 @@ def exectype_slurm(args, geomosaic_samples, geomosaic_dir, gm_snakefile, unit, g
         slurm_logs_extdb = ""
         slurm_logs_singleSlurm = ""
     
-    update_threads(unit, geomosaic_dir, threads)
+    threads = update_threads(unit, geomosaic_dir, temp_threads)
 
     sw = slurm_workflow.format(
         jobname = jobname,
@@ -94,6 +94,14 @@ def update_threads(unit, geomosaic_wdir, changed_threads):
         configs["threads"] = changed_threads
         with open(config_file, 'w') as fd_config:
             yaml.dump(configs, fd_config)
+        
+        last_threads = changed_threads
+    
+    else:
+        last_threads = configs["threads"]
+    
+    return last_threads
+        
 
 
 slurm_workflow = """#!/bin/bash

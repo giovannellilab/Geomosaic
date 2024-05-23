@@ -5,7 +5,7 @@ from geomosaic._slurm_templates import update_threads
 
 
 def exectype_gnuparalllel(args, geomosaic_dir, gm_snakefile, unit, geomosaic_condaenvs_folder):
-    threads = args.threads
+    temp_threads = args.threads
     n_jobs = args.n_jobs
     path_geomosaic_snakefile = gm_snakefile
     output_script = os.path.abspath("parallel_geomosaic.sh") if args.output_script is None else os.path.abspath(args.output_script)
@@ -17,14 +17,14 @@ def exectype_gnuparalllel(args, geomosaic_dir, gm_snakefile, unit, geomosaic_con
         folder_logs = os.path.abspath(args.folder_logs)
 
         if not os.path.isdir(folder_logs):
-            print(f"{GEOMOSAIC_PROCESS}: Creating the specified folder logs: 'mkdir -p {folder_logs}'")
+            print(f"{GEOMOSAIC_PROCESS}: Creating the specified folder logs: '{folder_logs}'")
             check_call(["mkdir", "-p", folder_logs])
         
         gnuparallel_logs = str(os.path.join(folder_logs, "{}.log"))
     else:
         gnuparallel_logs = "{}.log"
     
-    update_threads(unit, geomosaic_dir, threads)
+    threads = update_threads(unit, geomosaic_dir, temp_threads)
 
     sw = gnuparallel_workflow.format(
         threads = threads, 
@@ -88,7 +88,7 @@ gnuparallel_singleSample="""
 # Created with Geomosaic
 #
 
-if [[ $1 -eq 0 ]] ; then
+if [ -z $1 ] ; then
     echo 'No argument "SAMPLE" supplied.'
     echo 'Execution type of this script: bash parallel_simpleSample_geomosaic MYSAMPLE'
     echo 'Exit.'
@@ -96,6 +96,8 @@ if [[ $1 -eq 0 ]] ; then
 fi
 
 single_sample=$1
+
+echo "SAMPLE: $single_sample"
 
 threads_per_job={threads}
 
