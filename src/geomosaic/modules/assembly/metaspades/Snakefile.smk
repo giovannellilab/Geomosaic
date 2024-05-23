@@ -6,7 +6,7 @@ rule run_metaspades:
     output:
         folder = directory("{wdir}/{sample}/metaspades"),
         contigs_fasta = "{wdir}/{sample}/metaspades/contigs.fasta",
-        filtered_fasta = "{wdir}/{sample}/metaspades/filtered_contigs.fasta"
+        filtered_fasta = ensure("{wdir}/{sample}/metaspades/filtered_contigs.fasta", non_empty=True)
     threads: config["threads"]
     conda: config["ENVS"]["metaspades"]
     params:
@@ -20,7 +20,7 @@ rule run_metaspades:
         seqkit seq {params.seqkit_params} {output.contigs_fasta} -o {output.filtered_fasta}
         """
 
-checkpoint run_metaspades_parser:
+rule run_metaspades_parser:
     input: 
         filtered_fasta = rules.run_metaspades.output.filtered_fasta
     output:

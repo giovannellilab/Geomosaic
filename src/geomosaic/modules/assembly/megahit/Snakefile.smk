@@ -5,7 +5,7 @@ rule run_megahit:
         r2=expand("{wdir}/{sample}/{pre_processing}/R2.fastq.gz", pre_processing=config["MODULES"]["pre_processing"], allow_missing=True),
     output:
         folder = directory("{wdir}/{sample}/megahit"),
-        contigs_fasta = "{wdir}/{sample}/megahit/contigs.fasta"
+        filtered_fasta = ensure("{wdir}/{sample}/megahit/filtered_contigs.fasta", non_empty=True)
     threads: config["threads"]
     conda: config["ENVS"]["megahit"]
     params:
@@ -15,10 +15,10 @@ rule run_megahit:
         """
         mkdir -p {output.folder}
         megahit {params.user_params} -t {threads} -1 {input.r1} -2 {input.r2} -o {output.folder}/megahit_computation
-        seqkit seq {params.seqkit_params} {output.folder}/megahit_computation/final.contigs.fa -o {output.contigs_fasta}
+        seqkit seq {params.seqkit_params} {output.folder}/megahit_computation/final.contigs.fa -o {output.filtered_fasta}
         """
 
-checkpoint run_megahit_parser:
+rule run_megahit_parser:
     input: 
         contigs_fasta = rules.run_megahit.output.contigs_fasta
     output:
