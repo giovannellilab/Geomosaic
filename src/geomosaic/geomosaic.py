@@ -134,7 +134,7 @@ def main():
     prerun_optionalslurm.add_argument('--mail_user', default=None, type=str, help="Email where to to receive slurm notification type specified in '--mail_type'. (requires '--exec_type slurm' option)")
     
     prerun_optionalparallel = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments for GNU Parallel"))
-    prerun_optionalparallel.add_argument('-n', '--n_jobs', default=2, type=int, help="Number of jobs to execute in parallel using GNU Parallel. More details on the Geomosaic Documentation. This option is available only for '--exec_type gnu_parallel'.")
+    prerun_optionalparallel.add_argument('-n', '--n_jobs', default=2, type=int, help="Number of jobs to execute in parallel using GNU Parallel. More details on the Geomosaic Documentation. (requires '--exec_type gnu_parallel' option).")
 
     prerun_help = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Help Arguments"))
     prerun_help.add_argument("-h", "--help", action="help", help=f"show this help message and exit")
