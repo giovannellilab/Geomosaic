@@ -1,0 +1,11 @@
+bbmap:
+- nodisk
+
+samtools_view:
+-
+
+samtools_sort:
+-
+
+samtools_index:
+-
