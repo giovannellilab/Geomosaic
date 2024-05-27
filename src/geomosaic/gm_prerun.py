@@ -12,6 +12,7 @@ def geo_prerun(args):
     unit            = args.unit
     exectype        = args.exec_type
     noscript        = args.noscript
+    ignore_samples  = args.ignore_samples
 
     with open(gmsetup_file) as file:
         gmsetup = yaml.load(file, Loader=yaml.FullLoader)
@@ -23,14 +24,16 @@ def geo_prerun(args):
     assert os.path.isdir(gmsetup["GEOMOSAIC_WDIR"]), f"\n{GEOMOSAIC_ERROR}: GeoMosaic working directory does not exists."
 
     geomosaic_wdir = gmsetup["GEOMOSAIC_WDIR"]
-    geomosaic_samples = gmsetup["SAMPLES"]
+    temp_geomosaic_samples = gmsetup["SAMPLES"]
     geomosaic_condaenvs_folder = gmsetup["GM_CONDA_ENVS"]
     jobname = gmsetup["PROJECT_NAME"][:8]
 
     name_snakefile = "Snakefile_unit.smk" if unit else "Snakefile.smk"
     exists_extdb = check_extdb_snakefile(geomosaic_wdir, unit)
     gm_snakefile = str(os.path.join(geomosaic_wdir, name_snakefile))
-    
+
+    geomosaic_samples = consider_ignored_samples(temp_geomosaic_samples, ignore_samples)
+
     if not noscript:
         if exectype == "slurm":
             output_script, sw, \
@@ -192,3 +195,27 @@ def check_extdb_snakefile(geomosaic_wdir, unit):
         return False
     else:
         return True
+
+
+def consider_ignored_samples(gmsetup_samples, user_ignore_samples):
+    ignore_samples = list(user_ignore_samples)
+    if ignore_samples is not None:
+        geomosaic_samples = []
+        ignoring = []
+        for x in gmsetup_samples:
+            if x in ignore_samples:
+                ignoring.append(x)
+            else:
+                geomosaic_samples.append(x)
+        if len(ignoring) == 0:
+            print(f"{GEOMOSAIC_ERROR}: Seems that you have put sample/s to ignore however Geomosaic didn't retrieve any samples you provided from the gmsetup.yaml")
+            exit(1)
+        elif len(ignoring) == len(ignore_samples):
+            print(f"{GEOMOSAIC_NOTE}: ignoring the following samples: {str(','.join(ignoring))}")
+        else:
+            print(f"{GEOMOSAIC_NOTE}: Seems that Geomosaic recognized a lower number of samples than provided. Try to review them.")
+        
+    else:
+        geomosaic_samples = gmsetup_samples
+
+    return geomosaic_samples

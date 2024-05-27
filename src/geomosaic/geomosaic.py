@@ -128,6 +128,7 @@ def main():
     prerun_optional.add_argument('-o', '--output_script', default=None, type=str, help="Filename for the SLURM or GNU Parallel script. As default it will be created as slurm_geomosaic.sh or parallel_geomosaic in the current directory (depending on the '--exec_type' option). (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
     prerun_optional.add_argument('-e', '--extdb_output_script', default=None, type=str, help="Filename for the SLURM or GNU Parallel script to execute external db setup. As default it will be created as slurm_extdb_geomosaic.sh or parallel_extdb_geomosaic.sh in the current directory (depending on the '--exec_type' option). (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
     prerun_optional.add_argument('--noscript', action='store_true', help="Avoid creating scripts for SLURM or GNU Parallel. This option is useful if you have already created those scripts")
+    prerun_optional.add_argument('--ignore_samples', default=None, type=csv_values, help='a comma separated list of Samples to ignore (no spaces). Example: --packages sample1,sample2 .')
 
     prerun_optionalslurm = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments ONLY for SLURM Specification"))
     prerun_optionalslurm.add_argument('-m', '--memory', default=300, type=int, help="Memory specification (in GB) for slurm job. (requires '--exec_type slurm' option)")
