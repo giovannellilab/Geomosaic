@@ -1,0 +1,1 @@
+expand("{kofam_scan_extdb_folder}", kofam_scan_extdb_folder=config["EXT_DB"]["kofam_scan"]),
