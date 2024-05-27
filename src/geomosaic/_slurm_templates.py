@@ -144,7 +144,7 @@ slurm_extdb = """#!/bin/bash
 # 
 
 
-snakemake --use-conda --conda-prefix {geomosaic_condaenvs_folder} --cores 8 -s {path_extdb_snakefile}
+snakemake --use-conda --conda-prefix {geomosaic_condaenvs_folder} --cores 9 -s {path_extdb_snakefile}
 """
 
 

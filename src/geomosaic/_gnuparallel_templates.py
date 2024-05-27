@@ -77,7 +77,7 @@ gnuparallel_extdb="""
 #
 
 
-snakemake --use-conda --conda-prefix {geomosaic_condaenvs_folder} --cores 4 -s {path_extdb_snakefile}
+snakemake --use-conda --conda-prefix {geomosaic_condaenvs_folder} --cores 9 -s {path_extdb_snakefile}
 
 """
 
