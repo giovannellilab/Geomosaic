@@ -163,7 +163,8 @@
         "assembly_func_annotation": {
             "description": "Module: Functional Annotation on Assembly [Assembly-based]",
             "choices": {
-                "eggNOG-Mapper": "eggnog_mapper"
+                "eggNOG-Mapper": "eggnog_mapper",
+                "KOfam Scan": "kofam_scan"
             }
         },
 
@@ -284,6 +285,7 @@
         "fastqc_readscount": "fastqc_readscount.yaml",
         "gtdbtk": "gtdbtk.yaml",
         "kaiju": "kaiju.yaml",
+        "kofam_scan": "kofam_scan.yaml",
         "kraken2": "kraken2.yaml",
         "megahit": "megahit.yaml",
         "metaphlan": "metaphlan.yaml",
@@ -310,6 +312,10 @@
         "kaiju": {
             "inpfolder": "kaiju",
             "outfolder": "kaiju_extdb"
+        },
+        "kofam_scan": {
+            "inpfolder": "kofam_scan",
+            "outfolder": "kofam_scan_extdb"
         },
         "kraken2": {
             "inpfolder": "kraken2",

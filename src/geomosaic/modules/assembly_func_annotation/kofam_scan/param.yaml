@@ -1,0 +1,6 @@
+kofam_scan:
+- --format detail-tsv
+- 
+
+# Allowed profiles are: prokaryotes, eukaryotes, both. Default: prokaryotes
+kofam_scan_profiles: prokaryotes
