@@ -13,7 +13,10 @@ rule run_bowtie2:
     threads: config["threads"]
     conda: config["ENVS"]["bowtie2"]
     params:
-        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["bowtie2"])) ) (config["USER_PARAMS"]["bowtie2"]) 
+        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["bowtie2"])) ) (config["USER_PARAMS"]["bowtie2"]),
+        samtools_view_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["samtools_view"])) ) (config["USER_PARAMS"]["bowtie2"]),
+        samtools_sort_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["samtools_sort"])) ) (config["USER_PARAMS"]["bowtie2"]),
+        samtools_index_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["samtools_index"])) ) (config["USER_PARAMS"]["bowtie2"])
     shell:
         """mkdir -p {output.folder}/b_index
 
@@ -26,9 +29,9 @@ rule run_bowtie2:
             -2 {input.r2} \
             -S {output.sam_file}
         
-        samtools view -@ {threads} -S -b {output.sam_file} > {output.bam_file}
+        samtools view -@ {threads} {params.samtools_view_user_params} -S -b {output.sam_file} > {output.bam_file}
 
-        samtools sort -@ {threads} {output.bam_file} -o {output.sorted_bam}
+        samtools sort -@ {threads} {params.samtools_sort_user_params} {output.bam_file} -o {output.sorted_bam}
 
-        samtools index -@ {threads} {output.sorted_bam} {output.indexed_bam}
+        samtools index -@ {threads} {params.samtools_index_user_params} {output.sorted_bam} {output.indexed_bam}
         """

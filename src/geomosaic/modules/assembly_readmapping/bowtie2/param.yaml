@@ -2,3 +2,12 @@ bowtie2:
 - --quiet
 - --sensitive
 -
+
+samtools_view:
+-
+
+samtools_sort:
+-
+
+samtools_index:
+-
