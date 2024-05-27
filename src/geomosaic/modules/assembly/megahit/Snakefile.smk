@@ -20,10 +20,10 @@ rule run_megahit:
 
 rule run_megahit_parser:
     input: 
-        contigs_fasta = rules.run_megahit.output.contigs_fasta
+        filtered_fasta = rules.run_megahit.output.filtered_fasta
     output:
         output_fasta="{wdir}/{sample}/megahit/geomosaic_contigs.fasta",
         output_mapping="{wdir}/{sample}/megahit/mapping.tsv"
     run:
         from geomosaic.parser.rename_contigs import rename_contigs
-        rename_contigs(str(input.contigs_fasta), str(output.output_fasta), str(output.output_mapping))
+        rename_contigs(str(input.filtered_fasta), str(output.output_fasta), str(output.output_mapping))
