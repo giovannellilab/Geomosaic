@@ -110,17 +110,19 @@
         },
     
         "assembly_qc": {
-            "description": "Module: Assembly evaluation with metrics [Assembly-based]",
+            "description": "Module: Assembly quality evaluation with metrics [Assembly-based]",
             "choices": {
                 "Quast": "quast"
             }
         },
 
         "assembly_readmapping": {
-            "description": "Module: Assembly evaluation by read mapping [Assembly-based]",
+            "description": "Module: Read mapping the processed reads to the Assembly [Assembly-based]",
             "choices": {
                 "Bowtie2": "bowtie2",
-                "BBMap": "bbmap"
+                "Bowtie2 (output shrinked from unmapped reads. Saving Storage)": "bowtie2_shrinked",
+                "BBMap": "bbmap",
+                "BBMap (output shrinked from unmapped reads. Saving Storage)": "bbmap_shrinked"
             }
     
         },
@@ -276,7 +278,9 @@
 
     "envs": {
         "bbmap": "bbmap.yaml",
+        "bbmap_shrinked": "bbmap.yaml",
         "bowtie2": "bowtie2.yaml",
+        "bowtie2_shrinked": "bowtie2.yaml",
         "checkm": "checkm.yaml",
         "coverm": "coverm.yaml",
         "das_tool": "das_tool.yaml",
