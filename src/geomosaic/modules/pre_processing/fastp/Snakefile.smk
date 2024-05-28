@@ -19,5 +19,5 @@ rule run_fastp:
                 --json {output.dir}/report.json \
                 --html {output.dir}/report.html \
                 --failed_out {output.dir}/failed.fastq.gz \
-                --thread {threads} {params.user_params} -q 20 u 40
+                --thread {threads} {params.user_params}
         """
