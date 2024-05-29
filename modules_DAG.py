@@ -3,7 +3,6 @@
 
 import networkx as nx
 import matplotlib.pyplot as plt
-from networkx.drawing.nx_pydot import graphviz_layout
 import matplotlib.patches as mpatches
 import json
 import numpy as np
@@ -206,13 +205,14 @@ def draw_workflow_graph(G, new_pos, pos_labels_attrs):
         "binning_derep",
         "binning_qa",
         "mags_retrieval",
-        "mags_func_annotation",
+        "mags_metabolism_annotation",
         "mags_tax_annotation",
         "mags_coverage",
     ]
 
     nc = []
-    skipped = ["assembly_hmm_annotation", "mags_hmm_annotation"]
+    skipped = ["assembly_hmm_annotation", "mags_hmm_annotation", 
+               "mags_domain_annotation", "mags_func_annotation"]
 
     col_accepted = "#26CA94"
     col_ignored = "#F45F53"
