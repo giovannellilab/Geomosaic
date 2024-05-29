@@ -52,11 +52,13 @@ def main():
     setup_optional.add_argument('-c' ,'--condaenv_gmfolder', default=None, type=str,
                                 help="This option allows to provide a path folder in which geomosaic is going to install all the conda environments of your workflow. \
                                     This option is very useful if you want to execute Geomosaic for different set of reads, \
-                                        as here you can provide the same folder and prevent multiple installation of the same conda environments.")
+                                        as here you can provide the same folder and prevent multiple installation of the same conda environments. \
+                                            If not specified geomosaic will create a folder called 'gm_conda_envs' inside the directory provided by the '-w' option.")
     setup_optional.add_argument('-e' ,'--externaldb_gmfolder', default=None, type=str,
                                 help="This option allows to provide a path folder in which geomosaic is going to download all the external databases used by the packages of your workflow. \
                                     This option is very useful if you want to execute Geomosaic for different set of reads, \
-                                        as here you can provide the same folder and prevent multiple donwload of the same external databases.")
+                                        as here you can provide the same folder and prevent multiple donwload of the same external databases.\
+                                             If not specified geomosaic will create a folder called 'gm_external_db' inside the directory provided by the '-w' option.")
     setup_optional.add_argument("-f", "--format_table", required=False, default="tsv", type=str, choices=["tsv", "csv", "excel"],
                               help="Format of the provided table. Allowed: tsv, csv, excel")
     setup_optional.add_argument("-w", "--working_dir", required=False, default="geomosaic", type=str, help="The Geomosaic working directory to create for its execution. Default: 'geomosaic' folder created in the current directory")
@@ -124,10 +126,6 @@ def main():
     prerun_optional.add_argument('-u' ,'--unit', action='store_true', help="Install the conda environment of your geomosaic unit.")
     prerun_optional.add_argument('-t', '--threads', default=None, type=int, help="Threads to use (per sample). This value will override the one specified in the workflow/unit (config file) and thus will replace threads value in the config file. Default is None, means that is not going to be replace (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
     prerun_optional.add_argument('-f', '--folder_logs', default=None, type=str, help="Folder for logs files. Default value is None means that slurm logs are saved in your current directory. However we suggest you to specify it and if it does not exists, Geomosaic will create it. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
-    prerun_optional.add_argument('-l', '--list_sample_output', default="list_samples.txt", type=str, help="Filename where to write the list of samples. Default: list_samples.txt created in the current directory. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
-    prerun_optional.add_argument('-o', '--output_script', default=None, type=str, help="Filename for the SLURM or GNU Parallel script. As default it will be created as slurm_geomosaic.sh or parallel_geomosaic in the current directory (depending on the '--exec_type' option). (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
-    prerun_optional.add_argument('-e', '--extdb_output_script', default=None, type=str, help="Filename for the SLURM or GNU Parallel script to execute external db setup. As default it will be created as slurm_extdb_geomosaic.sh or parallel_extdb_geomosaic.sh in the current directory (depending on the '--exec_type' option). (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
-    prerun_optional.add_argument('--noscript', action='store_true', help="Avoid creating scripts for SLURM or GNU Parallel. This option is useful if you have already created those scripts")
     prerun_optional.add_argument('--ignore_samples', default=None, type=csv_values, help='a comma separated list of Samples to ignore (no spaces). Example: --packages sample1,sample2 .')
 
     prerun_optionalslurm = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments ONLY for SLURM Specification"))

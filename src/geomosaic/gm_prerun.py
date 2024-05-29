@@ -11,7 +11,6 @@ def geo_prerun(args):
     gmsetup_file    = args.setup_file
     unit            = args.unit
     exectype        = args.exec_type
-    noscript        = args.noscript
     ignore_samples  = args.ignore_samples
 
     with open(gmsetup_file) as file:
@@ -34,51 +33,50 @@ def geo_prerun(args):
 
     geomosaic_samples = consider_ignored_samples(temp_geomosaic_samples, ignore_samples)
 
-    if not noscript:
-        if exectype == "slurm":
-            output_script, sw, \
-                extdb_output_script, extdb, \
-                    singleSample_output_script, singleSample, \
-                        list_sample_output = exectype_slurm(args, geomosaic_samples, geomosaic_wdir, 
-                                                            gm_snakefile, unit, 
-                                                            geomosaic_condaenvs_folder, jobname)
+    if exectype == "slurm":
+        output_script, sw, \
+            extdb_output_script, extdb, \
+                singleSample_output_script, singleSample, \
+                    list_sample_output = exectype_slurm(args, geomosaic_samples, geomosaic_wdir, 
+                                                        gm_snakefile, unit, 
+                                                        geomosaic_condaenvs_folder, jobname)
 
-            with open(list_sample_output, "wt") as fl:
-                for s in gmsetup["SAMPLES"]:
-                    fl.write(f"{s}\n")
+        with open(list_sample_output, "wt") as fl:
+            for s in gmsetup["SAMPLES"]:
+                fl.write(f"{s}\n")
 
-            with open(output_script, "wt") as fd:
-                fd.write(sw)
+        with open(output_script, "wt") as fd:
+            fd.write(sw)
 
-            if exists_extdb:
-                with open(extdb_output_script, "wt") as fd:
-                    fd.write(extdb)
-            
-            with open(singleSample_output_script, "wt") as fd:
-                fd.write(singleSample)
-        
-            show_slurm_message(exists_extdb, extdb_output_script, output_script, singleSample_output_script, list_sample_output)
-        
-        else:
-            output_script, sw, \
-                extdb_output_script, extdb, \
-                    singleSample_output_script, singleSample, \
-                        list_sample_output = exectype_gnuparalllel(args, geomosaic_wdir, gm_snakefile, unit, geomosaic_condaenvs_folder)
-
-            with open(list_sample_output, "wt") as fl:
-                for s in gmsetup["SAMPLES"]:
-                    fl.write(f"{s}\n")
-
-            with open(output_script, "wt") as fd:
-                fd.write(sw)
-
+        if exists_extdb:
             with open(extdb_output_script, "wt") as fd:
                 fd.write(extdb)
-            
-            with open(singleSample_output_script, "wt") as fd:
-                fd.write(singleSample)
-            
-            show_gnuparallel_message(exists_extdb, extdb_output_script, output_script, singleSample_output_script, list_sample_output)
+        
+        with open(singleSample_output_script, "wt") as fd:
+            fd.write(singleSample)
+    
+        show_slurm_message(exists_extdb, extdb_output_script, output_script, singleSample_output_script, list_sample_output)
+    
+    else:
+        output_script, sw, \
+            extdb_output_script, extdb, \
+                singleSample_output_script, singleSample, \
+                    list_sample_output = exectype_gnuparalllel(args, geomosaic_wdir, gm_snakefile, unit, geomosaic_condaenvs_folder)
+
+        with open(list_sample_output, "wt") as fl:
+            for s in gmsetup["SAMPLES"]:
+                fl.write(f"{s}\n")
+
+        with open(output_script, "wt") as fd:
+            fd.write(sw)
+
+        with open(extdb_output_script, "wt") as fd:
+            fd.write(extdb)
+        
+        with open(singleSample_output_script, "wt") as fd:
+            fd.write(singleSample)
+        
+        show_gnuparallel_message(exists_extdb, extdb_output_script, output_script, singleSample_output_script, list_sample_output)
     
     print(f"\n{GEOMOSAIC_PROCESS}: Installing all the conda environments of your workflow/unit. This may take a while...\n", end="", flush=True)
     envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit)
@@ -198,8 +196,8 @@ def check_extdb_snakefile(geomosaic_wdir, unit):
 
 
 def consider_ignored_samples(gmsetup_samples, user_ignore_samples):
-    ignore_samples = list(user_ignore_samples)
-    if ignore_samples is not None:
+    if user_ignore_samples is not None:
+        ignore_samples = list(user_ignore_samples)
         geomosaic_samples = []
         ignoring = []
         for x in gmsetup_samples:
