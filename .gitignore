@@ -11,3 +11,11 @@ config.yaml
 dag_snakefile.sh
 /hmms_folder
 /temp
+/slurm*
+/parallel*
+/*.log
+/samples_table.tsv
+/list_samples.txt
+/gmsetup.yaml
+/logs_slurm
+/images/modules_DAG*
