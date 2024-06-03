@@ -4,7 +4,7 @@ layout: home
 nav_order: 1
 ---
 
-# ![Geomosaic](/assets/images/geomosaic_logo_multicolor_300dpi.png)
+# ![Geomosaic](assets/images/geomosaic_logo_multicolor_300dpi.png)
 
 <br> 
 
@@ -14,4 +14,4 @@ It has been designed to be user friendly and higly customizable, with no bioinfo
 
 However, it has been developed to be easy to integrate with new modules and packages. See our section 
 
-![gm](/assets/images/gm.png)
+![gm](assets/images/gm.png)
