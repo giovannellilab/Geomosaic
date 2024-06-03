@@ -151,7 +151,7 @@ The following scripts are created the same folder of the `gmsetup.yaml`:
 - `/geomosaic_test/list_samples.txt`
 
 
-<img width="300" alt="slurm" src="/assets/images/gm_prerun/slurm.png">
+<img width="300" alt="slurm" src="assets/images/gm_prerun/slurm.png">
 
 
 ### Example usage `geomosaic prerun` [GNU Parallel Available]
@@ -205,5 +205,5 @@ The following script are created the same folder of the `gmsetup.yaml`:
 - `/geomosaic_test/list_samples.txt`
 
 
-<img width="300" alt="gnuparallel" src="/assets/images/gm_prerun/gnuparallel.png">
+<img width="300" alt="gnuparallel" src="assets/images/gm_prerun/gnuparallel.png">
 

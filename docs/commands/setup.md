@@ -106,7 +106,7 @@ After completing this command you should see:
     - `R1.fastq.gz`
     - `R2.fastq.gz`
 
-<img width="500" alt="geomosaic_setup_output" src="/assets/images/gm_setup/geomosaic_setup_output.png">
+<img width="500" alt="geomosaic_setup_output" src="assets/images/gm_setup/geomosaic_setup_output.png">
 
 ### Example usage `geomosaic setup`
 Assuming my sequencing reads are in the folder termed `sequencing_mg_expedition2023` and my tabular file is called `sample_table_expedition2023.tsv`,

@@ -27,7 +27,7 @@ In fact, these dependencies can not be overlooked when generating the workflow w
 
 The full tree of dependencies among all modules is shown here.
 
-![modules_DAG](/assets/images/modules_DAG.png)
+![modules_DAG](assets/images/modules_DAG.png)
 
 ## Integrated modules
 
