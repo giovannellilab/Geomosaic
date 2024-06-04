@@ -33,7 +33,8 @@ The full tree of dependencies among all modules is shown here.
 
 To summarise, the dependency tree has to be considered when ignoring specific modules, as they may inadvertently block other modules in the current or the next stream of analysis.
 
-{: .important }
+{: .important-title }
+> 
 > <table>
 >     <thead>
 >         <tr>
