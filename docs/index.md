@@ -12,6 +12,6 @@ Welcome to the documentation of our flexible **metagenomic pipeline** combining 
 
 It has been designed to be user friendly and higly customizable, with no bioinformatic expertise required.
 
-However, it has been developed to be easy to integrate with new modules and packages. See our section 
+However, it has been developed to be easy to integrate with new modules and packages. See our section [Contributes](contributes/index.md)
 
 ![gm](assets/images/gm.png)
