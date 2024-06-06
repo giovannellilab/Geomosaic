@@ -8,8 +8,8 @@ rule run_bbmap:
         folder=directory("{wdir}/{sample}/bbmap_shrinked"),
         sam_file=temp("{wdir}/{sample}/bbmap_shrinked/read_mapping.sam"),
         bam_file=temp("{wdir}/{sample}/bbmap_shrinked/read_mapping.bam"),
-        sorted_bam=temp("{wdir}/{sample}/bbmap_shrinked/read_mapping_sorted.bam"),
-        indexed_bam=temp("{wdir}/{sample}/bbmap_shrinked/read_mapping_sorted.bam.bai")
+        sorted_bam="{wdir}/{sample}/bbmap_shrinked/read_mapping_sorted.bam",
+        indexed_bam="{wdir}/{sample}/bbmap_shrinked/read_mapping_sorted.bam.bai"
     threads: config["threads"]
     conda: config["ENVS"]["bbmap"]
     params:
