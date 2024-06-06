@@ -7,6 +7,22 @@ nav_order: 5
 
 
 ## `geomosaic setup`
+{: .no_toc }
+
+<br>
+
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+- TOC
+{:toc}
+</details>
+
+-----
+
+### Overview
 
 This commands should be the first one to be executed as it sets up the Geomosaic working directory with the corresponding folder and sample names.
 
@@ -55,6 +71,8 @@ Help Arguments:
   -h, --help            show this help message and exit
 
 ```
+
+### Arguments
 
 `setup` command has two required arguments:
 - __REQUIRED__

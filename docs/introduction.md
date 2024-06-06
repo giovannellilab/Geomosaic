@@ -5,12 +5,22 @@ nav_order: 2
 ---
 
 
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+- TOC
+{:toc}
+</details>
+
+<br>
 
 # Introduction
 
-
 Current metagenomics workflows can exploit three different streams of analysis: read-based, assembly-based, and binning-based. Read-based and/or assembly-based analyses are often neglected in favor of binning-driven inferences on the basis of their different reliability and sensitivity. However, the filtering steps involved in moving from reads to bins progressively reduce the potential amount of information, and thus the meaningfulness of the data obtained. There was, therefore, the need to create a metagenomic workflow that would combine these three different streams of analysis. Geomosaic was created to fit this purpose. It enables annotations to be performed on the three streams of analysis, and specially devised for the easy integration of the various programs and packages required. This approach maximizes the output of information gathered from raw data. 
 Even so, Gemosaic flexibility allows the user to completely customize the analysis by choosing any stream of analysis, and to further tailor it with modules and packages. Thus, the Geomosaic workflow is sewed for the user purposes.
+
 
 
 ## Geomosaic Graph Structure

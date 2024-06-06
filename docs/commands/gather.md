@@ -6,6 +6,24 @@ nav_order: 9
 ---
 
 ## `geomosaic gather`
+{: .no_toc }
+
+<br>
+
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+- TOC
+{:toc}
+</details>
+
+-----
+
+### Overview
+
+
 
 This is an optional command that allows to create table `[obs x samples]` based on the obtained results of the executed workflows. It is avalaible only for some specific packages
 
@@ -49,7 +67,7 @@ Help Arguments:
   -h, --help            show this help message and exit
 ```
 
-## Arguments
+### Arguments
 
 This command has both required and optional arguments.
 
@@ -71,5 +89,7 @@ geomosaic gather -s gmsetup_exp2023.yaml
 Executing the gathering only for some packages and specifying the folder where to create the gather directory
 
 ```
-geomosaic gather -s gmsetup_exp2023.yaml -p kaiju,mifaser,coverm_genome -f /home/davide/geomosaic_test/
+geomosaic gather -s gmsetup_exp2023.yaml \
+  -p kaiju,mifaser,coverm_genome \
+  -f /home/davide/geomosaic_test/
 ```

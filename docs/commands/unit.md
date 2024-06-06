@@ -6,6 +6,23 @@ nav_order: 7
 ---
 
 ## `geomosaic unit`
+{: .no_toc }
+
+<br>
+
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+- TOC
+{:toc}
+</details>
+
+-----
+
+### Overview
+
 It allows to choose and run just one module to execute an alternative package for that module. The command creates additional Snakefile and config file for the chosen modules in the geomosaic directory.
 
 ```
@@ -59,7 +76,7 @@ Help Arguments:
 
 ```
 
-## Arguments
+### Arguments
 
 This command has two required and two optional arguments:
 - __REQUIRED__

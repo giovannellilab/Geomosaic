@@ -6,6 +6,22 @@ nav_order: 6
 ---
 
 ## `geomosaic workflow`
+{: .no_toc }
+
+<br>
+
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+- TOC
+{:toc}
+</details>
+
+-----
+
+### Overview
 
 After having successfully executed the `setup` command, Geomosaic is ready to create your desired workflow.
 

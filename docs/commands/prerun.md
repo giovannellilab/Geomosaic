@@ -6,6 +6,24 @@ nav_order: 8
 ---
 
 ## `geomosaic prerun`
+{: .no_toc }
+
+<br>
+
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+- TOC
+{:toc}
+</details>
+
+-----
+
+### Overview
+
+
 This command is very easy. It is usefull to install the required conda environments to run your workflow/unit.
 
 ```
@@ -70,7 +88,7 @@ Help Arguments:
 
 ```
 
-## Arguments
+### Arguments
 
 This command has both required and optional arguments. But as you can see it is very simple.
 

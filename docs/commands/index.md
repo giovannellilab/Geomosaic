@@ -3,10 +3,27 @@ layout: default
 title: Commands
 nav_order: 4
 has_children: true
+has_toc: false
 ---
 
 
 # Commands
+{: .no_toc }
+
+<br>
+
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+- TOC
+{:toc}
+</details>
+
+-----
+
+## Main cmds
 
 Geomosaic pipeline has four main commands:
 - _setup_
@@ -45,3 +62,7 @@ commands:
     gather              This command is useful to gather all the results obtained from your workflow and create tables and data that are ready to use for
                         downstream analysis.
 ```
+
+## Walthrough Image
+
+<img src="assets/images/geomosaic_commands.svg">
