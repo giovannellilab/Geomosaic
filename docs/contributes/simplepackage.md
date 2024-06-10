@@ -21,7 +21,7 @@ nav_order: 12
 
 -----
 
-This tutorial will guide you through an integration of an example packages, which means one that doesn't need an **external database** or it is **not referred to MAGs module**.
+This tutorial will guide you through an integration of a simple package, that doesn't need an **external database** and it is **not referred to MAGs module**.
 
 ## What we need for this integration
 - Understand the Stream-level: in this case `Read-based`
@@ -48,7 +48,7 @@ git checkout -b fastqc
 
 
 ## Step 2: Create the module folder (if does not exists)
-In this case we are going to integrate a package that should belongs to a module related to the quality checks of the reads after the `pre_processing` step, so we create a module folder called `reads_qc` inside the `modules` folder (Figure below in [Step 4](#step-4-create-packages-snakefiles)). 
+In this case we are going to integrate a package that belongs to a module related to the quality checks of the reads after the `pre_processing` step, so we create a module folder called `reads_qc` inside the `modules` folder (Figure below in [Step 4](#step-4-create-packages-snakefiles)). 
 
 {: .important }
 This step is necessary only if the module folder does not exists.
@@ -62,7 +62,7 @@ This step is necessary only if the module folder does not exists.
 
 ## Step 3: Create the package folder
 
-In this step we only need to create the package folder insider the module of interest. In this case, I decided to call this program `fastqc_readscount` (Figure below in [Step 4](#step-4-create-packages-snakefiles)).
+In this step we create the package folder inside the module of interest. In this case, our package folder will be `fastqc_readscount` (Figure below in [Step 4](#step-4-create-packages-snakefiles)).
 
 {: .highlight }
 > {: .warning }
@@ -73,8 +73,7 @@ In this step we only need to create the package folder insider the module of int
 
 ## Step 4: Create package's snakefiles
 
-Now we need to create the files for the code of the actual packge.
-Inside the package folder, create 3 files named:
+Create three code files inside the package folder, with the following filename:
 - `Snakefile.smk`
 - `Snakefile_target.smk`
 - `param.yaml`
@@ -82,12 +81,12 @@ Inside the package folder, create 3 files named:
 For now you can leave them empty.
 
 {: .important }
-The names for this file are standard and are the same for each package.
+The names for this file are standard and are the same for each package. Do not change the filenames.
 
 ![modules_folder](assets/images/simplepackage/modulefolder.png)
 
 ## Step 5: create the corresponding `conda` env file 
-In this section we need to create the corresponding `conda` env file describing the necessary dependencies for the our package. We can do it, in the `envs` folder, creating a file with the same name of the package (with the yaml extension). Inside, we are going to write the necessary dependencies. In this case we are going to specify only fastqc from the bioconda channel. The reads count will be computed through a bash commands and thus we don't need any conda package. The name of the conda environment is the name of the package with `geomosaic_` as prefix.
+We need to create the corresponding `conda` env file describing the necessary dependencies for our package.  For this purpose, in the `envs` folder we create a file with the same name of the package (with the yaml extension). As content of the file we are going to write the necessary dependencies. In this case we are going to specify only fastqc from the bioconda channel as the reads count will be computed through a bash commands and thus we don't need any specfici dependencies. The name of the conda environment is the name of the package with `geomosaic_` as prefix.
 
 ![condaenvfile](assets/images/simplepackage/condaenvfile.png)
 
@@ -148,9 +147,9 @@ Still under optimization
 This section is useful to organize external databases for the package that we are going to integrate. In this example, we won't need any external database. Look to this example to understand how this section works.
 
 However, let's do a brief introduction to this section:
-- each package has a key which contains two other keys:
+- each package that requires an extdb has a key which contains two other keys:
   - `inpfolder`: its value should be the name of the package
-  - `outfolder`: must be the name of the folder in which the external databases is going to be downloaded. The pattern is: the name of the package followed by the `_extdb` suffix. However, different package name maybe relay on the same external database as it is for the `recognizer` package and `mags_recognizer`.
+  - `outfolder`: must be the name of the folder in which the external databases is going to be downloaded. The pattern is: the name of the package followed by the `_extdb` suffix. However, different package name maybe relay on the same external database as it is for the `recognizer` package and `mags_recognizer`, therefore in such case we specify the same `outfolder`.
 
 For this package we don't need to specify anything for external database
 

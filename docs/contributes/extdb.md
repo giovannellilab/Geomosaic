@@ -22,7 +22,7 @@ nav_order: 13
 
 -----
 
-This tutorial will guide you through an integration of an example packages, which means one that doesn't need an **external database** or it is **not referred to MAGs module**.
+This tutorial will guide you through an integration of an example packages, that requires an **external database** and it is **not referred to MAGs module**.
 
 ## What we need for this integration
 - Understand the Stream-level: in this case `Assembly-based`
