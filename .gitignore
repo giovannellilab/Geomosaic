@@ -19,3 +19,4 @@ dag_snakefile.sh
 /gmsetup.yaml
 /logs_slurm
 /images/modules_DAG*
+.DS_Store
