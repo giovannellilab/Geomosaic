@@ -105,7 +105,7 @@ Since `reads_qc` is a module that we thought to be after the processing of the r
 ### Step 6.2: `graph` section
 
 {: .important }
-> Before going further in this section, you should understand what really means a dependency in Geomosaic in this [section]()
+> Before going further in this section, you should understand what really means a dependency in Geomosaic in this [Modules Dependencies description](modules#description).
 
 The package that we are going to integrate in this module, depends on the output reads obtained from the `pre_processing` modules, so we put in graph the following line:
 
@@ -130,17 +130,20 @@ In the correspongin `modules` section, we need to add the name of the module, wh
 
     ![modules](assets/images/simplepackage/modules.png)
 
-    If the package does require any additional input, you can integrate this input in the corresponding section of `additional_input`. In this case we don't need to put any additional argument. 
-    
-    {: .highlight }
-    Read here about what are additional arguments
+### Step 6.4: `additional_input` section
+If the package does require any additional input, you can integrate this input in the corresponding section of `additional_input`. In this case we don't need to put any additional argument. 
 
-### Step 6.4: `envs` section
+{: .highlight }
+Additional arguments are parameters that are widely known in the metagenomic workflow and that should be chosen by the user, as for example Completeness and Contamination.
+
+In this section we have inserted also the possibility to specificy a folder that contains HMM models (for `assembly_hmm_annotation` and `mags_hmm_annotation`), as well as the name of the output folder these two modules in order to have different output name folder for different sets of HMMs.
+
+### Step 6.5: `envs` section
 This section is very simple, we only need to add the conda env file for our package. This filename must have the same package name. In this case `fastqc_readscount`. 
 
 ![envs](assets/images/simplepackage/envs.png)
 
-### Step 6.5: `external_db` section
+### Step 6.6: `external_db` section
 {: .note }
 Still under optimization
 
@@ -153,7 +156,7 @@ However, let's do a brief introduction to this section:
 
 For this package we don't need to specify anything for external database
 
-### Step 6.6: `gathering` section
+### Step 6.7: `gathering` section
 This section is not mandatory. However it is useful if we want to compose some master tables or plots from the results of our package from all the samples. In this case, we are not interest in this section. However we could create a script in which we create a table of all the reads count for each sample.
 
 At the time of writing, this one is the last section.

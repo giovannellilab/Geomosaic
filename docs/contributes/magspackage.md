@@ -139,17 +139,20 @@ Here we can see how DRAM was moved into the `mags_metabolism_annotation` module.
 ...
 ```
 
+### Step 6.4: `additional_input` section
 If the package does require any additional input, you can integrate this input in the corresponding section of `additional_input`. In this case we don't need to put any additional argument. 
 
 {: .highlight }
-Read [here]() about what are additional arguments
+Additional arguments are parameters that are widely known in the metagenomic workflow and that should be chosen by the user, as for example Completeness and Contamination.
 
-### Step 6.4: `envs` section
+In this section we have inserted also the possibility to specificy a folder that contains HMM models (for `assembly_hmm_annotation` and `mags_hmm_annotation`), as well as the name of the output folder these two modules in order to have different output name folder for different sets of HMMs.
+
+### Step 6.5: `envs` section
 This section is very simple, we only need to add the conda env file for our package that we have created in the [Step 5](#step-5-create-the-corresponding-conda-env-file). This filename must have the same package name. In this case `kofam_scan`. 
 
 ![envs](assets/images/magspackage/envs_key.png)
 
-### Step 6.5: `external_db` section
+### Step 6.6: `external_db` section
 {: .note }
 Still under optimization
 
@@ -163,7 +166,7 @@ In this section:
 So in this section we are going to write as follows since the external database is the same for the KOfam Scan that we have integrated in the `assembly_func_annotation` ([Integration Example 2](extdb)).
 ![envs](assets/images/magspackage/externaldb_key.png)
 
-### Step 6.6: `gathering` section
+### Step 6.7: `gathering` section
 This section is not mandatory. However it is useful if we want to compose some master tables or plots from the results of our package from all the samples computation. In this case, we are not interest in this section. However we could create a script that creates a table of all the reads count for each sample.
 
 At the time of writing, this is the last section in the `gmpackages.json`.
