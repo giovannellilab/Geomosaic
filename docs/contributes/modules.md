@@ -63,8 +63,6 @@ Modules names are used in that way just to describe what the packages do, howeve
 
 This section reports the input and output that you should need to implement new packages for each module.
 
-<br>
-
 ### pre_processing
 {: .no_toc }
 
