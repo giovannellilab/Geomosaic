@@ -218,7 +218,7 @@ This is the section in which we are going to put the actual code to execute our 
 ## Step 8: Snakefile Target
 In our file `Snakefile_target.smk` we only need to write few rows. First, the name of the rule **must** be the same name of the package name with the `all_` prefix. And then we need to change the rows in the input section, and we need to specify the same folder output **as in this case was our only output that we specified in the Snakefile.smk**.
 
-![snakefile_target](assets/images/extdb/sankefile_target.png)
+![snakefile_target](assets/images/extdb/snakefile_target.png)
 
 ## Step 9: `Param.yaml` file
 
