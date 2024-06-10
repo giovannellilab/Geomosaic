@@ -22,7 +22,7 @@ nav_order: 13
 
 -----
 
-This tutorial will guide you through an integration of an example packages, that requires an **external database** and it is **not referred to MAGs module**.
+This tutorial will guide you through an integration of an example package, that requires an **external database** and it is **not referred to MAGs module**.
 
 ## What we need for this integration
 - Understand the Stream-level: in this case `Assembly-based`
@@ -237,7 +237,7 @@ kofam_scan_profiles: prokaryotes
 ## Test the integration
 Now we should test the integrated package. Activate the conda environment of geomosaic. Updated geomosaic by doing 
 
-````
+```
 pip install .
 ```
 

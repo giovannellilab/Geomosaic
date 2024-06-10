@@ -210,7 +210,7 @@ fastqc_readscount:
 ## Test the integration
 Now we should test the integrated package. Activate the conda environment of geomosaic. Updated geomosaic by doing 
 
-````
+```
 pip install .
 ```
 
