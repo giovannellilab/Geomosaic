@@ -215,12 +215,12 @@ This is the section in which we are going to put the actual code to execute our 
 
 ![snakefile](assets/images/extdb/snakefile_code.png)
 
-## Step 8: Snakefile Target
+## Step 9: Snakefile Target
 In our file `Snakefile_target.smk` we only need to write few rows. First, the name of the rule **must** be the same name of the package name with the `all_` prefix. And then we need to change the rows in the input section, and we need to specify the same folder output **as in this case was our only output that we specified in the Snakefile.smk**.
 
 ![snakefile_target](assets/images/extdb/snakefile_target.png)
 
-## Step 9: `Param.yaml` file
+## Step 10: `Param.yaml` file
 
 The `param.yaml` is a file in which the user, before the execution of the workflow, can insert all the optional parameters belonging to the package as bullet points. In this case, we only need to open this file and add the following lines:
 
