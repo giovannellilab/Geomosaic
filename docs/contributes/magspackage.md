@@ -6,7 +6,7 @@ nav_order: 14
 ---
 
 
-# Integration example 2: Package with External Database
+# Integration example 3: Package for MAGs (Binning-level) with extdb
 {: .no_toc }
 
 <br>
