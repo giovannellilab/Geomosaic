@@ -210,7 +210,8 @@
         "mags_func_annotation": {
             "description": "Module: perform functional annotation on MAGs [Binning-based]",
             "choices": {
-                "DRAM on MAGs": "mags_dram"
+                "DRAM on MAGs": "mags_dram",
+                "Bakta on MAGs": "mags_bakta"
             }
         },
 
