@@ -4,6 +4,7 @@ import os
 from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_NOTE, append_to_gmsetupyaml
 from geomosaic._build_pipelines_module import import_graph, build_pipeline_modules, ask_additional_parameters
 from geomosaic._compose import write_gmfiles, compose_config
+from geomosaic._draw import geomosaic_draw_workflow
 
 
 def geo_workflow(args):
@@ -72,9 +73,9 @@ def geo_workflow(args):
         # NOTE: BUILDING PIPELINE BASED ON USER CHOICES
         if mstart != "pre_processing":
             user_choices, dependencies, \
-                modified_G, order_writing = middle_start(mstart, G, collected_modules, order, additional_input)
+                modified_G, order_writing, skipped_modules = middle_start(mstart, G, collected_modules, order, additional_input)
         else:    
-            user_choices, dependencies, modified_G, order_writing = build_pipeline_modules(
+            user_choices, dependencies, modified_G, order_writing, skipped_modules = build_pipeline_modules(
                 graph               = G,
                 collected_modules   = collected_modules, 
                 order               = order, 
@@ -102,10 +103,12 @@ def geo_workflow(args):
                   user_choices, order_writing, 
                   modules_folder, 
                   gmpackages_extdb, gmpackages_extdb_path)
-
+    
+    print(f"{GEOMOSAIC_NOTE}: drawing your workflow graph...")
+    geomosaic_draw_workflow(gmpackages_path, user_choices, skipped_modules)
 
 def middle_start(mstart, G, collected_modules, order, additional_input):
-    raw_user_choices, dependencies, modified_G, order_writing = build_pipeline_modules(
+    raw_user_choices, dependencies, modified_G, order_writing, skipped_modules = build_pipeline_modules(
         graph               = G,
         collected_modules   = collected_modules, 
         order               = order, 
@@ -121,7 +124,7 @@ def middle_start(mstart, G, collected_modules, order, additional_input):
     print("\nNow you need to specify the package/s that you used for those dependencies.")
     
     for dep in module_dependencies:
-        temp_user_choices, _, _, _ = build_pipeline_modules(
+        temp_user_choices, _, _, _, _ = build_pipeline_modules(
             graph               = G,
             collected_modules   = collected_modules, 
             order               = order, 
@@ -137,7 +140,7 @@ def middle_start(mstart, G, collected_modules, order, additional_input):
         if m in raw_user_choices:
             user_choices[m] = raw_user_choices[m]
 
-    return user_choices, dependencies, modified_G, order_writing
+    return user_choices, dependencies, modified_G, order_writing, skipped_modules
 
 
 def retrieve_all_dependencies(G, mstart, user_choices, order):
