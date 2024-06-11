@@ -111,6 +111,13 @@
             }
         },
     
+        "assembly_func_annotation": {
+            "description": "Module: Functional Annotation on Assembly [Assembly-based]",
+            "choices": {
+                "Bakta": "bakta"
+            }
+        },
+    
         "assembly_qc": {
             "description": "Module: Assembly quality evaluation with metrics [Assembly-based]",
             "choices": {
@@ -165,7 +172,7 @@
         },
 
         "assembly_orf_func_annotation": {
-            "description": "Module: Functional Annotation on Assembly [Assembly-based]",
+            "description": "Module: Functional Annotation on Assembly (ORFs) [Assembly-based]",
             "choices": {
                 "eggNOG-Mapper": "eggnog_mapper",
                 "KOfam Scan": "kofam_scan"
@@ -285,6 +292,7 @@
     },
 
     "envs": {
+        "bakta": "bakta.yaml",
         "bbmap": "bbmap.yaml",
         "bbmap_shrinked": "bbmap.yaml",
         "bowtie2": "bowtie2.yaml",
@@ -318,6 +326,10 @@
     },
     
     "external_db": {
+        "bakta": {
+            "inpfolder": "bakta",
+            "outfolder": "bakta_extdb"
+        },
         "checkm": {
             "inpfolder": "checkm",
             "outfolder": "checkm_extdb"
