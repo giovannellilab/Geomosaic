@@ -55,7 +55,7 @@ def geo_unit(args):
     
     mstart = module
     order_writing = [mstart]
-    raw_user_choices, _, _, _ = build_pipeline_modules(
+    raw_user_choices, _, _, _, _ = build_pipeline_modules(
         graph               = G,
         collected_modules   = collected_modules, 
         order               = order, 
@@ -72,7 +72,7 @@ def geo_unit(args):
         print("\nNow you need to specify the package/s that you used for those dependencies.")
     
     for dep in module_dependencies:
-        temp_user_choices, _, _, _ = build_pipeline_modules(
+        temp_user_choices, _, _, _, _ = build_pipeline_modules(
             graph               = G,
             collected_modules   = collected_modules, 
             order               = order, 
