@@ -164,7 +164,7 @@
             }
         },
 
-        "assembly_func_annotation": {
+        "assembly_orf_func_annotation": {
             "description": "Module: Functional Annotation on Assembly [Assembly-based]",
             "choices": {
                 "eggNOG-Mapper": "eggnog_mapper",
