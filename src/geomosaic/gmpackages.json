@@ -5,12 +5,13 @@
         "func_classification_rb",
         "tax_classification_rb",
         "assembly",
+        "assembly_func_annotation",
         "assembly_readmapping",
         "assembly_qc",
         "assembly_coverage",
         "assembly_tax_annotation",
         "orf_prediction",
-        "assembly_func_annotation",
+        "assembly_orf_annotation",
         "domain_annotation",
         "assembly_hmm_annotation",
         "binning",
@@ -33,7 +34,8 @@
         ["pre_processing", "assembly"],
         ["pre_processing", "assembly_readmapping"],
         ["pre_processing", "mags_coverage"],
-        
+
+        ["assembly", "assembly_func_annotation"],
         ["assembly", "assembly_readmapping"],
         ["assembly", "assembly_qc"],
         ["assembly", "assembly_tax_annotation"],
@@ -49,7 +51,7 @@
 
         ["orf_prediction", "assembly_hmm_annotation"],
         ["orf_prediction", "domain_annotation"],
-        ["orf_prediction", "assembly_func_annotation"],
+        ["orf_prediction", "assembly_orf_annotation"],
 
         ["binning", "binning_derep"],
 
@@ -171,7 +173,7 @@
             }
         },
 
-        "assembly_orf_func_annotation": {
+        "assembly_orf_annotation": {
             "description": "Module: Functional Annotation on Assembly (ORFs) [Assembly-based]",
             "choices": {
                 "eggNOG-Mapper": "eggnog_mapper",
