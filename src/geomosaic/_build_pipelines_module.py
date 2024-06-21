@@ -35,6 +35,7 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
 
     # Defining order
     queue = deque([elem for elem in order if elem in raw_queue])
+    skipped_modules = []
 
     while queue:
         status = False
@@ -60,6 +61,7 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
         
         parse_input = obj
         if parse_input == 0:
+            skipped_modules.append(my_module)
             G.remove_node(my_module)
             G.remove_nodes_from(modules_descendants[my_module])
             for desc in modules_descendants[my_module]:
@@ -75,7 +77,7 @@ def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list,
     dependencies = list(G.edges())
     order_writing = [elem for elem in order if elem in user_choices]
 
-    return user_choices, dependencies, G, order_writing
+    return user_choices, dependencies, G, order_writing, skipped_modules
 
 
 def ask_additional_parameters(additional_input, order_writing):
