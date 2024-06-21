@@ -1,5 +1,5 @@
 
-rule run_assembly_bakta:
+rule run_bakta:
     input:
         gm_contigs=expand(
             "{wdir}/{sample}/{assembly}/geomosaic_contigs.fasta",

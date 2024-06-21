@@ -1,5 +1,5 @@
 
-rule all_assembly_bakta:
+rule all_bakta:
     input: 
         expand(
             "{wdir}/{sample}/bakta",
