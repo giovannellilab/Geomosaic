@@ -116,7 +116,7 @@
         "assembly_func_annotation": {
             "description": "Module: Functional Annotation on Assembly [Assembly-based]",
             "choices": {
-                "Bakta": "bakta"
+                "Bakta": "assembly_bakta"
             }
         },
     
