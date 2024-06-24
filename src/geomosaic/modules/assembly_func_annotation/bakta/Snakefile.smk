@@ -23,9 +23,12 @@ rule run_bakta:
         )(config["USER_PARAMS"]["bakta"])
     shell:
         """
+        mkdir -p {output.folder}
+
         bakta \
             --db {input.db_folder} \
-            --prefix {output.folder}/bakta_annotation \
+            --output {output.folder} \
+            --prefix bakta_annotation \
             --threads {threads} \
             {input.gm_contigs}
         """
