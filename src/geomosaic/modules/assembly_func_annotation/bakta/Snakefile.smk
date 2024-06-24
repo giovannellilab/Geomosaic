@@ -26,6 +26,6 @@ rule run_bakta:
         bakta \
             --db {input.db_folder} \
             --prefix {output.folder}/{output.file_prefix} \
-            --threads {threads}
+            --threads {threads} \
             {input.gm_contigs}
         """
