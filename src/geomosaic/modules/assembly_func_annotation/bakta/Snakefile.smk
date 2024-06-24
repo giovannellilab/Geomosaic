@@ -11,7 +11,8 @@ rule run_bakta:
             bakta_extdb_folder=config["EXT_DB"]["bakta"]
         )
     output:
-        folder=directory("{wdir}/{sample}/bakta")
+        folder=directory("{wdir}/{sample}/bakta"),
+        annotation="{wdir}/{sample}/bakta/bakta_annotation.tsv"
     threads: config["threads"]
     conda: config["ENVS"]["bakta"]
     params:
