@@ -23,8 +23,6 @@ rule run_bakta:
         )(config["USER_PARAMS"]["bakta"])
     shell:
         """
-        mkdir -p {output.folder}
-
         bakta \
             --db {input.db_folder} \
             --output {output.folder} \
