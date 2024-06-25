@@ -7,7 +7,7 @@ rule run_bakta:
             allow_missing=True
         ),
         db_folder=expand(
-            "{bakta_extdb_folder}",
+            "{bakta_extdb_folder}/db",
             bakta_extdb_folder=config["EXT_DB"]["bakta"]
         )
     output:
