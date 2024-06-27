@@ -320,6 +320,7 @@
         "recognizer": "recognizer.yaml",
         "trimgalore": "trimgalore.yaml",
         "trimmomatic": "trimmomatic.yaml",
+        "mags_bakta": "bakta.yaml",
         "mags_dram": "dram.yaml",
         "mags_gtdbtk": "gtdbtk.yaml",
         "mags_kofam_scan": "kofam_scan.yaml",
@@ -353,6 +354,10 @@
             "inpfolder": "eggnog_mapper",
             "outfolder": "eggnog_mapper_extdb"
         }, 
+        "mags_bakta": {
+            "inpfolder": "bakta",
+            "outfolder": "bakta_extdb"
+        },
         "mags_dram": {
             "inpfolder": "mags_dram",
             "outfolder": "mags_dram_extdb"
