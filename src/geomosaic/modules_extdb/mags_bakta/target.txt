@@ -1,0 +1,1 @@
+expand("{bakta_extdb_folder}", bakta_extdb_folder=config["EXT_DB"]["mags_bakta"]),
