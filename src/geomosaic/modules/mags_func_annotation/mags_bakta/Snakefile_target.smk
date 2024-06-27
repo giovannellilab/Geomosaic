@@ -1,8 +1,4 @@
 
 rule all_mags_bakta:
     input: 
-        expand(
-            "{wdir}/{sample}/mags_bakta",
-            sample=config["SAMPLES"],
-            wdir=config["WDIR"]
-        ),
+        expand("{wdir}/{sample}/bakta/bakta_annotation.tsv", sample=config["SAMPLES"], wdir=config["WDIR"]),
