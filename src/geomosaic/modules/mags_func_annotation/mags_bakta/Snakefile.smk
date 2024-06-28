@@ -2,7 +2,7 @@
 rule run_mags_bakta:
     input:
         mags_folder=expand("{wdir}/{sample}/{mags_retrieval}", mags_retrieval=config["MODULES"]["mags_retrieval"], allow_missing=True),
-        db_folder=expand("{bakta_extdb_folder}/db", bakta_extdb_folder=config["EXT_DB"]["mags_bakta"])
+        db_folder=expand("{bakta_extdb_folder}/db", bakta_extdb_folder=config["EXT_DB"]["bakta"])
     output:
         folder=directory("{wdir}/{sample}/mags_bakta"),
         annotation="{wdir}/{sample}/mags_bakta/bakta_annotation.tsv"

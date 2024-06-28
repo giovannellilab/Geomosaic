@@ -334,10 +334,6 @@
             "inpfolder": "bakta",
             "outfolder": "bakta_extdb"
         },
-        "mags_bakta": {
-            "inpfolder": "mags_bakta",
-            "outfolder": "mags_bakta_extdb"
-        },
         "checkm": {
             "inpfolder": "checkm",
             "outfolder": "checkm_extdb"
