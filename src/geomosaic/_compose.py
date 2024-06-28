@@ -54,7 +54,7 @@ def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choi
             config["EXT_DB"] = {}
         
         if up in gmpackages_extdb:
-            config["EXT_DB"][up] = str(os.path.join(geomosaic_externaldb_folder, gmpackages_extdb[up]["outfolder"]))
+            config["EXT_DB"][gmpackages_extdb[up]["inpfolder"]] = str(os.path.join(geomosaic_externaldb_folder, gmpackages_extdb[up]["outfolder"]))
 
     return config
 

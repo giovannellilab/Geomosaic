@@ -197,10 +197,11 @@ def draw_workflow_graph(G, new_pos, pos_labels_attrs):
     choices = [
         "pre_processing",
         "assembly",
+        "assembly_func_annotation",
         "assembly_readmapping",
         "assembly_tax_annotation",
         "orf_prediction",
-        "assembly_func_annotation",
+        "assembly_orf_annotation",
         "binning",
         "binning_derep",
         "binning_qa",

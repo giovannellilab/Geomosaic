@@ -5,23 +5,24 @@
         "func_classification_rb",
         "tax_classification_rb",
         "assembly",
+        "assembly_func_annotation",
         "assembly_readmapping",
         "assembly_qc",
         "assembly_coverage",
         "assembly_tax_annotation",
         "orf_prediction",
-        "assembly_func_annotation",
+        "assembly_orf_annotation",
         "domain_annotation",
         "assembly_hmm_annotation",
         "binning",
         "binning_derep",
         "binning_qa",
         "mags_retrieval",
-        "mags_metabolism_annotation",
+        "mags_func_annotation",
         "mags_tax_annotation",
         "mags_orf_prediction",
         "mags_domain_annotation",
-        "mags_func_annotation",
+        "mags_orf_func_annotation",
         "mags_coverage",
         "mags_hmm_annotation"
     ],
@@ -33,7 +34,8 @@
         ["pre_processing", "assembly"],
         ["pre_processing", "assembly_readmapping"],
         ["pre_processing", "mags_coverage"],
-        
+
+        ["assembly", "assembly_func_annotation"],
         ["assembly", "assembly_readmapping"],
         ["assembly", "assembly_qc"],
         ["assembly", "assembly_tax_annotation"],
@@ -49,7 +51,7 @@
 
         ["orf_prediction", "assembly_hmm_annotation"],
         ["orf_prediction", "domain_annotation"],
-        ["orf_prediction", "assembly_func_annotation"],
+        ["orf_prediction", "assembly_orf_annotation"],
 
         ["binning", "binning_derep"],
 
@@ -59,12 +61,12 @@
         ["binning_qa", "mags_retrieval"],
 
         ["mags_retrieval", "mags_orf_prediction"],
-        ["mags_retrieval", "mags_metabolism_annotation"],
+        ["mags_retrieval", "mags_func_annotation"],
         ["mags_retrieval", "mags_tax_annotation"],
         ["mags_retrieval", "mags_coverage"],
 
         ["mags_orf_prediction", "mags_domain_annotation"],
-        ["mags_orf_prediction", "mags_func_annotation"],
+        ["mags_orf_prediction", "mags_orf_func_annotation"],
         ["mags_orf_prediction", "mags_hmm_annotation"],
 
         ["mags_coverage", "mags_hmm_annotation"]        
@@ -108,6 +110,13 @@
             "choices": {
                 "MetaSpades": "metaspades",
                 "MegaHit": "megahit"
+            }
+        },
+    
+        "assembly_func_annotation": {
+            "description": "Module: Functional Annotation on Assembly [Assembly-based]",
+            "choices": {
+                "Bakta": "bakta"
             }
         },
     
@@ -164,8 +173,8 @@
             }
         },
 
-        "assembly_func_annotation": {
-            "description": "Module: Functional Annotation on Assembly [Assembly-based]",
+        "assembly_orf_annotation": {
+            "description": "Module: Functional Annotation on Assembly (ORFs) [Assembly-based]",
             "choices": {
                 "eggNOG-Mapper": "eggnog_mapper",
                 "KOfam Scan": "kofam_scan"
@@ -200,10 +209,11 @@
             }
         },
 
-        "mags_metabolism_annotation": {
-            "description": "Module: Perform annotation of metabolism on filtered MAGs [Binning-based]",
+        "mags_func_annotation": {
+            "description": "Module: perform functional annotation on MAGs [Binning-based]",
             "choices": {
-                "DRAM on MAGs": "mags_dram"
+                "DRAM on MAGs": "mags_dram",
+                "Bakta on MAGs": "mags_bakta"
             }
         },
 
@@ -228,7 +238,7 @@
             }
         },
 
-        "mags_func_annotation": {
+        "mags_orf_func_annotation": {
             "description": "Module: perform functional annotation on ORF retrieved from filtered MAGs [Binning-based]",
             "choices": {
                 "KOfam Scan on MAGs": "mags_kofam_scan"
@@ -285,6 +295,7 @@
     },
 
     "envs": {
+        "bakta": "bakta.yaml",
         "bbmap": "bbmap.yaml",
         "bbmap_shrinked": "bbmap.yaml",
         "bowtie2": "bowtie2.yaml",
@@ -309,6 +320,7 @@
         "recognizer": "recognizer.yaml",
         "trimgalore": "trimgalore.yaml",
         "trimmomatic": "trimmomatic.yaml",
+        "mags_bakta": "bakta.yaml",
         "mags_dram": "dram.yaml",
         "mags_gtdbtk": "gtdbtk.yaml",
         "mags_kofam_scan": "kofam_scan.yaml",
@@ -318,6 +330,10 @@
     },
     
     "external_db": {
+        "bakta": {
+            "inpfolder": "bakta",
+            "outfolder": "bakta_extdb"
+        },
         "checkm": {
             "inpfolder": "checkm",
             "outfolder": "checkm_extdb"
@@ -338,6 +354,10 @@
             "inpfolder": "eggnog_mapper",
             "outfolder": "eggnog_mapper_extdb"
         }, 
+        "mags_bakta": {
+            "inpfolder": "bakta",
+            "outfolder": "bakta_extdb"
+        },
         "mags_dram": {
             "inpfolder": "mags_dram",
             "outfolder": "mags_dram_extdb"
