@@ -4,7 +4,8 @@ rule dram_db:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["dram-setup"])) ) (config["USER_PARAMS"]["mags_dram"]) 
     output:
         dram_config_folder=directory(expand("{mags_dram_extdb_folder}", mags_dram_extdb_folder=config["EXT_DB"]["mags_dram"]))
-    conda: config["ENVS"]["mags_dram"]
+    conda: 
+        config["ENVS_EXTDB"]["mags_dram"]
     message: "GEOMOSAIC MSG: Starting to setup the database for DRAM"
     threads: 1
     shell:

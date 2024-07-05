@@ -2,7 +2,8 @@
 rule recognizer_db:
     output:
         directory(expand("{recognizer_extdb_folder}", recognizer_extdb_folder = config["EXT_DB"]["recognizer"]))
-    conda: config["ENVS"]["recognizer"]
+    conda: 
+        config["ENVS_EXTDB"]["recognizer"]
     message: "GEOMOSAIC MSG: Starting to setup the database for reCOGnizer"
     shell:
         """
