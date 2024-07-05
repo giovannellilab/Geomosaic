@@ -103,6 +103,8 @@ def table_checks(filename, format, rawreads_folder, move_and_rename, skip_checks
             check_special_characters(i.sample)
             check_space_reads(i.r1)
             check_space_reads(i.r2)
+            check_gzip_compression(i.r1, rawreads_folder)
+            check_gzip_compression(i.r2, rawreads_folder)
             check_r1r2_different(i.r1, i.r2, i.sample)
             check_presence_read(i.r1, rawreads_container, rawreads_folder)
             check_presence_read(i.r2, rawreads_container, rawreads_folder)
@@ -137,9 +139,13 @@ def group_read_by_sample(groupby_df, rawreads_folder, wdir, move_and_rename):
         else:
             all_r1 = " ".join([os.path.join(rawreads_folder,x) for x in i.r1])
             all_r2 = " ".join([os.path.join(rawreads_folder,x) for x in i.r2])
-
-            check_call(f"cat {all_r1} > {os.path.join(wdir, str(i.sample), 'R1.fastq.gz')}", shell=True)
-            check_call(f"cat {all_r2} > {os.path.join(wdir, str(i.sample), 'R2.fastq.gz')}", shell=True)
+            
+            if len(i.r1) == 1:
+                shutil.copyfile(os.path.join(rawreads_folder, i.r1[0]), os.path.join(wdir, i.sample, "R1.fastq.gz"))
+                shutil.copyfile(os.path.join(rawreads_folder, i.r2[0]), os.path.join(wdir, i.sample, "R2.fastq.gz"))
+            else:
+                check_call(f"cat {all_r1} > {os.path.join(wdir, str(i.sample), 'R1.fastq.gz')}", shell=True)
+                check_call(f"cat {all_r2} > {os.path.join(wdir, str(i.sample), 'R2.fastq.gz')}", shell=True)
     
     return samples_list
 
@@ -197,3 +203,13 @@ def clean_directory_name(s):
         cleaned = s
     
     return cleaned
+
+
+def check_gzip_compression(r, folder_path):
+    filepath = os.path.join(folder_path, r)
+    with open(filepath, 'rb') as test_f:
+        gzipped = test_f.read(2) == b'\x1f\x8b'
+    
+    if not gzipped:
+        print(f"\n\n{GEOMOSAIC_ERROR}: The following read file {str(repr(r))} is not gzipped. Please provide file with GZIP Compression and update your table.")
+        exit(1)
