@@ -40,6 +40,9 @@ def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choi
         ## ENVS -- SECTION
         if "ENVS" not in config:
             config["ENVS"] = {}
+        
+        if "ENVS_EXTDB" not in config:
+            config["ENVS_EXTDB"] = {}
 
         if up in envs:
             up_src_envs = os.path.join(envs_folder, envs[up])
@@ -48,6 +51,10 @@ def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choi
             shutil.copyfile(up_src_envs, up_dst_envs)
             
             config["ENVS"][up] = up_dst_envs
+
+            ## ENV for EXTDB - TODO: OPTIMIZE this section
+            if up in gmpackages_extdb:
+                config["ENVS_EXTDB"][gmpackages_extdb[up]["inpfolder"]] = up_dst_envs
 
         ## EXTDB -- SECTION
         if "EXT_DB" not in config:
