@@ -22,7 +22,7 @@
         "mags_tax_annotation",
         "mags_orf_prediction",
         "mags_domain_annotation",
-        "mags_orf_func_annotation",
+        "mags_orf_annotation",
         "mags_coverage",
         "mags_hmm_annotation"
     ],
@@ -66,7 +66,7 @@
         ["mags_retrieval", "mags_coverage"],
 
         ["mags_orf_prediction", "mags_domain_annotation"],
-        ["mags_orf_prediction", "mags_orf_func_annotation"],
+        ["mags_orf_prediction", "mags_orf_annotation"],
         ["mags_orf_prediction", "mags_hmm_annotation"],
 
         ["mags_coverage", "mags_hmm_annotation"]        
@@ -212,8 +212,8 @@
         "mags_func_annotation": {
             "description": "Module: perform functional annotation on MAGs [Binning-based]",
             "choices": {
-                "DRAM on MAGs": "mags_dram",
-                "Bakta on MAGs": "mags_bakta"
+                "Bakta on MAGs": "mags_bakta",
+                "DRAM on MAGs": "mags_dram"
             }
         },
 
@@ -238,7 +238,7 @@
             }
         },
 
-        "mags_orf_func_annotation": {
+        "mags_orf_annotation": {
             "description": "Module: perform functional annotation on ORF retrieved from filtered MAGs [Binning-based]",
             "choices": {
                 "KOfam Scan on MAGs": "mags_kofam_scan"

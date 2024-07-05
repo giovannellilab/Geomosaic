@@ -20,5 +20,19 @@
         "binning_derep",
         "binning_qa",
         "mags_retrieval"
+    ],
+    "skipped_modules": [
+        "reads_qc",
+        "func_classification_rb",
+        "tax_classification_rb",
+        "assembly_func_annotation",
+        "assembly_qc",
+        "assembly_coverage",
+        "assembly_tax_annotation",
+        "orf_prediction",
+        "mags_func_annotation",
+        "mags_tax_annotation",
+        "mags_orf_prediction",
+        "mags_coverage"
     ]
 }

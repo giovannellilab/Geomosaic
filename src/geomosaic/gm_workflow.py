@@ -63,12 +63,14 @@ def geo_workflow(args):
             user_choices            = pipe["user_choices"]
             order_writing           = pipe["order_writing"]
             additional_parameters   = pipe["additional_parameters"]
+            skipped_modules         = pipe["skipped_modules"]
     elif pipeline == "just_mags":
         with open(os.path.join(os.path.dirname(__file__), 'just_mags.json')) as default_pipeline:
             pipe                    = json.load(default_pipeline)
             user_choices            = pipe["user_choices"]
             order_writing           = pipe["order_writing"]
             additional_parameters   = pipe["additional_parameters"]
+            skipped_modules         = pipe["skipped_modules"]
     else:
         # NOTE: BUILDING PIPELINE BASED ON USER CHOICES
         if mstart != "pre_processing":
@@ -86,6 +88,15 @@ def geo_workflow(args):
         ## ASK ADDITIONAL PARAMETERS
         additional_parameters = ask_additional_parameters(additional_input, order_writing)
     
+    print("=======USER_CHOICES=======")
+    print(user_choices)
+    print("=======ADDITIONAL_PARAMETERS=======")
+    print(additional_parameters)
+    print("=======ORDER_WRITING=======")
+    print(order_writing)
+    print("=======SKIPPED_MODULES=======")
+    print(skipped_modules)
+
     config_filename     = os.path.join(geomosaic_dir, "config.yaml")
     snakefile_filename  = os.path.join(geomosaic_dir, "Snakefile.smk")
     snakefile_extdb     = os.path.join(geomosaic_dir, "Snakefile_extdb.smk")
