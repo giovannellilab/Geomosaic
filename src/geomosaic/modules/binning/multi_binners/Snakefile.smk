@@ -10,7 +10,6 @@ rule run_multi_binners:
         semibin_folder=directory("{wdir}/{sample}/multi_binners/semibin2")
     threads: config["threads"]
     conda: config["ENVS"]["multi_binners"]
-    log: "{wdir}/{sample}/multi_binners/gm_log.out"
     params:
         maxbin_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["maxbin2"])) ) (config["USER_PARAMS"]["multi_binners"]),
         metabat_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["metabat2"])) ) (config["USER_PARAMS"]["multi_binners"]),
@@ -21,14 +20,14 @@ rule run_multi_binners:
         
         echo "Executing MetaBat2..."
         jgi_summarize_bam_contig_depths --outputDepth {output.metabat_folder}/metabat2_depth.txt {input.sorted_bam}
-        metabat2 {params.metabat_user_params} --inFile {input.gm_contigs} --abdFile {output.metabat_folder}/metabat2_depth.txt -o {output.metabat_folder}/output --numThreads {threads} >> {log} 2>&1
+        metabat2 {params.metabat_user_params} --inFile {input.gm_contigs} --abdFile {output.metabat_folder}/metabat2_depth.txt -o {output.metabat_folder}/output --numThreads {threads}
 
         echo "Executing MaxBin2..."
         cut -f1,4,6,8,10 {output.metabat_folder}/metabat2_depth.txt > {output.maxbin_folder}/maxbin2_depth.txt
-        run_MaxBin.pl {params.maxbin_user_params} -contig {input.gm_contigs} -abund {output.maxbin_folder}/maxbin2_depth.txt -thread {threads} -out {output.maxbin_folder}/output >> {log} 2>&1
+        run_MaxBin.pl {params.maxbin_user_params} -contig {input.gm_contigs} -abund {output.maxbin_folder}/maxbin2_depth.txt -thread {threads} -out {output.maxbin_folder}/output
 
         echo "Executing SemiBin2..."
-        SemiBin2 single_easy_bin {params.semibin_user_params} -i {input.gm_contigs} -o {output.semibin_folder} --depth-metabat2 {output.metabat_folder}/metabat2_depth.txt --threads {threads} --compression none >> {log} 2>&1
+        SemiBin2 single_easy_bin {params.semibin_user_params} -i {input.gm_contigs} -o {output.semibin_folder} --depth-metabat2 {output.metabat_folder}/metabat2_depth.txt --threads {threads} --compression none
         """
 
 rule run_multi_binners_parser:
