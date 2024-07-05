@@ -2,4 +2,4 @@ metaspades:
 - -k 33,55,77,127
 
 seqkit:
-- --min-len 1000
+- --min-len 2000

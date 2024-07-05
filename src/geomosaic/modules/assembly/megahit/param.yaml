@@ -1,6 +1,6 @@
 megahit:
-# Complex metagenomes
+# More Sensitive, but slower
 - --presets meta-sensitive
 
 seqkit:
-- --min-len 1000
+- --min-len 2000
