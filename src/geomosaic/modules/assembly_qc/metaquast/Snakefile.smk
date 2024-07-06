@@ -10,5 +10,5 @@ rule run_metaquast:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["quast"])) ) (config["USER_PARAMS"]["metaquast"]) 
     shell:
         """
-        quast --meta {params.user_params} --threads {threads} -o {output} {input.gm_contigs}
+        metaquast {params.user_params} --threads {threads} -o {output} {input.gm_contigs}
         """
