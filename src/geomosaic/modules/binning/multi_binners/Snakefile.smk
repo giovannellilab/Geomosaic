@@ -38,33 +38,62 @@ rule run_multi_binners_parser:
     output:
         maxbin_bins=directory("{wdir}/{sample}/multi_binners/geomosaic_maxbin2_bins"),
         metabat_bins=directory("{wdir}/{sample}/multi_binners/geomosaic_metabat2_bins"),
-        semibin_bins=directory("{wdir}/{sample}/multi_binners/geomosaic_semibin2_bins")
+        semibin_bins=directory("{wdir}/{sample}/multi_binners/geomosaic_semibin2_bins"),
+        geomosaic_bins_trace=ensure("{wdir}/{sample}/multi_binners/geomosaic_bins.out", non_empty=True)
+    params:
+        multi_binners_folders="{wdir}/{sample}/multi_binners"
     run:
         from geomosaic.parser.rename_bins import rename_bins_to_fasta
+        import glob
+        import shutil
+        import os
 
         shell("mkdir -p {output.metabat_bins}")
-        shell("cp {input.metabat_folder}/*.fa {output.metabat_bins}/")
-
         shell("mkdir -p {output.maxbin_bins}")
-        shell("cp {input.maxbin_folder}/*.fasta {output.maxbin_bins}/")
-
         shell("mkdir -p {output.semibin_bins}")
-        shell("cp {input.semibin_folder}/output_bins/*.fa {output.semibin_bins}/")
+        shell("touch {output.geomosaic_bins_trace}")
 
-        rename_bins_to_fasta(
-            folder = str(output.metabat_bins), 
-            extension = "fa", 
-            binner = "metabat2"
-        )
+        metabat_count = 0
+        for metabat_fasta_file in glob.glob(os.path.join(str(input.metabat_folder), "*.fa")):
+            shutil.copy(metabat_fasta_file, str(output.metabat_bins))
+            metabat_count += 1
+
+        if metabat_count > 0:
+            rename_bins_to_fasta(
+                folder = str(output.metabat_bins), 
+                extension = "fa", 
+                binner = "metabat2"
+            )
+            shell("touch {params.multi_binners_folders}/metabat2_ok.out")
+            shell("echo 'metabat2' >> {output.geomosaic_bins_trace}")
+
+        maxbin_count = 0
+        for maxbin_fasta_file in glob.glob(os.path.join(str(input.maxbin_folder), "*.fasta")):       
+            shutil.copy(maxbin_fasta_file, str(output.maxbin_bins))
+            maxbin_count += 1
+        
+        if maxbin_count > 0:
+            rename_bins_to_fasta(
+                folder = str(output.maxbin_bins), 
+                extension = "fasta", 
+                binner = "maxbin2"
+            )
+            shell("touch {params.multi_binners_folders}/maxbin2_ok.out")
+            shell("echo 'maxbin2' >> {output.geomosaic_bins_trace}")
     
-        rename_bins_to_fasta(
-            folder = str(output.maxbin_bins), 
-            extension = "fasta", 
-            binner = "maxbin2"
-        )
-
-        rename_bins_to_fasta(
-            folder = str(output.semibin_bins), 
-            extension = "fa", 
-            binner = "semibin2"
-        )
+        semibin_count = 0
+        for semibin_fasta_file in glob.glob(os.path.join(str(input.semibin_folder), "output_bins", "*.fa")):
+            shutil.copy(semibin_fasta_file, str(output.semibin_bins))
+            semibin_count += 1
+        if semibin_count > 0:
+            rename_bins_to_fasta(
+                folder = str(output.semibin_bins), 
+                extension = "fa", 
+                binner = "semibin2"
+            )
+            shell("touch {params.multi_binners_folders}/semibin2_ok.out")
+            shell("echo 'semibin2' >> {output.geomosaic_bins_trace}")
+        
+        # Check if file is empty and print error message due to the "ensure" snakemake condition
+        if os.stat(str(output.geomosaic_bins_trace)).st_size == 0:
+            print("GEOMOSAIC ERROR: All the Binners didn't provide any BINS.")
