@@ -123,7 +123,8 @@
         "assembly_qc": {
             "description": "Module: Assembly quality evaluation with metrics [Assembly-based]",
             "choices": {
-                "Quast": "quast"
+                "Quast": "quast",
+                "MetaQuast": "metaquast"
             }
         },
 
@@ -312,6 +313,7 @@
         "kraken2": "kraken2.yaml",
         "megahit": "megahit.yaml",
         "metaphlan": "metaphlan.yaml",
+        "metaquast": "quast.yaml",
         "metaspades": "metaspades.yaml",
         "mifaser": "mifaser.yaml",
         "multi_binners": "multi_binners.yaml",
