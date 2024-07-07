@@ -88,14 +88,14 @@ def geo_workflow(args):
         ## ASK ADDITIONAL PARAMETERS
         additional_parameters = ask_additional_parameters(additional_input, order_writing)
     
-    print("=======USER_CHOICES=======")
-    print(user_choices)
-    print("=======ADDITIONAL_PARAMETERS=======")
-    print(additional_parameters)
-    print("=======ORDER_WRITING=======")
-    print(order_writing)
-    print("=======SKIPPED_MODULES=======")
-    print(skipped_modules)
+    # print("=======USER_CHOICES=======")
+    # print(user_choices)
+    # print("=======ADDITIONAL_PARAMETERS=======")
+    # print(additional_parameters)
+    # print("=======ORDER_WRITING=======")
+    # print(order_writing)
+    # print("=======SKIPPED_MODULES=======")
+    # print(skipped_modules)
 
     config_filename     = os.path.join(geomosaic_dir, "config.yaml")
     snakefile_filename  = os.path.join(geomosaic_dir, "Snakefile.smk")
