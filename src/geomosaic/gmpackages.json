@@ -35,8 +35,8 @@
         ["pre_processing", "assembly_readmapping"],
         ["pre_processing", "mags_coverage"],
 
-        ["assembly", "assembly_func_annotation"],
         ["assembly", "assembly_readmapping"],
+        ["assembly", "assembly_func_annotation"],
         ["assembly", "assembly_qc"],
         ["assembly", "assembly_tax_annotation"],
         ["assembly", "orf_prediction"],
