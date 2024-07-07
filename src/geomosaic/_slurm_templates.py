@@ -132,7 +132,7 @@ slurm_extdb = """#!/bin/bash
 
 #SBATCH --job-name="Extdb_GM"
 #SBATCH --time=96:00:00
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=9
 #SBATCH --mem={memory}G
 {slurm_logs}
 {partition}
