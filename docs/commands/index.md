@@ -65,4 +65,6 @@ commands:
 
 ## Walkthrough Image
 
+We also suggest to have a look to our [Walkthrough tutorial](../walkthrough) for a more complete overview of Geomosaic procedure!
+
 <img src="assets/images/geomosaic_commands.svg">

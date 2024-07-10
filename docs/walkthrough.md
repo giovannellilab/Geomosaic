@@ -67,6 +67,9 @@ After the execution of `mamba env create -f environment.yaml` we should be able 
 Now we activate the geomosaic environment.
 > ![geomosaic_conda](assets/images/walkthrough/img_8.png)
 
+{: .important }
+You should always have the `geomosaic` conda environment activated before running all the commands, even when submitting jobs with `sbatch` for SLURM. You can see this detail in the next images.
+
 We can see the environment activated as a small section appearing in our terminal prompt.
 Something like this: 
 ```
