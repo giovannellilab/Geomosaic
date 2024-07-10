@@ -24,7 +24,7 @@ nav_order: 8
 ### Overview
 
 
-This command is very easy. It is usefull to install the required conda environments to run your workflow/unit.
+This command is very easy. It is useful to install the required conda environments to run your workflow/unit.
 
 ```
 geomosaic prerun --help
@@ -94,14 +94,14 @@ This command has both required and optional arguments. But as you can see it is 
 
 - __REQUIRED__
     - (`-s`) Specifiy the name of the Geomosaic config file, obtained with the `setup` command.
-        - **IMPORTANT**: the file specified here should contain the path of the `gm_conda_envs`, so if in this path the conda environment were already installed, geomosaic (and in particular snakemake) can recognize it avoid multiple installation.
+        - **IMPORTANT**: the file specified here should contain the path of the `gm_conda_envs`, so if in this path the conda environments were already installed, geomosaic (and in particular snakemake) can recognize them and avoid multiple installations.
 
     - (`--exec_type`) Use this option to specify how do you want execute Geomosaic. If SLURM is available on your cluster we suggest to use `--exec_type slurm`, otherwise GNU Parallel will be used (`--exec_type gnu_parallel`). 
-        - If you want to use Geomosaic on your personal computer GNU Parallel can be a good option. In this case, you should set the number of jobs to execute in parallel taking into account the number of cpus that you can use. For instance, if 36 cores are available you may want to set `n_jobs_in_parallel=4` and `threads_per_job=9` in script created from `geomosaic prerun ...`. This allows you to perform the Geomosaic pipeline for 4 samples in parallel at the same time, using 9 cpus each. 
+        - If you want to use Geomosaic on your personal computer GNU Parallel can be a good option. In this case, you should set the number of jobs to execute in parallel taking into account the number of cpus that you can use. For instance, if 36 cores are available you may want to set `n_jobs_in_parallel=4` and `threads_per_job=9` in script created from `geomosaic prerun ...`. This allows you to perform the Geomosaic pipeline for 4 samples in parallel at the same time, using 9 cpus for each of them. 
         
-        __However__, it is important to note that, while SLURM has an internal handles of resources such as Memory (RAM), Time or CPUs, GNU Parallel (to our knowledge) cannot perform this type of management, so __be sure__ that your available memory is enough to execute your your modules, for this number of samples at the same time.
+        __However__, it is important to note that, while SLURM has an internal handles of resources such as Memory (RAM), Time or CPUs, GNU Parallel (to our knowledge) cannot perform this type of management, so __make sure__ that your available memory is enough to execute your modules, for the chosen number of samples at the same time.
 
-        - **IMPORTANT**: be sure that if you are going to use `--exec_type` you also specify at least the options `-m`and `-p` (if are required from your cluster).
+        - **IMPORTANT**: make sure that if you are going to use `--exec_type` you also specify at least the options `-m`and `-p` (if they are required from your cluster).
 
 - __OPTIONAL Arguments for BOTH SLURM and GNU PARALLEL__
     - (`-u`) This option is necessary if you want to install the conda environment required to run your unit.
@@ -114,14 +114,14 @@ This command has both required and optional arguments. But as you can see it is 
     - (`--ignore_samples <IGNORE_SAMPLES>`) a comma separated list of Samples to ignore (no spaces). This option is useful for example when no assembly was succefully retrieved. By providing these samples as comma separated (with no spaces) geomosaic will create the next slurm script and the list of samples ignoring the ones that are provided in this option
 - __OPTIONAL FOR SLURM EXECUTION__
     - (`-m`) Memory specification in GB for slurm job sbatch specification. (requires '--exec_type slurm' option)
-    - (`-p`) Partition specification for slurm job in the cluster. (requires '--exec_type slurm' option). Some HPC managements require to run certain jobs or parallel jobs in specific partition. With this option you can specify it.
+    - (`-p`) Partition specification for slurm job in the cluster. (requires '--exec_type slurm' option). Some HPC managements require to run certain jobs or parallel jobs in specific partitions. With this option you can specify it.
     - (`--mail_type`) use this flag to specify the mail type for slurm event. Available values: NONE,BEGIN,END,FAIL,REQUEUE,ALL (requires '--exec_type slurm' option)
-    - (`--mail_user`) Here you can specify your email of interest where to to receive slurm notification type specified in '--mail_type'. (requires '--exec_type slurm' option)
+    - (`--mail_user`) Here you can specify your email of interest where to receive slurm notification type specified in '--mail_type'. (requires '--exec_type slurm' option)
 - __OPTIONAL FOR GNU PARALLEL EXECUTION__
     - (`-n`) Number of jobs to execute in parallel using GNU Parallel. (requires '--exec_type gnu_parallel' option)
     
 
-These options allows you to create a minimal draft for slurm script. However, it is strongly recommended to see the [Slurm Documentation](https://slurm.schedmd.com/documentation.html).
+These options allow you to create a minimal draft for slurm scripts. However, it is strongly recommended to see the [Slurm Documentation](https://slurm.schedmd.com/documentation.html).
 
 
 ### Example usage `geomosaic prerun` [SLURM Available]
@@ -161,7 +161,7 @@ Building DAG of jobs...
 ```
 
 #### What to expect after `geomosaic prerun` for SLURM
-The following scripts are created the same folder of the `gmsetup.yaml`:
+If you have executed this command in the same folder where `gmsetup.yaml` is located, you should see in the same directory the following files:
 
 - `/geomosaic_test/slurm_geomosaic.sh`
 - `/geomosaic_test/slurm_extdb_geomosaic.sh`

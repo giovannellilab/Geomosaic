@@ -91,7 +91,7 @@ Help Arguments:
 
         __`NOTE 2: Different lines with the same sample name are allowed`__: sequencing data are often splitted for a single sample. In this case, is it quite common to `cat` them all in one file; this is performed for both R1 (read R1) and R2 (read R2). Geomosaic allows the same sample name in multiple lines of the provided table, as it will `cat` all the reads R1 in one file R1 and all the reads R2 in one file R2. This case is also presented in the example table above (line 2,3 and 3, 4).
 
-        In the `NOTE 2 scenario`, Geomosaic will perform a `group by` of R1 and R2 files based on the `sample` column to then use the `cat` command. For instance, by performing a groupy by on the provided example table, the following files are obtained:
+        In the `NOTE 2 scenario`, Geomosaic will perform a `group by` of R1 and R2 files based on the `sample` column to then use the `cat` command. For instance, by performing a group by on the provided example table, the following files are obtained:
 
         >| r1 | r2 | sample |
         >| ---- | ----| ----|
@@ -107,9 +107,9 @@ Help Arguments:
 The `setup` command has various optional arguments:
 - __OPTIONAL__
     - (`-s`) The output name for the setup file of Geomosaic. Default: `gmsetup.yaml` (in the current directory).
-    - (`-c`) This option is very useful if you are going to run geomosaic for different set of rawreads. By specifyin this folder, geomosaic will not reinstall all the conda environments. here you can provide the same folder and prevent multiple installation of the same conda environments. If not specified geomosaic will create a folder called `gm_conda_envs` inside the directory provided by the `-w` option.
-    - (`-e`) Similarly to the `-c` parameter, This option is very useful if you are going to run geomosaic for different set of rawreads. By specifyin this folder, geomosaic can use already downloaded external databases. If not specified geomosaic will create a folder called `gm_external_db` inside the directory provided by the `-w` option.
-        - For example, let's assume that in the following path `/mnt/storage/geomosaic_extdb` are already presents the following databases `kaiju_extdb`, `kraken2_extdb` and `checkm_extdb` (that were downloaded with Geomosaic), you can use this option as `-e /mnt/storage/geomosaic_extdb` . 
+    - (`-c`) This option is very useful if you are going to run geomosaic for different set of raw reads. By specifying this folder, geomosaic will not reinstall all the conda environments. Here you can provide the same folder and prevent multiple installation of the same conda environments. If not specified geomosaic will create a folder called `gm_conda_envs` inside the directory provided by the `-w` option.
+    - (`-e`) Similarly to the `-c` parameter, this option is very useful if you are going to run geomosaic for different set of raw reads. By specifying this folder, geomosaic can use already downloaded external databases. If not specified geomosaic will create a folder called `gm_external_db` inside the directory provided by the `-w` option.
+        - For example, let's assume that in the following path `/mnt/storage/geomosaic_extdb` are already presents the following databases `kaiju_extdb`, `kraken2_extdb` and `checkm_extdb` (that were downloaded with Geomosaic) are already present; you can use this option as `-e /mnt/storage/geomosaic_extdb` . 
     - (`-f`) With this option you can specify the format separated value of the table provided with the flag `-t`.
     - (`-w`) The Geomosaic working directory to create for its execution. Default: `geomosaic` folder created in the current directory.
     - (`-n`) A project name can be specified with this parameter. It is recommended to use a name without any space.

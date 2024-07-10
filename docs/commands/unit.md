@@ -91,7 +91,7 @@ This command has two required and two optional arguments:
 After completing this command, Geomosaic generates three files in its working directory:
 - `Snakefile_unit.smk` - the Snakefile with the code for the chosen module and package.
 - `config_unit.yaml` - the config file for snakemake execution.
-- `Snakefile_extdb.smk` - Eventually, this file will be created by Geomosaic if the chosen module need an external data. Similarly to what described above for the `geomosaic workflow`, this file should be executed __before__ the `Snakefile_unit.smk`.
+- `Snakefile_extdb.smk` - Eventually, this file will be created by Geomosaic if the chosen module needs external data. Similarly to what was described above for the `geomosaic workflow`, this file should be executed __before__ the `Snakefile_unit.smk`.
 
 ### Example usage `geomosaic unit`
 

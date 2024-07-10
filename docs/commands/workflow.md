@@ -87,7 +87,7 @@ This command has both one required and different optional arguments:
 - __REQUIRED__
     - (`-s`) Specifiy the name of the Geomosaic config file, obtained with the `setup` command.
 - __OPTIONAL__
-    - (`-p <pipeline>`) With this flag, User can choose already pre-defined workflows. Currently, two pipeline are integrated: `glab` which contains most of the annotation in all the streams level, `just_mags` which concern to run the minimal modules to obtain the mags. Both pipeline are now though to run with `completeness` and `contamination` 50 and 10 respectively.
+    - (`-p <pipeline>`) With this flag, the user can choose already pre-defined workflows. Currently, two pipeline are integrated: `glab` which contains most of the annotation in all the stream levels, `just_mags` that allows to run the minimal modules to obtain the mags. Both pipelines are now though to run with `completeness` and `contamination` values of 50 and 10 respectively.
     - (`-m`) Module where to start creating the workflow (Default: pre_processing)
     - (`-t`) Threads to use (per sample)
 
@@ -104,7 +104,7 @@ It's all automated.
 
 ### Example usage `geomosaic workflow`
 
-**`IMPORTANT:` the following images may not refer to the modules that are integrated in the current version of Geomosaic. However, these images are very useful to understand how it works the creation of the workflow.** 
+**`IMPORTANT:` the following images may not refer to the modules that are integrated in the current version of Geomosaic. However, these images are very useful to understand how it works the creation of the workflow works.** 
 
 By executing this command, Geomosaic starts loading the provided config file, and then it asks for the desired package to be used for each module.
 It is important to considered the above mentioned dependencies among the modules:
@@ -270,6 +270,6 @@ Geomosaic Process: Building preliminary workflow to prepare all the database of 
 --> OK <--
 ```
 
-The resulting conceptual map of the modules should be as follow:
+The resulting conceptual map of the modules should be as follows:
 
 <img alt="workflow" src="assets/images/gm_workflow/modules_DAG_workflow.png">
