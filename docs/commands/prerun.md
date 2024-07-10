@@ -31,9 +31,8 @@ geomosaic prerun --help
 ```
 
 ```
-usage: geomosaic prerun -s SETUP_FILE --exec_type {slurm,gnu_parallel} [-u] [-t THREADS] [-f FOLDER_LOGS] [-l LIST_SAMPLE_OUTPUT] [-o OUTPUT_SCRIPT]
-                        [-e EXTDB_OUTPUT_SCRIPT] [--noscript] [--ignore_samples IGNORE_SAMPLES] [-m MEMORY] [-p PARTITION]
-                        [--mail_type {NONE,BEGIN,END,FAIL,REQUEUE,ALL}] [--mail_user MAIL_USER] [-n N_JOBS] [-h]
+usage: geomosaic prerun -s SETUP_FILE --exec_type {slurm,gnu_parallel} [-u] [-t THREADS] [-f FOLDER_LOGS] [--ignore_samples IGNORE_SAMPLES] [-m MEMORY]
+                        [-p PARTITION] [--mail_type {NONE,BEGIN,END,FAIL,REQUEUE,ALL}] [--mail_user MAIL_USER] [-n N_JOBS] [-h]
 
 DESCRIPTION: This command is usefull to install the required conda environments of your workflow/unit and create required scripts to execute Geomosaic on a cluster using SLURM
 
@@ -48,22 +47,11 @@ Optional Arguments for BOTH SLURM and GNU PARALLEL:
   -u, --unit            Install the conda environment of your geomosaic unit.
   -t THREADS, --threads THREADS
                         Threads to use (per sample). This value will override the one specified in the workflow/unit (config file) and thus will replace
-                        threads value in the config file. Default is None, means that is not going to be replace (Available for '--exec_type slurm' or '--
+                        threads value in the config file. Default is None, means that is not going to be replaced (Available for '--exec_type slurm' or '--
                         exec_type gnu_parallel')
   -f FOLDER_LOGS, --folder_logs FOLDER_LOGS
                         Folder for logs files. Default value is None means that slurm logs are saved in your current directory. However we suggest you to
                         specify it and if it does not exists, Geomosaic will create it. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')
-  -l LIST_SAMPLE_OUTPUT, --list_sample_output LIST_SAMPLE_OUTPUT
-                        Filename where to write the list of samples. Default: list_samples.txt created in the current directory. (Available for '--exec_type
-                        slurm' or '--exec_type gnu_parallel')
-  -o OUTPUT_SCRIPT, --output_script OUTPUT_SCRIPT
-                        Filename for the SLURM or GNU Parallel script. As default it will be created as slurm_geomosaic.sh or parallel_geomosaic in the
-                        current directory (depending on the '--exec_type' option). (Available for '--exec_type slurm' or '--exec_type gnu_parallel')
-  -e EXTDB_OUTPUT_SCRIPT, --extdb_output_script EXTDB_OUTPUT_SCRIPT
-                        Filename for the SLURM or GNU Parallel script to execute external db setup. As default it will be created as
-                        slurm_extdb_geomosaic.sh or parallel_extdb_geomosaic.sh in the current directory (depending on the '--exec_type' option). (Available
-                        for '--exec_type slurm' or '--exec_type gnu_parallel')
-  --noscript            Avoid creating scripts for SLURM or GNU Parallel. This option is useful if you have already created those scripts
   --ignore_samples IGNORE_SAMPLES
                         a comma separated list of Samples to ignore (no spaces). Example: --packages sample1,sample2 .
 
@@ -73,8 +61,8 @@ Optional Arguments ONLY for SLURM Specification:
   -p PARTITION, --partition PARTITION
                         Partition specification for slurm job in the cluster. (requires '--exec_type slurm' option)
   --mail_type {NONE,BEGIN,END,FAIL,REQUEUE,ALL}
-                        Mail type to notify user about occurred even type in slurm. Ignore this option if you are not interested to get(requires '--
-                        exec_type slurm' option)
+                        Mail type to notify user about occurred even types in slurm. Ignore this option if you are not interested to get slurm
+                        notifications. (requires '--exec_type slurm' option)
   --mail_user MAIL_USER
                         Email where to to receive slurm notification type specified in '--mail_type'. (requires '--exec_type slurm' option)
 
@@ -107,10 +95,6 @@ This command has both required and optional arguments. But as you can see it is 
     - (`-u`) This option is necessary if you want to install the conda environment required to run your unit.
     - (`-t`) If specified this value will override the one specified in the workflow/unit (config file) and thus will replace threads value in the config file. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')
     - (`-f`) Here you can specify a folder for logs files. Default is None, but we suggest you to specify it and if it does not exists, Geomosaic will create it. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')
-    - (`-l`) Filename where to write the list of samples. Default: list_samples.txt created in the current directory. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')
-    - (`-o`) Filename for the SLURM or GNU Parallel script. Default: slurm_geomosaic.sh or parallel_geomosaic.sh created in the current directory. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')
-    - (`-e`) Filename for the SLURM or GNU Parallel script to execute external db setup. Default: slurm_extdb_geomosaic.sh or parallel_extdb_geomosaic.sh created in the current directory. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')
-    - (`--noscript`) Avoid creating scripts for SLURM or GNU Parallel. This option is useful if you have already created those scripts
     - (`--ignore_samples <IGNORE_SAMPLES>`) a comma separated list of Samples to ignore (no spaces). This option is useful for example when no assembly was succefully retrieved. By providing these samples as comma separated (with no spaces) geomosaic will create the next slurm script and the list of samples ignoring the ones that are provided in this option
 - __OPTIONAL FOR SLURM EXECUTION__
     - (`-m`) Memory specification in GB for slurm job sbatch specification. (requires '--exec_type slurm' option)

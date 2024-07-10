@@ -51,6 +51,7 @@ Available Modules:
   - func_classification_rb - Module: Functional classification [Read-based]
   - tax_classification_rb - Module: Taxonomic classification [Read-based]
   - assembly - Module: Assembly
+  - assembly_func_annotation - Module: Functional Annotation on Assembly [Assembly-based]
   - assembly_qc - Module: Assembly quality evaluation with metrics [Assembly-based]
   - assembly_readmapping - Module: Read mapping the processed reads to the Assembly [Assembly-based]
   - assembly_coverage - Module: Assembly coverage computation [Assembly-based]
@@ -58,16 +59,16 @@ Available Modules:
   - orf_prediction - Module: perform ORF prediction [Assembly-based]
   - domain_annotation - Module: Domain annotation on Assembly [Assembly-based]
   - assembly_hmm_annotation - Module: tracking coverage for genes of interest through HMM models [Assembly-based]
-  - assembly_func_annotation - Module: Functional Annotation on Assembly [Assembly-based]
+  - assembly_orf_annotation - Module: Functional Annotation on Assembly (ORFs) [Assembly-based]
   - binning - Module: Binning
   - binning_derep - Module: Binning Deeplication [Binning-based]
   - binning_qa - Module: Binning Quality Evaluation [Binning-based]
   - mags_retrieval - Module: get MAGs based on Contamination and Completeness threshold [Binning-based]
-  - mags_metabolism_annotation - Module: Perform annotation of metabolism on filtered MAGs [Binning-based]
+  - mags_func_annotation - Module: perform functional annotation on MAGs [Binning-based]
   - mags_tax_annotation - Module: Perform taxonomic annotation of filtered MAGs [Binning-based]
   - mags_orf_prediction - Module: perform ORF prediction for each retrieved MAG [Binning-based]
   - mags_domain_annotation - Module: perform domain-based annotation for each retrieved MAG [Binning-based]
-  - mags_func_annotation - Module: perform functional annotation on ORF retrieved from filtered MAGs [Binning-based]
+  - mags_orf_annotation - Module: perform functional annotation on ORF retrieved from filtered MAGs [Binning-based]
   - mags_coverage - Module: Computing read coverage for each retrieved MAG [Binning-based]
   - mags_hmm_annotation - Module: tracking coverage for genes of interest through HMM models on MAGs [Binning-based]
 

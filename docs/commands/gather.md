@@ -42,8 +42,8 @@ Required Arguments:
 
 Optional Arguments:
   -f GATHER_FOLDER, --gather_folder GATHER_FOLDER
-                        Path where geomosaic can create the directory for gathering. Without any input, as default the folder 'gm_gathering' is created in
-                        the working directory of Geomosaic.
+                        Path where geomosaic can create the directory for gathering. Without any input, as default the folder 'gm_gathering' is created by
+                        default in the working directory of Geomosaic.
   -p PACKAGES, --packages PACKAGES
                         a comma separated list of packages. Check the available packages in the section below. If you want to execute gather for specific
                         packages you can use this option as: --packages mifaser,kaiju,mags_gtdbtk,mags_dram.
@@ -65,6 +65,7 @@ Available packages for Gathering:
 
 Help Arguments:
   -h, --help            show this help message and exit
+
 ```
 
 ### Arguments

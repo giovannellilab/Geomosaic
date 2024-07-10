@@ -49,22 +49,24 @@ Optional Arguments:
   -c CONDAENV_GMFOLDER, --condaenv_gmfolder CONDAENV_GMFOLDER
                         This option allows to provide a path folder in which geomosaic is going to install all the conda environments of your workflow. This
                         option is very useful if you want to execute Geomosaic for different set of reads, as here you can provide the same folder and
-                        prevent multiple installation of the same conda environments. (default: None)
+                        prevent multiple installation of the same conda environments. If not specified geomosaic will create a folder called 'gm_conda_envs'
+                        inside the directory provided by the '-w' option. (default: None)
   -e EXTERNALDB_GMFOLDER, --externaldb_gmfolder EXTERNALDB_GMFOLDER
                         This option allows to provide a path folder in which geomosaic is going to download all the external databases used by the packages
                         of your workflow. This option is very useful if you want to execute Geomosaic for different set of reads, as here you can provide
-                        the same folder and prevent multiple donwload of the same external databases. (default: None)
+                        the same folder and prevent multiple donwload of the same external databases. If not specified geomosaic will create a folder called
+                        'gm_external_db' inside the directory provided by the '-w' option. (default: None)
   -f {tsv,csv,excel}, --format_table {tsv,csv,excel}
                         Format of the provided table. Allowed: tsv, csv, excel (default: tsv)
   -w WORKING_DIR, --working_dir WORKING_DIR
-                        The Geomosaic working directory to create for its execution. Default: 'geomosaic' folder created in the current directory (default:
-                        geomosaic)
+                        Is the Geomosaic working directory that has to be created for the pipeline execution. Default: 'geomosaic' folder created in the
+                        current directory (default: geomosaic)
   -n PROJECT_NAME, --project_name PROJECT_NAME
                         Name of the project. The first 8 Characters will be used for SLURM job name (default: Geomosaic_Workflow)
-  --move_and_rename     Suggested flag if the provided raw reads directory is an already backup of the original files. In this case, geomosaic will create
+  --move_and_rename     Suggested flag if the provided raw reads directory is already a backup of the original files. In this case, geomosaic will create
                         only symbolic link of raw reads to its working directory. Note: This flag cannot be used if there are multiple files for each R1 and
                         R2 sample reads, as geomosaic will 'cat' them to a single file. (default: False)
-  --skip_checks         If you are sure that every file is in its correct location and the sample names are filled correcyly, you can skip checks with this
+  --skip_checks         If you are sure that every file is in its correct location and the sample names are filled correctly, you can skip checks with this
                         flags. However we do not suggest to use it. (default: False)
 
 Help Arguments:
