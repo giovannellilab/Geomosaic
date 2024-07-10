@@ -25,7 +25,7 @@ has_toc: false
 
 ## Main cmds
 
-Geomosaic pipeline has four main commands:
+Geomosaic pipeline has five main commands:
 - _setup_
     - It creates the Geomosaic working directory and the relative sample folders based on the provided sample table, together with a Geomosaic config file (whose default name is: `gmsetup.yaml`)
 - _workflow_
@@ -63,6 +63,6 @@ commands:
                         downstream analysis.
 ```
 
-## Walthrough Image
+## Walkthrough Image
 
 <img src="assets/images/geomosaic_commands.svg">
