@@ -2,7 +2,7 @@
 layout: default
 title: "Integration example 1: Simple Package"
 parent: Contributes
-nav_order: 12
+nav_order: 13
 ---
 
 # Integration example 1: Simple package
