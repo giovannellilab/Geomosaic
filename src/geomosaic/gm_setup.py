@@ -21,6 +21,7 @@ def geo_setup(args):
     skip_checks         = args.skip_checks
     user_extdbfolder    = args.externaldb_gmfolder
     user_condafolder    = args.condaenv_gmfolder
+    user_paramfolder    = args.userparams_gmfolder
 
     grp_df = table_checks(
         filename        = sample_table,
@@ -46,7 +47,7 @@ def geo_setup(args):
     if not os.path.isdir(geomosaic_externaldb_folder):
         os.makedirs(geomosaic_externaldb_folder)
 
-    geomosaic_user_parameters = os.path.join(geomosaic_dir, "gm_user_parameters")
+    geomosaic_user_parameters = os.path.join(geomosaic_dir, "gm_user_parameters") if user_paramfolder is None else user_paramfolder
     if not os.path.isdir(geomosaic_user_parameters):
         os.makedirs(geomosaic_user_parameters)
     

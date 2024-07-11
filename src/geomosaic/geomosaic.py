@@ -59,6 +59,10 @@ def main():
                                     This option is very useful if you want to execute Geomosaic for different set of reads, \
                                         as here you can provide the same folder and prevent multiple donwload of the same external databases.\
                                              If not specified geomosaic will create a folder called 'gm_external_db' inside the directory provided by the '-w' option.")
+    setup_optional.add_argument('-u' ,'--userparams_gmfolder', default=None, type=str,
+                                help="This option allows to provide a path folder in which geomosaic is going to put file for additional options/parameters that can be used by the packages of your workflow. \
+                                    This option is very useful if you want to execute Geomosaic for different set of reads and using the tools with the same sets of options/parameters of previous Geomosaic executions. \
+                                             If not specified geomosaic will create a folder called 'gm_user_parameters' inside the directory provided by the '-w' option.")
     setup_optional.add_argument("-f", "--format_table", required=False, default="tsv", type=str, choices=["tsv", "csv", "excel"],
                               help="Format of the provided table. Allowed: tsv, csv, excel")
     setup_optional.add_argument("-w", "--working_dir", required=False, default="geomosaic", type=str, help="Is the Geomosaic working directory that has to be created for the pipeline execution. Default: 'geomosaic' folder created in the current directory")
