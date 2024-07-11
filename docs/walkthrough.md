@@ -93,7 +93,7 @@ This is the end of the installation
 Now we are ready to go!
 
 ## Geomosaic preparation for different datasets
-It is highly suggest to have a folder for each dataset, even in the `computation` directory. In this way, we can easily recognize the geomosaic computation for each dataset.
+It is highly suggested to have a folder for each dataset, even in the `computation` directory. In this way, we can easily recognize the geomosaic computation for each dataset.
 In this case, we can create `ALPHA`, `BETA` and `GAMMA`.
 
 > ![computation_prep](assets/images/walkthrough/img_12.png)
@@ -116,7 +116,7 @@ As we can see from the next image, for this example, we are going to use the fol
   - `-n` to specify a title for our execution.
 
     {: .note }
-    The first 8 characters in this options will be user for the job names in SLURM specification.
+    The first 8 characters in this options will be used for the job names in SLURM specification.
   
   - `--move_and_rename` to avoid duplication of the reads in the storage, we use this flag to move and rename the forward and reverse reads (for each sample) as `R1.fastq.gz` and `R2.fastq.gz`, respectively.
 
