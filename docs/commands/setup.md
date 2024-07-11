@@ -31,8 +31,8 @@ geomosaic setup --help
 ```
 
 ```
-usage: geomosaic setup -d DIRECTORY -t SAMPLE_TABLE [-s SETUP_FILE] [-c CONDAENV_GMFOLDER] [-e EXTERNALDB_GMFOLDER] [-f {tsv,csv,excel}] [-w WORKING_DIR]
-                       [-n PROJECT_NAME] [--move_and_rename] [--skip_checks] [-h]
+usage: geomosaic setup -d DIRECTORY -t SAMPLE_TABLE [-s SETUP_FILE] [-c CONDAENV_GMFOLDER] [-e EXTERNALDB_GMFOLDER] [-u USERPARAMS_GMFOLDER]
+                       [-f {tsv,csv,excel}] [-w WORKING_DIR] [-n PROJECT_NAME] [--move_and_rename] [--skip_checks] [-h]
 
 DESCRIPTION: It creates the geomosaic working directory and the relative samples folders based on the provided sample table
 
@@ -56,6 +56,11 @@ Optional Arguments:
                         of your workflow. This option is very useful if you want to execute Geomosaic for different set of reads, as here you can provide
                         the same folder and prevent multiple donwload of the same external databases. If not specified geomosaic will create a folder called
                         'gm_external_db' inside the directory provided by the '-w' option. (default: None)
+  -u USERPARAMS_GMFOLDER, --userparams_gmfolder USERPARAMS_GMFOLDER
+                        This option allows to provide a path folder in which geomosaic is going to put file for additional options/parameters that can be
+                        used by the packages of your workflow. This option is very useful if you want to execute Geomosaic for different set of reads and
+                        using the tools with the same sets of options/parameters of previous Geomosaic executions. If not specified geomosaic will create a
+                        folder called 'gm_user_parameters' inside the directory provided by the '-w' option. (default: None)
   -f {tsv,csv,excel}, --format_table {tsv,csv,excel}
                         Format of the provided table. Allowed: tsv, csv, excel (default: tsv)
   -w WORKING_DIR, --working_dir WORKING_DIR
@@ -112,6 +117,7 @@ The `setup` command has various optional arguments:
     - (`-c`) This option is very useful if you are going to run geomosaic for different set of raw reads. By specifying this folder, geomosaic will not reinstall all the conda environments. Here you can provide the same folder and prevent multiple installation of the same conda environments. If not specified geomosaic will create a folder called `gm_conda_envs` inside the directory provided by the `-w` option.
     - (`-e`) Similarly to the `-c` parameter, this option is very useful if you are going to run geomosaic for different set of raw reads. By specifying this folder, geomosaic can use already downloaded external databases. If not specified geomosaic will create a folder called `gm_external_db` inside the directory provided by the `-w` option.
         - For example, let's assume that in the following path `/mnt/storage/geomosaic_extdb` are already presents the following databases `kaiju_extdb`, `kraken2_extdb` and `checkm_extdb` (that were downloaded with Geomosaic) are already present; you can use this option as `-e /mnt/storage/geomosaic_extdb` . 
+    - (`-u`) Similarly to the `-c` and `-e` flags, this options allows you to specify the same folder path that you may have used in previous Geomosaic execution for the `user parameter folder`. This is useful to execute same tools with the same options that you may have added in those executions. If not specified geomosaic will create a folder called `gm_user_parameters` inside the directory provided by the `-w` option.
     - (`-f`) With this option you can specify the format separated value of the table provided with the flag `-t`.
     - (`-w`) The Geomosaic working directory to create for its execution. Default: `geomosaic` folder created in the current directory.
     - (`-n`) A project name can be specified with this parameter. It is recommended to use a name without any space.
