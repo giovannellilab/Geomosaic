@@ -1,7 +1,7 @@
 ---
 layout: default
 title: FAQ
-nav_order: 16
+nav_order: 12
 ---
 
 
@@ -24,6 +24,9 @@ Welcome to our section of _Frequently Asked Questions_. Over time, we plan to up
 {:toc}
 </details>
 
+
+## How can I see the SLURM queue of my jobs
+Let's assume that my account is `dcorso`, I can see the queue using the following commands `squeue -u dcorso` (specific for my account) or `squeue`.
 
 ## How can I check SLURM status of my jobs?
 Assuming that you know which is the job id (for example 123456), you can use the following command
