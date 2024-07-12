@@ -2,7 +2,7 @@
 layout: default
 title: "Integration example 3: Package at MAGs level with extdb"
 parent: Contributes
-nav_order: 15
+nav_order: 17
 ---
 
 
