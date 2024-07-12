@@ -28,7 +28,7 @@ We will provide some suggestions, tips and description explaining why we organiz
 
 ## Macro-organization of the folders
 
-To perform a suitable computation on our clusters, we should have proper organization of our folder. Here we propose a way to organize folders that was useful for our computations. It is based on the usage of one master folder, namely `gm_walkthrough`.
+To perform a suitable computation on our clusters, we should have proper organization of our folder. Here we propose a way to organize folders that was useful for our computations. It is based on the usage of one master folder, for instance `gm_walkthrough`.
 
 > ![folder_organization](assets/images/walkthrough/folder_organization.png)
 
