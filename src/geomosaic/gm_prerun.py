@@ -42,7 +42,7 @@ def geo_prerun(args):
                                                         geomosaic_condaenvs_folder, jobname)
 
         with open(list_sample_output, "wt") as fl:
-            for s in gmsetup["SAMPLES"]:
+            for s in geomosaic_samples:
                 fl.write(f"{s}\n")
 
         with open(output_script, "wt") as fd:
@@ -64,7 +64,7 @@ def geo_prerun(args):
                     list_sample_output = exectype_gnuparalllel(args, geomosaic_wdir, gm_snakefile, unit, geomosaic_condaenvs_folder)
 
         with open(list_sample_output, "wt") as fl:
-            for s in gmsetup["SAMPLES"]:
+            for s in geomosaic_samples:
                 fl.write(f"{s}\n")
 
         with open(output_script, "wt") as fd:
@@ -79,7 +79,7 @@ def geo_prerun(args):
         show_gnuparallel_message(exists_extdb, extdb_output_script, output_script, singleSample_output_script, list_sample_output)
     
     print(f"\n{GEOMOSAIC_PROCESS}: Installing all the conda environments of your workflow/unit. This may take a while...\n", end="", flush=True)
-    envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit)
+    # envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit)
 
 
 def envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit):
@@ -168,10 +168,6 @@ def show_gnuparallel_message(exists_extdb, extdb_output_script, output_script, s
     print(f"\nThese script can be considered minimal for GNU Parallel. Feel free to modify them to add more complex codes.\nMore details can be retrieved to official GNU Parallel Documentation.")
     print(f"\n{GEOMOSAIC_NOTE}: Since your using GNU Parallel, you should set the number of jobs to execute in parallel taking into account the number of cpus that you can use.\nFor instance, if 36 cores are available you can open the following file\n{GEOMOSAIC_PROMPT(output_script)}\n\nand modify the following variables\n{GEOMOSAIC_PROMPT('n_jobs_in_parallel=4')}\n{GEOMOSAIC_PROMPT('threads_per_job=9')}.")
     print(f"\n{GEOMOSAIC_NOTE}: So now you are ready to go!\n\n{merging_steps}")
-
-
-# dag_image = os.path.join(geomosaic_wdir, "dag.pdf")
-    # subprocess.check_call(f"snakemake -s {snakefile_filename} --rulegraph | dot -Tpdf > {dag_image}", shell=True)
 
 
 def check_extdb_snakefile(geomosaic_wdir, unit):

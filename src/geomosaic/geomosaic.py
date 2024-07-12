@@ -130,7 +130,7 @@ def main():
     prerun_optional.add_argument('-u' ,'--unit', action='store_true', help="Install the conda environment of your geomosaic unit.")
     prerun_optional.add_argument('-t', '--threads', default=None, type=int, help="Threads to use (per sample). This value will override the one specified in the workflow/unit (config file) and thus will replace threads value in the config file. Default is None, means that is not going to be replaced (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
     prerun_optional.add_argument('-f', '--folder_logs', default=None, type=str, help="Folder for logs files. Default value is None means that slurm logs are saved in your current directory. However we suggest you to specify it and if it does not exists, Geomosaic will create it. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
-    prerun_optional.add_argument('--ignore_samples', default=None, type=csv_values, help='a comma separated list of Samples to ignore (no spaces). Example: --packages sample1,sample2 .')
+    prerun_optional.add_argument('-i', '--ignore_samples', default=None, type=csv_values, help='a comma separated list of Samples to ignore (no spaces). Example: --ignore_samples sample1,sample2 .')
 
     prerun_optionalslurm = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments ONLY for SLURM Specification"))
     prerun_optionalslurm.add_argument('-m', '--memory', default=300, type=int, help="Memory specification (in GB) for slurm job. (requires '--exec_type slurm' option)")
