@@ -1,6 +1,6 @@
 
 from Bio.SeqIO.FastaIO import SimpleFastaParser
-from geomosaic._utils import GEOMOSAIC_NOTE
+from geomosaic._utils import GEOMOSAIC_ERROR
 
 
 def rename_contigs(contigs_fasta, output_fasta, output_mapping):
@@ -10,8 +10,8 @@ def rename_contigs(contigs_fasta, output_fasta, output_mapping):
             contigs_list.append((header, seq))
 
     if len(contigs_list) == 0:
-        print(f"\n{GEOMOSAIC_NOTE}: Your Assembler didn't provide any contigs longer than the minimum length specified. Try to lower these values. SystemExit.\n")
-        exit(0)
+        print(f"\n{GEOMOSAIC_ERROR}: Your Assembler didn't provide any contigs longer than the minimum length specified. Try to lower these values. SystemExit.\n")
+        exit(1)
 
     with open(output_fasta, "wt") as fo, open(output_mapping, "wt") as fm:
         fm.write("old_header\tnew_header\n")
