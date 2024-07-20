@@ -32,7 +32,7 @@ rule run_parse_mags_prodigal:
     threads: 1
     run:
         from geomosaic.parser.prodigal_orf_mapping import parsing_prodigal_orfs_MAGs    
-        parsing_prodigal_orfs_MAGs(str(input.fasta_input), str(output.output_mapping), str(output.output_fasta), str(output.output_simple_mapping), params.mag_n)
+        parsing_prodigal_orfs_MAGs(str(input.fasta_input), str(output.output_mapping), str(output.output_fasta), str(output.output_simple_mapping))
 
 def ls_collect_bins(f_string): 
     def _f(wildcards):
