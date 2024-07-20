@@ -15,7 +15,7 @@ def make_hmmsearch_dataframe(list_hmmsearch_outputs, mags=False):
     
     df = pd.DataFrame(l, columns=["HMM_model", "orf_id", "HMM_length", "hmm_start", "hmm_end", 
                               "identical_match", "conserved_match", "perc_identical", "perc_conserved",
-                              "bitscore", "indipendent_evalue", "conditional_evalue", "gaps", "sequence_match" ])
+                              "bitscore", "indipendent_evalue", "conditional_evalue", "dels", "sequence_match" ])
 
     df.sort_values(by="perc_identical", ascending=False, inplace=True)
     return df
@@ -33,7 +33,7 @@ def parse_hmmsearch_output(record):
         sequence_match = i.aln_annotation["similarity"]
         identical_match = sum([1 if c not in ("+", " ") else 0 for c in sequence_match])
         conserved_match = sum([1 if c != " " else 0 for c in sequence_match])
-        gaps = sum([1 for c in str(i.hit.seq) if c == "-"])
+        dels = sum([1 for c in str(i.hit.seq) if c == "-"])
         perc_identical = (identical_match/model_len)*100
         perc_conserved = (conserved_match/model_len)*100
         bitscore = i.bitscore
@@ -42,7 +42,7 @@ def parse_hmmsearch_output(record):
         
         match_res = [model_id, orf_id, model_len, model_start, model_end, 
                      identical_match, conserved_match, perc_identical, perc_conserved, 
-                     bitscore, indipendent_evalue, conditional_evalue, gaps, sequence_match ]
+                     bitscore, indipendent_evalue, conditional_evalue, dels, sequence_match ]
         
         rows.append(match_res)
     
