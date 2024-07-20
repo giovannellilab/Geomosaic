@@ -31,7 +31,8 @@ def retrieve_survival_mags(checkm_table, das_tool_bins, completness_threshold, c
         local_mag = []
         with open(f"{das_tool_bins}/{i.binID}.fa") as fd:
             for header, seq in SimpleFastaParser(fd):
-                local_mag.append((i, header, seq))
+                local_header = f"{local_key}_{header}"
+                local_mag.append((i, local_header, seq))
 
         mags_list[local_key] = local_mag
     
