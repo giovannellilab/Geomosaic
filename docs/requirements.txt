@@ -1,1 +1,7 @@
 furo==2024.7.18
+sphinx
+myst-parser
+sphinx-design
+sphinxext-opengraph
+sphinx-inline-tabs
+sphinx-copybutton
