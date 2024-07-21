@@ -20,3 +20,5 @@ dag_snakefile.sh
 /logs_slurm
 /images/modules_DAG*
 .DS_Store
+# Sphinx documentation
+/docs/build
