@@ -10,6 +10,10 @@ Welcome to our section of _Frequently Asked Questions_. Over time, we plan to up
 ## How can I see the SLURM queue of my jobs
 Let's assume that my account is `dcorso`, I can see the queue using the following commands `squeue -u dcorso` (specific for my account) or `squeue`.
 
+```
+squeue -u dcorso
+```
+
 ## How can I check SLURM status of my jobs?
 Assuming that you know which is the job id (for example 123456), you can use the following command
 ```
@@ -22,7 +26,7 @@ sacct -j 123456 | less
 ```
 
 ## How can I use the same conda environments and external databases for different execute of Geomosaic?
-As we have suggested also in the [Walkthrough](../walkthrough/tutorial.md#geomosaic-setup---command) tutorial, it is a good practice to specify the same folder for the `-c` and `-e` options in the geomosaic setup, respectively for the conda environment and external databases.
+As we have suggested also in the [Walkthrough tutorial](../walkthrough/tutorial.md#geomosaic-setup---command), it is a good practice to specify the same folder for the `-c` and `-e` options in the geomosaic setup, respectively for the conda environment and external databases.
 
 
 ## How can I add other options to the tools of my warkflow?

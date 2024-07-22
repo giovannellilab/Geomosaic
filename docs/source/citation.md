@@ -20,3 +20,4 @@ We are currently writing the paper describing Geomosaic.
 :align: center
 ```
 
+[Giovannelli Lab.](https://www.donatogiovannelli.com)

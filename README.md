@@ -1,4 +1,4 @@
-![Geomosaic](docs/assets/images/geomosaic_logo_multicolor_300dpi.png)
+![Geomosaic](docs/source/_static/images/geomosaic_logo_multicolor_300dpi.png)
 
 <br>
 

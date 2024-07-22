@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Geomosaic'
-copyright = '2024, Davide Corso'
+copyright = '2024, Giovannelli Lab.'
 author = 'Davide Corso'
 
 # -- General configuration ---------------------------------------------------
