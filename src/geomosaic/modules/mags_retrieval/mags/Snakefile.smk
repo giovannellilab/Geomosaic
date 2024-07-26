@@ -13,6 +13,10 @@ checkpoint run_mags:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags"])) ) (config["USER_PARAMS"]["mags"]) 
     run:
         shell("mkdir -p {output.folder}/fasta")
+        
+        shell("touch {output.folder}/info.txt")
+        shell('echo "Completeness {params.completness_threshold}" >> {output.folder}/info.txt')
+        shell('echo "Contamination {params.contamination_threshold}" >> {output.folder}/info.txt')
 
         from geomosaic.parser.retrieve_survival_mags import retrieve_survival_mags
 

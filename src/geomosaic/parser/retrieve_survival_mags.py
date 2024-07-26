@@ -10,8 +10,8 @@ def retrieve_survival_mags(checkm_table, das_tool_bins, completness_threshold, c
     df["Completeness"] = df["Completeness"].astype("float64")
     df["Contamination"] = df["Contamination"].astype("float64")
 
-    c1 = df["Completeness"] > completness_threshold
-    c2 = df["Contamination"] < contamination_threshold
+    c1 = df["Completeness"] >= completness_threshold
+    c2 = df["Contamination"] <= contamination_threshold
 
     df_mags = df[c1 & c2].copy()
     if df_mags.shape[0] == 0:
