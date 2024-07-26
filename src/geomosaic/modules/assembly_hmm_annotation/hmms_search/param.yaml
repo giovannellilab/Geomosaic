@@ -1,3 +1,4 @@
 hmms_search:
-- -E 0.00001
+# Option -E is incompatible with option(s) -E,-T,--cut_ga,--cut_nc,
+# - -E 0.00001
 - --cut_ga
