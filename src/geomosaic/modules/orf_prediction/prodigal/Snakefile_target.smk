@@ -1,4 +1,4 @@
 
 rule all_prodigal:
     input:
-        expand("{wdir}/{sample}/prodigal", sample=config["SAMPLES"], wdir=config["WDIR"]),
+        expand("{wdir}/{sample}/prodigal/orf_predicted.faa", sample=config["SAMPLES"], wdir=config["WDIR"]),
