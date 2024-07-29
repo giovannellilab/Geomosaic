@@ -4,6 +4,7 @@ from subprocess import check_call
 from os import listdir
 import os
 import yaml
+from geomosaic.gathering.utils import get_sample_with_results
 
 
 def gather_mags_hmmsearch(config_file, geomosaic_wdir, output_base_folder, additional_info):
@@ -11,10 +12,10 @@ def gather_mags_hmmsearch(config_file, geomosaic_wdir, output_base_folder, addit
 
     with open(config_file) as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
-    
-    samples = config["SAMPLES"]
 
     mags_hmmsearch_outfolder = additional_info["mags_hmmsearch_output_folder"]
+
+    samples = get_sample_with_results(mags_hmmsearch_outfolder, geomosaic_wdir, config["SAMPLES"])
 
     output_folder = os.path.join(output_base_folder, pckg)
 
@@ -24,10 +25,13 @@ def gather_mags_hmmsearch(config_file, geomosaic_wdir, output_base_folder, addit
 
 def complete_hmmsearch(folder, mags_hmmsearch_outfolder, base_output_folder, samples):
     for s in samples:
-        DF_NORM = parse_hmmsearch_mags(folder, mags_hmmsearch_outfolder, s)
+        DF_NORM, All_mags_df = parse_hmmsearch_mags(folder, mags_hmmsearch_outfolder, s)
 
         output_folder = os.path.join(base_output_folder, s)
         check_call(f"mkdir -p {output_folder}", shell=True)
+
+        concat = pd.concat(All_mags_df, ignore_index=True)
+        concat.to_csv(f"{output_folder}/ALL_MAGs_HMM_coverage_table.tsv", sep="\t", header=True, index=False)
 
         for n in DF_NORM:
             norm_merged = merge_results_by_norm(DF_NORM, norm_method=n)
@@ -55,6 +59,7 @@ def merge_results_by_norm(DF_NORM, norm_method):
 
 def parse_hmmsearch_mags(folder, mags_hmmsearch_output_folder, s):
     DF_norm = {}
+    All_mags_df = []
     
     results_folder = f"{folder}/{s}/{mags_hmmsearch_output_folder}"
     for m in listdir(results_folder):
@@ -66,6 +71,7 @@ def parse_hmmsearch_mags(folder, mags_hmmsearch_output_folder, s):
             continue
     
         df = pd.read_csv(f"{folder_data}/HMMs_coverage_table.tsv", sep="\t")
+        All_mags_df.append(df)
         
         c1 = df["perc_conserved"] >= 50
         
@@ -84,4 +90,4 @@ def parse_hmmsearch_mags(folder, mags_hmmsearch_output_folder, s):
             
             DF_norm[n][m] = norm_df
     
-    return DF_norm
+    return DF_norm, All_mags_df

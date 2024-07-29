@@ -3,6 +3,7 @@ import numpy as np
 from subprocess import check_call
 import os
 import yaml
+from geomosaic.gathering.utils import get_sample_with_results
 
 
 def gather_hmms_search(config_file, geomosaic_wdir, output_base_folder, additional_info):
@@ -10,10 +11,10 @@ def gather_hmms_search(config_file, geomosaic_wdir, output_base_folder, addition
 
     with open(config_file) as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
-    
-    samples = config["SAMPLES"]
 
     hmmsearch_outfolder = additional_info["assembly_hmmsearch_output_folder"]
+
+    samples = get_sample_with_results(hmmsearch_outfolder, geomosaic_wdir, config["SAMPLES"])
 
     output_folder = os.path.join(output_base_folder, pckg)
 
@@ -22,7 +23,10 @@ def gather_hmms_search(config_file, geomosaic_wdir, output_base_folder, addition
 
 
 def complete_hmmsearch(folder, hmmsearch_outfolder, output_folder, samples):
-    DF_NORM = parse_hmmsearch_results(folder, hmmsearch_outfolder, samples)
+    DF_NORM, All_samples_df = parse_hmmsearch_results(folder, hmmsearch_outfolder, samples)
+
+    concat = pd.concat(All_samples_df, ignore_index=True)
+    concat.to_csv(f"{output_folder}/ALL_SAMPLES_HMM_coverage_table.tsv", sep="\t", header=True, index=False)
 
     for n in DF_NORM:
         norm_merged = merge_results_by_norm(DF_NORM, norm_method=n)
@@ -32,8 +36,12 @@ def complete_hmmsearch(folder, hmmsearch_outfolder, output_folder, samples):
 def parse_hmmsearch_results(folder, hmmsearch_outfolder, samples):
     DF_norm = {}
 
+    All_samples_df = []
+
     for s in samples:
         df = pd.read_csv(f"{folder}/{s}/{hmmsearch_outfolder}/HMMs_coverage_table.tsv", sep="\t")
+        All_samples_df.append(df)
+
         norms = list(df.columns)[15:-1]
         cols = ["HMM_model"] + norms
         filt = df[df["perc_conserved"] >= 50].loc[:, cols].drop_duplicates()
@@ -48,7 +56,7 @@ def parse_hmmsearch_results(folder, hmmsearch_outfolder, samples):
             
             DF_norm[n][s] = norm_df
     
-    return DF_norm
+    return DF_norm, All_samples_df
 
 
 def merge_results_by_norm(DF_NORM, norm_method):
