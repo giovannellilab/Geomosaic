@@ -6,7 +6,7 @@ import yaml
 import os
 
 
-def gather_mags_dram(config_file, geomosaic_wdir, output_base_folder):
+def gather_mags_dram(config_file, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "mags_dram"
 
     with open(config_file) as file:

@@ -6,7 +6,7 @@ from os import listdir
 import yaml
 
 
-def gather_kraken2(config_file, geomosaic_wdir, output_base_folder):
+def gather_kraken2(config_file, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "kraken2"
 
     with open(config_file) as file:

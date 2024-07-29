@@ -7,7 +7,7 @@ import yaml
 from geomosaic.gathering.gather_recognizer import get_dtypes
 
 
-def gather_mags_recognizer(config_file, geomosaic_wdir, output_base_folder):
+def gather_mags_recognizer(config_file, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "mags_recognizer"
 
     with open(config_file) as file:

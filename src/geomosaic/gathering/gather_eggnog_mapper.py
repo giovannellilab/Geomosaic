@@ -6,7 +6,7 @@ import os
 import yaml
 
 
-def gather_eggnogmapper(config_file, geomosaic_wdir, output_base_folder):
+def gather_eggnogmapper(config_file, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "eggnog_mapper"
 
     with open(config_file) as file:

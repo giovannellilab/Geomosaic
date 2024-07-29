@@ -6,7 +6,7 @@ import os
 import yaml
 
 
-def gather_coverm_genome(config_file, geomosaic_wdir, output_base_folder):
+def gather_coverm_genome(config_file, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "coverm_genome"
 
     with open(config_file) as file:

@@ -6,7 +6,7 @@ from os import listdir
 import yaml
 
 
-def gather_kaiju(config_file, geomosaic_wdir, output_base_folder):
+def gather_kaiju(config_file, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "kaiju"
 
     with open(config_file) as file:

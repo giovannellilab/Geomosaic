@@ -21,9 +21,3 @@ def essential_data_config(gmsetup, path_gathering):
         os.makedirs(geomosaic_gathering)
     
     return geomosaic_samples, geomosaic_gathering
-    
-
-
-
-
-

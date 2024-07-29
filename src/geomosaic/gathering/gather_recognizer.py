@@ -8,7 +8,7 @@ from numpy import float64
 
 
 
-def gather_recognizer(config_file, geomosaic_wdir, output_base_folder):
+def gather_recognizer(config_file, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "recognizer"
 
     with open(config_file) as file:
