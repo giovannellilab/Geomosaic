@@ -20,3 +20,4 @@ dag_snakefile.sh
 /logs_slurm
 /images/modules_DAG*
 /docs
+.DS_Store
