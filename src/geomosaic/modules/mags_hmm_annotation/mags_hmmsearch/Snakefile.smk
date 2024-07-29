@@ -62,6 +62,7 @@ rule run_mags_hmmsearch:
         m1["sample"] = str(params.local_sample)
 
         m1.to_csv(os.path.join(output_folder, "HMMs_coverage_table.tsv"), sep="\t", header=True, index=False)
+        shell("( cd {output_folder} && rm -r output_hmms )")
 
 
 def get_mags_hmmsearch_inputs(f_string): 

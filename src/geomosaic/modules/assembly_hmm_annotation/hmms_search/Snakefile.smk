@@ -59,3 +59,4 @@ rule hmms_search:
         m1["sample"] = str(params.local_sample)
 
         m1.to_csv(os.path.join(output.folder, "HMMs_coverage_table.tsv"), sep="\t", header=True, index=False)
+        shell("( cd {output.folder} && rm -r output_hmms )")
