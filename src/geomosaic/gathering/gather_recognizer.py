@@ -5,7 +5,7 @@ import os
 from os import listdir
 import yaml
 from numpy import float64
-
+from geomosaic.gathering.utils import get_sample_with_results
 
 
 def gather_recognizer(config_file, geomosaic_wdir, output_base_folder, additional_info):
@@ -14,7 +14,7 @@ def gather_recognizer(config_file, geomosaic_wdir, output_base_folder, additiona
     with open(config_file) as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
     
-    samples = config["SAMPLES"]
+    samples = get_sample_with_results(pckg, geomosaic_wdir, config["SAMPLES"])
 
     output_folder = os.path.join(output_base_folder, pckg)
 

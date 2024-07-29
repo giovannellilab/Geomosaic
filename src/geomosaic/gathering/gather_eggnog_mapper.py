@@ -4,6 +4,7 @@ from subprocess import check_call
 from os import listdir
 import os
 import yaml
+from geomosaic.gathering.utils import get_sample_with_results
 
 
 def gather_eggnogmapper(config_file, geomosaic_wdir, output_base_folder, additional_info):
@@ -12,7 +13,7 @@ def gather_eggnogmapper(config_file, geomosaic_wdir, output_base_folder, additio
     with open(config_file) as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
     
-    samples = config["SAMPLES"]
+    samples = get_sample_with_results(pckg, geomosaic_wdir, config["SAMPLES"])
 
     output_folder = os.path.join(output_base_folder, pckg)
 

@@ -5,6 +5,7 @@ from os import listdir
 import os
 import yaml
 from geomosaic.gathering.gather_recognizer import get_dtypes
+from geomosaic.gathering.utils import get_sample_with_results
 
 
 def gather_mags_recognizer(config_file, geomosaic_wdir, output_base_folder, additional_info):
@@ -13,7 +14,7 @@ def gather_mags_recognizer(config_file, geomosaic_wdir, output_base_folder, addi
     with open(config_file) as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
     
-    samples = config["SAMPLES"]
+    samples = get_sample_with_results(pckg, geomosaic_wdir, config["SAMPLES"])
 
     output_folder = os.path.join(output_base_folder, pckg)
 
