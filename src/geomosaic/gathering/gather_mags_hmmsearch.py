@@ -67,8 +67,7 @@ def parse_hmmsearch_mags(folder, mags_hmmsearch_output_folder, s):
     
         df = pd.read_csv(f"{folder_data}/HMMs_coverage_table.tsv", sep="\t")
         
-        c1 = df["perc_conserved"] >= 65 
-        # print(df[c1])
+        c1 = df["perc_conserved"] >= 50
         
         norms = list(df.columns)[15:-1]
         cols = ["HMM_model"] + norms

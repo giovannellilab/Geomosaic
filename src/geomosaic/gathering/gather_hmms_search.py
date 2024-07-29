@@ -36,7 +36,7 @@ def parse_hmmsearch_results(folder, hmmsearch_outfolder, samples):
         df = pd.read_csv(f"{folder}/{s}/{hmmsearch_outfolder}/HMMs_coverage_table.tsv", sep="\t")
         norms = list(df.columns)[15:-1]
         cols = ["HMM_model"] + norms
-        filt = df[df["perc_conserved"] >= 70].loc[:, cols].drop_duplicates()
+        filt = df[df["perc_conserved"] >= 50].loc[:, cols].drop_duplicates()
 
         grp = filt.groupby(by="HMM_model").sum().reset_index()
 
