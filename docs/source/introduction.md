@@ -192,7 +192,6 @@ __Read-based__:
 
 __Assembly-based__:
 - Functional Annotation:
-    - Bakta
     - Prokka
 - Taxonomic Annotation
     - cat/bat
