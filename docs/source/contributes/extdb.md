@@ -163,7 +163,7 @@ By default, we use just 1 thread for each package to perform the download of the
 
 At the time of writing, only 9 packages requires extdb, therefore in the `slurm_extdb` template we have 9 cores, 1 core for each rule. I know is not optimized, but for now like this should be fine.
 
-### Step 7.3: Snakefile target for extdb
+### Step 7.4: Snakefile target for extdb
 
 In the `target.txt` we only need to put the expand line in the output section (without `directory` function of snakemake). Remember the comma at the end of the line which is very important.
 
