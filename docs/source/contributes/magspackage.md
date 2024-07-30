@@ -152,7 +152,15 @@ This section is useful to organize external databases for the package that we ar
 In this section:
 - each package that requires an extdb has a key which contains two other keys:
   - `inpfolder`: its value should be the name of the package
-  - `outfolder`: must be the name of the folder in which the external databases is going to be downloaded. The pattern is: the name of the package followed by the `_extdb` suffix. However, different package name maybe relay on the same external database as it is for the `recognizer` package and `mags_recognizer`, therefore in such case we specify the same `outfolder`.
+  - `outfolder`: must be the name of the folder in which the external databases is going to be downloaded. The pattern is: the name of the package followed by the `_extdb` suffix. 
+  
+```{admonition} Highlight
+:class: warning  
+
+In some cases, the same tool can be integrated at multiple levels, such as assembly-based and binning-based, as it was for the `recognizer` package and `mags_recognizer`. It is important to note that both integrations rely on the same external database. Therefore, in this section, we specify the same `inpfolder` and `outfolder`.
+
+See also section [7.3 Bis in the Integation Example 2](extdb.md#step-73-bis-snakefile-for-extdb-using-conda-env).
+```
 
 So in this section we are going to write as follows since the external database is the same for the KOfam Scan that we have integrated in the `assembly_func_annotation` ([Integration Example 2](extdb)).
 ![envs](assets/images/magspackage/externaldb_key.png)

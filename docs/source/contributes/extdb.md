@@ -124,7 +124,15 @@ This section is useful to organize external databases for the package that we ar
 In this section:
 - each package that requires an extdb has a key which contains two other keys:
   - `inpfolder`: its value should be the name of the package
-  - `outfolder`: must be the name of the folder in which the external databases is going to be downloaded. The pattern is: the name of the package followed by the `_extdb` suffix. However, different package name maybe relay on the same external database as it is for the `recognizer` package and `mags_recognizer`, therefore in such case we specify the same `outfolder`.
+  - `outfolder`: must be the name of the folder in which the external databases is going to be downloaded. The pattern is: the name of the package followed by the `_extdb` suffix. 
+
+```{admonition} Highlight
+:class: warning  
+
+In some cases, the same tool can be integrated at multiple levels, such as assembly-based and binning-based, as it was for the `recognizer` package and `mags_recognizer`. It is important to note that both integrations rely on the same external database. Therefore, in this section, we specify the same `inpfolder` and `outfolder`.
+
+See also section [7.3 Bis](#step-73-bis-snakefile-for-extdb-using-conda-env).
+```
 
 So in this section we are going to write as follows:
 ![envs](assets/images/extdb/externaldb_key.png)
@@ -162,6 +170,13 @@ THe integration for the code of the extdb should be something like this
 By default, we use just 1 thread for each package to perform the download of the corresponding extdb.
 
 At the time of writing, only 9 packages requires extdb, therefore in the `slurm_extdb` template we have 9 cores, 1 core for each rule. I know is not optimized, but for now like this should be fine.
+
+#### Step 7.3 bis: Snakefile for extdb using conda env
+If the code that download the external database need a conda environment, you can specify it using the `ENVS_EXTDB` key for the config. The following image show how it should be written.
+
+![extdb_code](assets/images/extdb/extdb_inpfolder_snakefile_extdb.png)
+
+In the previous example, the tool `bakta` was integrated both for assembly-based and binning-based modules. However the values on the key `external_db` in the `gmpackages.json` are the same.
 
 ### Step 7.4: Snakefile target for extdb
 
