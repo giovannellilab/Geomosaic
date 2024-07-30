@@ -36,10 +36,10 @@
         ["pre_processing", "mags_coverage"],
 
         ["assembly", "assembly_readmapping"],
-        ["assembly", "assembly_func_annotation"],
-        ["assembly", "assembly_qc"],
-        ["assembly", "assembly_tax_annotation"],
         ["assembly", "orf_prediction"],
+        ["assembly", "assembly_qc"],
+        ["assembly", "assembly_func_annotation"],
+        ["assembly", "assembly_tax_annotation"],
         ["assembly", "binning"],
         ["assembly", "binning_derep"],
         ["assembly", "binning_qa"],
@@ -60,9 +60,9 @@
 
         ["binning_qa", "mags_retrieval"],
 
-        ["mags_retrieval", "mags_orf_prediction"],
         ["mags_retrieval", "mags_func_annotation"],
         ["mags_retrieval", "mags_tax_annotation"],
+        ["mags_retrieval", "mags_orf_prediction"],
         ["mags_retrieval", "mags_coverage"],
 
         ["mags_orf_prediction", "mags_domain_annotation"],

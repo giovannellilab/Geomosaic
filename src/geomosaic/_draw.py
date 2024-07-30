@@ -12,32 +12,74 @@ def geomosaic_draw_workflow(gmpackages_path, user_choices, skipped_modules):
 
     G = import_graph(gmpackages["graph"])
 
-    pos = {"pre_processing": np.array([0, 0])}
-
+    #### CODE DRAW
+    ############################################
+    ############################################
+    ############################################
+    
     bfs_preprocessing = nx.bfs_tree(G, "pre_processing")
     bfs_preprocessing.remove_node("assembly")
     bfs_preprocessing.remove_node("binning")
-    bfs_preproc_layers = dict(enumerate(nx.bfs_layers(bfs_preprocessing, "pre_processing")))
-
-    preproc_layers_node = []
-    for i in bfs_preproc_layers.values():
-        preproc_layers_node += i
 
     bfs_assembly = nx.bfs_tree(G, "assembly")
     bfs_assembly.remove_node("binning")
-    bfs_assembly_layers = dict(enumerate(nx.bfs_layers(bfs_assembly, "assembly")))
-
-    assembly_layers_node = []
-    for i in bfs_assembly_layers.values():
-        assembly_layers_node += i
 
     bfs_binning = nx.bfs_tree(G, "binning")
-    bfs_binning_layers = dict(enumerate(nx.bfs_layers(bfs_binning, "binning")))
 
-    binning_layers_node = []
-    for i in bfs_binning_layers.values():
-        binning_layers_node += i
+    pure_preproc_nodes = [x for x in bfs_preprocessing.nodes() if x not in list(bfs_assembly.nodes()) + list(bfs_binning.nodes())]
+    pure_assembly_nodes = [x for x in bfs_assembly.nodes() if x not in list(bfs_binning.nodes())]
+    pure_binning_nodes = list(bfs_binning.nodes())
 
+    # Computing Layers through the longest shortest path
+
+    bfs_preproc_layers = {
+        0: ["pre_processing"]
+    }
+    for target in pure_preproc_nodes:
+        if target == "pre_processing":
+            continue
+        
+        len_lp = len(get_longest_path(G, "pre_processing", target)) - 1
+        
+        if len_lp not in bfs_preproc_layers:
+            bfs_preproc_layers[len_lp] = []
+
+        bfs_preproc_layers[len_lp].append(target)
+    
+    bfs_assembly_layers = {
+        0: ["assembly"]
+    }
+    for target in pure_assembly_nodes:
+        if target == "assembly":
+            continue
+        
+        len_lp = len(get_longest_path(G, "assembly", target)) - 1
+        
+        if len_lp not in bfs_assembly_layers:
+            bfs_assembly_layers[len_lp] = []
+
+        bfs_assembly_layers[len_lp].append(target)
+
+
+    bfs_binning_layers = {
+        0: ["binning"]
+    }
+    for target in pure_binning_nodes:
+        if target == "binning":
+            continue
+
+        if target not in ["binning_qa", "binning_derep"]:
+            # In this way "mags_retrieval" is in the same layer of "binning_qa"
+            len_lp = len(get_longest_path(G, "binning", target)) - 2
+        else:
+            len_lp = len(get_longest_path(G, "binning", target)) - 1
+        
+        if len_lp not in bfs_binning_layers:
+            bfs_binning_layers[len_lp] = []
+
+        bfs_binning_layers[len_lp].append(target)
+
+    pos = {"pre_processing": np.array([0, 0])}
     y_shift = 15
 
     preproc_y = pos["pre_processing"][1] + y_shift
@@ -45,58 +87,54 @@ def geomosaic_draw_workflow(gmpackages_path, user_choices, skipped_modules):
         if l == 0:
             continue
         
-        preproc_x = pos["pre_processing"][0] + 0.5
+        preproc_x = pos["pre_processing"][0] + 2.6
         
         flag_inserted = False
         for m in modules_list:
-            if m in assembly_layers_node or m in binning_layers_node:
-                continue
-
             pos[m] = np.array([preproc_x, preproc_y])
-            preproc_x += 0.5
+            preproc_x += 2.6
             flag_inserted = True
         
         if flag_inserted:
             preproc_y += y_shift
     
     pos["assembly"] = np.array([0, preproc_y])
-
     assembly_y = pos["assembly"][1] + y_shift
     for l, modules_list in bfs_assembly_layers.items():
         if l == 0:
             continue
         
-        assembly_x = pos["assembly"][0]+0.5
+        assembly_x = pos["assembly"][0]+2.7
         
         flag_inserted = False
         for m in modules_list:
-            if m in binning_layers_node:
-                continue
-
             pos[m] = np.array([assembly_x, assembly_y])
-            assembly_x += 0.5
+            assembly_x += 2.7
             flag_inserted = True
         
         if flag_inserted:
             assembly_y += y_shift
 
     pos["binning"] = np.array([0, assembly_y])
-
     binning_y = pos["binning"][1] + y_shift
     for l, modules_list in bfs_binning_layers.items():
         if l == 0:
             continue
         
-        binning_x = pos["binning"][0]+0.6
+        binning_x = pos["binning"][0]+2.8
 
         flag_inserted = False
         for m in modules_list:
             pos[m] = np.array([binning_x, binning_y])
-            binning_x += 0.6
+            binning_x += 2.8
             flag_inserted = True
 
         if flag_inserted:
             binning_y += y_shift
+
+    ####################################################
+    ####################################################
+    ####################################################
 
     assert len(pos) == len(G.nodes())
 
@@ -113,7 +151,7 @@ def geomosaic_draw_workflow(gmpackages_path, user_choices, skipped_modules):
 
 
 def draw_workflow_graph(G, new_pos, pos_labels_attrs, user_choices, skipped_modules):
-    plt.figure(figsize=(12, 10), dpi=300)
+    plt.figure(figsize=(14, 13), dpi=300)
     
     choices = list(user_choices.keys())
 
@@ -137,7 +175,7 @@ def draw_workflow_graph(G, new_pos, pos_labels_attrs, user_choices, skipped_modu
         node_color=my_node_color, 
         alpha=0.8,
         # node_size = [len(v) * the_base_size for v in G.nodes()],
-        edge_color="#a0a0a0"
+        edge_color="#999999"
     )
     
     for lbl, coords in pos_labels_attrs.items():
@@ -150,6 +188,11 @@ def draw_workflow_graph(G, new_pos, pos_labels_attrs, user_choices, skipped_modu
     plt.legend(handles=[stream_module_legend, analysis_module_legend, skipped_module_legend])
     plt.savefig(f'Geomosaic_Chosen_Workflow.png', bbox_inches='tight')
     # plt.savefig(f'{path_to_folder}/Geomosaic_Chosen_Workflow.svg', bbox_inches='tight', format="svg")
+
+
+def get_longest_path(G, source, target):
+    longest_path = max(nx.all_simple_paths(G, source, target), key=lambda x: len(x))
+    return longest_path
 
 
 def import_graph(edges: list):

@@ -15,32 +15,74 @@ def main():
 
     G = import_graph(gmpackages["graph"])
 
-    pos = {"pre_processing": np.array([0, 0])}
-
+    #### CODE DRAW
+    ############################################
+    ############################################
+    ############################################
+    
     bfs_preprocessing = nx.bfs_tree(G, "pre_processing")
     bfs_preprocessing.remove_node("assembly")
     bfs_preprocessing.remove_node("binning")
-    bfs_preproc_layers = dict(enumerate(nx.bfs_layers(bfs_preprocessing, "pre_processing")))
-
-    preproc_layers_node = []
-    for i in bfs_preproc_layers.values():
-        preproc_layers_node += i
 
     bfs_assembly = nx.bfs_tree(G, "assembly")
     bfs_assembly.remove_node("binning")
-    bfs_assembly_layers = dict(enumerate(nx.bfs_layers(bfs_assembly, "assembly")))
-
-    assembly_layers_node = []
-    for i in bfs_assembly_layers.values():
-        assembly_layers_node += i
 
     bfs_binning = nx.bfs_tree(G, "binning")
-    bfs_binning_layers = dict(enumerate(nx.bfs_layers(bfs_binning, "binning")))
 
-    binning_layers_node = []
-    for i in bfs_binning_layers.values():
-        binning_layers_node += i
+    pure_preproc_nodes = [x for x in bfs_preprocessing.nodes() if x not in list(bfs_assembly.nodes()) + list(bfs_binning.nodes())]
+    pure_assembly_nodes = [x for x in bfs_assembly.nodes() if x not in list(bfs_binning.nodes())]
+    pure_binning_nodes = list(bfs_binning.nodes())
 
+    # Computing Layers through the longest shortest path
+
+    bfs_preproc_layers = {
+        0: ["pre_processing"]
+    }
+    for target in pure_preproc_nodes:
+        if target == "pre_processing":
+            continue
+        
+        len_lp = len(get_longest_path(G, "pre_processing", target)) - 1
+        
+        if len_lp not in bfs_preproc_layers:
+            bfs_preproc_layers[len_lp] = []
+
+        bfs_preproc_layers[len_lp].append(target)
+    
+    bfs_assembly_layers = {
+        0: ["assembly"]
+    }
+    for target in pure_assembly_nodes:
+        if target == "assembly":
+            continue
+        
+        len_lp = len(get_longest_path(G, "assembly", target)) - 1
+        
+        if len_lp not in bfs_assembly_layers:
+            bfs_assembly_layers[len_lp] = []
+
+        bfs_assembly_layers[len_lp].append(target)
+
+
+    bfs_binning_layers = {
+        0: ["binning"]
+    }
+    for target in pure_binning_nodes:
+        if target == "binning":
+            continue
+
+        if target not in ["binning_qa", "binning_derep"]:
+            # In this way "mags_retrieval" is in the same layer of "binning_qa"
+            len_lp = len(get_longest_path(G, "binning", target)) - 2
+        else:
+            len_lp = len(get_longest_path(G, "binning", target)) - 1
+        
+        if len_lp not in bfs_binning_layers:
+            bfs_binning_layers[len_lp] = []
+
+        bfs_binning_layers[len_lp].append(target)
+
+    pos = {"pre_processing": np.array([0, 0])}
     y_shift = 15
 
     preproc_y = pos["pre_processing"][1] + y_shift
@@ -48,58 +90,54 @@ def main():
         if l == 0:
             continue
         
-        preproc_x = pos["pre_processing"][0] + 0.5
+        preproc_x = pos["pre_processing"][0] + 2.6
         
         flag_inserted = False
         for m in modules_list:
-            if m in assembly_layers_node or m in binning_layers_node:
-                continue
-
             pos[m] = np.array([preproc_x, preproc_y])
-            preproc_x += 0.5
+            preproc_x += 2.6
             flag_inserted = True
         
         if flag_inserted:
             preproc_y += y_shift
     
     pos["assembly"] = np.array([0, preproc_y])
-
     assembly_y = pos["assembly"][1] + y_shift
     for l, modules_list in bfs_assembly_layers.items():
         if l == 0:
             continue
         
-        assembly_x = pos["assembly"][0]+0.5
+        assembly_x = pos["assembly"][0]+2.7
         
         flag_inserted = False
         for m in modules_list:
-            if m in binning_layers_node:
-                continue
-
             pos[m] = np.array([assembly_x, assembly_y])
-            assembly_x += 0.5
+            assembly_x += 2.7
             flag_inserted = True
         
         if flag_inserted:
             assembly_y += y_shift
 
     pos["binning"] = np.array([0, assembly_y])
-
     binning_y = pos["binning"][1] + y_shift
     for l, modules_list in bfs_binning_layers.items():
         if l == 0:
             continue
         
-        binning_x = pos["binning"][0]+0.6
+        binning_x = pos["binning"][0]+2.8
 
         flag_inserted = False
         for m in modules_list:
             pos[m] = np.array([binning_x, binning_y])
-            binning_x += 0.6
+            binning_x += 2.8
             flag_inserted = True
 
         if flag_inserted:
             binning_y += y_shift
+
+    ####################################################
+    ####################################################
+    ####################################################
 
     assert len(pos) == len(G.nodes())
 
@@ -111,30 +149,6 @@ def main():
     pos_labels_attrs = {}
     for node, coords in new_pos.items():
         pos_labels_attrs[node] = (coords[0], coords[1] + 4)
-
-    # ## ---> ## MANUAL SHIFTING POSITIONS ## <--- ##
-    # # Assembly coverage
-    # old_assemblycoverage_y = new_pos["assembly_coverage"][1]
-    # new_pos["assembly_coverage"] = np.array([new_pos["assembly_readmapping"][0], old_assemblycoverage_y])
-
-    # old_assemblycoverage_label_y = pos_labels_attrs["assembly_coverage"][1]
-    # pos_labels_attrs["assembly_coverage"] = np.array([pos_labels_attrs["assembly_readmapping"][0], old_assemblycoverage_label_y])
-
-    # # Gene Coverage
-    # old_genecoverage_y = new_pos["gene_coverage"][1]
-    # new_pos["gene_coverage"] = np.array([new_pos["assembly_readmapping"][0]+0.3, old_genecoverage_y])
-
-    # old_genecoverage_label_y = pos_labels_attrs["gene_coverage"][1]
-    # pos_labels_attrs["gene_coverage"] = np.array([pos_labels_attrs["assembly_readmapping"][0]+0.35, old_genecoverage_label_y])
-
-    # # Domain annotation
-    # old_domainannotation_y = new_pos["domain_annotation"][1]
-    # new_pos["domain_annotation"] = np.array([new_pos["orf_prediction"][0]+0.2, old_domainannotation_y])
-
-    # old_domainannotation_label_y = pos_labels_attrs["domain_annotation"][1]
-    # pos_labels_attrs["domain_annotation"] = np.array([pos_labels_attrs["orf_prediction"][0]+0.2, old_domainannotation_label_y])
-
-    print(new_pos)
 
     draw_graph(G, new_pos, pos_labels_attrs)
     draw_white_graph(G, new_pos, pos_labels_attrs)
@@ -150,7 +164,7 @@ def import_graph(edges: list):
 
 
 def draw_graph(G, new_pos, pos_labels_attrs):
-    plt.figure(figsize=(12, 10), dpi=300)
+    plt.figure(figsize=(14, 13), dpi=300)
     
     nx.draw(G, 
         new_pos, 
@@ -174,26 +188,28 @@ def draw_graph(G, new_pos, pos_labels_attrs):
 
 
 def draw_white_graph(G, new_pos, pos_labels_attrs):
-    plt.figure(figsize=(12, 10), dpi=300)
+    plt.figure(figsize=(14, 13), dpi=300)
     nx.draw(G, 
         new_pos, 
         with_labels = False, 
         alpha=0.8,
-        edge_color="#515151"
+        edge_color="#999999"
     )
 
     nodes = nx.draw_networkx_nodes(G, new_pos, node_color=["white" for _ in G.nodes() ])
     nodes.set_edgecolor('gray')
 
     for lbl, coords in pos_labels_attrs.items():
-        plt.text(coords[0], coords[1], lbl, path_effects=[pe.withStroke(linewidth=4, foreground="white")], va="center", ha="center")
+        plt.text(coords[0], coords[1], lbl, 
+                 path_effects=[pe.withStroke(linewidth=4, foreground="white")], 
+                 va="center", ha="center", weight='bold')
         
     plt.savefig('images/modules_DAG_white.png', bbox_inches='tight')
     plt.savefig('images/modules_DAG_white.svg', bbox_inches='tight', format="svg")
 
 
 def draw_workflow_graph(G, new_pos, pos_labels_attrs):
-    plt.figure(figsize=(12, 10), dpi=300)
+    plt.figure(figsize=(14, 13), dpi=300)
     choices = [
         "pre_processing",
         "assembly",
@@ -233,11 +249,13 @@ def draw_workflow_graph(G, new_pos, pos_labels_attrs):
         node_color=nc, 
         alpha=0.8,
         # node_size = [len(v) * the_base_size for v in G.nodes()],
-        edge_color="#515151"
+        edge_color="#999999"
     )
     
     for lbl, coords in pos_labels_attrs.items():
-        plt.text(coords[0], coords[1], lbl, path_effects=[pe.withStroke(linewidth=4, foreground="white")], va="center", ha="center")
+        plt.text(coords[0], coords[1], lbl, 
+                 path_effects=[pe.withStroke(linewidth=4, foreground="white")], 
+                 va="center", ha="center", weight='bold')
         
     stream_module_legend = mpatches.Patch(color=col_accepted, label='Accepted modules')
     analysis_module_legend = mpatches.Patch(color=col_ignored, label='Ignored modules')
@@ -245,6 +263,11 @@ def draw_workflow_graph(G, new_pos, pos_labels_attrs):
     plt.legend(handles=[stream_module_legend, analysis_module_legend, skipped_module_legend])
     plt.savefig('images/modules_DAG_workflow.png', bbox_inches='tight')
     plt.savefig('images/modules_DAG_workflow.svg', bbox_inches='tight', format="svg")
+
+
+def get_longest_path(G, source, target):
+    longest_path = max(nx.all_simple_paths(G, source, target), key=lambda x: len(x))
+    return longest_path
 
 
 if __name__ == "__main__":
