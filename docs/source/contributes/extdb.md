@@ -35,11 +35,15 @@ In this example we are going to integrate a package that perform a functional an
 
 We need to create the package folder inside the corresponding module, which in this case is `assembly_func_annotation`. Since we are going to integrate the program called `KOfam Scan`, we can create a folder called `kofam_scan`.
 
-{: .highlight }
-> {: .warning }
-> __Do not__ use any special characters or insert spaces in the name.
->
-> Just rely on _underscore_ and all lower-case characters
+```{warning}
+__Do not__ use any special characters or insert spaces in the name.
+```
+
+```{admonition} Highlight
+:class: important
+
+Just rely on _underscore_ and all lower-case characters
+```
 
 
 ## Step 4: Create package's snakefiles
@@ -51,8 +55,9 @@ Now we need to create the three files where we are going to implement all the ne
 
 For now you can leave them empty.
 
-{: .important }
+```{important}
 The names for this file are standard and are the same for each package. Do not change the filenames.
+```
 
 ![modules_folder](assets/images/extdb/module.png)
 
@@ -76,8 +81,9 @@ We can skip the `order` section, since our module `assembly_func_annotation` alr
 
 Similarly, we can skip also this section since our module `assembly_func_annotation` already existed before this integration.
  
-{: .important }
-> If you want to understand what really means a dependency in Geomosaic, you can read this [Modules Dependencies description](../modules.md#description).
+```{important}
+If you want to understand what really means a dependency in Geomosaic, you can read this [Modules Dependencies description](../modules.md#description).
+```
 
 ### Step 6.3: `modules` section
 
@@ -86,16 +92,20 @@ In the corresponding `modules` section, we need to add the name of our package i
 
 In particolar, the **key** (the blu string in the image) is the string that will come out in the terminal as a choice, during the workflow decision, while the **value** (in orange) is the actual name of the package, the one that we used also to create the folder in step 3. 
     
-{: .important }
+```{important}
 Package name on the **value** must match with the folder created in the step 3
+```
 
 ![modules_key](assets/images/extdb/modules_key.png)
 
 ### Step 6.4: `additional_input` section
 If the package does require any additional input, you can integrate this input in the corresponding section of `additional_input`. In this case we don't need to put any additional argument. 
 
-{: .highlight }
+```{admonition} Highlight
+:class: important
+
 Additional arguments are parameters that are widely known in the metagenomic workflow and that should be chosen by the user, as for example Completeness and Contamination.
+```
 
 In this section we have inserted also the possibility to specificy a folder that contains HMM models (for `assembly_hmm_annotation` and `mags_hmm_annotation`), as well as the name of the output folder these two modules in order to have different output name folder for different sets of HMMs.
 
@@ -105,8 +115,9 @@ This section is very simple, we only need to add the conda env file for our pack
 ![envs](assets/images/extdb/envs_key.png)
 
 ### Step 6.6: `external_db` section
-{: .note }
+```{note}
 Still under optimization
+```
 
 This section is useful to organize external databases for the package that we are going to integrate. In this example, we need an external database (extdb).
 
@@ -134,8 +145,9 @@ In this folder, we create two files named:
 - `snakefile.smk`
 - `target.txt` 
 
-{: .important }
+```{important}
 Do not change this filenames.
+```
 
 ![modules_extdb](assets/images/extdb/modules_extdb.png)
 

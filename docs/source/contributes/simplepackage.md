@@ -32,26 +32,33 @@ git checkout -b fastqc
 ## Step 2: Create the module folder (if does not exists)
 In this case we are going to integrate a package that belongs to a module related to the quality checks of the reads after the `pre_processing` step, so we create a module folder called `reads_qc` inside the `modules` folder (Figure below in [Step 4](#step-4-create-packages-snakefiles)). 
 
-{: .important }
+```{important}
 This step is necessary only if the module folder does not exists.
+```
 
-{: .highlight }
-> {: .warning }
-> __Do not__ use any special characters or insert spaces in the name.
->
-> Just rely on _underscore_ and all lower-case characters
+```{warning}
+__Do not__ use any special characters or insert spaces in the name.
+```
 
+```{admonition} Highlight
+:class: important
+
+Just rely on _underscore_ and all lower-case characters
+```
 
 ## Step 3: Create the package folder
 
 In this step we create the package folder inside the module of interest. In this case, our package folder will be `fastqc_readscount` (Figure below in [Step 4](#step-4-create-packages-snakefiles)).
 
-{: .highlight }
-> {: .warning }
-> __Do not__ use any special characters or insert spaces in the name.
->
-> Just rely on _underscore_ and all lower-case characters
+```{warning}
+__Do not__ use any special characters or insert spaces in the name.
+```
 
+```{admonition} Highlight
+:class: important
+
+Just rely on _underscore_ and all lower-case characters
+```
 
 ## Step 4: Create package's snakefiles
 
@@ -62,8 +69,9 @@ Create three code files inside the package folder, with the following filename:
 
 For now you can leave them empty.
 
-{: .important }
+```{important}
 The names for this file are standard and are the same for each package. Do not change the filenames.
+```
 
 ![modules_folder](assets/images/simplepackage/modulefolder.png)
 
@@ -86,8 +94,9 @@ Since `reads_qc` is a module that we thought to be after the processing of the r
 
 ### Step 6.2: `graph` section
 
-{: .important }
-> Before going further in this section, you should understand what really means a dependency in Geomosaic in this [Modules Dependencies description](../modules.md#description).
+```{important}
+Before going further in this section, you should understand what really means a dependency in Geomosaic in this [Modules Dependencies description](../modules.md#description).
+```
 
 The package that we are going to integrate in this module, depends on the output reads obtained from the `pre_processing` modules, so we put in graph the following line:
 
@@ -104,19 +113,24 @@ In the correspongin `modules` section, we need to add the name of the module, wh
 - `choices` - which is a dictionary containing all the packages belonging to that module. <br>
     In particolar, the **key** (the blu string in the image) is the String that will come out in the terminal as a choice, during the workflow decision, while the **value** (in orange) is the actual name of the package, the one that we used also to create the folder created in step 3. 
     
-    {: .important }
+    ```{important}
     Package name on the **value** must match with the folder created in the step 3
+    ```
     
-    {: .important }
+    ```{important}
     Remember the last comma after the last parenthesis.
+    ```
 
     ![modules](assets/images/simplepackage/modules.png)
 
 ### Step 6.4: `additional_input` section
 If the package does require any additional input, you can integrate this input in the corresponding section of `additional_input`. In this case we don't need to put any additional argument. 
 
-{: .highlight }
+```{admonition} Highlight
+:class: important
+
 Additional arguments are parameters that are widely known in the metagenomic workflow and that should be chosen by the user, as for example Completeness and Contamination.
+```
 
 In this section we have inserted also the possibility to specificy a folder that contains HMM models (for `assembly_hmm_annotation` and `mags_hmm_annotation`), as well as the name of the output folder these two modules in order to have different output name folder for different sets of HMMs.
 
@@ -126,8 +140,9 @@ This section is very simple, we only need to add the conda env file for our pack
 ![envs](assets/images/simplepackage/envs.png)
 
 ### Step 6.6: `external_db` section
-{: .note }
+```{note}
 Still under optimization
+```
 
 This section is useful to organize external databases for the package that we are going to integrate. In this example, we won't need any external database. Look to this example to understand how this section works.
 

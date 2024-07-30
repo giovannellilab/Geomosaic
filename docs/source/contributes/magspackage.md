@@ -28,8 +28,9 @@ git checkout -b mags_kofam_scan
 
 ## Step 2: Create the module folder (if does not exists)
 
-{: .note }
-As we can intuitively think, KOfam Scan is a package for the functional annotation, in this case for the mags. Before this integration, the only package that belonged to this module was DRAM. However, DRAM usually takes in input a folder that contains all the fasta files of the mags, which is different from the input of the kofam scan, which takes the predicted orf from a single MAG. 
+```{note}
+As we can intuitively think, KOfam Scan is a package for the functional annotation, in this case for the mags. Before this integration, the only package that belonged to this module was DRAM. However, DRAM usually takes in input a folder that contains all the fasta files of the mags, which is different from the input of the kofam scan, which takes the predicted orf from a single MAG.
+```
 
 Due to this difference, both packages cannot be in the same modules as the dependencies are different. So I decided to change the module belonging to DRAM, calling it `mags_metabolism_annotation` and insert `mags_kofam_scan` in the `mags_functional_annotation`, which depends on the mags_orf_prediction. Modules names are just to describe what the packages do, however, it would have been the same if it was `mags_functional_annotation` for DRAM and `mags_functional_annotation_2` for kofam scan.
 
@@ -37,12 +38,16 @@ Due to this difference, both packages cannot be in the same modules as the depen
 
 We need to create the package folder inside the corresponding module, which in this case is `mags_func_annotation`. Since we are going to integrate the program called `KOfam Scan` for MAGs, we can create a folder called `mags_kofam_scan`.
 
-{: .highlight }
-> {: .warning }
-> __Do not__ use any special characters or insert spaces in the name.
->
-> Just rely on _underscore_ and all lower-case characters
 
+```{warning}
+__Do not__ use any special characters or insert spaces in the name.
+```
+
+```{admonition} Highlight
+:class: important
+
+Just rely on _underscore_ and all lower-case characters
+```
 
 ## Step 4: Create package's snakefiles
 
@@ -53,8 +58,9 @@ Now we need to create the three files where we are going to implement all the ne
 
 For now you can leave them empty.
 
-{: .important }
+```{important}
 The names for this file are standard and are the same for each package. Do not change the filenames.
+```
 
 ## Step 5: create the corresponding `conda` env file 
 For this step, we don't need to create the corresponding `conda` env file as we have already created for the [Integration Example 2](extdb.md#step-5-create-the-corresponding-conda-env-file)
@@ -95,8 +101,9 @@ In the corresponding `modules` section, we need to add the name of our package i
 
 In particolar, the **key** (the blu string in the image) is the string that will come out in the terminal as a choice, during the workflow decision, while the **value** (in orange) is the actual name of the package, the one that we used also to create the folder in step 3. 
     
-{: .important }
+```{important}
 Package name on the **value** must match with the folder created in the step 3
+```
 
 Here we can see how DRAM was moved into the `mags_metabolism_annotation` module.
 ```
@@ -121,8 +128,12 @@ Here we can see how DRAM was moved into the `mags_metabolism_annotation` module.
 ### Step 6.4: `additional_input` section
 If the package does require any additional input, you can integrate this input in the corresponding section of `additional_input`. In this case we don't need to put any additional argument. 
 
-{: .highlight }
+
+```{admonition} Highlight
+:class: important
+
 Additional arguments are parameters that are widely known in the metagenomic workflow and that should be chosen by the user, as for example Completeness and Contamination.
+```
 
 In this section we have inserted also the possibility to specificy a folder that contains HMM models (for `assembly_hmm_annotation` and `mags_hmm_annotation`), as well as the name of the output folder these two modules in order to have different output name folder for different sets of HMMs.
 
@@ -132,8 +143,9 @@ This section is very simple, we only need to add the conda env file for our pack
 ![envs](assets/images/magspackage/envs_key.png)
 
 ### Step 6.6: `external_db` section
-{: .note }
+```{note}
 Still under optimization
+```
 
 This section is useful to organize external databases for the package that we are going to integrate. In this example, we need an external database (extdb).
 
