@@ -79,7 +79,7 @@ def geo_prerun(args):
         show_gnuparallel_message(exists_extdb, extdb_output_script, output_script, singleSample_output_script, list_sample_output)
     
     print(f"\n{GEOMOSAIC_PROCESS}: Installing all the conda environments of your workflow/unit. This may take a while...\n", end="", flush=True)
-    # envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit)
+    envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit)
 
 
 def envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit):
