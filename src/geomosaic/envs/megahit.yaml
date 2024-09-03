@@ -2,7 +2,6 @@ name: geomosaic_megahit
 channels:
    - conda-forge
    - bioconda
-   - defaults
 dependencies:
    - megahit
    - seqkit

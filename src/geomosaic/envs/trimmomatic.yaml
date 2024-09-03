@@ -2,6 +2,5 @@ name: geomosaic_trimmomatic
 channels:
    - conda-forge
    - bioconda
-   - defaults
 dependencies:
    - trimmomatic

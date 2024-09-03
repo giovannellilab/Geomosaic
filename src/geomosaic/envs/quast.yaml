@@ -2,6 +2,5 @@ name: geomosaic_quast
 channels:
    - conda-forge
    - bioconda
-   - defaults
 dependencies:
    - quast

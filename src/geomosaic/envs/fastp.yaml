@@ -2,6 +2,5 @@ name: geomosaic_fastp
 channels:
    - conda-forge
    - bioconda
-   - defaults
 dependencies:
    - fastp
