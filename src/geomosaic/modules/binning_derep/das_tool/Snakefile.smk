@@ -1,7 +1,6 @@
 
 rule run_das_tool:
     input:
-        multi_binners_folder=expand("{wdir}/{sample}/{binning}", binning=config["MODULES"]["binning"], allow_missing=True),
         semibin_bins=expand("{wdir}/{sample}/{binning}/geomosaic_semibin2_bins", binning=config["MODULES"]["binning"], allow_missing=True),
         maxbin_bins=expand("{wdir}/{sample}/{binning}/geomosaic_maxbin2_bins", binning=config["MODULES"]["binning"], allow_missing=True),
         metabat_bins=expand("{wdir}/{sample}/{binning}/geomosaic_metabat2_bins", binning=config["MODULES"]["binning"], allow_missing=True),
@@ -18,22 +17,24 @@ rule run_das_tool:
         """
         mkdir -p {output.folder}
 
+        multi_binners_folder=$(dirname {input.semibin_bins})
+
         DT_labels=""
         DT_inputs=""
 
-        if [ -f {input.multi_binners_folder}/semibin2_ok.out ]; then
+        if [ -f $multi_binners_folder/semibin2_ok.out ]; then
             LC_ALL=C Fasta_to_Contig2Bin.sh -i {input.semibin_bins} -e fasta > {output.folder}/semibin2_dastool.tsv
             DT_labels="semibin2",$DT_labels
             DT_inputs={output.folder}/semibin2_dastool.tsv,$DT_inputs
         fi
 
-        if [ -f {input.multi_binners_folder}/maxbin2_ok.out ]; then
+        if [ -f $multi_binners_folder/maxbin2_ok.out ]; then
             LC_ALL=C Fasta_to_Contig2Bin.sh -i {input.maxbin_bins} -e fasta > {output.folder}/maxbin2_dastool.tsv
             DT_labels="maxbin2",$DT_labels
             DT_inputs={output.folder}/maxbin2_dastool.tsv,$DT_inputs
         fi
 
-        if [ -f {input.multi_binners_folder}/metabat2_ok.out ]; then
+        if [ -f $multi_binners_folder/metabat2_ok.out ]; then
             LC_ALL=C Fasta_to_Contig2Bin.sh -i {input.metabat_bins} -e fasta > {output.folder}/metabat2_dastool.tsv
             DT_labels="metabat2",$DT_labels
             DT_inputs={output.folder}/metabat2_dastool.tsv,$DT_inputs
