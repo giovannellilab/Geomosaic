@@ -6,6 +6,11 @@ In this page you will find some basic suggestions about the Geomosaic execution 
 
 <br>
 
+## Create a specific log folder for each tool
+When executing the `geomosaic prerun`, we suggest putting a specific folder for the tool that we are running or for our workflow. For instance, if we are running the assembly using metaspades with the `geomosaic unit` command, in the prerun you can use `-f slurm_logs/metaspades` to put all the corresponding logs in that folder.
+
+## Delete corresponding output folder before re-executing a tool
+If you would like to execute a tool again in a specific module, we suggest deleting the previous output folder from sample directories or renaming it. Indeed, snakemake can check if the output does exist, and in this case, it avoids rerunning the computation.
 
 ## Execute commands with geomosaic conda environment activated
 The geomosaic conda environment must be activate __before__ each command, even when submitting jobs through SLURM or executing the workflow using GNU Parallel. 

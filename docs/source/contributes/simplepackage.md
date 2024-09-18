@@ -140,11 +140,8 @@ This section is very simple, we only need to add the conda env file for our pack
 ![envs](assets/images/simplepackage/envs.png)
 
 ### Step 6.6: `external_db` section
-```{note}
-Still under optimization
-```
 
-This section is useful to organize external databases for the package that we are going to integrate. In this example, we won't need any external database. Look to this example to understand how this section works.
+This section is useful to organize external databases for the package that we are going to integrate. In this example, we won't need any external database. Look to [this example](extdb) to understand how this section works.
 
 However, let's do a brief introduction to this section:
 - each package that requires an extdb has a key which contains two other keys:

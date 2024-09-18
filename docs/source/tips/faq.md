@@ -6,6 +6,21 @@ Welcome to our section of _Frequently Asked Questions_. Over time, we plan to up
 
 <br>
 
+## How to ignore samples that failed a module computation
+For instance, if the assembly failed for some samples, you can ignore them in the next modules when you are preparing the scripts with the `geomosaic prerun` (using the option `--ignore_samples`).
+
+
+## How to submit an array job with the option to execute only a specific number of samples at the time?
+Using Slurm specification, users can set a specific number of jobs in execution.
+Once `geomosaic prerun` has been executed, you can modify the slurm script of geomosaic by adding `%2` to the line of the array job.
+Specifically, the result should be something like this:
+```
+...
+#SBATCH --array=1-32%2
+...
+```
+meaning that slurm can only execute 2 jobs at the time. 
+
 
 ## How can I see the SLURM queue of my jobs
 Let's assume that my account is `dcorso`, I can see the queue using the following commands `squeue -u dcorso` (specific for my account) or `squeue`.
@@ -15,7 +30,7 @@ squeue -u dcorso
 ```
 
 ## How can I check SLURM status of my jobs?
-Assuming that you know which is the job id (for example 123456), you can use the following command
+Assuming that you know which is the job ID (for example 123456), in clusters that have SLURM you can use the following command 
 ```
 sacct -j 123456
 ```
@@ -24,6 +39,8 @@ If you are working with a TMUX session, we suggest to add `less` in pipe to be a
 ```
 sacct -j 123456 | less
 ```
+
+This command is useful to see the logs and then the samples that failed a computation. For instance, if the assembly failed for some samples, you can ignore them in the next modules when you are preparing the scripts with the `geomosaic prerun` (using the option `--ignore_samples`).
 
 ## How can I use the same conda environments and external databases for different execute of Geomosaic?
 As we have suggested also in the [Walkthrough tutorial](../walkthrough/tutorial.md#geomosaic-setup---command), it is a good practice to specify the same folder for the `-c` and `-e` options in the geomosaic setup, respectively for the conda environment and external databases.

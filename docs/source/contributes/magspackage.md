@@ -143,10 +143,6 @@ This section is very simple, we only need to add the conda env file for our pack
 ![envs](assets/images/magspackage/envs_key.png)
 
 ### Step 6.6: `external_db` section
-```{note}
-Still under optimization
-```
-
 This section is useful to organize external databases for the package that we are going to integrate. In this example, we need an external database (extdb).
 
 In this section:
