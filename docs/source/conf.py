@@ -37,7 +37,7 @@ exclude_patterns = []
 
 html_theme = 'furo'
 html_logo = "_static/images/geomosaic_logo_multicolor_300dpi.png"
-html_title = ""
+html_title = "Geomosaic"
 html_favicon = "_static/images/favicon.png"
 html_static_path = ['_static']
 html_theme_options = {
