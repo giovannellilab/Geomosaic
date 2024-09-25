@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "geomosaic"
-version = "1.0.34"
+version = "1.1.0"
 authors = [
   { name = "Davide Corso", email = "davidecrs92@gmail.com" },
   { name = "Guillermo Climent Gargallo", email = "guillermo.climentgargallo@unina.it" },
