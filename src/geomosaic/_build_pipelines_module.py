@@ -6,6 +6,7 @@ import subprocess
 import os
 from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROMPT
 from geomosaic._validator import validator_hmms_folder, validator_completeness_contamination_integer, validator_hmmsearch_output_folder
+from geomosaic.custom_tools.argsoap_custom import validator_argsoap_database, validator_argsoap_fastafile, validator_argsoap_mapping, validator_argsoap_outfolder
 
 
 def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list, additional_input: dict, mstart: str="pre_processing", unit=False, dependencies=False):
@@ -115,6 +116,40 @@ def ask_additional_parameters(additional_input, order_writing):
                     additional_parameters[adt_param] = os.path.abspath(input_adt_param)
     
     return additional_parameters
+
+
+def ask_custom_db(gmpackages_custom_db, user_choices):
+    custom_db_info = {}
+
+    for module, tool in user_choices.items():
+        if tool in gmpackages_custom_db:
+            custom_db_info[tool] = {}
+
+            for cdb_param, cdb_param_tokens in gmpackages_custom_db[tool].items():
+                flag = False
+                while not flag:
+                    input_cdb_param = get_user_path(cdb_param_tokens["description"])
+
+                    if cdb_param == "argsoap_custom_protein_fasta" and not validator_argsoap_fastafile(input_cdb_param):
+                        print(f"{GEOMOSAIC_ERROR}: Invalid input")
+                    elif cdb_param == "argsoap_custom_mapping_file" and not validator_argsoap_mapping(input_cdb_param):
+                        print(f"{GEOMOSAIC_ERROR}: Invalid input")
+                    elif cdb_param == "argsoap_custom_output_folder" and not validator_argsoap_outfolder(input_cdb_param):
+                        print(f"{GEOMOSAIC_ERROR}: Invalid input")
+                    elif cdb_param == "argsoap_custom_database_folder" and not validator_argsoap_database(input_cdb_param):
+                        print(f"{GEOMOSAIC_ERROR}: Invalid input")
+                    else:
+                        flag = True
+                
+                # INSERT PARAM FOR CONFIG FILE
+                if cdb_param_tokens["type"] in ["integer"]:
+                    custom_db_info[tool][cdb_param] = int(input_cdb_param)
+                elif cdb_param_tokens["type"] in ["string"]:
+                    custom_db_info[tool][cdb_param] = str(input_cdb_param)
+                else: # File or folder
+                    custom_db_info[tool][cdb_param] = os.path.abspath(input_cdb_param)
+    
+    return custom_db_info
 
 
 def get_user_path(description):
