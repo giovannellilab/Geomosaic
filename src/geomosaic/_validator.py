@@ -84,22 +84,22 @@ def check_special_characters_on_string(s):
      
     # Pass the string in search method of regex object.    
     if(regex1.search(s) != None):
-        print(f"{GEOMOSAIC_ERROR}: Your provided output folder name contains a special character that is not allowed: {str(repr(s))}\n\
+        print(f"{GEOMOSAIC_ERROR}: The provided folder name contains a special character that is not allowed: {str(repr(s))}\n\
               The following special characters are not allowed: {na1[0]} {na1[1:]}{na2}")
         return False
 
     if(regex2.search(s) != None):
-        print(f"{GEOMOSAIC_ERROR}: Your provided output folder name contains a special character that is not allowed: {str(repr(s))}\n\
+        print(f"{GEOMOSAIC_ERROR}: The provided folder name contains a special character that is not allowed: {str(repr(s))}\n\
               The following special characters are not allowed: {na1[0]} {na1[1:]}{na2}")
         return False
     
     if " " in s:
-        print(f"{GEOMOSAIC_ERROR}: Your provided output folder name contains a space which is not allowed: {str(repr(s))}.\n\
+        print(f"{GEOMOSAIC_ERROR}: The provided folder name contains a space which is not allowed: {str(repr(s))}.\n\
               The following special characters are not allowed: {na1[0]} {na1[1:]}{na2}")
         return False
 
     if s == "":
-        print(f"{GEOMOSAIC_ERROR}: Your provided output folder name cannot be None as: {str(repr(s))}.\n\
+        print(f"{GEOMOSAIC_ERROR}: The provided folder name cannot be None as: {str(repr(s))}.\n\
               The following special characters are not allowed: {na1[0]} {na1[1:]}{na2}")
         return False
 
