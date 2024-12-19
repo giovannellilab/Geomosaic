@@ -56,5 +56,6 @@
     "skipped_modules": [
         "assembly_hmm_annotation", 
         "mags_hmm_annotation"
-    ]
+    ],
+    "custom_db": {}
 }

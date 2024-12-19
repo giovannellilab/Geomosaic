@@ -65,6 +65,7 @@ def geo_workflow(args):
             order_writing           = pipe["order_writing"]
             additional_parameters   = pipe["additional_parameters"]
             skipped_modules         = pipe["skipped_modules"]
+            custom_db               = pipe["custom_db"]
     elif pipeline == "just_mags":
         with open(os.path.join(os.path.dirname(__file__), 'just_mags.json')) as default_pipeline:
             pipe                    = json.load(default_pipeline)
@@ -72,6 +73,7 @@ def geo_workflow(args):
             order_writing           = pipe["order_writing"]
             additional_parameters   = pipe["additional_parameters"]
             skipped_modules         = pipe["skipped_modules"]
+            custom_db         = pipe["custom_db"]
     else:
         # NOTE: BUILDING PIPELINE BASED ON USER CHOICES
         if mstart != "pre_processing":

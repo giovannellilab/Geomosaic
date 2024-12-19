@@ -34,5 +34,6 @@
         "mags_tax_annotation",
         "mags_orf_prediction",
         "mags_coverage"
-    ]
+    ],
+    "custom_db": {}
 }
