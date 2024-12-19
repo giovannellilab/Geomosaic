@@ -1,0 +1,6 @@
+name: geomosaic_argsoap
+channels:
+   - conda-forge
+   - bioconda
+dependencies:
+   - args_oap
