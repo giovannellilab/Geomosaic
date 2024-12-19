@@ -2,7 +2,7 @@ import json
 import yaml
 import os
 from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_NOTE, append_to_gmsetupyaml
-from geomosaic._build_pipelines_module import import_graph, build_pipeline_modules, ask_additional_parameters
+from geomosaic._build_pipelines_module import ask_custom_db, import_graph, build_pipeline_modules, ask_additional_parameters
 from geomosaic._compose import write_gmfiles, compose_config
 from geomosaic._draw import geomosaic_draw_workflow
 
@@ -51,6 +51,7 @@ def geo_workflow(args):
     additional_input    = gmpackages["additional_input"]
     envs                = gmpackages["envs"]
     gmpackages_extdb    = gmpackages["external_db"]
+    gmpackages_customdb = gmpackages["custom_db"]
 
     ##################################
     ######### -- WORKFLOW -- #########
@@ -87,6 +88,8 @@ def geo_workflow(args):
 
         ## ASK ADDITIONAL PARAMETERS
         additional_parameters = ask_additional_parameters(additional_input, order_writing)
+        ## ASK CUSTOM DB
+        custom_db = ask_custom_db(gmpackages_customdb, user_choices)
     
     # print("=======USER_CHOICES=======")
     # print(user_choices)
@@ -106,7 +109,7 @@ def geo_workflow(args):
                             user_choices, modules_folder, 
                             geomosaic_user_parameters, 
                             envs, envs_folder, geomosaic_condaenvs_folder,
-                            geomosaic_externaldb_folder, gmpackages_extdb, threads)
+                            geomosaic_externaldb_folder, gmpackages_extdb, custom_db, threads)
 
     ## SNAKEFILE FILE SETUP
     write_gmfiles(config_filename, config, 
