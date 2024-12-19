@@ -2,12 +2,13 @@ import yaml
 import os
 import shutil
 from geomosaic._utils import GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_NOTE
+from geomosaic.custom_tools.argsoap_custom import prepare_argsoap_customdb
 
 
 def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choices, \
                    modules_folder, geomosaic_user_parameters, envs, envs_folder, geomosaic_condaenvs_folder, \
                     geomosaic_externaldb_folder, gmpackages_extdb, \
-                        threads):
+                        custom_db, threads):
     ## CONFIG FILE SETUP
     config = {}
 
@@ -25,6 +26,7 @@ def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choi
 
     ## COPY USER PARAMS on the CORRESPONDING LOCATION and SAVE ENVS location
     for um, up in user_choices.items():
+        # MEANINGS - up: user package   -    um: user module
 
         ## USER PARAMS -- SECTION
         if "USER_PARAMS" not in config:
@@ -52,9 +54,12 @@ def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choi
             
             config["ENVS"][up] = up_dst_envs
 
-            ## ENV for EXTDB - TODO: OPTIMIZE this section
+            ## ENV for EXTDB or CUSTOM DB - TODO: OPTIMIZE this section
             if up in gmpackages_extdb:
                 config["ENVS_EXTDB"][gmpackages_extdb[up]["inpfolder"]] = up_dst_envs
+            
+            if up in custom_db:
+                config["ENVS_EXTDB"][up] = up_dst_envs
 
         ## EXTDB -- SECTION
         if "EXT_DB" not in config:
@@ -62,6 +67,19 @@ def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choi
         
         if up in gmpackages_extdb:
             config["EXT_DB"][gmpackages_extdb[up]["inpfolder"]] = str(os.path.join(geomosaic_externaldb_folder, gmpackages_extdb[up]["outfolder"]))
+
+        ## CUSTOM DB -- SECTION
+        if "CUSTOM_DB" not in config:
+            config["CUSTOM_DB"] = {}
+        
+        if up in custom_db:
+            if up not in config["CUSTOM_DB"]:
+                config["CUSTOM_DB"][up] = {}
+            
+            preparing = prepare_custom_db()
+            #                where to write        collected info    path of geomosaic extdb
+            preparing[up](config["CUSTOM_DB"][up], custom_db[up], geomosaic_externaldb_folder)
+
 
     return config
 
@@ -129,3 +147,12 @@ def write_extdb_snakefile(snakefile_extdb, config_filename, order_writing, user_
     else:
         print(f"{GEOMOSAIC_NOTE}: your workflow doesn't need the preparation of external database.")
         print(GEOMOSAIC_OK)
+
+
+def prepare_custom_db():
+
+    tools_for_customdb = {
+        "argsoap_custom": prepare_argsoap_customdb
+    }
+
+    return tools_for_customdb
