@@ -92,7 +92,8 @@
         "func_classification_rb": {
             "description": "Module: Functional classification [Read-based]",
             "choices": {
-                "mi-faser (GS-21-all)": "mifaser"
+                "mi-faser (GS-21-all)": "mifaser",
+                "ARGs-OAP with Custom Database": "argsoap_custom"
             }
         },
     
@@ -263,39 +264,40 @@
     "additional_input": {
         "assembly_hmm_annotation": {
             "hmm_folder": {
-                "description": "\n[ADDITIONAL PARAMETER REQUEST - ASSEMBLY HMM ANNOTATION] Description: you need to specify also an absolute path to the folder containing the HMM files, which extension must be '.hmm' or '.HMM'\nRequired parameter: Absolute path",
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - ASSEMBLY HMM ANNOTATION]\nDescription: you need to specify also an absolute path to the folder containing the HMM files, which extension must be '.hmm' or '.HMM'\nRequired parameter: Absolute path",
                 "type": "folder"
             },
             "assembly_hmmsearch_output_folder": {
-                "description": "\n[ADDITIONAL PARAMETER REQUEST - ASSEMBLY HMM ANNOTATION] Description: you need to specify a name for the output folder",
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - ASSEMBLY HMM ANNOTATION]\nDescription: you need to specify a name for the output folder",
                 "type": "string"
             }
         },
 
         "mags_retrieval": {
             "completness_threshold":{
-                "description": "\n[ADDITIONAL PARAMETER REQUEST - MAGS RETRIEVAL] Description: COMPLETENESS parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 90",
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - MAGS RETRIEVAL]\nDescription: COMPLETENESS parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 90",
                 "type": "integer"
             },
             "contamination_threshold":{
-                "description": "\n[ADDITIONAL PARAMETER REQUEST - MAGS RETRIEVAL] Description: CONTAMINATION parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 10",
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - MAGS RETRIEVAL]\nDescription: CONTAMINATION parameters to filter retrieved bins\nRequired parameter: integer value - Suggested value: 10",
                 "type": "integer"
             }
         },
 
         "mags_hmm_annotation": {
             "hmm_folder": {
-                "description": "\n[ADDITIONAL PARAMETER REQUEST - MAGS HMM ANNOTATION] Description: you need to specify also an absolute path to the folder containing the HMM files, which extension must be '.hmm' or '.HMM'\nRequired parameter: Absolute path",
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - MAGS HMM ANNOTATION]\nDescription: you need to specify also an absolute path to the folder containing the HMM files, which extension must be '.hmm' or '.HMM'\nRequired parameter: Absolute path",
                 "type": "folder"
             },
             "mags_hmmsearch_output_folder": {
-                "description": "\n[ADDITIONAL PARAMETER REQUEST - MAGS HMM ANNOTATION] Description: you need to specify a name for the output folder",
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - MAGS HMM ANNOTATION]\nDescription: you need to specify a name for the output folder",
                 "type": "string"
             }
         }
     },
 
     "envs": {
+        "argsoap_custom": "argsoap.yaml",
         "bakta": "bakta.yaml",
         "bbmap": "bbmap.yaml",
         "bbmap_shrinked": "bbmap.yaml",
@@ -383,6 +385,27 @@
         "recognizer": {
             "inpfolder": "recognizer",
             "outfolder": "recognizer_extdb"
+        }
+    },
+
+    "custom_db": {
+        "argsoap_custom": {
+            "argsoap_custom_protein_fasta": {
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM DB for ARGs-OAP - FASTA FILE]\nDescription: you need to specify the path to the protein fasta file for the custom DB of ARGs-OAP",
+                "type": "file"
+            },
+            "argsoap_custom_mapping_file": {
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM DB for ARGs-OAP - Mapping FILE]\nDescription: you need to specify the path to the mapping file for the custom DB of ARGs-OAP",
+                "type": "file"
+            },
+            "argsoap_custom_database_folder": {
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM DB for ARGs-OAP - Database folder]\nDescription: you need to specify a name for the custom database folder. For example, if this argsoap custom will concern hydrogenases, you may want to rename the output folder as 'argsoap_custom_hydrogenases'",
+                "type": "folder"
+            },
+            "argsoap_custom_output_folder": {
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM DB for ARGs-OAP - Output folder]\nDescription: you need to specify a name for the output folder. For example, if this argsoap custom will concern hydrogenases, you may want to rename the database folder as 'argsoap_custom_hydrogenases'",
+                "type": "folder"
+            }
         }
     },
 
