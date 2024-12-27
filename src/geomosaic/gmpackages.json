@@ -400,11 +400,11 @@
             },
             "argsoap_custom_database_folder": {
                 "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM DB for ARGs-OAP - Database folder]\nDescription: you need to specify a name for the custom database folder. For example, if this argsoap custom will concern hydrogenases, you may want to rename the output folder as 'argsoap_custom_hydrogenases'",
-                "type": "folder"
+                "type": "string"
             },
             "argsoap_custom_output_folder": {
                 "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM DB for ARGs-OAP - Output folder]\nDescription: you need to specify a name for the output folder. For example, if this argsoap custom will concern hydrogenases, you may want to rename the database folder as 'argsoap_custom_hydrogenases'",
-                "type": "folder"
+                "type": "string"
             }
         }
     },
