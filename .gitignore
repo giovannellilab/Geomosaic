@@ -13,7 +13,7 @@ dag_snakefile.sh
 /temp
 /slurm*
 /parallel*
-/*.log
+/*log*
 /samples_table.tsv
 /list_samples.txt
 /gmsetup.yaml
