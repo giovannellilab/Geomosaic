@@ -1,23 +1,22 @@
 import os
 import re
-from geomosaic._utils import GEOMOSAIC_ERROR
+from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROMPT
 from geomosaic._validator import check_special_characters_on_string
 
 
-def prepare_argsoap_customdb(config_writing_section, collected_info, geomosaic_externaldb_folder):
+def prepare_argsoap_customdb(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder):
     # USER FILES
-    config_writing_section["user_protein_fasta"] = collected_info["argsoap_custom_protein_fasta"]
-    config_writing_section["user_mapping_file"] = collected_info["argsoap_custom_mapping_file"]
-
-    # USER FOLDER
-    config_writing_section["database_folder"] = collected_info["argsoap_custom_database_folder"]
-    config_writing_section["output_folder"] = collected_info["argsoap_custom_output_folder"]
+    config_customdb_section["user_protein_fasta"] = collected_info["argsoap_custom_protein_fasta"]
+    config_customdb_section["user_mapping_file"] = collected_info["argsoap_custom_mapping_file"]
+    config_customdb_section["output_folder"] = collected_info["argsoap_custom_output_folder"]
 
     basename_fasta = os.path.basename(collected_info["argsoap_custom_protein_fasta"])
     basename_mapping = os.path.basename(collected_info["argsoap_custom_mapping_file"])
 
-    config_writing_section["protein_fasta"] = os.path.join(geomosaic_externaldb_folder, collected_info["argsoap_custom_database_folder"], basename_fasta)
-    config_writing_section["mapping_file"] = os.path.join(geomosaic_externaldb_folder, collected_info["argsoap_custom_database_folder"], basename_mapping)
+    # EXTDB Section
+    config_extdb_section["database_folder"] = os.path.join(geomosaic_externaldb_folder, collected_info["argsoap_custom_database_folder"])
+    config_extdb_section["protein_fasta"] = os.path.join(geomosaic_externaldb_folder, collected_info["argsoap_custom_database_folder"], basename_fasta)
+    config_extdb_section["mapping_file"] = os.path.join(geomosaic_externaldb_folder, collected_info["argsoap_custom_database_folder"], basename_mapping)
 
 
 def validator_argsoap_fastafile(fasta_file):
@@ -119,7 +118,7 @@ def validator_argsoap_database(param):
     return True
 
 
-argsoap_database_structure = """
+argsoap_database_structure = GEOMOSAIC_PROMPT("""
 #######################################
 #### ARGs-OAP Custom Database Info ####
 #######################################
@@ -154,5 +153,5 @@ mapping.tsv:
     id1    class1    subclass1    iron
     id2    class2    subclass2    iron
 
-"""
+""")
 

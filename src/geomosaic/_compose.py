@@ -73,18 +73,24 @@ def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choi
             config["CUSTOM_DB"] = {}
         
         if up in custom_db:
-            if up not in config["CUSTOM_DB"]:
+            if up not in config["CUSTOM_DB"]: 
                 config["CUSTOM_DB"][up] = {}
             
-            preparing = prepare_custom_db()
-            #                where to write        collected info    path of geomosaic extdb
-            preparing[up](config["CUSTOM_DB"][up], custom_db[up], geomosaic_externaldb_folder)
-
+            if up not in config["EXT_DB"]:
+                config["EXT_DB"][up] = {}
+            
+            preparing = prepare_custom_db() 
+            preparing[up](
+                config["CUSTOM_DB"][up], # where to write user inputs
+                config["EXT_DB"][up], # where to write for extdb 
+                custom_db[up], # collected info
+                geomosaic_externaldb_folder  # path of geomosaic extdb
+            )
 
     return config
 
 
-def write_gmfiles(config_filename, config, snakefile_filename, snakefile_extdb, user_choices, order_writing, modules_folder, gmpackages_extdb, gmpackages_extdb_path):
+def write_gmfiles(config_filename, config, snakefile_filename, snakefile_extdb, user_choices, order_writing, modules_folder, gmpackages_extdb, gmpackages_extdb_path, custom_db):
     # WRITING CONFIG FILE
     with open(config_filename, 'w') as fd_config:
         yaml.dump(config, fd_config)
@@ -112,10 +118,10 @@ def write_gmfiles(config_filename, config, snakefile_filename, snakefile_extdb, 
             with open(os.path.join(modules_folder, i, pckg_chosen, "Snakefile.smk")) as sf:
                 fd.write(sf.read())
 
-    write_extdb_snakefile(snakefile_extdb, config_filename, order_writing, user_choices, gmpackages_extdb, gmpackages_extdb_path)
+    write_extdb_snakefile(snakefile_extdb, config_filename, order_writing, user_choices, gmpackages_extdb, gmpackages_extdb_path, custom_db)
 
 
-def write_extdb_snakefile(snakefile_extdb, config_filename, order_writing, user_choices, gmpackages_extdb, gmpackages_extdb_path):
+def write_extdb_snakefile(snakefile_extdb, config_filename, order_writing, user_choices, gmpackages_extdb, gmpackages_extdb_path, custom_db):
     # Rule for external DB
     external_added = set()
     for e in order_writing:
@@ -123,6 +129,9 @@ def write_extdb_snakefile(snakefile_extdb, config_filename, order_writing, user_
         if tool in gmpackages_extdb and gmpackages_extdb[tool]["inpfolder"] not in external_added:
             extdb_snakefile = gmpackages_extdb[tool]["inpfolder"]
             external_added.add(extdb_snakefile)
+        elif tool in custom_db:
+            external_added.add(tool)
+
 
     if len(external_added) > 0:
         print(f"{GEOMOSAIC_PROCESS}: Building preliminary workflow to prepare all the database of your workflow...", end="", flush=True)

@@ -118,7 +118,7 @@ def geo_workflow(args):
                   snakefile_filename, snakefile_extdb, 
                   user_choices, order_writing, 
                   modules_folder, 
-                  gmpackages_extdb, gmpackages_extdb_path)
+                  gmpackages_extdb, gmpackages_extdb_path, custom_db)
     
     print(f"{GEOMOSAIC_NOTE}: drawing your workflow graph...")
     geomosaic_draw_workflow(gmpackages_path, user_choices, skipped_modules)

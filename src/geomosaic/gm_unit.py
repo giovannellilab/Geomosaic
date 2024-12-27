@@ -110,7 +110,7 @@ def geo_unit(args):
                   snakefile_filename, snakefile_extdb, 
                   user_choices, order_writing, 
                   modules_folder, 
-                  gmpackages_extdb, gmpackages_extdb_path)
+                  gmpackages_extdb, gmpackages_extdb_path, custom_db)
     
     # # Draw DAG
     # dag_image = os.path.join(geomosaic_dir, "dag.pdf")
