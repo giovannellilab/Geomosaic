@@ -28,16 +28,17 @@ The full tree of dependencies among all modules is shown here.
 To summarise, the dependency tree has to be considered when ignoring specific modules, as they may inadvertently block other modules in the current or the next stream of analysis.
 
 <style type="text/css">
-.tg  {border-collapse:collapse;border-color:#9ABAD9;border-spacing:0;margin:0px auto;}
+.tg  {border-collapse:collapse;border-color:#9ABAD9;border-spacing:0;}
 .tg td{background-color:#EBF5FF;border-color:#9ABAD9;border-style:solid;border-width:1px;color:#444;
   font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg th{background-color:#409cff;border-color:#9ABAD9;border-style:solid;border-width:1px;color:#fff;
   font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg .tg-9wq8{border-color:inherit;text-align:center;vertical-align:middle}
+.tg .tg-9tkk{border-color:#9abad9;text-align:center;vertical-align:middle}
 .tg .tg-njus{border-color:inherit;font-weight:bold;position:-webkit-sticky;position:sticky;text-align:center;
   text-decoration:underline;top:-1px;vertical-align:middle;will-change:transform}
 .tg .tg-uzvj{border-color:inherit;font-weight:bold;text-align:center;vertical-align:middle}
-@media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;margin: auto 0px;}}</style>
+@media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;}}</style>
 <div class="tg-wrap"><table class="tg"><thead>
   <tr>
     <th class="tg-njus">Stream-level</th>
@@ -46,7 +47,7 @@ To summarise, the dependency tree has to be considered when ignoring specific mo
   </tr></thead>
 <tbody>
   <tr>
-    <td class="tg-uzvj" rowspan="7">Read-based</td>
+    <td class="tg-uzvj" rowspan="8">Read-based</td>
     <td class="tg-9wq8" rowspan="3">Pre Processing</td>
     <td class="tg-9wq8">fastp</td>
   </tr>
@@ -61,7 +62,10 @@ To summarise, the dependency tree has to be considered when ignoring specific mo
     <td class="tg-9wq8">fastqc + reads count</td>
   </tr>
   <tr>
-    <td class="tg-9wq8">Functional Annotation</td>
+    <td class="tg-9tkk" rowspan="2">Functional Annotation</td>
+    <td class="tg-9tkk">ARGs-OAP with Custom DB</td>
+  </tr>
+  <tr>
     <td class="tg-9wq8">mi-faser</td>
   </tr>
   <tr>
@@ -72,7 +76,7 @@ To summarise, the dependency tree has to be considered when ignoring specific mo
     <td class="tg-9wq8">metaPhlAn</td>
   </tr>
   <tr>
-    <td class="tg-uzvj" rowspan="16">Assembly-Based</td>
+    <td class="tg-uzvj" rowspan="16">Assembly Based</td>
     <td class="tg-9wq8" rowspan="2">Assembly</td>
     <td class="tg-9wq8">metaSPAdes</td>
   </tr>
@@ -131,7 +135,7 @@ To summarise, the dependency tree has to be considered when ignoring specific mo
     <td class="tg-9wq8">Bakta</td>
   </tr>
   <tr>
-    <td class="tg-uzvj" rowspan="12">Binning-Based</td>
+    <td class="tg-uzvj" rowspan="12">Binning Based</td>
     <td class="tg-9wq8">Binning</td>
     <td class="tg-9wq8">Multi-Binners (Metabat2 + MaxBin2 + SemiBin2)</td>
   </tr>
