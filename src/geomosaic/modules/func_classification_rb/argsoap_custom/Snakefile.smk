@@ -4,7 +4,7 @@ rule run_argsoap_custom:
         r1=expand("{wdir}/{sample}/{pre_processing}/R1.fastq.gz", pre_processing=config["MODULES"]["pre_processing"], allow_missing=True),
         r2=expand("{wdir}/{sample}/{pre_processing}/R2.fastq.gz", pre_processing=config["MODULES"]["pre_processing"], allow_missing=True),
         argsoap_custom_fasta = expand("{argsoap_custom_fasta}", argsoap_custom_fasta = config["EXT_DB"]["argsoap_custom"]["protein_fasta"]),
-        argsoap_custom_mapping = expand("{argsoap_custom_mapping}", argsoap_custom_mapping = config["CUSTOMEXT_DB_DB"]["argsoap_custom"]["mapping_file"]),
+        argsoap_custom_mapping = expand("{argsoap_custom_mapping}", argsoap_custom_mapping = config["EXT_DB"]["argsoap_custom"]["mapping_file"]),
     output:
         directory("{wdir}/{sample}/{argsoap_custom_output_folder}")
     params:
