@@ -142,7 +142,7 @@ sequences.fasta:
     >id2
     GWTRCMDCQ...
 
-- A file named 'mapping.tsv', which is tab-separated. 
+- A file of mapping, for example 'mapping.tsv', which is tab-separated. 
 This file should contain at least one column, describing all the IDs of the fasta sequences. 
 However you can put more columns, each one representing Class, Subclass or categories of your interests.
 Do not put space in the column name. We suggest putting "_" instead of spaces. Geomosaic will make some checks.
