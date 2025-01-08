@@ -60,7 +60,7 @@ walkthrough/tutorial
 
 tips/suggestions
 tips/faq
-tips/toolcustomdb
+tips/specifictools
 ```
 
 ```{toctree}

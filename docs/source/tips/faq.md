@@ -46,7 +46,7 @@ This command is useful to see the logs and then the samples that failed a comput
 As we have suggested also in the [Walkthrough tutorial](../walkthrough/tutorial.md#geomosaic-setup---command), it is a good practice to specify the same folder for the `-c` and `-e` options in the geomosaic setup, respectively for the conda environment and external databases.
 
 
-## How can I add other options to the tools of my warkflow?
+## How can I add other options to the tools of my workflow?
 Assuming that you already run `geomosaic workflow` / `geomosaic unit`, first you should know where is located your folder related to "GM USER PARAMETERS". If you don't know this information, you can retrieve it by opening the file called `gmsetup.yaml` (if you have specified the `-s` option during the `geomosaic setup` command, the corresponding filename could be different, so you should remember this). By opening such file, you can see the path related to the key `GM_USER_PARAMETERS`. Now in the terminal, change directory to this path, and you should be able to see many files with tool name that you have chosen. For example, if you chose `metaspades` for the _assembly_ module, you should see `metaspades.yaml`. Basically this is a text configuration file in which you can specify additional options for the corresponding tool as a bullet point list. 
 For instance, let's assume that you are interested in adding the memory option for metaspades of 500 Gb (according to [metaspades documentation](http://ablab.github.io/spades/running.html#advanced-options)), you can open that file with `nano` (for example) and add that option, something like this:
 
