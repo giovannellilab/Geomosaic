@@ -90,7 +90,7 @@ __The fourth question will regard a custom name for the output folder__
 Description: you need to specify a name for the output folder. For example, if this argsoap custom will concern hydrogenases, you may want to rename the output folder as 'argsoap_custom_hydrogenases'
 ```
 
-Since this tool can be used with a custom db, Geomosaic is asking this question to let you choose a custom name for the output folder. The idea is to have specific name for specific database of interest and execution, in order to execute again this tool maybe with a different db.
+Since this tool can be used with a custom db, Geomosaic is asking this question to let you choose a custom name for the output folder. The idea is to have a specific name for a specific database of interest and execution. This will allow to run the tool with different databases and have several output folders, each one with its own name.
 
 `argsoap_custom_hydrogenases`
 
