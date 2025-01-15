@@ -19,13 +19,13 @@ Change your current directory to the one that has been created through the [`git
 
 ::::{tab-set}
 
-:::{tab-item} _Change directory_
+:::{tab-item} Change directory
 ```bash
 cd Geomosaic
 ```
 :::
 
-:::{tab-item} _Clone it again_
+:::{tab-item} Clone it again
 ```bash
 git clone https://github.com/giovannellilab/Geomosaic.git
 
