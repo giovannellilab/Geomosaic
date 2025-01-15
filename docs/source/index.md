@@ -32,6 +32,7 @@ citation
 :hidden:
 
 installation
+update
 ```
 
 ```{toctree}
