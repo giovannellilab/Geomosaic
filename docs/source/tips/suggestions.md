@@ -7,8 +7,8 @@ In this page you will find some basic suggestions about the Geomosaic execution 
 <br>
 
 ## Create your workflow in two major steps
-The thing that I will explain here, will happen only if you want to create your workflow including the modules regarding the MAGs annotation. 
-This problem has two possible solutions:
+The issue I will explain here arises only when creating a workflow that includes modules for MAG annotation. 
+There are two possible solutions to address this problem:
 1. use `geomosaic unit` for each module of your interest
 2. divide your `geomosaic workflow` into two major steps
 
@@ -34,7 +34,7 @@ For example, this image shows how I’m controlling all the modules while execut
 The second solution is to divide the workflow into two major steps (or two sub-workflows).
 
 1. In the first step, you should execute a `geomosaic workflow` that has all the modules that you want up to the `mags_retrieval` __included__. No more than this. 
-2. When all these modules are executed, you can create another `geomosaic workflow` starting from the `mags_retrieval` for all the modules that you want on the Stream Binning-level, such as `mags_orf_prediction`, `mags_tax_annotation` and so on. 
+2. When all these modules are executed, you can create another `geomosaic workflow` starting from the `mags_retrieval` (using the corresponding flag `--module_start <modulename>`). With this step you can execute all the modules that you want on the Stream Binning-level, such as `mags_orf_prediction`, `mags_tax_annotation` and so on. 
 
 _Why these two steps?_
 
