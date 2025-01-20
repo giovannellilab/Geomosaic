@@ -1,6 +1,10 @@
 
 # `geomosaic workflow`
 
+```{caution}
+Before running a workflow from scratch up to the modules related to MAGs annotation, please read this [suggestion](../tips/suggestions.md#create-your-workflow-in-two-major-steps).
+
+```
 
 ## Overview
 
