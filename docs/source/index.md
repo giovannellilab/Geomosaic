@@ -24,6 +24,7 @@ Moreover, it has been developed to be easy to integrate with new modules and pac
 
 introduction
 modules
+lastupdates
 citation
 ```
 
