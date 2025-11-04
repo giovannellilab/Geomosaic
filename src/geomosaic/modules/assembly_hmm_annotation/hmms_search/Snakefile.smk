@@ -53,8 +53,8 @@ rule hmms_search:
         for mtd in coverage_methods:
             df_coverage = pd.read_csv(os.path.join(str(input.coverage_folder), f"{mtd}.tsv"), sep="\t")
             df_coverage.columns = ['contig', mtd]
-	    df_coverage = df_coverage.iloc[:, :2]
-            temp = pd.merge(m1, df_coverage, how="left", on="contig")
+    	    df_coverage = df_coverage.iloc[:, :2]
+	        temp = pd.merge(m1, df_coverage, how="left", on="contig")
             m1 = temp.copy()
         
         m1["sample"] = str(params.local_sample)
