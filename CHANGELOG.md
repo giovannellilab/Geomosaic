@@ -2,6 +2,16 @@
 Major changes will be documented in this file.
 
 
+## Version 1.1.4 (Nov 4, 2025)
+### Added
+ 
+### Changed
+ 
+### Fixed
+- Fixed hmm assembly annotation on merging coverage results (Module: `assembly_hmm_annotation`)
+
+
+
 ## Version 1.1.3 (Jan 8, 2025)
 ### Added
  
