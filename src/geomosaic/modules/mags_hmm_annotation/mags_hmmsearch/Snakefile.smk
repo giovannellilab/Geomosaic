@@ -55,6 +55,7 @@ rule run_mags_hmmsearch:
 
         for mtd in coverage_methods:
             df_coverage = pd.read_csv(os.path.join(str(input.mags_cov), f"{mtd}.tsv"), sep="\t")
+            df_coverage = df_coverage.iloc[:, :2]
             df_coverage.columns = ['mags', mtd]
             temp = pd.merge(m1, df_coverage, how="left", on="mags")
             m1 = temp.copy()
