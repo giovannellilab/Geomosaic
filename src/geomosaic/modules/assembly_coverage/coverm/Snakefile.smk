@@ -15,7 +15,7 @@ rule run_coverm:
 
         touch {output.folder}/list.txt
 
-        for mtd in mean trimmed_mean count tpm; do
+        for mtd in mean trimmed_mean covered_fraction count tpm; do
             TMPDIR={output.folder}/tmp coverm contig --bam-files {input.sorted_bam} \
                 --output-file {output.folder}/$mtd.tsv \
                 --threads {threads} \
