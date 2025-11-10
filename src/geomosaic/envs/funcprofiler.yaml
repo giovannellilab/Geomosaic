@@ -1,0 +1,33 @@
+name: geomosaic_funprofiler
+chennels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - _libgcc_mutex
+  - _openmp_mutex
+  - bzip2
+  - ca-certificates
+  - diamond
+  - ld_impl_linux-64
+  - libffi
+  - libgcc
+  - libgcc-ng
+  - libgomp
+  - libnsl
+  - libstdcxx-ng
+  - libuuid
+  - libzlib
+  - ncurses
+  - openssl
+  - pip
+  - python=3.10.4
+  - readline
+  - setuptools
+  - sqlite
+  - tk
+  - tzdata
+  - wheel
+  - xz
+  - zlib
+  - pip:
+      - git+https://github.com/EdoT99/fmh-funprofiler.git
