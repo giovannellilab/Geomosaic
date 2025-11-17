@@ -1,3 +1,4 @@
+
 rule funcprofiler_db:
     params:
         db='https://zenodo.org/records/10045253/files/KOs_sketched_scaled_1000.sig.zip",
@@ -11,3 +12,4 @@ rule funcprofiler_db:
         mkdir -p {output}
         curl --silent --output {output}/{params.filename} {params.db}
         """
+
