@@ -14,7 +14,7 @@ rule run_funcprofiler:
         """
         mkdir -p {output}
 
-        echo "[+] Concatenating reads ..."
+        echo "[+] Concatenating reads for sample: {wildcards.sample} "
         seq_file="{output}/seq_concat.fastq.gz"
 
         cat {input.r1} {input.r2} > $seq_file
@@ -24,5 +24,5 @@ rule run_funcprofiler:
 
         echo "[+] Removing concatenated reads ..."
         ( cd {output} && rm seq_concat.fastq.gz )
-        echo "[SUCCESS] funprofiler job finished for $sample "
+        echo "[SUCCESS] funprofiler job finished for {wildcards.sample} "
         """
