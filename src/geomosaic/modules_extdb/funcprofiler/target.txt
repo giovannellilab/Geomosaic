@@ -1,1 +1,0 @@
-expand("{funcprofiler_extdb_folder}", funcprofiler_extdb_folder=config["EXT_DB"]["funcprofiler"]),
