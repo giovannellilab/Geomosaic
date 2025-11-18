@@ -94,7 +94,7 @@
             "choices": {
                 "mi-faser (GS-21-all)": "mifaser",
                 "ARGs-OAP with Custom Database": "argsoap_custom",
-                "fmh-funprofiler" : "funcprofiler"
+                "fmh-funprofiler" : "funprofiler"
             }
         },
     
@@ -310,7 +310,7 @@
         "eggnog_mapper": "eggnog_mapper.yaml",
         "fastp": "fastp.yaml",
         "fastqc_readscount": "fastqc_readscount.yaml",
-        "funcprofiler": "funcprofiler.yaml",
+        "funprofiler": "funprofiler.yaml",
         "gtdbtk": "gtdbtk.yaml",
         "kaiju": "kaiju.yaml",
         "kofam_scan": "kofam_scan.yaml",
@@ -388,9 +388,9 @@
             "inpfolder": "recognizer",
             "outfolder": "recognizer_extdb"
         },
-        "funcprofiler": {
-            "inpfolder": "funcprofiler",
-            "outfolder": "funcprofiler_extdb"
+        "funprofiler": {
+            "inpfolder": "funprofiler",
+            "outfolder": "funprofiler_extdb"
         }
     },
 
@@ -418,6 +418,7 @@
     "gathering": [
         "mifaser",
         "kaiju",
+        "funprofiler",
 
         "kraken2",
         "eggnog_mapper",
