@@ -93,7 +93,8 @@
             "description": "Module: Functional classification [Read-based]",
             "choices": {
                 "mi-faser (GS-21-all)": "mifaser",
-                "ARGs-OAP with Custom Database": "argsoap_custom"
+                "ARGs-OAP with Custom Database": "argsoap_custom",
+                "fmh-funprofiler" : "funprofiler"
             }
         },
     
@@ -309,6 +310,7 @@
         "eggnog_mapper": "eggnog_mapper.yaml",
         "fastp": "fastp.yaml",
         "fastqc_readscount": "fastqc_readscount.yaml",
+        "funprofiler": "funprofiler.yaml",
         "gtdbtk": "gtdbtk.yaml",
         "kaiju": "kaiju.yaml",
         "kofam_scan": "kofam_scan.yaml",
@@ -385,6 +387,10 @@
         "recognizer": {
             "inpfolder": "recognizer",
             "outfolder": "recognizer_extdb"
+        },
+        "funprofiler": {
+            "inpfolder": "funprofiler",
+            "outfolder": "funprofiler_extdb"
         }
     },
 
@@ -412,6 +418,7 @@
     "gathering": [
         "mifaser",
         "kaiju",
+        "funprofiler",
 
         "kraken2",
         "eggnog_mapper",

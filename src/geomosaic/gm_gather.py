@@ -13,6 +13,8 @@ from geomosaic.gathering.gather_mags_recognizer import gather_mags_recognizer
 from geomosaic.gathering.gather_mifaser import gather_mifaser
 from geomosaic.gathering.gather_recognizer import gather_recognizer
 from geomosaic.gathering.gather_coverm_genome import gather_coverm_genome
+from geomosaic.gathering.gather_funprofiler import gather_funprofiler
+
 
 
 def geo_gather(args):
@@ -80,6 +82,7 @@ def gather_functions():
     return {
         "mifaser": gather_mifaser,
         "kaiju": gather_kaiju,
+        "funprofiler": gather_funprofiler,
 
         "kraken2": gather_kraken2,
         "eggnog_mapper": gather_eggnogmapper,

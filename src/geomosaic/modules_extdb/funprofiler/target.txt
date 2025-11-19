@@ -1,0 +1,1 @@
+expand("{funprofiler_extdb_folder}", funprofiler_extdb_folder=config["EXT_DB"]["funprofiler"]),

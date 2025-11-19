@@ -2,6 +2,13 @@
 Major changes will be documented in this file.
 
 
+## Version 1.1.4 (Nov 18, 2025)
+### Added
+- Added fmh-funprofiler for functional annotation with pre-defined KO database (Module: `func_classification_rb`)
+### Changed
+
+### Fixed
+
 ## Version 1.1.3 (Jan 8, 2025)
 ### Added
  
