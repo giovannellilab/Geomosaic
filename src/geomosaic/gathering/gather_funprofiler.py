@@ -40,7 +40,7 @@ def compose_matrix_funprofiler(folder, output_folder, samples):
             if t == 'prefetch_out':
                 raw_df = raw_df.loc[:,["match_name","intersect_bp"]]
                 raw_df.rename(columns={"match_name":pivot,"intersect_bp":s}, inplace=True)
-                file_name = "raw_counts"
+                file_name = "raw_counts_intersect_bp"
             elif t == "ko_profiles":
                 raw_df = raw_df.loc[:,[pivot,"abundance"]]
                 raw_df.rename(columns={"abundance":s}, inplace=True)
