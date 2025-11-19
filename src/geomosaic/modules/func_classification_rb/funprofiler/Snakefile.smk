@@ -20,7 +20,7 @@ rule run_funprofiler:
         cat {input.r1} {input.r2} > $seq_file
         echo "[+] Reads successfully concatenated into $seq_file " 
 
-        funcprofiler $seq_file {input.db_folder}/KOs_sketched_scaled_1000.sig.zip {params.user_params} {output}/ko_profiles.csv -t {threads} -p {output}/prefetch_out.csv
+        funprofiler $seq_file {input.db_folder}/KOs_sketched_scaled_1000.sig.zip {params.user_params} {output}/ko_profiles.csv -t {threads} -p {output}/prefetch_out.csv
 
         echo "[+] Removing concatenated reads ..."
         ( cd {output} && rm seq_concat.fastq.gz )
