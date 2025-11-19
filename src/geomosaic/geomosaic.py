@@ -125,9 +125,9 @@ def main():
                                 help=f"Geomosaic setup file created from the {GEOMOSAIC_PROMPT('geomosaic setup ...')} command.")
     prerun_required.add_argument('--exec_type', type=str, required=True, choices=["slurm", "gnu_parallel"], help="Use this option to specify how do you want execute geomosaic. If SLURM is available on your cluster we suggest to use '--exec_type slurm'. If not, you can use '--exec_type gnu_parallel'. " +\
                                       "More details on the Geomosaic Documentation.")
+    prerun_required.add_argument('--source', type=str, required=True, choices=["unit", "workflow"], help="Specify which Geomosaic command was run previously: 'unit' for a `geomosaic unit` run, 'workflow' for a `geomosaic workflow` run. This allows Geomosaic to select the correct configuration file.")
     
     prerun_optional = prerun_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments for BOTH SLURM and GNU PARALLEL"))
-    prerun_optional.add_argument('-u' ,'--unit', action='store_true', help="Install the conda environment of your geomosaic unit.")
     prerun_optional.add_argument('-t', '--threads', default=None, type=int, help="Threads to use (per sample). This value will override the one specified in the workflow/unit (config file) and thus will replace threads value in the config file. Default is None, means that is not going to be replaced (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
     prerun_optional.add_argument('-f', '--folder_logs', default=None, type=str, help="Folder for logs files. Default value is None means that slurm logs are saved in your current directory. However we suggest you to specify it and if it does not exists, Geomosaic will create it. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')")
     prerun_optional.add_argument('-i', '--ignore_samples', default=None, type=csv_values, help='a comma separated list of Samples to ignore (no spaces). Example: --ignore_samples sample1,sample2 .')

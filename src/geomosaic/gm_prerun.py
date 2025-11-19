@@ -9,7 +9,7 @@ from geomosaic._dummy_snakefile import create_dummy_snakefile
 
 def geo_prerun(args):
     gmsetup_file    = args.setup_file
-    unit            = args.unit
+    source          = args.source
     exectype        = args.exec_type
     ignore_samples  = args.ignore_samples
 
@@ -26,6 +26,7 @@ def geo_prerun(args):
     temp_geomosaic_samples = gmsetup["SAMPLES"]
     geomosaic_condaenvs_folder = gmsetup["GM_CONDA_ENVS"]
     jobname = gmsetup["PROJECT_NAME"][:8]
+    unit = True if source == "unit" else False
 
     name_snakefile = "Snakefile_unit.smk" if unit else "Snakefile.smk"
     exists_extdb = check_extdb_snakefile(geomosaic_wdir, unit)
