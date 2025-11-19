@@ -2,6 +2,14 @@
 Major changes will be documented in this file.
 
 
+## Version 1.2.2 (Nov 19, 2025)
+### Added
+
+### Changed
+
+### Fixed
+- Fixed license specification in toml file and `geomosaic --version` command
+
 ## Version 1.2.1 (Nov 19, 2025)
 ### Added
 - Added new required flag `--source` to the `prerun` command to indicate which previous Geomosaic command was executed: `unit` or `workflow`. This allows Geomosaic to select the correct configuration file for execution.

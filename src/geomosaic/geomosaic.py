@@ -5,8 +5,8 @@ from geomosaic.gm_workflow import geo_workflow
 from geomosaic.gm_unit import geo_unit
 from geomosaic.gm_prerun import geo_prerun
 from geomosaic.gm_gather import geo_gather
+from importlib.metadata import version, PackageNotFoundError
 import sys
-import pkg_resources
 
 
 def main():
@@ -36,7 +36,12 @@ def main():
                                           formatter_class=RawDescriptionHelpFormatter,
                                           add_help=False)
 
-    parser.add_argument("-v", "--version", action='version', version='%(prog)s '+ pkg_resources.get_distribution("geomosaic").version)
+    try:
+        __version__ = version("geomosaic")
+    except PackageNotFoundError:
+        __version__ = "unknown"
+
+    parser.add_argument("-v", "--version", action="version", version=f"%(prog)s {__version__}" )
 
     ######################
     ## SETUP Parameters ## 

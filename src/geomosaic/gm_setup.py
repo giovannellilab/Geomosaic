@@ -3,7 +3,7 @@ import pandas as pd
 import yaml
 from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_NOTE, GEOMOSAIC_OK, GEOMOSAIC_PROCESS, GEOMOSAIC_PROMPT, GEOMOSAIC_WARNING
 from geomosaic._validator import validate_working_dir
-import pkg_resources
+from importlib.metadata import version, PackageNotFoundError
 import shutil
 import re
 from subprocess import check_call
@@ -62,9 +62,14 @@ def geo_setup(args):
 
     print(GEOMOSAIC_OK)
     
+    try:
+        geomosaic_version = version("geomosaic")
+    except PackageNotFoundError:
+        geomosaic_version = "unknown"
+    
     config_parameters = {
         "PROJECT_NAME": project_name,
-        "GEOMOSAIC_VERSION": pkg_resources.get_distribution("geomosaic").version,
+        "GEOMOSAIC_VERSION": geomosaic_version,
         "GEOMOSAIC_WDIR": clean_directory_name(geomosaic_dir),
         "USER_RAWREADS_DIRECTORY": os.path.abspath(folder_raw_reads),
         "PROJECT_DESCRIPTION": "Metagenomics pipeline with GeoMosaic.",

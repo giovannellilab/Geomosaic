@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "geomosaic"
-version = "1.2.1"
+version = "1.2.2"
 authors = [
   { name = "Davide Corso", email = "davidecrs92@gmail.com" },
   { name = "Guillermo Climent Gargallo", email = "guillermo.climentgargallo@unina.it" },
@@ -14,10 +14,9 @@ description = "A flexible metagenomic pipeline combining read-based, assemblies 
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
+    "Programming Language :: Python :: 3"
 ]
-license = "GNU General Public License v3 (GPLv3)"
+license = "GPL-3.0+"
 license-files = ["LICENSE"]
 dependencies = [
     "pandas",
