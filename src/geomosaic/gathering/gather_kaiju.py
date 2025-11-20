@@ -36,7 +36,7 @@ def compose_matrix_kaiju(folder, output_folder, samples, pckg):
             rawdf = pd.read_csv(os.path.join(folder_data,f"{t}.tsv"), sep="\t")
             
             df_percent = rawdf.loc[:, ["taxon_name", "percent"]]
-            df.rename(columns={"taxon_name": pivot, "percent": s}, inplace=True)
+            df_percent.rename(columns={"taxon_name": pivot, "percent": s}, inplace=True)
 
             df_reads = rawdf.loc[:, ["taxon_name", "reads"]]
             df_reads.rename(columns={"taxon_name": pivot, "reads": s}, inplace=True)
@@ -52,15 +52,15 @@ def compose_matrix_kaiju(folder, output_folder, samples, pckg):
         m_percent = pd.DataFrame(sorted(unique_list), columns=[pivot])
         m_reads = pd.DataFrame(sorted(unique_list), columns=[pivot])
 
-        for x in list_dfs_percent:
-            temp_1 = pd.merge(m_, x, how="left", on=pivot)
-            m = temp_1.copy()
-        for x in list_dfs_reads:
-            temp_2 = pd.merge(m_reads, x, how="left", on=pivot)
+        for x1 in list_dfs_percent:
+            temp_1 = pd.merge(m_percent, x1, how="left", on=pivot)
+            m_percent = temp_1.copy()
+        for x2 in list_dfs_reads:
+            temp_2 = pd.merge(m_reads, x2, how="left", on=pivot)
             m_reads = temp_2.copy()
 
-        finalm_ = m.replace(np.nan, 0, regex=True)
-        finalm.to_csv(os.path.join(output_folder,f"{t}.tsv"), sep="\t", index=False, header=True)
+        finalm_percent = m_percent.replace(np.nan, 0, regex=True)
+        finalm_percent.to_csv(os.path.join(output_folder,f"{t}.tsv"), sep="\t", index=False, header=True)
 
         finalm_reads = m_reads.replace(np.nan, 0, regex=True)
         finalm_reads.to_csv(os.path.join(output_folder,f"{t}_reads.tsv"), sep="\t", index=False, header=True)
