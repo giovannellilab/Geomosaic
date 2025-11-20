@@ -6,20 +6,19 @@ from os import listdir
 import yaml
 from geomosaic.gathering.utils import get_sample_with_results
 
-def gather_funprofiler(config_file,geomosaic_wdir,output_base_folder,additional_info):
+
+def gather_funprofiler(all_samples,geomosaic_wdir,output_base_folder,additional_info):
     pckg = "funprofiler"
 
-    with open(config_file) as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-
-    samples = get_sample_with_results(pckg, geomosaic_wdir, config["SAMPLES"])
+    samples = get_sample_with_results(pckg, geomosaic_wdir,all_samples)
 
     output_folder = os.path.join(output_base_folder, pckg)
 
     check_call(f"mkdir -p {output_folder}", shell=True)
-    compose_matrix_funprofiler(geomosaic_wdir, output_folder, samples)
+    compose_matrix_funprofiler(geomosaic_wdir, output_folder, samples, pckg)
 
-def compose_matrix_funprofiler(folder, output_folder, samples):
+
+def compose_matrix_funprofiler(folder, output_folder, samples, pckg):
     
     for t in ['ko_profiles','prefetch_out']:
 
@@ -28,7 +27,7 @@ def compose_matrix_funprofiler(folder, output_folder, samples):
         pivot = 'ko_id'
 
         for s in samples:
-            folder_data = os.path.join(folder,s,"funprofiler")
+            folder_data = os.path.join(folder,s,pckg)
             flag = True
 
             if f"{t}.csv" not in listdir(folder_data):

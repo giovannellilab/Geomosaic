@@ -2,6 +2,14 @@
 Major changes will be documented in this file.
 
 
+## Version 1.3.0 (Nov 20, 2025)
+### Added
+- Added `kaiju` new output file on `gather` command
+### Changed
+- Removed flag `--unit` to the `gather` command & sample retrieval dependence on `config` files
+### Fixed
+- Fixed paths on package related `gather` functions & minor refactories
+
 ## Version 1.2.2 (Nov 19, 2025)
 ### Added
 

@@ -7,13 +7,10 @@ import yaml
 from geomosaic.gathering.utils import get_sample_with_results
 
 
-def gather_kraken2(config_file, geomosaic_wdir, output_base_folder, additional_info):
+def gather_kraken2(all_samples, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "kraken2"
 
-    with open(config_file) as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-    
-    samples = get_sample_with_results(pckg, geomosaic_wdir, config["SAMPLES"])
+    samples = get_sample_with_results(pckg, geomosaic_wdir, all_samples)
 
     output_folder = os.path.join(output_base_folder, pckg)
 
@@ -25,25 +22,25 @@ def parse_kraken_report(folder, output_folder, samples):
     DF_TAXA_RANKS = load_kraken_files(folder, samples)
 
     domain_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="domain")
-    domain_merged.to_csv(f"{output_folder}/domain.tsv", sep="\t", header=True, index=False)
+    domain_merged.to_csv(os.path.join(output_folder,"domain.tsv"), sep="\t", header=True, index=False)
 
     phylum_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="phylum")
-    phylum_merged.to_csv(f"{output_folder}/phylum.tsv", sep="\t", header=True, index=False)
+    phylum_merged.to_csv(os.path.join(output_folder,"phylum.tsv"), sep="\t", header=True, index=False)
 
     class_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="class")
-    class_merged.to_csv(f"{output_folder}/class.tsv", sep="\t", header=True, index=False)
+    class_merged.to_csv(os.path.join(output_folder,"class.tsv"), sep="\t", header=True, index=False)
 
     order_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="order")
-    order_merged.to_csv(f"{output_folder}/order.tsv", sep="\t", header=True, index=False)
+    order_merged.to_csv(os.path.join(output_folder,"order.tsv"), sep="\t", header=True, index=False)
 
     family_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="family")
-    family_merged.to_csv(f"{output_folder}/family.tsv", sep="\t", header=True, index=False)
+    family_merged.to_csv(os.path.join(output_folder,"family.tsv"), sep="\t", header=True, index=False)
 
     genus_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="genus")
-    genus_merged.to_csv(f"{output_folder}/genus.tsv", sep="\t", header=True, index=False)
+    genus_merged.to_csv(os.path.join(output_folder,"genus.tsv"), sep="\t", header=True, index=False)
 
     species_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="species")
-    species_merged.to_csv(f"{output_folder}/species.tsv", sep="\t", header=True, index=False)
+    species_merged.to_csv(os.path.join(output_folder,"species.tsv"), sep="\t", header=True, index=False)
 
 
 def merge_results_by_taxa(DF_TAXA_RANKS, taxa_level):
@@ -102,7 +99,7 @@ def load_kraken_files(folder, samples):
     }
 
     for s in samples:
-        df = pd.read_csv(f"{folder}/{s}/kraken2/kraken_report.txt", sep="\t", names=cols)
+        df = pd.read_csv(os.path.join(folder,s,"kraken2","kraken_report.txt"), sep="\t", names=cols)
         df["scientific_name"] = df.apply(lambda x: adjust_scientific_name(x["sc. name"]), axis=1)
         c1 = df["scientific_name"] != "unclassified"
         c2 = df["scientific_name"] != "root"

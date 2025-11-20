@@ -7,13 +7,10 @@ import yaml
 from geomosaic.gathering.utils import get_sample_with_results
 
 
-def gather_mags_gtdbtk(config_file, geomosaic_wdir, output_base_folder, additional_info):
+def gather_mags_gtdbtk(all_samples, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "mags_gtdbtk"
-
-    with open(config_file) as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
     
-    samples = get_sample_with_results(pckg, geomosaic_wdir, config["SAMPLES"])
+    samples = get_sample_with_results(pckg, geomosaic_wdir, all_samples)
 
     output_folder = os.path.join(output_base_folder, pckg)
 
@@ -25,25 +22,25 @@ def complete_mags_gtdbtk(folder, output_folder, samples):
     DF_TAXA_RANKS = get_tax_info(folder, output_folder, samples)
 
     domain_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="domain")
-    domain_merged.to_csv(f"{output_folder}/domain.tsv", sep="\t", header=True, index=False)
+    domain_merged.to_csv(os.path.join(output_folder,"domain.tsv"), sep="\t", header=True, index=False)
 
     phylum_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="phylum")
-    phylum_merged.to_csv(f"{output_folder}/phylum.tsv", sep="\t", header=True, index=False)
+    phylum_merged.to_csv(os.path.join(output_folder,"phylum.tsv"), sep="\t", header=True, index=False)
 
     class_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="class")
-    class_merged.to_csv(f"{output_folder}/class.tsv", sep="\t", header=True, index=False)
+    class_merged.to_csv(os.path.join(output_folder,"class.tsv"), sep="\t", header=True, index=False)
 
     order_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="order")
-    order_merged.to_csv(f"{output_folder}/order.tsv", sep="\t", header=True, index=False)
+    order_merged.to_csv(os.path.join(output_folder,"order.tsv"), sep="\t", header=True, index=False)
 
     family_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="family")
-    family_merged.to_csv(f"{output_folder}/family.tsv", sep="\t", header=True, index=False)
+    family_merged.to_csv(os.path.join(output_folder,"family.tsv"), sep="\t", header=True, index=False)
 
     genus_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="genus")
-    genus_merged.to_csv(f"{output_folder}/genus.tsv", sep="\t", header=True, index=False)
+    genus_merged.to_csv(os.path.join(output_folder,"genus.tsv"), sep="\t", header=True, index=False)
 
     species_merged = merge_results_by_taxa(DF_TAXA_RANKS, taxa_level="species")
-    species_merged.to_csv(f"{output_folder}/species.tsv", sep="\t", header=True, index=False)
+    species_merged.to_csv(os.path.join(output_folder,"species.tsv"), sep="\t", header=True, index=False)
 
 
 def get_tax_info(base_folder, output_folder, samples):
@@ -60,13 +57,13 @@ def get_tax_info(base_folder, output_folder, samples):
     taxa_ranks = ["domain", "phylum", "class", "order", "family", "genus", "species"]
 
     for s in samples:
-        results_folder = f"{base_folder}/{s}/mags_gtdbtk"
+        results_folder = os.path.join(base_folder,s,"mags_gtdbtk")
         
         flag_bac = False
         if "gtdbtk.bac120.summary.tsv" in listdir(results_folder):
             flag_bac = True
         
-            bac_df = pd.read_csv(f"{results_folder}/gtdbtk.bac120.summary.tsv", sep="\t")
+            bac_df = pd.read_csv(os.path.join(results_folder,"gtdbtk.bac120.summary.tsv"), sep="\t")
             
             bac_df["domain"]  = bac_df.apply(lambda x: get_taxa_ranks(x["classification"], "domain"), axis=1)
             bac_df["phylum"]  = bac_df.apply(lambda x: get_taxa_ranks(x["classification"], "phylum"), axis=1)
@@ -80,7 +77,7 @@ def get_tax_info(base_folder, output_folder, samples):
         if "gtdbtk.ar53.summary.tsv" in listdir(results_folder):
             flag_arc = True
             
-            arc_df = pd.read_csv(f"{results_folder}/gtdbtk.ar53.summary.tsv", sep="\t")
+            arc_df = pd.read_csv(os.path.join(results_folder,"gtdbtk.ar53.summary.tsv"), sep="\t")
             
             arc_df["domain"]  = arc_df.apply(lambda x: get_taxa_ranks(x["classification"], "domain"), axis=1)
             arc_df["phylum"]  = arc_df.apply(lambda x: get_taxa_ranks(x["classification"], "phylum"), axis=1)

@@ -8,21 +8,18 @@ from numpy import float64
 from geomosaic.gathering.utils import get_sample_with_results
 
 
-def gather_recognizer(config_file, geomosaic_wdir, output_base_folder, additional_info):
+def gather_recognizer(all_samples, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "recognizer"
-
-    with open(config_file) as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
     
-    samples = get_sample_with_results(pckg, geomosaic_wdir, config["SAMPLES"])
+    samples = get_sample_with_results(pckg, geomosaic_wdir, all_samples)
 
     output_folder = os.path.join(output_base_folder, pckg)
 
     check_call(f"mkdir -p {output_folder}", shell=True)
-    complete_recognizer(geomosaic_wdir, output_folder, samples)
+    complete_recognizer(geomosaic_wdir, output_folder, samples, pckg)
 
 
-def complete_recognizer(folder, output_folder, samples):
+def complete_recognizer(folder, output_folder, samples, pckg):
     DFs_ec = []
     DFs_ko = []
 
@@ -30,14 +27,14 @@ def complete_recognizer(folder, output_folder, samples):
     unique_ko = set()
 
     for s in samples:
-        folder_data = f"{folder}/{s}/recognizer"
+        folder_data = os.path.join(folder,s,pckg)
 
         flag = True
         if "reCOGnizer_results.tsv" not in listdir(folder_data):
             flag = False
             break
             
-        df = pd.read_csv(f"{folder_data}/reCOGnizer_results.tsv", sep="\t", dtype=get_dtypes())
+        df = pd.read_csv(os.path.join(folder_data,"reCOGnizer_results.tsv"), sep="\t", dtype=get_dtypes())
         c1 = df["pident"] > 80
         c2 = df["gapopen"] < 5
         
@@ -55,16 +52,16 @@ def complete_recognizer(folder, output_folder, samples):
         
     if flag:
         final_ec = compose_final_matrix(DFs_ec, unique_ec, "EC number")
-        final_ec.to_csv(f"{output_folder}/EC_number.tsv", sep="\t", index=False, header=True)
+        final_ec.to_csv(os.path.join(output_folder,"EC_number.tsv"), sep="\t", index=False, header=True)
         
         final_ko = compose_final_matrix(DFs_ko, unique_ko, "KO")
-        final_ko.to_csv(f"{output_folder}/KO.tsv", sep="\t", index=False, header=True)
+        final_ko.to_csv(os.path.join(output_folder,"KO.tsv"), sep="\t", index=False, header=True)
     
     cog = parse_recognizer_quantification(folder, samples, filename="COG_quantification.tsv", pivot="COG_id")
-    cog.to_csv(f"{output_folder}/COG_quantification.tsv", header=True, index=False, sep="\t")
+    cog.to_csv(os.path.join(output_folder,"COG_quantification.tsv"), header=True, index=False, sep="\t")
 
     kog = parse_recognizer_quantification(folder, samples, filename="KOG_quantification.tsv", pivot="KOG_id")
-    kog.to_csv(f"{output_folder}/KOG_quantification.tsv", header=True, index=False, sep="\t")
+    kog.to_csv(os.path.join(output_folder,"KOG_quantification.tsv"), header=True, index=False, sep="\t")
 
 
 def parse_recognizer_results(df, s, pivot, delim):
@@ -96,7 +93,7 @@ def parse_recognizer_quantification(folder, samples, filename, pivot):
     unique_cog = set()
 
     for s in samples:
-        fn = f"{folder}/{s}/recognizer/{filename}"
+        fn = os.path.join(folder,s,"recognizer",filename)
         cog = pd.read_csv(fn, 
                           sep="\t", names=["counts", "class", "subclass", "descr", pivot])
 
