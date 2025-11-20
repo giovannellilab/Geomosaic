@@ -8,13 +8,10 @@ from geomosaic.gathering.gather_recognizer import get_dtypes
 from geomosaic.gathering.utils import get_sample_with_results
 
 
-def gather_mags_recognizer(config_file, geomosaic_wdir, output_base_folder, additional_info):
+def gather_mags_recognizer(all_samples, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "mags_recognizer"
-
-    with open(config_file) as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
     
-    samples = get_sample_with_results(pckg, geomosaic_wdir, config["SAMPLES"])
+    samples = get_sample_with_results(pckg, geomosaic_wdir, all_samplesS)
 
     output_folder = os.path.join(output_base_folder, pckg)
 
@@ -26,17 +23,17 @@ def complete_mags_recognizer(folder, output_folder, samples):
     for s in samples:
         cog = parse_quantification(folder, s, filename = "COG_quantification.tsv", pivot="COG_id")
         check_call(f"mkdir -p {output_folder}/{s}", shell=True)
-        cog.to_csv(f"{output_folder}/{s}/COG_quantification.tsv", header=True, index=False, sep="\t")
+        cog.to_csv(os.path.join(output_folder,s,"COG_quantification.tsv"), header=True, index=False, sep="\t")
 
         kog = parse_quantification(folder, s, filename = "KOG_quantification.tsv", pivot="KOG_id")
         check_call(f"mkdir -p {output_folder}/{s}", shell=True)
-        kog.to_csv(f"{output_folder}/{s}/KOG_quantification.tsv", header=True, index=False, sep="\t")
+        kog.to_csv(os.path.join(output_folder,s,"KOG_quantification.tsv"), header=True, index=False, sep="\t")
 
         parse_mags_recognizer_EC_KO(folder, output_folder, s)
 
 
 def parse_mags_recognizer_EC_KO(folder, output_folder, s):
-    results_folder = f"{folder}/{s}/mags_recognizer"
+    results_folder = os.path.join(folder,s,"mags_recognizer")
     
     DFs_ec = []
     DFs_ko = []
@@ -44,14 +41,14 @@ def parse_mags_recognizer_EC_KO(folder, output_folder, s):
     unique_ec = set()
     unique_ko = set()
     for m in listdir(results_folder):
-        folder_data = f"{results_folder}/{m}"
+        folder_data = os.path.join(results_folder,m)
         if not os.path.isdir(folder_data) or not m.startswith("mag_"):
             continue
 
         if "reCOGnizer_results.tsv" not in listdir(f"{folder_data}"):
             continue
             
-        df = pd.read_csv(f"{folder_data}/reCOGnizer_results.tsv", sep="\t", dtype=get_dtypes())
+        df = pd.read_csv(os.path.join(folder_data,"reCOGnizer_results.tsv"), sep="\t", dtype=get_dtypes())
         c1 = df["pident"] > 80
         c2 = df["gapopen"] < 5
         
@@ -73,11 +70,11 @@ def parse_mags_recognizer_EC_KO(folder, output_folder, s):
         
     if len(DFs_ec) > 0:
         final_ec = compose_final_matrix(DFs_ec, unique_ec, "EC number")
-        final_ec.to_csv(f"{output_folder}/{s}/EC_number.tsv", sep="\t", index=False, header=True)
+        final_ec.to_csv(os.path.join(output_folder,s,"EC_number.tsv"), sep="\t", index=False, header=True)
 
     if len(DFs_ko) > 0:
         final_ko = compose_final_matrix(DFs_ko, unique_ko, "KO")
-        final_ko.to_csv(f"{output_folder}/{s}/KO.tsv", sep="\t", index=False, header=True)
+        final_ko.to_csv(os.path.join(output_folder,s,"KO.tsv"), sep="\t", index=False, header=True)
 
 
 def clean_recognizer_dataframe(df, s, pivot, delim):
@@ -108,17 +105,17 @@ def parse_quantification(folder, s, filename, pivot):
     DFs_cog = []
     unique_cog = set()
 
-    results_folder = f"{folder}/{s}/mags_recognizer"
+    results_folder = os.path.join(folder,s,"mags_recognizer")
     
     for m in sorted(listdir(results_folder)):
-        folder_data = f"{results_folder}/{m}"
+        folder_data = os.path.join(results_folder,m)
         if not os.path.isdir(folder_data) or not m.startswith("mag_"):
             continue
         
         if filename not in listdir(f"{folder_data}"):
             continue
         
-        fn = f"{folder_data}/{filename}"
+        fn = os.path.join(folder_data,filename)
         cog = pd.read_csv(fn, 
                           sep="\t", names=["counts", "class", "subclass", "descr", pivot])
 
