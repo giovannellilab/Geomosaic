@@ -44,7 +44,7 @@ def compose_matrix_kaiju(folder, output_folder, samples, pckg):
             unique_list.update(list(df_percent[pivot].unique()))
             
             list_dfs_percent.append(df_percent)
-            list_dfs_reads(df_reads)
+            list_dfs_reads.append(df_reads)
 
         if not flag:
             continue
