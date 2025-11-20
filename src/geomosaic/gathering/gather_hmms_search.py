@@ -6,15 +6,12 @@ import yaml
 from geomosaic.gathering.utils import get_sample_with_results
 
 
-def gather_hmms_search(config_file, geomosaic_wdir, output_base_folder, additional_info):
+def gather_hmms_search(all_samples, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "hmms_search"
-
-    with open(config_file) as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
 
     hmmsearch_outfolder = additional_info["assembly_hmmsearch_output_folder"]
 
-    samples = get_sample_with_results(hmmsearch_outfolder, geomosaic_wdir, config["SAMPLES"])
+    samples = get_sample_with_results(hmmsearch_outfolder, geomosaic_wdir, all_samples)
 
     output_folder = os.path.join(output_base_folder, pckg)
 
@@ -26,11 +23,11 @@ def complete_hmmsearch(folder, hmmsearch_outfolder, output_folder, samples):
     DF_NORM, All_samples_df = parse_hmmsearch_results(folder, hmmsearch_outfolder, samples)
 
     concat = pd.concat(All_samples_df, ignore_index=True)
-    concat.to_csv(f"{output_folder}/ALL_SAMPLES_HMM_coverage_table.tsv", sep="\t", header=True, index=False)
+    concat.to_csv(os.path.join(output_folder,"ALL_SAMPLES_HMM_coverage_table.tsv"), sep="\t", header=True, index=False)
 
     for n in DF_NORM:
         norm_merged = merge_results_by_norm(DF_NORM, norm_method=n)
-        norm_merged.to_csv(f"{output_folder}/{n}.tsv", sep="\t", header=True, index=False)
+        norm_merged.to_csv(os.path.join(output_folder,f"{n}.tsv"), sep="\t", header=True, index=False)
 
 
 def parse_hmmsearch_results(folder, hmmsearch_outfolder, samples):
@@ -39,7 +36,7 @@ def parse_hmmsearch_results(folder, hmmsearch_outfolder, samples):
     All_samples_df = []
 
     for s in samples:
-        df = pd.read_csv(f"{folder}/{s}/{hmmsearch_outfolder}/HMMs_coverage_table.tsv", sep="\t")
+        df = pd.read_csv(os.path.join(folder,s,hmmsearch_outfolder,"HMMs_coverage_table.tsv"), sep="\t")
         All_samples_df.append(df)
 
         norms = list(df.columns)[15:-1]
