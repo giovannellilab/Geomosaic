@@ -7,15 +7,12 @@ import yaml
 from geomosaic.gathering.utils import get_sample_with_results
 
 
-def gather_mags_hmmsearch(config_file, geomosaic_wdir, output_base_folder, additional_info):
+def gather_mags_hmmsearch(all_samples, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "mags_hmmsearch"
-
-    with open(config_file) as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
 
     mags_hmmsearch_outfolder = additional_info["mags_hmmsearch_output_folder"]
 
-    samples = get_sample_with_results(mags_hmmsearch_outfolder, geomosaic_wdir, config["SAMPLES"])
+    samples = get_sample_with_results(mags_hmmsearch_outfolder, geomosaic_wdir, all_samples)
 
     output_folder = os.path.join(output_base_folder, pckg)
 
@@ -31,7 +28,7 @@ def complete_hmmsearch(folder, mags_hmmsearch_outfolder, base_output_folder, sam
         check_call(f"mkdir -p {output_folder}", shell=True)
 
         concat = pd.concat(All_mags_df, ignore_index=True)
-        concat.to_csv(f"{output_folder}/ALL_MAGs_HMM_coverage_table.tsv", sep="\t", header=True, index=False)
+        concat.to_csv(os.path.join(output_folder,"ALL_MAGs_HMM_coverage_table.tsv"), sep="\t", header=True, index=False)
 
         for n in DF_NORM:
             norm_merged = merge_results_by_norm(DF_NORM, norm_method=n)
@@ -61,16 +58,16 @@ def parse_hmmsearch_mags(folder, mags_hmmsearch_output_folder, s):
     DF_norm = {}
     All_mags_df = []
     
-    results_folder = f"{folder}/{s}/{mags_hmmsearch_output_folder}"
+    results_folder = os.path.join(folder,s,mags_hmmsearch_output_folder)
     for m in listdir(results_folder):
-        folder_data = f"{results_folder}/{m}"
+        folder_data = os.path.join(results_folder,m)
         if not os.path.isdir(folder_data) or not m.startswith("mag_"):
             continue
     
         if "HMMs_coverage_table.tsv" not in listdir(f"{folder_data}"):
             continue
     
-        df = pd.read_csv(f"{folder_data}/HMMs_coverage_table.tsv", sep="\t")
+        df = pd.read_csv(os.path.join(folder_data,"HMMs_coverage_table.tsv"), sep="\t")
         All_mags_df.append(df)
         
         c1 = df["perc_conserved"] >= 50
