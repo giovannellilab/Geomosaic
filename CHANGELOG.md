@@ -2,6 +2,15 @@
 Major changes will be documented in this file.
 
 
+## Version 1.2.3 (Nov 25, 2025)
+### Added
+- Added new optional flag `--conda_frontend` to the `prerun` command, allowing users to specify which Conda frontend Snakemake should use (`conda` or `mamba`).
+
+### Changed
+
+### Fixed
+
+
 ## Version 1.2.2 (Nov 19, 2025)
 ### Added
 
