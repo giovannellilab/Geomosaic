@@ -94,7 +94,8 @@ def envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit):
 
     dummy_filename = os.path.join(geomosaic_wdir, "dummy_snakefile.smk")
     create_dummy_snakefile(geomosaic_wdir, config_file, dummy_filename)
-    check_call(["snakemake", "--use-conda", "--conda-prefix", geomosaic_condaenvs_folder, "--conda-create-envs-only", "--cores", "1", "-s", dummy_filename])
+    channel = "conda"
+    check_call(["snakemake", "--use-conda", "--conda-frontend", channel, "--conda-prefix", geomosaic_condaenvs_folder, "--conda-create-envs-only", "--cores", "1", "-s", dummy_filename])
     os.remove(dummy_filename)
 
     print(GEOMOSAIC_OK)
