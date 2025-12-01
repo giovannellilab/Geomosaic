@@ -1,14 +1,23 @@
 # Change Log
 Major changes will be documented in this file.
 
-
-## Version 1.3.0 (Nov 20, 2025)
+## Version 1.2.4 (Dec 1, 2025)
 ### Added
-- Added `kaiju` new output file on `gather` command
+- Add thread limit to `funprofiler` snakefile, to hamper sourmash threads parlalelization
 ### Changed
-- Removed flag `--unit` to the `gather` command & sample retrieval dependence on `config` files
+- Removed `--unit` flag from gather command to rely on samples retrieved directly from gmsetup.yaml
+- Minor refactors in gathering scripts to accomodate flag change
 ### Fixed
-- Fixed paths on package related `gather` functions & minor refactories
+
+
+## Version 1.2.3 (Nov 25, 2025)
+### Added
+- Added new optional flag `--conda_frontend` to the `prerun` command, allowing users to specify which Conda frontend Snakemake should use (`conda` or `mamba`).
+
+### Changed
+
+### Fixed
+
 
 ## Version 1.2.2 (Nov 19, 2025)
 ### Added

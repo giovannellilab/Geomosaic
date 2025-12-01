@@ -12,6 +12,7 @@ def geo_prerun(args):
     source          = args.source
     exectype        = args.exec_type
     ignore_samples  = args.ignore_samples
+    conda_frontend  = args.conda_frontend
 
     with open(gmsetup_file) as file:
         gmsetup = yaml.load(file, Loader=yaml.FullLoader)
@@ -80,10 +81,10 @@ def geo_prerun(args):
         show_gnuparallel_message(exists_extdb, extdb_output_script, output_script, singleSample_output_script, list_sample_output)
     
     print(f"\n{GEOMOSAIC_PROCESS}: Installing all the conda environments of your workflow/unit. This may take a while...\n", end="", flush=True)
-    envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit)
+    envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit, conda_frontend)
 
 
-def envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit):
+def envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit, conda_frontend):
     filename = "config_unit.yaml" if unit else "config.yaml"
     config_file = os.path.join(geomosaic_wdir, filename)
 
@@ -94,7 +95,7 @@ def envinstall(geomosaic_wdir, geomosaic_condaenvs_folder,  unit):
 
     dummy_filename = os.path.join(geomosaic_wdir, "dummy_snakefile.smk")
     create_dummy_snakefile(geomosaic_wdir, config_file, dummy_filename)
-    check_call(["snakemake", "--use-conda", "--conda-prefix", geomosaic_condaenvs_folder, "--conda-create-envs-only", "--cores", "1", "-s", dummy_filename])
+    check_call(["snakemake", "--use-conda", "--conda-frontend", conda_frontend, "--conda-prefix", geomosaic_condaenvs_folder, "--conda-create-envs-only", "--cores", "1", "-s", dummy_filename])
     os.remove(dummy_filename)
 
     print(GEOMOSAIC_OK)
