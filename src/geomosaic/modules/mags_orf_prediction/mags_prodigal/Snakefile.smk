@@ -22,7 +22,7 @@ rule run_mags_prodigal:
 
 rule run_parse_mags_prodigal:
     input:
-        fasta_input=rules.run_mags_prodigal.output.protein_translations # I love this snakemake feature, use it as much as possible
+        fasta_input=rules.run_mags_prodigal.output.protein_translations
     output:
         output_mapping = "{wdir}/{sample}/mags_prodigal/{mag}/orf_contig_mapping.tsv",
         output_fasta = "{wdir}/{sample}/mags_prodigal/{mag}/orf_predicted.faa",
@@ -31,7 +31,7 @@ rule run_parse_mags_prodigal:
         mag_n = "{mag}"
     threads: 1
     run:
-        from geomosaic.parser.prodigal_orf_mapping import parsing_prodigal_orfs_MAGs    
+        from geomosaic.parser.prodigal_orf_mapping import parsing_prodigal_orfs_MAGs
         parsing_prodigal_orfs_MAGs(str(input.fasta_input), str(output.output_mapping), str(output.output_fasta), str(output.output_simple_mapping))
 
 def ls_collect_bins(f_string): 
