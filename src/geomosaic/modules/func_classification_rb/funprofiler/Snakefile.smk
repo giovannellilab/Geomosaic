@@ -12,6 +12,17 @@ rule run_funprofiler:
     threads: config["threads"]
     shell:
         """
+        # This ensures parallel libraries (like Rayon and OpenMP) respect the allocated threads.
+        
+        export RAYON_NUM_THREADS={threads}
+        export OMP_NUM_THREADS={threads}
+
+        # Increase OS limits for processes/files to prevent I/O errors
+
+        ulimit -u 4096
+        ulimit -n 4096
+        # --------------------------------------------------------------------------------------- #
+
         mkdir -p {output}
 
         echo "[+] Concatenating reads for sample: {wildcards.sample} "

@@ -7,13 +7,10 @@ import os
 from geomosaic.gathering.utils import get_sample_with_results
 
 
-def gather_mags_dram(config_file, geomosaic_wdir, output_base_folder, additional_info):
+def gather_mags_dram(all_samples, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "mags_dram"
 
-    with open(config_file) as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-    
-    samples = get_sample_with_results(pckg, geomosaic_wdir, config["SAMPLES"])
+    samples = get_sample_with_results(pckg, geomosaic_wdir,all_samples)
 
     output_folder = os.path.join(output_base_folder, pckg)
     check_call(f"mkdir -p {output_folder}", shell=True)
@@ -28,7 +25,7 @@ def complete_mags_dram(folder, base_output_folder, samples):
 
 
 def parse_for_mags(folder, base_output_folder, s):
-    df = pd.read_excel(f"{folder}/{s}/mags_dram/dram_distillation/metabolism_summary.xlsx")
+    df = pd.read_excel(os.path.join(folder,s,"mags_dram","dram_distillation","metabolism_summary.xlsx"))
     
     mags_cols = ["gene_id"] + list(df.columns)[5:]
     df = df.loc[:, mags_cols]
@@ -38,11 +35,11 @@ def parse_for_mags(folder, base_output_folder, s):
     check_call(f"mkdir -p {output_folder}", shell=True)
 
     df.rename(columns={"gene_id": "ko_number"}, inplace=True)
-    df.to_csv(f"{output_folder}/metabolism_summary.tsv", sep="\t", index=False, header=True)
+    df.to_csv(os.path.join(output_folder,"metabolism_summary.tsv"), sep="\t", index=False, header=True)
 
 
 def parse_dram_by_cols(folder, base_output_folder, s):
-    prod = pd.read_csv(f"{folder}/{s}/mags_dram/dram_distillation/product.tsv", sep="\t")
+    prod = pd.read_csv(os.path.join(folder,s,"mags_dram","dram_distillation","product.tsv"), sep="\t")
     dram_cols = get_dram_cols()
 
     output_folder = os.path.join(base_output_folder, s)
@@ -51,7 +48,7 @@ def parse_dram_by_cols(folder, base_output_folder, s):
     for tag, tag_cols in dram_cols.items():
         tag_prod = prod.loc[:,["genome"]+tag_cols].copy()
         tag_prod.drop_duplicates(inplace=True)
-        tag_prod.to_csv(f"{output_folder}/{tag}.tsv", sep="\t", index=False, header=True)
+        tag_prod.to_csv(os.path.join(output_folder,f"{tag}.tsv"), sep="\t", index=False, header=True)
 
 
 def get_dram_cols():

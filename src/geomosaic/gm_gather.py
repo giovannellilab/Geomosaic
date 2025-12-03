@@ -21,7 +21,6 @@ def geo_gather(args):
     gmsetup                 = args.setup_file
     packages                = args.packages
     gather_folder           = args.gather_folder
-    unit                    = args.unit
     assembly_hmm_outfolder  = args.assembly_hmmsearch_outfolder
     mags_hmm_outfolder      = args.mags_hmmsearch_outfolder
 
@@ -34,9 +33,6 @@ def geo_gather(args):
 
     geomosaic_dir       = geomosaic_setup["GEOMOSAIC_WDIR"]
     geomosaic_samples   = geomosaic_setup["SAMPLES"]
-
-    name_config = "config_unit.yaml" if unit else "config.yaml"
-    gm_config   = str(os.path.join(geomosaic_dir, name_config))
 
     # Checks
     some_checks(assembly_hmm_outfolder, mags_hmm_outfolder, packages)
@@ -61,7 +57,7 @@ def geo_gather(args):
             continue
 
         print(f"{GEOMOSAIC_PROCESS}: gathering results for {pckg}...")
-        gathering[pckg](gm_config, geomosaic_dir, output_gather_folder, additional_info)
+        gathering[pckg](geomosaic_samples, geomosaic_dir, output_gather_folder, additional_info)
 
 
 def order_gathering(packages):

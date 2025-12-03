@@ -1,6 +1,14 @@
 # Change Log
 Major changes will be documented in this file.
 
+## Version 1.2.4 (Dec 1, 2025)
+### Added
+- Add thread limit to `funprofiler` snakefile, to hamper sourmash threads parlalelization
+### Changed
+- Removed `--unit` flag from gather command to rely on samples retrieved directly from gmsetup.yaml
+- Minor refactors in gathering scripts to accomodate flag change
+### Fixed
+
 
 ## Version 1.2.3 (Nov 25, 2025)
 ### Added

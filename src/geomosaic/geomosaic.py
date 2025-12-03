@@ -163,7 +163,6 @@ def main():
     gather_optional = gather_parser.add_argument_group(GEOMOSAIC_PROMPT("Optional Arguments"))
     gather_optional.add_argument("-f", "--gather_folder", required=False, default=None, type=str, help="Path where geomosaic can create the directory for gathering. Without any input, as default the folder 'gm_gathering' is created by default in the working directory of Geomosaic.")
     gather_optional.add_argument('-p' ,'--packages', default="_ALL_", type=csv_values, help='a comma separated list of packages. Check the available packages in the section below. If you want to execute gather for specific packages you can use this option as: --packages mifaser,kaiju,mags_gtdbtk,mags_dram.')
-    gather_optional.add_argument('-u' ,'--unit', action='store_true', help="Execute geomosaic gather considering the UNIT config file.")
     gather_optional.add_argument('--assembly_hmmsearch_outfolder', required=False, default=None, type=str, help="Name of the output folder used for the 'assembly_hmm_annotation'")
     gather_optional.add_argument('--mags_hmmsearch_outfolder', required=False, default=None, type=str, help="Name of the output folder used for the 'mags_hmm_annotation'")
 

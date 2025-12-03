@@ -7,13 +7,10 @@ import yaml
 from geomosaic.gathering.utils import get_sample_with_results
 
 
-def gather_coverm_genome(config_file, geomosaic_wdir, output_base_folder, additional_info):
+def gather_coverm_genome(all_samples, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "coverm_genome"
 
-    with open(config_file) as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-    
-    samples = get_sample_with_results(pckg, geomosaic_wdir, config["SAMPLES"])
+    samples = get_sample_with_results(pckg, geomosaic_wdir, all_samples)
 
     gtdbtk_gather = os.path.join(output_base_folder, "mags_gtdbtk")
     output_folder = os.path.join(output_base_folder, pckg)
@@ -29,7 +26,7 @@ def complete_coverm_genome(folder, output_folder, gtdbtk_gather, samples):
         res = taxa_level_abundances(DF_NORM, level)
 
         for norm, dfnorm in res.items():
-            dfnorm.to_csv(f"{output_folder}/{level}_{norm}.tsv", sep="\t", index=False, header=True)
+            dfnorm.to_csv(os.path.join(output_folder,f"{level}_{norm}.tsv"), sep="\t", index=False, header=True)
 
 
 def taxa_level_abundances(DF_NORM, level):
@@ -62,10 +59,10 @@ def parse_coverm_genome(folder, gtdbtk_gather, samples):
     DF_NORM = {}
 
     for s in samples:
-        sample_folder = f"{folder}/{s}/coverm_genome/"
+        sample_folder = os.path.join(folder,s,"coverm_genome")
         methods = []
         
-        with open(f"{sample_folder}/list.txt") as fd:
+        with open(os.path.join(sample_folder,"list.txt")) as fd:
             for line in fd:
                 methods.append(line.rstrip("\n"))
         
@@ -73,13 +70,13 @@ def parse_coverm_genome(folder, gtdbtk_gather, samples):
             if mtd not in DF_NORM:
                 DF_NORM[mtd] = {}
         
-            df_mtd = pd.read_csv(f"{sample_folder}/{mtd}.tsv", sep="\t")
+            df_mtd = pd.read_csv(os.path.join(sample_folder,f"{mtd}.tsv"), sep="\t")
             df_mtd.columns = ["MAGs", mtd]
 
             df_mtd = df_mtd[df_mtd["MAGs"] != "unmapped"]
 
             # GEOMOSAIC GTDBTK GATHER FILE
-            df_cov = pd.read_csv(f"{gtdbtk_gather}/geomosaic_samples/{s}.tsv", sep="\t")
+            df_cov = pd.read_csv(os.path.join(gtdbtk_gather,"geomosaic_samples",f"{s}.tsv"), sep="\t")
             df_cov = df_cov.loc[:, ["MAGs", "phylum", "class", "order", "family", "genus", "species"]]
 
             m = pd.merge(df_mtd, df_cov, how="left", on="MAGs")
