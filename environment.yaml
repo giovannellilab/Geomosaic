@@ -7,6 +7,7 @@ dependencies:
   - _openmp_mutex=4.5
   - bzip2=1.0.8
   - ca-certificates=2023.11.17
+  - datrie=0.8.2
   - hmmer=3.4
   - ld_impl_linux-64=2.40
   - libffi=3.4.2
@@ -37,7 +38,6 @@ dependencies:
       - connection-pool==0.0.3
       - contourpy==1.2.0
       - cycler==0.12.1
-      - datrie==0.8.2
       - docutils==0.20.1
       - dpath==2.1.6
       - et-xmlfile==1.1.0
