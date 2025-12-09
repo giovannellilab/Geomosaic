@@ -1,6 +1,16 @@
 # Change Log
 Major changes will be documented in this file.
 
+
+## Version 1.2.5 (Dec 9, 2025)
+### Added
+
+### Changed
+- Changed `-l` option in `kaiju2table` command for complete taxonomic information
+
+### Fixed
+
+
 ## Version 1.2.4 (Dec 1, 2025)
 ### Added
 - Add thread limit to `funprofiler` snakefile, to hamper sourmash threads parlalelization
