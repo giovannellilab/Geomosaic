@@ -19,13 +19,58 @@ rule run_kaiju:
             -j {input.r2} \
             -o {output.fout}
         
-        for level in phylum class order family genus species; do
-            kaiju2table \
-            -u \
-            -t {input.kaijudb}/nodes.dmp \
-            -n {input.kaijudb}/names.dmp \
-            -r $level \
-            -o {output.folder}/$level.tsv \
-            {output.fout} ;
-        done
+        kaiju2table \
+        -u \
+        -t {input.kaijudb}/nodes.dmp \
+        -n {input.kaijudb}/names.dmp \
+        -r phylum \
+        -l superkingdom,phylum \
+        -o {output.folder}/phylum.tsv \
+        {output.fout} ;
+
+        kaiju2table \
+        -u \
+        -t {input.kaijudb}/nodes.dmp \
+        -n {input.kaijudb}/names.dmp \
+        -r class \
+        -l superkingdom,phylum,class \
+        -o {output.folder}/class.tsv \
+        {output.fout} ;
+
+        kaiju2table \
+        -u \
+        -t {input.kaijudb}/nodes.dmp \
+        -n {input.kaijudb}/names.dmp \
+        -r order \
+        -l superkingdom,phylum,class,order \
+        -o {output.folder}/order.tsv \
+        {output.fout} ;
+        
+        kaiju2table \
+        -u \
+        -t {input.kaijudb}/nodes.dmp \
+        -n {input.kaijudb}/names.dmp \
+        -r family \
+        -l superkingdom,phylum,class,order,family \
+        -o {output.folder}/family.tsv \
+        {output.fout} ;
+
+        kaiju2table \
+        -u \
+        -t {input.kaijudb}/nodes.dmp \
+        -n {input.kaijudb}/names.dmp \
+        -r genus \
+        -l superkingdom,phylum,class,order,family,genus \
+        -o {output.folder}/genus.tsv \
+        {output.fout} ;
+
+        kaiju2table \
+        -u \
+        -t {input.kaijudb}/nodes.dmp \
+        -n {input.kaijudb}/names.dmp \
+        -r species \
+        -l superkingdom,phylum,class,order,family,genus,species \
+        -o {output.folder}/species.tsv \
+        {output.fout} ;
+
         """
