@@ -2,6 +2,11 @@
 ![Geomosaic](images/geomosaic_logo_multicolor_300dpi.png)
 
 <br>
+<br>
+
+[![DOI](https://zenodo.org/badge/603053899.svg)](https://doi.org/10.5281/zenodo.11036349)
+
+<br>
 
 __Geomosaic__ is a flexible metagenomic pipeline combining biological and geochemical data to outline biosphere and geosphere interactions.
 
