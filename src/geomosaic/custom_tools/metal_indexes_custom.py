@@ -8,24 +8,41 @@ from geomosaic._validator import check_special_characters_on_string
 def check_file(file_path: str):
 
     ext = os.path.splitext(file_path)[1].lower()
-    f_name = os.path.basename(file_path)
 
     if ext == '.tsv':
-        return pd.read_csv(file_path, sep='\t'), ext, f_name
-    
+        return pd.read_csv(file_path, sep='\t'), ext
     elif ext == '.csv':
-        return pd.read_csv(file_path, sep=','), ext, f_name
-    
+        return pd.read_csv(file_path, sep=','), ext
     elif ext in ['.xlsx', '.xls']:
         # Note: Requires 'openpyxl' library installed
-        return pd.read_excel(file_path), ext, f_name
-    
+        return pd.read_excel(file_path), ext
     else:
         # Fallback: try to "sniff" the delimiter if extension is unknown
-        return pd.read_csv(file_path, sep='\t'), ext, f_name
+        return pd.read_csv(file_path, sep='\t'), ext
 
 
-def validator_metalindex_file(file_path:str):
+def validator_metal_index_file(file_path:str):
+
+
+    na1 = ',["@!#$%^&*()<>?/\|}{~:;]'
+    na2 = "'`€¹²³¼½¬="
+
+    regex1 = re.compile(na1)
+    regex2 = re.compile(na2)
+
+    if " " in file_path:
+        print(f"{GEOMOSAIC_ERROR}: the provided file {str(repr(file_path))} does contain a space. To avoid later issues, please rename the file without any space.")
+        return False
+    
+    if(regex1.search(file_path) != None):
+        print(f"{GEOMOSAIC_ERROR}: the provided file does contain a special character that is not allowed: {str(repr(file_path))}\n\
+              The following special characters are not allowed: {na1[0]} {na1[1:]}{na2}")
+        return False
+
+    if not os.path.exists(file_path):
+        print(f"{GEOMOSAIC_ERROR}: the provided file does not exist.")
+        return False
+
 
     df, extension, f_name = check_file(file_path)
 
@@ -37,10 +54,11 @@ def validator_metalindex_file(file_path:str):
               Please, include missing columns {missing}")
         return False
     
-    na1 = '^K\d{5}$'
-    na2 = '^[AD](\s*,\s*[AD])*$'
 
-    invalid_kos = df[~df['KO'].astype(str).str.match(na1)]
+    na3 = '^K\d{5}$'
+    na4 = '^[AD](\s*,\s*[AD])*$'
+
+    invalid_kos = df[~df['KO'].astype(str).str.match(na3)]
 
     if invalid_kos:
         print(f"{GEOMOSAIC_ERROR}: the provided {extension} table {str(repr(f_name))} does not contain the required columns \n\
@@ -58,38 +76,11 @@ def validator_metalindex_file(file_path:str):
     return True
 
 
-metal_index_file_structure = GEOMOSAIC_PROMPT("""
-#######################################
-#### RMI-RPI Custom Database Info ####
-#######################################
-
-### Please read all the content below.
-
-For detailed documentation, please refer to the ARGs-OAP Repository: https://github.com/xinehc/args_oap
-
-You need to build a table containing
-
-- A fasta file of protein sequences, named for example 'sequences.fasta' (Do not put space in the filename).
-We suggest to make this file as simple as possible. The header of each sequence should contain just the ID without any space, tab, or other irregular characters such as forward slash.
-Avoid duplicated headers and duplicated sequences.
-
-sequences.fasta:
-
-    >id1
-    DQEATRFKT...
-    >id2
-    GWTRCMDCQ...
-
-- A file of mapping, for example 'mapping.tsv', which is tab-separated. 
-This file should contain at least one column, describing all the IDs of the fasta sequences. 
-However you can put more columns, each one representing Class, Subclass or categories of your interests.
-Do not put space in the column name. We suggest putting "_" instead of spaces. Geomosaic will make some checks.
-
-mapping.tsv:
-
-    IDs    Class    Subclass    Metal_Resistances
-    id1    class1    subclass1    iron
-    id2    class2    subclass2    iron
-
-""")
-
+metal_indexes_structure = GEOMOSAIC_PROMPT("""METAL INDEX CUSTOM MODULE:\n\
+This module allows you to provide a custom table with metal indexes information. \n\
+The table must be in .tsv, .csv or .xlsx format and must contain the following columns: energyRole, biogeoSubstrate, Metal, KO. \n\
+The energyRole column must contain the energy role of the metal index (e.g., A for acceptor, D for donor). \n\
+The biogeoSubstrate column must contain the biogeochemi)cal substrate associated with the metal index (e.g., Fe, Mn, S). \n\
+The Metal column must contain the name of the metal associated with the index (e.g., Iron, Manganese, Sulfur). \n\
+The KO column must contain the KEGG Orthology (KO) identifier associated with the metal index (e.g., K00001). \n\
+Please, provide a custom table with this information to include it in the geomosaic database and use it for metal index annotation.""")
