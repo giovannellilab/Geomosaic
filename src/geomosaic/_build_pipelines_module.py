@@ -7,6 +7,7 @@ import os
 from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROMPT
 from geomosaic._validator import validator_hmms_folder, validator_completeness_contamination_integer, validator_hmmsearch_output_folder
 from geomosaic.custom_tools.argsoap_custom import validator_argsoap_database, validator_argsoap_fastafile, validator_argsoap_mapping, validator_argsoap_outfolder, argsoap_database_structure
+from geomosaic.custom_tools.metal_indexes_custom import validator_metal_index_file, metal_indexes_structure
 
 
 def build_pipeline_modules(graph: DiGraph, collected_modules: dict, order: list, additional_input: dict, mstart: str="pre_processing", unit=False, dependencies=False):
@@ -125,7 +126,8 @@ def ask_custom_db(gmpackages_custom_db, user_choices):
         if tool in gmpackages_custom_db:
             if tool == "argsoap_custom":
                 print(argsoap_database_structure)
-            
+            if tool == "metal_indexes_custom":
+                print(metal_indexes_structure)
             custom_db_info[tool] = {}
 
             for cdb_param, cdb_param_tokens in gmpackages_custom_db[tool].items():
@@ -141,6 +143,8 @@ def ask_custom_db(gmpackages_custom_db, user_choices):
                         print(f"{GEOMOSAIC_ERROR}: Invalid input")
                     elif cdb_param == "argsoap_custom_database_folder" and not validator_argsoap_database(input_cdb_param):
                         print(f"{GEOMOSAIC_ERROR}: Invalid input")
+                    if cdb_param == "metal_index_file_table" and not validator_metal_index_file(input_cdb_param):
+                        print(f"{GEOMOSAIC_ERROR}: Invalid input")
                     else:
                         flag = True
                 
@@ -151,7 +155,8 @@ def ask_custom_db(gmpackages_custom_db, user_choices):
                     custom_db_info[tool][cdb_param] = str(input_cdb_param)
                 else: # File or folder
                     custom_db_info[tool][cdb_param] = os.path.abspath(input_cdb_param)
-    
+                    
+
     return custom_db_info
 
 
