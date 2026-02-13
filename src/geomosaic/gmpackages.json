@@ -327,7 +327,7 @@
         "megahit": "megahit.yaml",
         "metaphlan": "metaphlan.yaml",
         "metaquast": "quast.yaml",
-        "mi-rpi-funprofiler-based": "redox_metal_index.yaml",
+        "rmi-rpi-funprofiler-based": "redox_metal_index.yaml",
         "metaspades": "metaspades.yaml",
         "mifaser": "mifaser.yaml",
         "multi_binners": "multi_binners.yaml",
@@ -423,8 +423,8 @@
                 "type": "string"
             }
         },
-        "metal_indexes": {"funprofiler_biogeochem_table" : 
-            {"description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM BIOGEO-TABLE for funprofiler - TSV FILE]\nDescription: you need to specify the path to the biogeo-table for the custom DB of funprofiler",
+        "metal_indexes": {"metal_index_file_table" : 
+            {"description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM BIOGEO-TABLE for RM-RP Indexes - TSV FILE]\nDescription: you need to specify the path to the biogeo-table TSV table for computation of Redox Metabolic & Redox Plasticity Indexes based on funprofiler annotation",
                 "type": "file"}
             }
     },
