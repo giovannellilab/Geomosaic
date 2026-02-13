@@ -46,74 +46,55 @@ rule run_mi_rpi_funprofile_based:
         raw_counts= rules.run_funprofiler.output
         custom_table_metals= expand("{funprofiler_biogeochem_table}", funprofiler_biogeochem_table = config["EXT_DB"]["metal_indexes"])
     output:
-        out_file = directory("{wdir}/{sample}/mi_rpi_funprofiler_based/metal_indexes.tsv")
+        directory("{wdir}/{sample}/mpi_rpi_indexes/")
     run:
 
-        import OS
+        import os
         import pandas as pd
-        import math 
-
-        def validate(file_path):
-            required = {{"energy_role", "Metal", "KO", "biogeoSubstrate"}}
-            try:
-                with open(file_path, 'r') as f:
-                    reader = csv.DictReader(f, delimiter='\\t')
-                    if not reader.fieldnames:
-                        print("Validation Error: File is empty")
-                        sys.exit(1)
-
-                    actual = set(reader.fieldnames)
-                    missing = required - actual
-                    if missing:
-                        print(f"Validation Error: Missing columns {{missing}}")
-                        sys.exit(1)
-                    print("Validation Passed!")
-            except Exception as e:
-                print(f"Validation Error: {{e}}")
-                sys.exit(1)
-
+        import math
 
         def redox_index(acceptors_list: list, donors_list:list):
 
             num_donors = len(donors_list)
             num_acceptors = len(acceptors_list)
-
             index = math.log(num_donors) + math.log(num_acceptors)
 
             return index
 
-        validate("{output}/prefetch_out.csv")
 
+        def compute_kos_kos(raw_ko_file:str, spreadsheet:str)
 
-
-        if os.path.exists(table):
             results = pd.read_csv(table, sep = ',')
-
             ko_list = results["match_name"].str.split(':').str[1].unique().tolist()
             subset_ = results[["intersect_bp", "match_name"]]
             n_kos = len(ko_list)
 
-        biogeochem_table = ""
-        master_table = pd.read_csv(spreadsheet,sep = ',')
-        # 1. Filter Sample KOs in our master table
-        detected_mask = master_table['KO'].isin(unique_ko_list)
-        filtered_df = master_table[detected_mask]
+            biogeochem_table = pd.read_csv(spreadsheet,sep = ',')
+            # 1. Filter Sample KOs in our master table
+            detected_mask = master_table['KO'].isin(unique_ko_list)
+            filtered_df = master_table[detected_mask]
+            # 2. Split into UNIQUE Donors (D) and Acceptors (A)
+            donors_df = filtered_df[filtered_df['energyRole'] == 'D']
+            acceptors_df = filtered_df[filtered_df['energyRole'] == 'A']
+            # 3. Select cofactors
+            donors = set(donors_df['KO'])
+            acceptors = set(acceptors_df['KO'])
 
-        # 2. Split into UNIQUE Donors (D) and Acceptors (A)
-        donors_df = filtered_df[filtered_df['energyRole'] == 'D']
-        acceptors_df = filtered_df[filtered_df['energyRole'] == 'A']
-        # 3. Select cofactors
-        donors = set(donors_df['KO'])
-        acceptors = set(acceptors_df['KO'])
+            metal_donors = donors_df['Metal'].dropna()
+            metal_acceptrs = acceptors_df['Metal'].dropna()
 
-        metal_donors = donors_df['Metal'].dropna()
-        metal_acceptrs = acceptors_df['Metal'].dropna()
+            m_a = set(metal_acceptrs)
+            m_d = set(metal_donors)
 
-        m_a = set(metal_acceptrs)
-        m_d = set(metal_donors)
+            index_ko_pairs = redox_index(acceptors,donors)
+            index_metal_pairs = redox_index(m_a,m_d)
 
-        index_ko_pairs = redox_index(acceptors,donors)
-        index_metal_pairs = redox_index(m_a,m_d)
+            return index_ko_pairs, index_metal_pairs
+
+        validate(input.custom_table_metals)
+        index_ko_pairs, index_metal_pairs = compute_kos(input.raw_counts, input.custom_table_metals)
+
+        out_file = os.path.join(str(output),'metal_indexes.tsv')
 
         with open(out_file,"w") as writer:
             rmi = "	".join(["Redox Metabolic Index",index_ko_pairs])
