@@ -14,7 +14,7 @@ rule run_funprofiler:
         """
         # This ensures parallel libraries (like Rayon and OpenMP) respect the allocated threads.
         
-        shell(export RAYON_NUM_THREADS={threads}
+        export RAYON_NUM_THREADS={threads}
         export OMP_NUM_THREADS={threads}
 
         # Increase OS limits for processes/files to prevent I/O errors
@@ -44,9 +44,9 @@ rule run_funprofiler:
 rule run_mi_rpi_funprofile_based:
     input:
         raw_counts= rules.run_funprofiler.output
-        custom_table_metals= expand("{funprofiler_biogeochem_table}", funprofiler_biogeochem_table = config["EXT_DB"]["metal_indexes"])
+        custom_table_metals= expand("{metal_indexes_custom_table}", metal_indexes_custom_table = config["EXT_DB"]["metal_indexes_custom"]["biogeochem_table"])
     output:
-        directory("{wdir}/{sample}/mpi_rpi_indexes/")
+        directory("{wdir}/{sample}/rmi_rpi_indexes/")
     run:
 
         import os
@@ -62,9 +62,10 @@ rule run_mi_rpi_funprofile_based:
             return index
 
 
-        def compute_kos_kos(raw_ko_file:str, spreadsheet:str)
-
-            results = pd.read_csv(table, sep = ',')
+        def compute_indexes(raw_ko_file:str, spreadsheet:str)
+            
+            # RETRIEVING KOS from funprofiler_file
+            results = pd.read_csv(raw_ko_file, sep = ',')
             ko_list = results["match_name"].str.split(':').str[1].unique().tolist()
             subset_ = results[["intersect_bp", "match_name"]]
             n_kos = len(ko_list)
@@ -86,13 +87,14 @@ rule run_mi_rpi_funprofile_based:
             m_a = set(metal_acceptrs)
             m_d = set(metal_donors)
 
+            # COMPUTING INDEXES
             index_ko_pairs = redox_index(acceptors,donors)
             index_metal_pairs = redox_index(m_a,m_d)
 
             return index_ko_pairs, index_metal_pairs
 
-        validate(input.custom_table_metals)
-        index_ko_pairs, index_metal_pairs = compute_kos(input.raw_counts, input.custom_table_metals)
+        index_ko_pairs, index_metal_pairs = compute_indexes(input.raw_counts, input.custom_table_metals)
+
 
         out_file = os.path.join(str(output),'metal_indexes.tsv')
 
