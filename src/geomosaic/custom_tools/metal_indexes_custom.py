@@ -57,6 +57,7 @@ def validator_metal_index_file(file_path:str):
 
     na3 = '^K\d{5}$'
     na4 = '^[AD](\s*,\s*[AD])*$'
+    na5 = 
 
     invalid_kos = df[~df['KO'].astype(str).str.match(na3)]
 
@@ -83,4 +84,22 @@ The energyRole column must contain the energy role of the metal index (e.g., A f
 The biogeoSubstrate column must contain the biogeochemi)cal substrate associated with the metal index (e.g., Fe, Mn, S). \n\
 The Metal column must contain the name of the metal associated with the index (e.g., Iron, Manganese, Sulfur). \n\
 The KO column must contain the KEGG Orthology (KO) identifier associated with the metal index (e.g., K00001). \n\
+
+An example of a minimal Redox-metabolic & Plasticity table structure is provided below:
+
+
+| energyRole | biogeoSubstrate | Metal  | KO      |
+|------------|-----------------|--------|---------|
+| A          |  CO2            | Fe     | K00001  |
+| D          |  SO4            | Mn     | K00002  |
+| A          |  NO3            | S      | K00003  |
+
+This module will allow you to compute two indexes: the RMI or Redox-Metabolic Index and the RPI or Redox-Plasticity Index:
+
+FORMULA: 
+    index = math.log(num_donors) + math.log(num_acceptors)
+
+- The RMI is calcualted as the logarithm of the product bewtween the total number of accpetors (A) KOs and the total number of donors (D) KOs \n\
+- The RPI is calculated as the logarithm of the product between the total number of accpetors Metals (A) KO[A][Metal] and the total number of Metal donors (D) KO[D][Metal] \n\
+
 Please, provide a custom table with this information to include it in the geomosaic database and use it for metal index annotation.""")
