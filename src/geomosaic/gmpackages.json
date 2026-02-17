@@ -401,10 +401,6 @@
         "funprofiler": {
             "inpfolder": "funprofiler",
             "outfolder": "funprofiler_extdb"
-        },
-        "rmi_rpi_indexes": {
-            "inpfolder": "rmi_rpi_indexes",
-            "outfolder": "rmi_rpi_indexes_extdb"
         }
     },
 
@@ -431,6 +427,10 @@
             "metal_index_file_table" : {
                 "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM TABLE for Redox Metabolic Index & Redox Plasticity Index - TSV FILE]\nDescription: you need to specify the path to the biogeo-table TSV table for computation of Redox Metabolic & Redox Plasticity Indexes based on funprofiler annotation",
                 "type": "file"
+            },
+            "metal_custom_database_folder": {
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - for Redox Metabolic Index & Redox Plasticity Index - Database folder]\nDescription: you need to specify a name for the custom database folder. For example, if this run custom will concern only Carbon cycle, you may want to rename the database folder as 'metal_carbon_custom_db'",
+                "type": "string"
             }
         }
     },

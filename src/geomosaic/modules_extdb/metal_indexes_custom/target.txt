@@ -1,1 +1,0 @@
-expand("{table_file}", table_file = config["EXT_DB"]["rmi_rpi_indexes"]["table_file"]),

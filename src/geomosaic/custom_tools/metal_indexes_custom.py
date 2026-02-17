@@ -10,8 +10,8 @@ def prepare_metalindex_customdb(config_customdb_section, config_extdb_section, c
     config_customdb_section["user_metal_table"] = collected_info["metal_index_file_table"]
     basename_table = os.path.basename(collected_info["metal_index_file_table"])
     # EXTDB Section
-    config_extdb_section["table_file"] = os.path.join(geomosaic_externaldb_folder, basename_table)
-
+    config_extdb_section["database_folder"] = os.path.join(geomosaic_externaldb_folder, collected_info["metal_custom_database_folder"])
+    config_extdb_section["table_file"] = os.path.join(geomosaic_externaldb_folder, collected_info["metal_custom_database_folder"], basename_table)
 
 
 def check_file(file_path: str):
@@ -31,7 +31,6 @@ def check_file(file_path: str):
 
 
 def validator_metal_index_file(file_path:str):
-
 
     na1 = ',["@!#$%^&*()<>?/\|}{~:;]'
     na2 = "'`€¹²³¼½¬="

@@ -5,8 +5,8 @@ rule run_rmi_rpi_funprofiler:
         r2=expand("{wdir}/{sample}/{pre_processing}/R2.fastq.gz", pre_processing=config["MODULES"]["pre_processing"], allow_missing=True),
         db_folder=expand("{rmi_rpi_indexes_extdb_folder}", rmi_rpi_indexes_extdb_folder=config["EXT_DB"]["rmi_rpi_indexes_extdb_folder"])
     output:
-        folder=directory("{wdir}/{sample}/metal_indexes_rb/funprof_output"),
-        raw_counts="{wdir}/{sample}/metal_indexes_rb/funprof_output/prefetch_out.csv"
+        folder=directory("{wdir}/{sample}/rmi_rpi_indexes/funprof_output"),
+        raw_counts="{wdir}/{sample}/rmi_rpi_indexes/funprof_output/prefetch_out.csv"
     conda: config["ENVS"]["rmi_rpi_indexes"]
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["rmi_rpi_indexes"])) ) (config["USER_PARAMS"]["rmi_rpi_indexes"])
@@ -24,7 +24,8 @@ rule run_rmi_rpi_funprofiler:
         ulimit -n 4096
         # --------------------------------------------------------------------------------------- #
 
-        mkdir -p {output.folder}
+        mkdir -p {output.folder}/redox_metabolic_plasticity_indexes
+        mkdir -p {output.folder}/funprof_output
 
         echo "[+] Concatenating reads for sample: {wildcards.sample} "
         seq_file="{output.folder}/seq_concat.fastq.gz"
@@ -32,7 +33,7 @@ rule run_rmi_rpi_funprofiler:
         cat {input.r1} {input.r2} > $seq_file
         echo "[+] Reads successfully concatenated into $seq_file " 
 
-        funprofiler $seq_file {input.db_folder}/KOs_sketched_scaled_1000.sig.zip {params.user_params} {.folder.folder}/ko_profiles.csv -t {threads} -p {.folder.folder}/prefetch_out.csv
+        funprofiler $seq_file {input.db_folder}/funprofiler_db/KOs_sketched_scaled_1000.sig.zip {params.user_params} {output.folder}/ko_profiles.csv -t {threads} -p {.folder.folder}/prefetch_out.csv
 
         echo "[+] Removing concatenated reads ..."
         ( cd {output.folder} && rm seq_concat.fastq.gz )
@@ -40,14 +41,14 @@ rule run_rmi_rpi_funprofiler:
 
         """
 
+
 rule run_rmi_rpi_indexes:
     input:
-        raw_counts= rules.run_funprofiler.output.raw_counts,
-        custom_table_metals= expand("{metal_indexes_custom_table}", metal_indexes_custom_table = config["EXT_DB"]["rmi_rpi_indexes"]["metal_index_file_table"])
+        raw_counts= rules.run_rmi_rpi_funprofiler.output.raw_counts,
+        custom_table_metals= expand("{table_file}", table_file = config["EXT_DB"]["rmi_rpi_indexes"]["table_file"])
     output:
-        fodler=directory("{wdir}/{sample}/metal_indexes_rb/redox_metabolic-plasticity_indexes")
+        folder=directory("{wdir}/{sample}/rmi_rpi_indexes/redox_metabolic_plasticity_indexes")
     run:
-
         import os
         import pandas as pd
         import math
@@ -116,8 +117,12 @@ rule run_rmi_rpi_indexes:
         index_ko_pairs, index_metal_pairs = compute_indexes(input.raw_counts, input.custom_table_metals)
 
 
-        out_file = os.path.join(str(output),'metal_indexes.tsv')
-        data = {'sample':s,'redox-metabolic-index':index_ko_pairs,'redox-plasticty-index':index_metal_pairs}
+        out_file = os.path.join(str(output.folder),'metal_indexes.tsv')
+        data = {
+            'sample': s,
+            'redox-metabolic-index': index_ko_pairs,
+            'redox-plasticty-index':index_metal_pairs
+        }
         dataframe = pd.DataFrame(data)
         
         with open(out_file,"w") as writer:
@@ -126,4 +131,3 @@ rule run_rmi_rpi_indexes:
             
             writer.write(rmi + "\n")
             writer.write(rpi + "\n")
-
