@@ -428,8 +428,8 @@
                 "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM TABLE for Redox Metabolic Index & Redox Plasticity Index - TSV FILE]\nDescription: you need to specify the path to the biogeo-table TSV table for computation of Redox Metabolic & Redox Plasticity Indexes based on funprofiler annotation",
                 "type": "file"
             },
-            "metal_custom_database_folder": {
-                "description": "\n[ADDITIONAL PARAMETER REQUEST - for Redox Metabolic Index & Redox Plasticity Index - Database folder]\nDescription: you need to specify a name for the custom database folder. For example, if this run custom will concern only Carbon cycle, you may want to rename the database folder as 'metal_carbon_custom_db'",
+            "metal_custom_folder": {
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - for Redox Metabolic Index & Redox Plasticity Index - Database AND output folder]\nDescription: you need to specify a name for the custom database AND output folder. For example, if this run custom will concern only Carbon cycle, you may want to give in input the following string 'metal_index_carbon_cycle'",
                 "type": "string"
             }
         }

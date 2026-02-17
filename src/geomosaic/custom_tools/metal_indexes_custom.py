@@ -8,10 +8,13 @@ from geomosaic._validator import check_special_characters_on_string
 def prepare_metalindex_customdb(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder):
     # USER FILES
     config_customdb_section["user_metal_table"] = collected_info["metal_index_file_table"]
+    config_customdb_section["output_folder"] = collected_info["metal_custom_folder"]
+
     basename_table = os.path.basename(collected_info["metal_index_file_table"])
+    
     # EXTDB Section
-    config_extdb_section["database_folder"] = os.path.join(geomosaic_externaldb_folder, collected_info["metal_custom_database_folder"])
-    config_extdb_section["table_file"] = os.path.join(geomosaic_externaldb_folder, collected_info["metal_custom_database_folder"], basename_table)
+    config_extdb_section["database_folder"] = os.path.join(geomosaic_externaldb_folder, collected_info["metal_custom_folder"])
+    config_extdb_section["table_file"] = os.path.join(geomosaic_externaldb_folder, collected_info["metal_custom_folder"], basename_table)
 
 
 def check_file(file_path: str):

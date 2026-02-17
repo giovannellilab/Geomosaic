@@ -3,10 +3,10 @@ rule run_rmi_rpi_funprofiler:
     input:
         r1=expand("{wdir}/{sample}/{pre_processing}/R1.fastq.gz", pre_processing=config["MODULES"]["pre_processing"], allow_missing=True),
         r2=expand("{wdir}/{sample}/{pre_processing}/R2.fastq.gz", pre_processing=config["MODULES"]["pre_processing"], allow_missing=True),
-        db_folder=expand("{rmi_rpi_indexes_extdb_folder}", rmi_rpi_indexes_extdb_folder=config["EXT_DB"]["rmi_rpi_indexes_extdb_folder"])
+        db_folder=expand("{rmi_rpi_indexes_extdb_folder}", rmi_rpi_indexes_extdb_folder=config["EXT_DB"]["rmi_rpi_indexes"]["database_folder"])
     output:
-        folder=directory("{wdir}/{sample}/rmi_rpi_indexes/funprof_output"),
-        raw_counts="{wdir}/{sample}/rmi_rpi_indexes/funprof_output/prefetch_out.csv"
+        folder = directory("{wdir}/{sample}/{rmi_rpi_output_folder}/funprof_output"),
+        raw_counts="{wdir}/{sample}/{rmi_rpi_output_folder}/funprof_output/prefetch_out.csv"
     conda: config["ENVS"]["rmi_rpi_indexes"]
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["rmi_rpi_indexes"])) ) (config["USER_PARAMS"]["rmi_rpi_indexes"])
