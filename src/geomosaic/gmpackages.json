@@ -4,6 +4,7 @@
         "reads_qc",
         "func_classification_rb",
         "tax_classification_rb",
+        "metal_indexes_rb",
         "assembly",
         "assembly_func_annotation",
         "assembly_readmapping",
@@ -31,6 +32,7 @@
         ["pre_processing", "reads_qc"],
         ["pre_processing", "func_classification_rb"],
         ["pre_processing", "tax_classification_rb"],
+        ["pre_processing", "metal_indexes_rb"],
         ["pre_processing", "assembly"],
         ["pre_processing", "assembly_readmapping"],
         ["pre_processing", "mags_coverage"],
@@ -105,6 +107,13 @@
                 "MetaPhlAn": "metaphlan"
             }
     
+        },
+
+        "metal_indexes_rb": {
+            "description": "Module: Redox Metabolic Index & Redox Plasticity Index [Read-based]",
+            "choices": {
+                "Redox Metabolic Index & Redox Plasticity Index": "rmi_rpi_indexes"
+            }
         },
     
         "assembly": {
@@ -318,6 +327,7 @@
         "megahit": "megahit.yaml",
         "metaphlan": "metaphlan.yaml",
         "metaquast": "quast.yaml",
+        "rmi_rpi_indexes": "redox_metal_index.yaml",
         "metaspades": "metaspades.yaml",
         "mifaser": "mifaser.yaml",
         "multi_binners": "multi_binners.yaml",
@@ -391,6 +401,10 @@
         "funprofiler": {
             "inpfolder": "funprofiler",
             "outfolder": "funprofiler_extdb"
+        },
+        "rmi_rpi_indexes": {
+            "inpfolder": "rmi_rpi_indexes",
+            "outfolder": "rmi_rpi_indexes_extdb"
         }
     },
 
@@ -412,6 +426,12 @@
                 "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM DB for ARGs-OAP - Output folder]\nDescription: you need to specify a name for the output folder. For example, if this argsoap custom will concern hydrogenases, you may want to rename the output folder as 'argsoap_custom_hydrogenases'",
                 "type": "string"
             }
+        },
+        "rmi_rpi_indexes": {
+            "metal_index_file_table" : {
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM TABLE for Redox Metabolic Index & Redox Plasticity Index - TSV FILE]\nDescription: you need to specify the path to the biogeo-table TSV table for computation of Redox Metabolic & Redox Plasticity Indexes based on funprofiler annotation",
+                "type": "file"
+            }
         }
     },
 
@@ -419,6 +439,8 @@
         "mifaser",
         "kaiju",
         "funprofiler",
+        "rmi_rpi_indexes",
+
 
         "kraken2",
         "eggnog_mapper",
