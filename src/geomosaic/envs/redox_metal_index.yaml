@@ -1,4 +1,4 @@
-name: geomosaic_funprofiler
+name: geomosaic_rmi_rpi_indexes
 channels:
   - conda-forge
   - bioconda

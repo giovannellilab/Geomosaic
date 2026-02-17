@@ -110,9 +110,9 @@
         },
 
         "metal_indexes_rb": {
-            "description": "Module: Redox Metabolic & Redox Plasticity Indexes [Read-based]",
+            "description": "Module: Redox Metabolic Index & Redox Plasticity Index [Read-based]",
             "choices": {
-                "RMI-RPI-funprofiler-based": "rmi_rpi_indexes"
+                "Redox Metabolic Index & Redox Plasticity Index": "rmi_rpi_indexes"
             }
         },
     
@@ -401,6 +401,10 @@
         "funprofiler": {
             "inpfolder": "funprofiler",
             "outfolder": "funprofiler_extdb"
+        },
+        "rmi_rpi_indexes": {
+            "inpfolder": "rmi_rpi_indexes",
+            "outfolder": "rmi_rpi_indexes_extdb"
         }
     },
 
@@ -423,16 +427,20 @@
                 "type": "string"
             }
         },
-        "rmi_rpi_indexes": {"metal_index_file_table" : 
-            {"description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM BIOGEO-TABLE for RM-RP Indexes - TSV FILE]\nDescription: you need to specify the path to the biogeo-table TSV table for computation of Redox Metabolic & Redox Plasticity Indexes based on funprofiler annotation",
-                "type": "file"}
+        "rmi_rpi_indexes": {
+            "metal_index_file_table" : {
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM TABLE for Redox Metabolic Index & Redox Plasticity Index - TSV FILE]\nDescription: you need to specify the path to the biogeo-table TSV table for computation of Redox Metabolic & Redox Plasticity Indexes based on funprofiler annotation",
+                "type": "file"
             }
+        }
     },
 
     "gathering": [
         "mifaser",
         "kaiju",
         "funprofiler",
+        "rmi_rpi_indexes",
+
 
         "kraken2",
         "eggnog_mapper",
