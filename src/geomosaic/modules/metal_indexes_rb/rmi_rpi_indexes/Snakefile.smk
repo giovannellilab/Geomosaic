@@ -33,7 +33,7 @@ rule run_rmi_rpi_funprofiler:
         cat {input.r1} {input.r2} > $seq_file
         echo "[+] Reads successfully concatenated into $seq_file " 
 
-        funprofiler $seq_file {input.db_folder}/funprofiler_db/KOs_sketched_scaled_1000.sig.zip {params.user_params} {output.folder}/ko_profiles.csv -t {threads} -p {.folder.folder}/prefetch_out.csv
+        funprofiler $seq_file {input.db_folder}/funprofiler_db/KOs_sketched_scaled_1000.sig.zip {params.user_params} {output.folder}/ko_profiles.csv -t {threads} -p {output.folder}/prefetch_out.csv
 
         echo "[+] Removing concatenated reads ..."
         ( cd {output.folder} && rm seq_concat.fastq.gz )
@@ -47,7 +47,7 @@ rule run_rmi_rpi_indexes:
         raw_counts= rules.run_rmi_rpi_funprofiler.output.raw_counts,
         custom_table_metals= expand("{table_file}", table_file = config["EXT_DB"]["rmi_rpi_indexes"]["table_file"])
     output:
-        folder=directory("{wdir}/{sample}/rmi_rpi_indexes/redox_metabolic_plasticity_indexes")
+        metal_index="{wdir}/{sample}/rmi_rpi_indexes/redox_metabolic_plasticity_indexes/metal_indexes.tsv"
     run:
         import os
         import pandas as pd
@@ -117,17 +117,12 @@ rule run_rmi_rpi_indexes:
         index_ko_pairs, index_metal_pairs = compute_indexes(input.raw_counts, input.custom_table_metals)
 
 
-        out_file = os.path.join(str(output.folder),'metal_indexes.tsv')
+        out_file = os.path.join(str(output.metal_index))
         data = {
             'sample': s,
             'redox-metabolic-index': index_ko_pairs,
             'redox-plasticty-index':index_metal_pairs
         }
         dataframe = pd.DataFrame(data)
-        
-        with open(out_file,"w") as writer:
-            rmi = "	".join(["Redox Metabolic Index",index_ko_pairs])
-            rpi = "	".join(["Redox Plasticity Index",index_metal_pairs])
-            
-            writer.write(rmi + "\n")
-            writer.write(rpi + "\n")
+        dataframe.to_csv(out_file, sep = '\t')
+        print(f"Dataframe: \n {dataframe}")
