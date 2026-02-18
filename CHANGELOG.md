@@ -2,6 +2,13 @@
 Major changes will be documented in this file.
 
 
+## Version 1.3.0 (Feb 18, 2026)
+### Added
+- Add new module for redox-metabolix & palsticity index computation
+### Fixed
+- Minor fix on single_sample GNU_parallel sh script
+
+
 ## Version 1.2.5 (Dec 9, 2025)
 ### Added
 
