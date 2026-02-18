@@ -22,8 +22,10 @@ def exectype_gnuparalllel(args, geomosaic_dir, gm_snakefile, unit, geomosaic_con
             check_call(["mkdir", "-p", folder_logs])
         
         gnuparallel_logs = str(os.path.join(folder_logs, "{}.log"))
+        single_log_path = str(os.path.join(folder_logs, "$single_sample.log"))
     else:
         gnuparallel_logs = "{}.log"
+        single_log_path = "$single_sample.log"
     
     threads = update_threads(unit, geomosaic_dir, temp_threads)
 
@@ -44,7 +46,7 @@ def exectype_gnuparalllel(args, geomosaic_dir, gm_snakefile, unit, geomosaic_con
     singleSample = gnuparallel_singleSample.format(
         threads = threads,
         path_geomosaic_snakefile = path_geomosaic_snakefile,
-        gnuparallel_logs = gnuparallel_logs,
+        gnuparallel_logs = single_log_path,
         geomosaic_condaenvs_folder = geomosaic_condaenvs_folder
     )
     
@@ -102,10 +104,9 @@ echo "SAMPLE: $single_sample"
 
 threads_per_job={threads}
 
-parallel -j 1 \\
-    snakemake --use-conda --conda-prefix {geomosaic_condaenvs_folder} \\
+snakemake --use-conda --conda-prefix {geomosaic_condaenvs_folder} \\
     --cores $threads_per_job \\
     -s {path_geomosaic_snakefile} \\
-    --config SAMPLES=$single_sample ">" {gnuparallel_logs} 2>&1
+    --config SAMPLES="$single_sample" 2>&1 | tee {gnuparallel_logs} 
 
 """
