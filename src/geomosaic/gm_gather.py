@@ -14,6 +14,7 @@ from geomosaic.gathering.gather_mifaser import gather_mifaser
 from geomosaic.gathering.gather_recognizer import gather_recognizer
 from geomosaic.gathering.gather_coverm_genome import gather_coverm_genome
 from geomosaic.gathering.gather_funprofiler import gather_funprofiler
+from geomosaic.gathering.gather_metal_redox_index import gather_metal_indexes_rb
 # add import to redoxes
 
 
@@ -79,7 +80,8 @@ def gather_functions():
         "mifaser": gather_mifaser,
         "kaiju": gather_kaiju,
         "funprofiler": gather_funprofiler,
-
+        "rmi_rpi_indexes": gather_metal_indexes_rb,
+        
         "kraken2": gather_kraken2,
         "eggnog_mapper": gather_eggnogmapper,
         "recognizer": gather_recognizer,
