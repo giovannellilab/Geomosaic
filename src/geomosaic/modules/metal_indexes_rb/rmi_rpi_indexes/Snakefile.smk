@@ -24,22 +24,24 @@ rule run_rmi_rpi_funprofiler:
         ulimit -n 4096
         # --------------------------------------------------------------------------------------- #
 
-        mkdir -p {output.folder}/redox_metabolic_plasticity_indexes
-        mkdir -p {output.folder}/funprof_output
+        #mkdir -p {output.folder}/redox_metabolic_plasticity_indexes
+        mkdir -p {output.folder}
 
         echo "[+] Concatenating reads for sample: {wildcards.sample} "
         seq_file="{output.folder}/seq_concat.fastq.gz"
 
         cat {input.r1} {input.r2} > $seq_file
-        echo "[+] Reads successfully concatenated into $seq_file " 
+        echo "[+] Reads successfully concatenated into $seq_file "
 
         funprofiler $seq_file {input.db_folder}/funprofiler_db/KOs_sketched_scaled_1000.sig.zip {params.user_params} {output.folder}/ko_profiles.csv -t {threads} -p {output.folder}/prefetch_out.csv
 
         echo "[+] Removing concatenated reads ..."
         ( cd {output.folder} && rm seq_concat.fastq.gz )
+        echo "[+] Removing sketched metagenome ..."
+        ( cd {output.folder} && rm -f seq_concat.fastq.gz_sketch_*.sig.zip)
         echo "[SUCCESS] funprofiler job finished for {wildcards.sample} "
 
-        """
+        """.
 
 
 rule run_rmi_rpi_indexes:
@@ -47,7 +49,8 @@ rule run_rmi_rpi_indexes:
         raw_counts= rules.run_rmi_rpi_funprofiler.output.raw_counts,
         custom_table_metals= expand("{table_file}", table_file = config["EXT_DB"]["rmi_rpi_indexes"]["table_file"])
     output:
-        metal_index="{wdir}/{sample}/rmi_rpi_indexes/redox_metabolic_plasticity_indexes/metal_indexes.tsv"
+        metal_index="{wdir}/{sample}/{rmi_rpi_output_folder}/redox_metabolic_plasticity_indexes/metal_indexes.tsv",
+        metal_index_extended="{wdir}/{sample}/{rmi_rpi_output_folder}/redox_metabolic_plasticity_indexes/metal_indexes_extended.tsv"
     run:
         import os
         import pandas as pd
@@ -57,9 +60,10 @@ rule run_rmi_rpi_indexes:
 
             num_donors = len(donors_list)
             num_acceptors = len(acceptors_list)
-            index = math.log(num_donors) + math.log(num_acceptors)
 
-            return index
+            if num_donors == 0 or num_acceptors == 0:
+                return 0.0
+            return math.log(num_donors) + math.log(num_acceptors)
 
 
         def compute_indexes(raw_ko_file:str, spreadsheet:str):
@@ -70,59 +74,61 @@ rule run_rmi_rpi_indexes:
             subset_ = results[["intersect_bp", "match_name"]]
             n_kos = len(ko_list)
 
-            biogeochem_table = pd.read_csv(spreadsheet,sep = ',')
+            biogeochem_table = pd.read_csv(spreadsheet,sep = '\t')
             # 1. Filter Sample KOs in our master table
-            detected_mask = master_table['KO'].isin(unique_ko_list)
-
-            filtered_df = master_table[detected_mask]
-            # RSTRIP the columns, white spaces !!!!!!!!
+            detected_mask = biogeochem_table['KO'].isin(ko_list)
+            filtered_df = biogeochem_table[detected_mask]
             # 2. Split into UNIQUE Donors (D) and Acceptors (A)
             donors_df = filtered_df[filtered_df['energyRole'] == 'D']
             acceptors_df = filtered_df[filtered_df['energyRole'] == 'A']
-
              # 3. Select DOnors and Acceptors (remove the DROPNA ? )
-            unique_donors = donors_df[donors_df['KO'].isin(unique_ko_list)] \ 
+            unique_donors = donors_df[donors_df['KO'].isin(ko_list)] \ 
             ['biogeoSubstrate'].dropna().unique().tolist() 
-            unique_acceptors = acceptors_df[acceptors_df['KO'].isin(unique_ko_list)] \
+            unique_acceptors = acceptors_df[acceptors_df['KO'].isin(ko_list)] \
             ['biogeoSubstrate'].dropna().unique().tolist()
-
             # 4. Select Donors / Acceptors
             donors = set(donors_df['KO'])
             acceptors = set(acceptors_df['KO'])
             # 5. Select Metal DOnors / acceptors
             metal_donors = donors_df['Metal'].dropna()
-            metal_acceptrs = acceptors_df['Metal'].dropna()
+            metal_acceptors = acceptors_df['Metal'].dropna()
 
-            dictio = {"acceptors": metal_acceptors, "donors" : metal_donors}
-            for name, lista in dictio.items():
-                unique = []
+            dict_metals = {"acceptors": metal_acceptors, "donors": metal_donors}
+            for name, lista in dict_metals.items():
+                unique_set = set() # Start with an empty set
                 for row in lista:
                     if isinstance(row, str) and row != '//':
-                        row = row.strip() 
-                        metals = [metal.strip() for metal in row.split(',')]
-                        unique.extend(metals)
+                        metals = [m.strip() for m in row.split(',')]
+                        unique_set.update(metals) 
+                dict_metals[name] = list(unique_set) 
 
-                name = f'unique_{name}'
-                dictio[name] = set(unique)
-
-            m_a = dictio['acceptors']
-            m_d = dictio['donors']  
+            m_a = dict_metals['acceptors']
+            m_d = dict_metals['donors']
 
             # COMPUTING INDEXES
             index_ko_pairs = redox_index(acceptors,donors)
             index_metal_pairs = redox_index(m_a,m_d)
 
-            return float(index_ko_pairs), float(index_metal_pairs)
+            return float(index_ko_pairs), float(index_metal_pairs), unique_acceptors, unique_donors, m_a, m_d
 
-        index_ko_pairs, index_metal_pairs = compute_indexes(input.raw_counts, input.custom_table_metals)
+        index_ko_pairs, index_metal_pairs, u_acc, u_don, m_a, m_d = compute_indexes(str(input.raw_counts), str(input.custom_table_metals))
 
+        out_file_truncated = os.path.join(str(output.metal_index))
+        df_trunc = pd.DataFrame({
+            'sample': [wildcards.sample],
+            'redox-metabolic-index': [index_ko_pairs],
+            'redox-plasticty-index': [index_metal_pairs]
+        })
+        df_trunc.to_csv(out_file_truncated, sep='\t', index=False)
 
-        out_file = os.path.join(str(output.metal_index))
-        data = {
-            'sample': s,
-            'redox-metabolic-index': index_ko_pairs,
-            'redox-plasticty-index':index_metal_pairs
-        }
-        dataframe = pd.DataFrame(data)
-        dataframe.to_csv(out_file, sep = '\t')
-        print(f"Dataframe: \n {dataframe}")
+        out_file_extended = os.path.join(str(output.metal_index_extended))
+        df_ext = pd.DataFrame({
+            'sample': [wildcards.sample],
+            'redox-metabolic-index': [index_ko_pairs],
+            'redox-plasticty-index': [index_metal_pairs],
+            'A_metal': str(m_a),
+            'D_metal': str(m_d),
+            'A_substrate': str(u_acc),
+            'D_substrate': str(u_don)
+        })
+        df_ext.to_csv(out_file_extended, sep='\t', index=False)

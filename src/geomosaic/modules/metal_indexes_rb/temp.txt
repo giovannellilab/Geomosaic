@@ -1,0 +1,12 @@
+dict_substrates = {"acceptors": unique_acceptors, "donors" : metal_donors}
+            for name, lista in dictio.items():
+                unique = []
+                for row in lista:
+                    if isinstance(row, str) and row != '//':
+                        row = row.strip() 
+                        metals = [metal.strip() for metal in row.split(',')]
+                        unique.extend(metals)
+                dictio[name] = set(unique)
+
+            m_a = dictio['acceptors']
+            m_d = dictio['donors']  
