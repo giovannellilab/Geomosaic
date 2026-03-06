@@ -22,9 +22,12 @@ Required Arguments:
   --exec_type {slurm,gnu_parallel}
                         Use this option to specify how do you want execute geomosaic. If SLURM is available on your cluster we suggest to use '--exec_type
                         slurm'. If not, you can use '--exec_type gnu_parallel'. More details on the Geomosaic Documentation.
+  --source {unit,workflow}
+                        Specify which Geomosaic command was run previously: 'unit' for a `geomosaic unit` run, 
+                        'workflow' for a `geomosaic workflow` run. 
+                        This allows Geomosaic to select the correct configuration file.
 
 Optional Arguments for BOTH SLURM and GNU PARALLEL:
-  -u, --unit            Install the conda environment of your geomosaic unit.
   -t THREADS, --threads THREADS
                         Threads to use (per sample). This value will override the one specified in the workflow/unit (config file) and thus will replace
                         threads value in the config file. Default is None, means that is not going to be replaced (Available for '--exec_type slurm' or '--
