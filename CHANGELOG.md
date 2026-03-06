@@ -2,9 +2,20 @@
 Major changes will be documented in this file.
 
 
+## Version 1.3.1 (Mar 06, 2026)
+### Added
+
+### Changed
+
+### Fixed
+- Env parameter for snakefile (BBmap & Bowtie2 shrinked)
+
+
 ## Version 1.3.0 (Feb 18, 2026)
 ### Added
 - Add new module for redox-metabolix & palsticity index computation
+### Changed
+
 ### Fixed
 - Minor fix on single_sample GNU_parallel sh script
 

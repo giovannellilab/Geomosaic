@@ -11,7 +11,7 @@ rule run_bbmap:
         sorted_bam="{wdir}/{sample}/bbmap_shrinked/read_mapping_sorted.bam",
         indexed_bam="{wdir}/{sample}/bbmap_shrinked/read_mapping_sorted.bam.bai"
     threads: config["threads"]
-    conda: config["ENVS"]["bbmap"]
+    conda: config["ENVS"]["bbmap_shrinked"]
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["bbmap"])) ) (config["USER_PARAMS"]["bbmap_shrinked"]),
         samtools_view_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["samtools_view"])) ) (config["USER_PARAMS"]["bbmap_shrinked"]),
