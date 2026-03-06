@@ -49,7 +49,7 @@ Optional Arguments:
   -n PROJECT_NAME, --project_name PROJECT_NAME
                         Name of the project. The first 8 Characters will be used for SLURM job name (default: Geomosaic_Workflow)
   --move_and_rename     Suggested flag if the provided raw reads directory is already a backup of the original files. In this case, geomosaic will create
-                        only symbolic link of raw reads to its working directory. Note: This flag cannot be used if there are multiple files for each R1 and
+                        only symbolic link of raw reads to its working directory.
                         R2 sample reads, as geomosaic will 'cat' them to a single file. (default: False)
   --skip_checks         If you are sure that every file is in its correct location and the sample names are filled correctly, you can skip checks with this
                         flags. However we do not suggest to use it. (default: False)
@@ -76,17 +76,7 @@ Help Arguments:
 
         __`NOTE 1: Sample and reads name with no spaces`__: the values on the `sample` column (but also on the `r1` and `r2` columns) should __*not*__ present any space as it increases the folder organization complexity. However, Geomosaic will perform a check (assertion) and possibly print an Error message describing the line that containes the space.
 
-        __`NOTE 2: Different lines with the same sample name are allowed`__: sequencing data are often splitted for a single sample. In this case, is it quite common to `cat` them all in one file; this is performed for both R1 (read R1) and R2 (read R2). Geomosaic allows the same sample name in multiple lines of the provided table, as it will `cat` all the reads R1 in one file R1 and all the reads R2 in one file R2. This case is also presented in the example table above (line 2,3 and 3, 4).
-
-        In the `NOTE 2 scenario`, Geomosaic will perform a `group by` of R1 and R2 files based on the `sample` column to then use the `cat` command. For instance, by performing a group by on the provided example table, the following files are obtained:
-
-        | r1 | r2 | sample |
-        | ---- | ----| ----|
-        | [S1_L001_R1.fastq.gz, S1_L002_R1.fastq.gz] |  [S1_L001_R2.fastq.gz, S1_L002_R2.fastq.gz] | sample1|
-        | [S2_L001_R1.fastq.gz, S2_L002_R1.fastq.gz] |  [S2_L001_R2.fastq.gz, S2_L002_R2.fastq.gz] | sample2|
-        | [S3_L001_R1.fastq.gz, ... ]|  [S3_L001_R2.fastq.gz, ...] | sample3|
-        | ... |  ... | ... |
-
+        __`NOTE 2: Different lines with the same sample name are NOT allowed`__: sequencing data are often splitted for a single sample. In this case, is it quite common to `cat` them all in one file; this is performed for both R1 (read R1) and R2 (read R2). For example: cat S2_L001_R2.fastq.gz S2_L002_R2.fastq.gz > S2_R2.fastq.gz
 
     - (`-d`) the __directory__ containing all raw reads. The name of the listed files has to match the ones provided in the tabular table.
 
