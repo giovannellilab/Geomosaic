@@ -6,7 +6,7 @@ Major changes will be documented in this file.
 ### Added
 
 ### Changed
-
+- Removed DRAM from mags_functional_annotation module
 ### Fixed
 - Env parameter for snakefile (BBmap & Bowtie2 shrinked)
 
