@@ -24,7 +24,6 @@ rule run_rmi_rpi_funprofiler:
         ulimit -n 4096
         # --------------------------------------------------------------------------------------- #
 
-        #mkdir -p {output.folder}/redox_metabolic_plasticity_indexes
         mkdir -p {output.folder}
 
         echo "[+] Concatenating reads for sample: {wildcards.sample} "
@@ -41,7 +40,7 @@ rule run_rmi_rpi_funprofiler:
         ( cd {output.folder} && rm -f seq_concat.fastq.gz_sketch_*.sig.zip)
         echo "[SUCCESS] funprofiler job finished for {wildcards.sample} "
 
-        """.
+        """
 
 
 rule run_rmi_rpi_indexes:
@@ -56,79 +55,89 @@ rule run_rmi_rpi_indexes:
         import pandas as pd
         import math
 
-        def redox_index(acceptors_list: list, donors_list:list):
 
+
+        def redox_index(acceptors_list: list, donors_list:list) -> float:
             num_donors = len(donors_list)
             num_acceptors = len(acceptors_list)
-
             if num_donors == 0 or num_acceptors == 0:
                 return 0.0
-            return math.log(num_donors) + math.log(num_acceptors)
+            return float(round(math.log(num_donors) + math.log(num_acceptors),4))
 
 
-        def compute_indexes(raw_ko_file:str, spreadsheet:str):
-            
-            # RETRIEVING KOS from funprofiler_file
-            results = pd.read_csv(raw_ko_file, sep = ',')
-            ko_list = results["match_name"].str.split(':').str[1].unique().tolist()
-            subset_ = results[["intersect_bp", "match_name"]]
-            n_kos = len(ko_list)
+        def substrate_metal_map(df: pd.DataFrame) -> tuple[dict[str, set], list[str]]:
+            substrate_map = {}
+            unique_metals = set()
 
-            biogeochem_table = pd.read_csv(spreadsheet,sep = '\t')
-            # 1. Filter Sample KOs in our master table
-            detected_mask = biogeochem_table['KO'].isin(ko_list)
-            filtered_df = biogeochem_table[detected_mask]
-            # 2. Split into UNIQUE Donors (D) and Acceptors (A)
-            donors_df = filtered_df[filtered_df['energyRole'] == 'D']
-            acceptors_df = filtered_df[filtered_df['energyRole'] == 'A']
-             # 3. Select DOnors and Acceptors (remove the DROPNA ? )
-            unique_donors = donors_df[donors_df['KO'].isin(ko_list)] \ 
-            ['biogeoSubstrate'].dropna().unique().tolist() 
-            unique_acceptors = acceptors_df[acceptors_df['KO'].isin(ko_list)] \
-            ['biogeoSubstrate'].dropna().unique().tolist()
-            # 4. Select Donors / Acceptors
-            donors = set(donors_df['KO'])
-            acceptors = set(acceptors_df['KO'])
-            # 5. Select Metal DOnors / acceptors
-            metal_donors = donors_df['Metal'].dropna()
-            metal_acceptors = acceptors_df['Metal'].dropna()
+            for _, row in df.iterrows():
+                substrate = row['biogeoSubstrate']
+                metal = row['Metal']
+                if pd.isna(substrate):
+                    continue
+                if substrate not in substrate_map:
+                    substrate_map[substrate] = set()
+                if isinstance(metal, str) and metal != '//':
+                    metals = [m.strip() for m in metal.split(',')]
+                    substrate_map[substrate].update(metals)
 
-            dict_metals = {"acceptors": metal_acceptors, "donors": metal_donors}
-            for name, lista in dict_metals.items():
-                unique_set = set() # Start with an empty set
-                for row in lista:
-                    if isinstance(row, str) and row != '//':
-                        metals = [m.strip() for m in row.split(',')]
-                        unique_set.update(metals) 
-                dict_metals[name] = list(unique_set) 
+            for sub, metals in substrate_map.items():
+                unique_metals.update(metals)
 
-            m_a = dict_metals['acceptors']
-            m_d = dict_metals['donors']
+            return substrate_map, list(unique_metals)
 
-            # COMPUTING INDEXES
-            index_ko_pairs = redox_index(acceptors,donors)
-            index_metal_pairs = redox_index(m_a,m_d)
+        def parse_results(s, d, index_substrate_pairs, index_metal_pairs, type_s):
+            rows = []
+            for substrate, metals in d.items():
+                if metals:  # skip empty sets like 'Water'
+                    for metal in metals:
+                        rows.append({'sample': s, 'rmi' : index_substrate_pairs, 'rpi' : index_metal_pairs, \
+                        'substrate' : substrate, 'metal': metal, 'type' : type_s})
 
-            return float(index_ko_pairs), float(index_metal_pairs), unique_acceptors, unique_donors, m_a, m_d
+            return pd.DataFrame(rows)
+    
 
-        index_ko_pairs, index_metal_pairs, u_acc, u_don, m_a, m_d = compute_indexes(str(input.raw_counts), str(input.custom_table_metals))
+        results = pd.read_csv(str(input.raw_counts), sep = ',')
+        ko_list = results["match_name"].str.split(':').str[1].unique().tolist()
+        subset_ = results[["intersect_bp", "match_name"]]
+
+        # 1. Filter Sample KOs in our master table
+        biogeochem_table = pd.read_csv(str(input.custom_table_metals),sep = '\t')
+        filtered_df = biogeochem_table[biogeochem_table['KO'].isin(ko_list)]
+
+        # 2. Split into UNIQUE Donors (D) and Acceptors (A)
+        donors_df = filtered_df[filtered_df['energyRole'] == 'D']
+        acceptors_df = filtered_df[filtered_df['energyRole'] == 'A']
+
+        # 3. Select Donors / Acceptors
+        donors = set(donors_df['KO'])
+        acceptors = set(acceptors_df['KO'])
+
+       # 3.2 Select Donors and Acceptors
+        unique_donors = donors_df['biogeoSubstrate'].dropna().unique().tolist()
+        unique_acceptors = acceptors_df['biogeoSubstrate'].dropna().unique().tolist()
+
+        donors_subs, unique_donor_metals = substrate_metal_map(donors_df)
+        acceptors_subs , unique_acceptor_metals = substrate_metal_map(acceptors_df)
+
+        index_substrate_pairs = redox_index(unique_acceptors,unique_donors)
+        index_metal_pairs = redox_index(unique_acceptor_metals,unique_donor_metals)
+
+        results_donors = parse_results(wildcards.sample,donors_subs, index_metal_pairs, index_substrate_pairs,type_s='donors')
+        results_acceptors = parse_results(wildcards.sample,acceptors_subs, index_metal_pairs, index_metal_pairs, type_s='acceptors')
+
+        df_ext = pd.concat([results_donors, results_acceptors], ignore_index=True)
+
+        out_file_extended = os.path.join(str(output.metal_index_extended))
+        df_ext.to_csv(out_file_extended, sep='\t', index=False)
 
         out_file_truncated = os.path.join(str(output.metal_index))
         df_trunc = pd.DataFrame({
             'sample': [wildcards.sample],
-            'redox-metabolic-index': [index_ko_pairs],
-            'redox-plasticty-index': [index_metal_pairs]
+            'redox-metabolic-index': [index_substrate_pairs],
+            'redox-plasticty-index': [index_metal_pairs],
+            'acceptors_metals': str(unique_acceptor_metals),
+            'donors_metal': str(unique_donor_metals),
+            'acceptor_substrates': str(unique_acceptors),
+            'donor_substrates': str(donors_subs)
         })
         df_trunc.to_csv(out_file_truncated, sep='\t', index=False)
-
-        out_file_extended = os.path.join(str(output.metal_index_extended))
-        df_ext = pd.DataFrame({
-            'sample': [wildcards.sample],
-            'redox-metabolic-index': [index_ko_pairs],
-            'redox-plasticty-index': [index_metal_pairs],
-            'A_metal': str(m_a),
-            'D_metal': str(m_d),
-            'A_substrate': str(u_acc),
-            'D_substrate': str(u_don)
-        })
-        df_ext.to_csv(out_file_extended, sep='\t', index=False)
