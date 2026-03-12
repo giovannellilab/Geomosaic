@@ -23,21 +23,20 @@ def compose_matrix_metal_indexes_rb(folder, output_folder, samples, pckg):
     
     for t in ['metal_indexes','metal_indexes_extended']:
 
-        #unique_list = set()
         list_dfs = []
-        pivot = 'sample'
+        #pivot = 'sample'
 
         for s in samples:
             folder_data = os.path.join(folder,s,pckg)
             flag = True
-
+            
             if f"{t}.tsv" not in listdir(folder_data):
                 flag = False
                 break
-
-            raw_df = pd.read_csv(os.path.join(folder_data,f"{t}.tsv"), sep="\t")
-            list_dfs.append(raw_df)
-
+            
+            df = pd.read_csv(os.path.join(folder_data,f"{t}.tsv"), sep="\t")
+            list_dfs.append(df)
+            
         if not flag:
             continue
 
