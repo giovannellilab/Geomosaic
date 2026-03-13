@@ -14,7 +14,7 @@ from geomosaic.gathering.gather_mifaser import gather_mifaser
 from geomosaic.gathering.gather_recognizer import gather_recognizer
 from geomosaic.gathering.gather_coverm_genome import gather_coverm_genome
 from geomosaic.gathering.gather_funprofiler import gather_funprofiler
-from geomosaic.gathering.gather_metal_redox_index import gather_metal_indexes_rb
+from geomosaic.gathering.gather_metal_rmi_rpi_indexes import gather_metal_indexes_rb
 # add import to redoxes
 
 

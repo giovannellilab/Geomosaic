@@ -23,10 +23,17 @@ def essential_data_config(gmsetup, path_gathering):
     return geomosaic_samples, geomosaic_gathering
 
 
-def get_sample_with_results(result_folder, geomosaic_wdir, all_samples):
+def get_sample_with_results(result_folder, geomosaic_wdir, all_samples, subfolder = None):
     true_samples = []
-    for s in all_samples:
-        if result_folder in os.listdir(os.path.join(geomosaic_wdir, s)): 
-            true_samples.append(s)
     
+    if subfolder is None:
+        for s in all_samples:
+            if result_folder in os.listdir(os.path.join(geomosaic_wdir, s)): 
+                true_samples.append(s)
+    else:
+        for s in all_samples:
+            if result_folder in os.listdir(os.path.join(geomosaic_wdir, s)): 
+                if subfolder in os.listdir(os.path.join(geomosaic_wdir, s, result_folder)): 
+                    true_samples.append(s)
+        
     return true_samples

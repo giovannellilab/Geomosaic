@@ -1,6 +1,16 @@
 # Change Log
 Major changes will be documented in this file.
 
+## Version 1.3.2 (Mar 13, 2026)
+### Added
+- Added possibility to subfolder in get_sample_results
+### Changed
+- Renamed gather function metal_index_rb to rmi_rpi_indexes & change in gm_gather
+- Removed cat raw_reads lanes in gm_setup & Change in `--move_and_rename` args flag
+### Fixed
+- Fix typo on gather_mags_recognizer
+- Fix issue related to gather_rmi_rpi_indexes
+
 
 ## Version 1.3.1 (Mar 06, 2026)
 ### Added
