@@ -47,18 +47,31 @@ rule run_rmi_rpi_indexes:
     run:
         import os
         import pandas as pd
-        import math
+        import numpy as np
+        from itertools import product
 
-
-        def redox_index(acceptors_list: list, donors_list:list) -> float:
-            num_donors, num_acceptors = len(donors_list), len(acceptors_list)
+        def redox_metabolic_index(acceptors_list: list, donors_list:list) -> float:
             
-            if num_donors == 0 or num_acceptors == 0:
+            if len(donors_list) == 0 or len(acceptors_list) == 0:
                 return 0.0
-            return float(round(math.log(num_donors) + math.log(num_acceptors),4))
+
+            return float(round(np.log(len(donors_list)) + np.log(len(acceptors_list)),4))
+
+
+
+        def redox_plasticty_index(metal_donors_l: list, metal_acceptor_l: list) -> float:
+
+            if len(metal_donors_l) == 0 or len(metal_acceptor_l) == 0:
+                return 0.0
+            else:
+                unique_pairs = list({tuple(sorted(pair)) for pair in product(len(metal_donors_l), len(metal_acceptor_l))})
+
+            return float(round(np.log(unique_pairs),4))
+
 
 
         def substrate_metal_map(df: pd.DataFrame) -> tuple[dict[str, dict], list[str]]:
+
             substrate_map = {}
             unique_metals ,unique_substrates = set(), set()
             
@@ -73,15 +86,15 @@ rule run_rmi_rpi_indexes:
 
                 if isinstance(metal, str) and metal != '//':
                     metals = [m.strip() for m in metal.split(',')]
+                    
                     for m in metals:
                         unique_metals.add(m)
-
                         if m not in substrate_map[substrate]["metals"]:
                             substrate_map[substrate]["metals"][m] = [ko]
                         else:
                             substrate_map[substrate]["metals"][m].append(ko)
 
-            return substrate_map, list(unique_metals), list(unique_substrates)
+            return substrate_map, sorted(list(unique_metals)), sorted(list(unique_substrates))
 
 
         def parse_results(s, d, index_substrate_pairs, index_metal_pairs, type_s):
@@ -110,10 +123,10 @@ rule run_rmi_rpi_indexes:
         data_donors, unq_donor_metals, unq_donors_subs = substrate_metal_map(donors_df)
         data_acceptors, unq_acceptor_metals, unq_acceptor_subs = substrate_metal_map(acceptors_df)
 
-        index_substrate_pairs = redox_index(unq_donors_subs,unq_acceptor_subs)
-        index_metal_pairs = redox_index(unq_donor_metals,unq_acceptor_metals)
+        rmi = redox_metabolic_index(unq_donors_subs,unq_acceptor_subs)
+        rpi = redox_plasticty_index(unq_donor_metals,unq_acceptor_metals)
 
-        results_donors = parse_results(sample, data_donors, index_metal_pairs, index_substrate_pairs,type_s='donors')
+        results_donors = parse_results(sample, data_donors, index_metal_pairs, index_substrate_pairs,type_s= 'donors')
         results_acceptors = parse_results(sample, data_acceptors, index_metal_pairs, index_metal_pairs, type_s='acceptors')
 
         df_ext = pd.concat([results_donors, results_acceptors], ignore_index=True)
