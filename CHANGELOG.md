@@ -1,6 +1,15 @@
 # Change Log
 Major changes will be documented in this file.
 
+## Version 1.3.3 (Mar 19, 2026)
+### Added
+
+### Changed
+
+### Fixed
+- Fix rpi to account for unique Metal pairs
+
+
 ## Version 1.3.2 (Mar 13, 2026)
 ### Added
 - Added possibility to subfolder in get_sample_results
