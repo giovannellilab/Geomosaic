@@ -26,10 +26,8 @@ def check_file(file_path: str):
     elif ext == '.csv':
         return pd.read_csv(file_path, sep=','), ext
     elif ext in ['.xlsx', '.xls']:
-        # Note: Requires 'openpyxl' library installed
         return pd.read_excel(file_path), ext
     else:
-        # Fallback: try to "sniff" the delimiter if extension is unknown
         return pd.read_csv(file_path, sep='\t'), ext
 
 
@@ -101,7 +99,7 @@ energyRole, biogeoSubstrate, Metal, KO.
                                                   
 - The energyRole column must contain the energy role of the metal index (e.g., A for acceptor, D for donor).
 - The biogeoSubstrate refers to the Acceptor/Donor substrate contain the biogeochemical substrate associated with the metal index (e.g., Fe, Mn, S). \n\
-- The Metal column must contain the name of the metal associated with the index (e.g., Iron, Manganese, Sulfur).
+- The Metal column must contain the name of the metal associated with the index (e.g., Iron = Fe, Nickel = Ni, ).
 - The KO column must contain the KEGG Orthology (KO) identifier associated with the metal index (e.g., K00001).
 
 An example of a minimal Redox-metabolic & Plasticity table structure is provided below:
@@ -114,14 +112,20 @@ An example of a minimal Redox-metabolic & Plasticity table structure is provided
 | D          |  Ammonia/Methane | Cu     | K10944  |
 | A,D        |  Sulfur          | Fe     | K16952  |
 | D          |  Thiosulfate     | Fe     | K19713  |
+| D          |  CO              | CuMo   | K03520  |
                                                   
-This module will allow you to compute two indexes: the RMI or Redox-Metabolic Index and the RPI or Redox-Plasticity Index:
+                                                  
+This module will allow you to compute two indexes:
+                                                   
+- RMI or Redox-Metabolic Index:
+    Is calcualted as the logarithm of the product bewtween the total number of unique donors biogeoSubstrate (energyRole = D)
+    KOs and the total number of unique acceptors biogeoSubstrate (energyRole = A) and is defined as:  
+    ---> RMI = log(len(set(num_donors))) + log(len(set(num_acceptors))) \n
 
-FORMULA: 
-    index = math.log(num_donors) + math.log(num_acceptors)
-
-- The RMI is calcualted as the logarithm of the product bewtween the total number of accpetors (A) KOs and the total number of donors (D) KOs
-- The RPI is calculated as the logarithm of the product between the total number of accpetors Metals (A) KO[A][Metal] and the total number of Metal donors (D) KO[D][Metal] \n\
+- RPI or Redox-Plasticity Index 
+    Is computed as the number of unique metal pairs scored from previous index, such that Donors (Fe,Ni) and Acceptors (Fe,Ni)
+    ,the resulting unique paris will be (Fe,Fe), (Fe,Ni), (Ni,Ni)
+    ---> RPI = log(len(set(pairs))) \n
 
 Please, provide a custom table with this information to include it in the geomosaic database and use it for metal index annotation.
 """)

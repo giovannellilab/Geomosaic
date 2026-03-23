@@ -70,12 +70,14 @@ rule run_rmi_rpi_indexes:
 
 
 
-        def substrate_metal_map(df: pd.DataFrame) -> tuple[dict[str, dict], list[str]]:
+        def substrate_metal_map(df: pd.DataFrame) -> tuple[dict[str, dict], list[str], list[str]]:
 
             substrate_map = {}
             unique_metals ,unique_substrates = set(), set()
-            
+            no_metal = ''
+
             for _, row in df.iterrows():
+                
                 substrate = row['biogeoSubstrate']
                 metal = row['Metal']
                 ko = row['KO']
@@ -86,13 +88,18 @@ rule run_rmi_rpi_indexes:
 
                 if isinstance(metal, str) and metal != '//':
                     metals = [m.strip() for m in metal.split(',')]
-                    
                     for m in metals:
                         unique_metals.add(m)
                         if m not in substrate_map[substrate]["metals"]:
                             substrate_map[substrate]["metals"][m] = [ko]
                         else:
                             substrate_map[substrate]["metals"][m].append(ko)
+
+                elif metal == '//':
+                    if no_metal not in substrate_map[substrate]["metals"]:
+                        substrate_map[substrate]["metals"][no_metal] = [ko]
+                    else:
+                        substrate_map[substrate]["metals"][no_metal].append(ko)
 
             return substrate_map, sorted(list(unique_metals)), sorted(list(unique_substrates))
 
