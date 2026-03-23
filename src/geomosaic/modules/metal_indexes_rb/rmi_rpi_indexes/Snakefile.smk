@@ -146,7 +146,7 @@ rule run_rmi_rpi_indexes:
             'sample': [sample],
             'redox-metabolic-index': [rmi],
             'redox-plasticty-index': [rpi],
-            'acceptors_metals': str(unq_donor_metals),
+            'acceptors_metals': str(unq_acceptor_metals),
             'donors_metal': str(unq_donor_metals),
             'acceptor_substrates': str(unq_acceptor_subs),
             'donor_substrates': str(unq_donors_subs)
