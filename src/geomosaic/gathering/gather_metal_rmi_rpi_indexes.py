@@ -38,7 +38,5 @@ def compose_matrix_rmi_rpi_indexes(folder, output_folder, samples, pckg, subfold
         if not flag:
             continue
 
-        temp = pd.concat(list_dfs)
-    
-        finalm = temp.replace(np.nan, 0, regex=True)
+        finalm = pd.concat(list_dfs)
         finalm.to_csv(os.path.join(output_folder,f"{t}.tsv"), sep="\t", index=False, header=True)

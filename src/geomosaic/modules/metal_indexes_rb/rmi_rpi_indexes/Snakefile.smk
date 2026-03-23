@@ -74,7 +74,7 @@ rule run_rmi_rpi_indexes:
 
             substrate_map = {}
             unique_metals ,unique_substrates = set(), set()
-            no_metal = ''
+            no_metal = "__no_metal__"
 
             for _, row in df.iterrows():
                 
@@ -109,7 +109,8 @@ rule run_rmi_rpi_indexes:
             for substrate, data in d.items():
                 for metal, kos in data["metals"].items():
                         rows.append({'sample': s, 'rmi' : index_substrate_pairs, 'rpi' : index_metal_pairs, 
-                                     'substrate' : substrate, 'metal': metal, 'type' : type_s, "KO" : kos})
+                                     'substrate' : substrate, 'metal': np.nan if metal == "__no_metal__" else metal, 
+                                     'type' : type_s, "KO" : kos})
             return pd.DataFrame(rows)
     
 
