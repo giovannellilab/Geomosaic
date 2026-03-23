@@ -74,8 +74,8 @@ This command has both required and optional arguments. But as you can see it is 
 
         - **IMPORTANT**: make sure that if you are going to use `--exec_type` you also specify at least the options `-m`and `-p` (if they are required from your cluster).
 
+    - (`--source`) Specifies the source of the previously run command. Use `--source workflow` if you ran `geomosaic workflow`, or `--source unit` if you ran `geomosaic unit`.
 - __OPTIONAL Arguments for BOTH SLURM and GNU PARALLEL__
-    - (`-u`) This option is necessary if you want to install the conda environment required to run your unit.
     - (`-t`) If specified this value will override the one specified in the workflow/unit (config file) and thus will replace threads value in the config file. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')
     - (`-f`) Here you can specify a folder for logs files. Default is None, but we suggest you to specify it and if it does not exists, Geomosaic will create it. (Available for '--exec_type slurm' or '--exec_type gnu_parallel')
     - (`--ignore_samples <IGNORE_SAMPLES>`) a comma separated list of Samples to ignore (no spaces). This option is useful for example when no assembly was succefully retrieved. By providing these samples as comma separated (with no spaces) geomosaic will create the next slurm script and the list of samples ignoring the ones that are provided in this option
@@ -93,7 +93,7 @@ These options allow you to create a minimal draft for slurm scripts. However, it
 
 ## Example usage `geomosaic prerun` [SLURM Available]
 ```
-geomosaic prerun -s gmsetup_exp2023.yaml --exec_type slurm -t 30 -m 250 -p test -f slurm_logs
+geomosaic prerun -s gmsetup_exp2023.yaml --exec_type slurm --source workflow -t 30 -m 250 -p test -f slurm_logs
 ```
 
 ```

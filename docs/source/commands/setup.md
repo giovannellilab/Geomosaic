@@ -48,9 +48,8 @@ Optional Arguments:
                         current directory (default: geomosaic)
   -n PROJECT_NAME, --project_name PROJECT_NAME
                         Name of the project. The first 8 Characters will be used for SLURM job name (default: Geomosaic_Workflow)
-  --move_and_rename     Suggested flag if the provided raw reads directory is already a backup of the original files. In this case, geomosaic will create
-                        only symbolic link of raw reads to its working directory.
-                        R2 sample reads, as geomosaic will 'cat' them to a single file. (default: False)
+  --move_and_rename     Suggested flag if the provided raw reads directory is already a backup of the original files. In this case, geomosaic will 
+                        move  and rename the raw files to its working directory.
   --skip_checks         If you are sure that every file is in its correct location and the sample names are filled correctly, you can skip checks with this
                         flags. However we do not suggest to use it. (default: False)
 
@@ -76,7 +75,7 @@ Help Arguments:
 
         __`NOTE 1: Sample and reads name with no spaces`__: the values on the `sample` column (but also on the `r1` and `r2` columns) should __*not*__ present any space as it increases the folder organization complexity. However, Geomosaic will perform a check (assertion) and possibly print an Error message describing the line that containes the space.
 
-        __`NOTE 2: Different lines with the same sample name are NOT allowed`__: sequencing data are often splitted for a single sample. In this case, is it quite common to `cat` them all in one file; this is performed for both R1 (read R1) and R2 (read R2). For example: cat S2_L001_R2.fastq.gz S2_L002_R2.fastq.gz > S2_R2.fastq.gz
+        __`NOTE 2: Different lines with the same sample name are NOT allowed`__: sequencing data are often splitted for a single sample. In this case, you should `cat` them all in one file for both R1 (read R1) and R2 (read R2). User should take care of this step beforehand. For example: cat S2_L001_R2.fastq.gz S2_L002_R2.fastq.gz > S2_R2.fastq.gz
 
     - (`-d`) the __directory__ containing all raw reads. The name of the listed files has to match the ones provided in the tabular table.
 
