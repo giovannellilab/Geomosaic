@@ -117,9 +117,9 @@ def create_gathering_folder(geomosaic_dir,gather_folder):
 
 def some_checks(assembly_hmm_outfolder, mags_hmm_outfolder, packages):
     if assembly_hmm_outfolder is None and "hmms_search" in packages:
-        print(f"\n{GEOMOSAIC_ERROR}: To use gathering for the 'hmms_search' package (ASSEMBLY-based), you need to specify also the name of the output folder that you used for this module through the option '--assembly_hmm_outfolder <outputfolder>'.")
+        print(f"\n{GEOMOSAIC_ERROR}: To use gathering for the 'hmms_search' package (ASSEMBLY-based), you need to specify also the name of the output folder that you used for this module through the option '--assembly_hmmsearch_outfolder <outputfolder>'.")
         exit(1)
     
     if mags_hmm_outfolder is None and "mags_hmmsearch" in packages:
-        print(f"\n{GEOMOSAIC_ERROR}: To use gathering for the 'mags_hmmsearch' package (BINNING-based), you need to specify also the name of the output folder that you used for this module through the option '--mags_hmm_outfolder <outputfolder>'.")
+        print(f"\n{GEOMOSAIC_ERROR}: To use gathering for the 'mags_hmmsearch' package (BINNING-based), you need to specify also the name of the output folder that you used for this module through the option '--mags_hmmsearch_outfolder <outputfolder>'.")
         exit(1)
