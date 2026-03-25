@@ -108,11 +108,11 @@
             }
     
         },
-
-        "metal_indexes_rb": {
-            "description": "Module: Redox Metabolic Index & Redox Plasticity Index [Read-based]",
+    
+        "redox_metal_indexes": {
+            "description": "Module: Redox Metabolic Index & Metal Plasticity Index [Read-based]",
             "choices": {
-                "Redox Metabolic Index & Redox Plasticity Index": "rmi_rpi_indexes"
+                "Redox Metabolic Index & Metal Plasticity Index": "redox_metal_plasticity_index"
             }
         },
     

@@ -3,13 +3,13 @@ rule run_rmi_rpi_funprofiler:
     input:
         r1=expand("{wdir}/{sample}/{pre_processing}/R1.fastq.gz", pre_processing=config["MODULES"]["pre_processing"], allow_missing=True),
         r2=expand("{wdir}/{sample}/{pre_processing}/R2.fastq.gz", pre_processing=config["MODULES"]["pre_processing"], allow_missing=True),
-        db_folder=expand("{rmi_rpi_indexes_extdb_folder}", rmi_rpi_indexes_extdb_folder=config["EXT_DB"]["rmi_rpi_indexes"]["database_folder"])
+        db_folder=expand("{redox_metal_indexes_extdb_folder}", redox_metal_indexes_extdb_folder=config["EXT_DB"]["redox_metal_indexes"]["database_folder"])
     output:
-        raw_counts="{wdir}/{sample}/{rmi_rpi_output_folder}/funprof_output/prefetch_out.csv",
-        done="{wdir}/{sample}/{rmi_rpi_output_folder}/funprof_output/funprofiler.done"
-    conda: config["ENVS"]["rmi_rpi_indexes"]
+        raw_counts="{wdir}/{sample}/{redox_metal_plasticity_index_output_folder}/funprof_output/prefetch_out.csv",
+        done="{wdir}/{sample}/{redox_metal_plasticity_index_output_folder}/funprof_output/funprofiler.done"
+    conda: config["ENVS"]["redox_metal_indexes"]
     params:
-        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["rmi_rpi_indexes"])) ) (config["USER_PARAMS"]["rmi_rpi_indexes"])
+        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["redox_metal_indexes"])) ) (config["USER_PARAMS"]["redox_metal_indexes"])
     threads: config["threads"]
     shell:
         """
@@ -37,13 +37,13 @@ rule run_rmi_rpi_funprofiler:
         """
 
 
-rule run_rmi_rpi_indexes:
+rule run_redox_metal_indexes:
     input:
         raw_counts= rules.run_rmi_rpi_funprofiler.output.raw_counts,
-        custom_table_metals= expand("{table_file}", table_file = config["EXT_DB"]["rmi_rpi_indexes"]["table_file"])
+        custom_table_metals= expand("{table_file}", table_file = config["EXT_DB"]["redox_metal_indexes"]["table_file"])
     output:
-        metal_index="{wdir}/{sample}/{rmi_rpi_output_folder}/redox_metabolic_plasticity_indexes/metal_indexes.tsv",
-        metal_index_extended="{wdir}/{sample}/{rmi_rpi_output_folder}/redox_metabolic_plasticity_indexes/metal_indexes_extended.tsv"
+        metal_index="{wdir}/{sample}/{redox_metal_plasticity_index_output_folder}/redox_metabolic_plasticity_indexes/metal_indexes.tsv",
+        metal_index_extended="{wdir}/{sample}/{redox_metal_plasticity_index_output_folder}/redox_metabolic_plasticity_indexes/metal_indexes_extended.tsv"
     run:
         import os
         import pandas as pd
@@ -59,7 +59,7 @@ rule run_rmi_rpi_indexes:
 
 
 
-        def redox_plasticty_index(metal_donors_l: list, metal_acceptor_l: list) -> float:
+        def metal_plasticty_index(metal_donors_l: list, metal_acceptor_l: list) -> float:
 
             if len(metal_donors_l) == 0 or len(metal_acceptor_l) == 0:
                 return 0.0
@@ -108,7 +108,7 @@ rule run_rmi_rpi_indexes:
             rows = []
             for substrate, data in d.items():
                 for metal, kos in data["metals"].items():
-                        rows.append({'sample': s, 'rmi' : index_substrate_pairs, 'rpi' : index_metal_pairs, 
+                        rows.append({'sample': s, 'rmi' : index_substrate_pairs, 'mpi' : index_metal_pairs, 
                                      'substrate' : substrate, 'metal': np.nan if metal == "__no_metal__" else metal, 
                                      'type' : type_s, "KO" : kos})
             return pd.DataFrame(rows)
@@ -132,7 +132,7 @@ rule run_rmi_rpi_indexes:
         data_acceptors, unq_acceptor_metals, unq_acceptor_subs = substrate_metal_map(acceptors_df)
 
         rmi = redox_metabolic_index(unq_donors_subs,unq_acceptor_subs)
-        rpi = redox_plasticty_index(unq_donor_metals,unq_acceptor_metals)
+        mpi = metal_plasticty_index(unq_donor_metals,unq_acceptor_metals)
 
         results_donors = parse_results(sample, data_donors, rmi, rpi,type_s= 'donors')
         results_acceptors = parse_results(sample, data_acceptors, rmi, rpi, type_s='acceptors')
@@ -145,8 +145,8 @@ rule run_rmi_rpi_indexes:
         out_file_truncated = os.path.join(str(output.metal_index))
         df_trunc = pd.DataFrame({
             'sample': [sample],
-            'redox-metabolic-index': [rmi],
-            'redox-plasticty-index': [rpi],
+            'redox_metabolic_index': [rmi],
+            'metal_plasticty_index': [mpi],
             'acceptors_metals': str(unq_acceptor_metals),
             'donors_metal': str(unq_donor_metals),
             'acceptor_substrates': str(unq_acceptor_subs),

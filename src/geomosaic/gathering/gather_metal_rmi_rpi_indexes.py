@@ -7,18 +7,18 @@ import yaml
 from geomosaic.gathering.utils import get_sample_with_results
 
 
-def gather_metal_indexes_rb(all_samples,geomosaic_wdir,output_base_folder,additional_info):
-    pckg = "rmi_rpi_indexes"
-    sub_folder = "redox_metabolic_plasticity_indexes"
+def gather_redox_metal_indexes(all_samples,geomosaic_wdir,output_base_folder,additional_info):
+    pckg = "redox_metal_plasticity_index"
+    sub_folder = "metabolic_index"
 
     samples = get_sample_with_results(pckg, geomosaic_wdir,all_samples,subfolder=sub_folder)
     output_folder = os.path.join(output_base_folder, pckg)
 
     check_call(f"mkdir -p {output_folder}", shell=True)
-    compose_matrix_rmi_rpi_indexes(geomosaic_wdir, output_folder, samples, pckg, sub_folder)
+    compose_matrix_redox_metal_indexes(geomosaic_wdir, output_folder, samples, pckg, sub_folder)
 
 
-def compose_matrix_rmi_rpi_indexes(folder, output_folder, samples, pckg, subfolder):
+def compose_matrix_redox_metal_indexes(folder, output_folder, samples, pckg, subfolder):
     
     for t in ['metal_indexes','metal_indexes_extended']:
 
