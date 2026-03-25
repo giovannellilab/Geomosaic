@@ -4,7 +4,7 @@
         "reads_qc",
         "func_classification_rb",
         "tax_classification_rb",
-        "metal_indexes_rb",
+        "redox_metal_indexes",
         "assembly",
         "assembly_func_annotation",
         "assembly_readmapping",
@@ -32,7 +32,7 @@
         ["pre_processing", "reads_qc"],
         ["pre_processing", "func_classification_rb"],
         ["pre_processing", "tax_classification_rb"],
-        ["pre_processing", "metal_indexes_rb"],
+        ["pre_processing", "redox_metal_indexes"],
         ["pre_processing", "assembly"],
         ["pre_processing", "assembly_readmapping"],
         ["pre_processing", "mags_coverage"],
@@ -326,7 +326,7 @@
         "megahit": "megahit.yaml",
         "metaphlan": "metaphlan.yaml",
         "metaquast": "quast.yaml",
-        "rmi_rpi_indexes": "redox_metal_index.yaml",
+        "redox_metal_plasticity_index": "redox_metal_plasticity_index.yaml",
         "metaspades": "metaspades.yaml",
         "mifaser": "mifaser.yaml",
         "multi_binners": "multi_binners.yaml",
@@ -422,8 +422,8 @@
                 "type": "string"
             }
         },
-        "rmi_rpi_indexes": {
-            "metal_index_file_table" : {
+        "redox_metal_plasticity_index": {
+            "redox_metal_index_file_table" : {
                 "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM TABLE for Redox Metabolic Index & Redox Plasticity Index - TSV FILE]\nDescription: you need to specify the path to the biogeo-table TSV table for computation of Redox Metabolic & Redox Plasticity Indexes based on funprofiler annotation",
                 "type": "file"
             }
@@ -434,7 +434,7 @@
         "mifaser",
         "kaiju",
         "funprofiler",
-        "rmi_rpi_indexes",
+        "redox_metal_plasticity_index",
         
         "kraken2",
         "eggnog_mapper",
