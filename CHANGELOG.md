@@ -1,6 +1,16 @@
 # Change Log
 Major changes will be documented in this file.
 
+
+## Version 1.3.5 (Mar 25, 2026)
+### Added
+
+### Changed
+- Renamed module `metal_indexes_rb` to `redox_metal_indexes` and tool from `rmi_rpi_indexes` to `redox_metal_plasticity_index`
+- Renaming rules, functions according to new namings, and variables
+### Fixed
+
+
 ## Version 1.3.4 (Mar 24, 2026)
 ### Added
 

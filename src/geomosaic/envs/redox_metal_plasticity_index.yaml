@@ -1,4 +1,4 @@
-name: geomosaic_rmi_rpi_indexes
+name: geomosaic_redox_metal_plasticity_index
 channels:
   - conda-forge
   - bioconda
