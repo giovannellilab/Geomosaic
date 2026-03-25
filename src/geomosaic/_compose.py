@@ -3,7 +3,7 @@ import os
 import shutil
 from geomosaic._utils import GEOMOSAIC_PROCESS, GEOMOSAIC_OK, GEOMOSAIC_NOTE
 from geomosaic.custom_tools.argsoap_custom import prepare_argsoap_customdb
-from geomosaic.custom_tools.metal_indexes_custom import prepare_metalindex_customdb
+from geomosaic.custom_tools.redox_metal_plasticity_index_custom import prepare_metalindex_customdb
 
 def compose_config(geomosaic_dir, samples_list, additional_parameters, user_choices, \
                    modules_folder, geomosaic_user_parameters, envs, envs_folder, geomosaic_condaenvs_folder, \
@@ -162,7 +162,7 @@ def prepare_custom_db():
 
     tools_for_customdb = {
         "argsoap_custom": prepare_argsoap_customdb,
-        "rmi_rpi_indexes": prepare_metalindex_customdb
+        "redox_metal_plasticity_index": prepare_metalindex_customdb
     }
 
     return tools_for_customdb
