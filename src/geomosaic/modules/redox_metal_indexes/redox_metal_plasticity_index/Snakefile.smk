@@ -42,8 +42,8 @@ rule run_redox_metal_indexes:
         raw_counts= rules.run_rmi_mpi_funprofiler.output.raw_counts,
         custom_table_metals= expand("{table_file}", table_file = config["EXT_DB"]["redox_metal_plasticity_index"]["table_file"])
     output:
-        metal_index="{wdir}/{sample}/{redox_metal_plasticity_index_output_folder}/metabolic_index/metal_indexes.tsv",
-        metal_index_extended="{wdir}/{sample}/{redox_metal_plasticity_index_output_folder}/metabolic_index/metal_indexes_extended.tsv"
+        metal_index="{wdir}/{sample}/{redox_metal_plasticity_index_output_folder}/metabolic_index/redox_metal_indexes.tsv",
+        metal_index_extended="{wdir}/{sample}/{redox_metal_plasticity_index_output_folder}/metabolic_index/redox_metal_indexes_extended.tsv"
     run:
         import os
         import pandas as pd
