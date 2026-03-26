@@ -4,6 +4,7 @@
         "reads_qc",
         "func_classification_rb",
         "tax_classification_rb",
+        "redox_metal_indexes",
         "assembly",
         "assembly_func_annotation",
         "assembly_readmapping",
@@ -31,6 +32,7 @@
         ["pre_processing", "reads_qc"],
         ["pre_processing", "func_classification_rb"],
         ["pre_processing", "tax_classification_rb"],
+        ["pre_processing", "redox_metal_indexes"],
         ["pre_processing", "assembly"],
         ["pre_processing", "assembly_readmapping"],
         ["pre_processing", "mags_coverage"],
@@ -105,6 +107,13 @@
                 "MetaPhlAn": "metaphlan"
             }
     
+        },
+    
+        "redox_metal_indexes": {
+            "description": "Module: Redox Metabolic Index & Metal Plasticity Index [Read-based]",
+            "choices": {
+                "Redox Metabolic Index & Metal Plasticity Index": "redox_metal_plasticity_index"
+            }
         },
     
         "assembly": {
@@ -215,8 +224,7 @@
         "mags_func_annotation": {
             "description": "Module: perform functional annotation on MAGs [Binning-based]",
             "choices": {
-                "Bakta on MAGs": "mags_bakta",
-                "DRAM on MAGs": "mags_dram"
+                "Bakta on MAGs": "mags_bakta"
             }
         },
 
@@ -318,6 +326,7 @@
         "megahit": "megahit.yaml",
         "metaphlan": "metaphlan.yaml",
         "metaquast": "quast.yaml",
+        "redox_metal_plasticity_index": "redox_metal_plasticity_index.yaml",
         "metaspades": "metaspades.yaml",
         "mifaser": "mifaser.yaml",
         "multi_binners": "multi_binners.yaml",
@@ -412,6 +421,12 @@
                 "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM DB for ARGs-OAP - Output folder]\nDescription: you need to specify a name for the output folder. For example, if this argsoap custom will concern hydrogenases, you may want to rename the output folder as 'argsoap_custom_hydrogenases'",
                 "type": "string"
             }
+        },
+        "redox_metal_plasticity_index": {
+            "redox_metal_index_file_table" : {
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM TABLE for Redox Metabolic Index & Redox Plasticity Index - TSV FILE]\nDescription: you need to specify the path to the biogeo-table TSV table for computation of Redox Metabolic & Redox Plasticity Indexes based on funprofiler annotation",
+                "type": "file"
+            }
         }
     },
 
@@ -419,7 +434,8 @@
         "mifaser",
         "kaiju",
         "funprofiler",
-
+        "redox_metal_plasticity_index",
+        
         "kraken2",
         "eggnog_mapper",
         "recognizer",

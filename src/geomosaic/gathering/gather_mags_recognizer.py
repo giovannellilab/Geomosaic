@@ -11,7 +11,7 @@ from geomosaic.gathering.utils import get_sample_with_results
 def gather_mags_recognizer(all_samples, geomosaic_wdir, output_base_folder, additional_info):
     pckg = "mags_recognizer"
     
-    samples = get_sample_with_results(pckg, geomosaic_wdir, all_samplesS)
+    samples = get_sample_with_results(pckg, geomosaic_wdir, all_samples)
 
     output_folder = os.path.join(output_base_folder, pckg)
 

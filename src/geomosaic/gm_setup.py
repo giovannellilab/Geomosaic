@@ -143,15 +143,8 @@ def group_read_by_sample(groupby_df, rawreads_folder, wdir, move_and_rename):
             shutil.move(os.path.join(rawreads_folder, i.r2[0]), os.path.join(wdir, i.sample, "R2.fastq.gz"))
         
         else:
-            all_r1 = " ".join([os.path.join(rawreads_folder,x) for x in i.r1])
-            all_r2 = " ".join([os.path.join(rawreads_folder,x) for x in i.r2])
-            
-            if len(i.r1) == 1:
-                shutil.copyfile(os.path.join(rawreads_folder, i.r1[0]), os.path.join(wdir, i.sample, "R1.fastq.gz"))
-                shutil.copyfile(os.path.join(rawreads_folder, i.r2[0]), os.path.join(wdir, i.sample, "R2.fastq.gz"))
-            else:
-                check_call(f"cat {all_r1} > {os.path.join(wdir, str(i.sample), 'R1.fastq.gz')}", shell=True)
-                check_call(f"cat {all_r2} > {os.path.join(wdir, str(i.sample), 'R2.fastq.gz')}", shell=True)
+            shutil.copyfile(os.path.join(rawreads_folder, i.r1[0]), os.path.join(wdir, i.sample, "R1.fastq.gz"))
+            shutil.copyfile(os.path.join(rawreads_folder, i.r2[0]), os.path.join(wdir, i.sample, "R2.fastq.gz"))
     
     return samples_list
 

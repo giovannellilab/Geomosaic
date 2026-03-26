@@ -11,7 +11,7 @@ rule run_bowtie2:
         sorted_bam="{wdir}/{sample}/bowtie2_shrinked/read_mapping_sorted.bam",
         indexed_bam="{wdir}/{sample}/bowtie2_shrinked/read_mapping_sorted.bam.bai"
     threads: config["threads"]
-    conda: config["ENVS"]["bowtie2"]
+    conda: config["ENVS"]["bowtie2_shrinked"]
     params:
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["bowtie2"])) ) (config["USER_PARAMS"]["bowtie2_shrinked"]),
         samtools_view_user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["samtools_view"])) ) (config["USER_PARAMS"]["bowtie2_shrinked"]),

@@ -14,7 +14,8 @@ from geomosaic.gathering.gather_mifaser import gather_mifaser
 from geomosaic.gathering.gather_recognizer import gather_recognizer
 from geomosaic.gathering.gather_coverm_genome import gather_coverm_genome
 from geomosaic.gathering.gather_funprofiler import gather_funprofiler
-
+from geomosaic.gathering.gather_redox_metal_plasticity_index import gather_redox_metal_plasticity_index
+# add import to redoxes
 
 
 def geo_gather(args):
@@ -79,7 +80,8 @@ def gather_functions():
         "mifaser": gather_mifaser,
         "kaiju": gather_kaiju,
         "funprofiler": gather_funprofiler,
-
+        "redox_metal_plasticity_index": gather_redox_metal_plasticity_index,
+        
         "kraken2": gather_kraken2,
         "eggnog_mapper": gather_eggnogmapper,
         "recognizer": gather_recognizer,
@@ -115,9 +117,9 @@ def create_gathering_folder(geomosaic_dir,gather_folder):
 
 def some_checks(assembly_hmm_outfolder, mags_hmm_outfolder, packages):
     if assembly_hmm_outfolder is None and "hmms_search" in packages:
-        print(f"\n{GEOMOSAIC_ERROR}: To use gathering for the 'hmms_search' package (ASSEMBLY-based), you need to specify also the name of the output folder that you used for this module through the option '--assembly_hmm_outfolder <outputfolder>'.")
+        print(f"\n{GEOMOSAIC_ERROR}: To use gathering for the 'hmms_search' package (ASSEMBLY-based), you need to specify also the name of the output folder that you used for this module through the option '--assembly_hmmsearch_outfolder <outputfolder>'.")
         exit(1)
     
     if mags_hmm_outfolder is None and "mags_hmmsearch" in packages:
-        print(f"\n{GEOMOSAIC_ERROR}: To use gathering for the 'mags_hmmsearch' package (BINNING-based), you need to specify also the name of the output folder that you used for this module through the option '--mags_hmm_outfolder <outputfolder>'.")
+        print(f"\n{GEOMOSAIC_ERROR}: To use gathering for the 'mags_hmmsearch' package (BINNING-based), you need to specify also the name of the output folder that you used for this module through the option '--mags_hmmsearch_outfolder <outputfolder>'.")
         exit(1)

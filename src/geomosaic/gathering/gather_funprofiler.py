@@ -24,7 +24,7 @@ def compose_matrix_funprofiler(folder, output_folder, samples, pckg):
 
         unique_list = set()
         list_dfs = []
-        pivot = 'ko_id'
+        pivot = "ko_id"
 
         for s in samples:
             folder_data = os.path.join(folder,s,pckg)
@@ -36,7 +36,7 @@ def compose_matrix_funprofiler(folder, output_folder, samples, pckg):
 
             raw_df = pd.read_csv(os.path.join(folder_data,f"{t}.csv"), sep=",")
 
-            if t == 'prefetch_out':
+            if t == "prefetch_out":
                 raw_df = raw_df.loc[:,["match_name","intersect_bp"]]
                 raw_df.rename(columns={"match_name":pivot,"intersect_bp":s}, inplace=True)
                 file_name = "raw_counts_intersect_bp"
