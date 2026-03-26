@@ -7,7 +7,7 @@ import yaml
 from geomosaic.gathering.utils import get_sample_with_results
 
 
-def gather_redox_metal_indexes(all_samples,geomosaic_wdir,output_base_folder,additional_info):
+def gather_redox_metal_plasticity_index(all_samples,geomosaic_wdir,output_base_folder,additional_info):
     pckg = "redox_metal_plasticity_index"
     sub_folder = "metabolic_index"
 
@@ -15,12 +15,12 @@ def gather_redox_metal_indexes(all_samples,geomosaic_wdir,output_base_folder,add
     output_folder = os.path.join(output_base_folder, pckg)
 
     check_call(f"mkdir -p {output_folder}", shell=True)
-    compose_matrix_redox_metal_indexes(geomosaic_wdir, output_folder, samples, pckg, sub_folder)
+    compose_matrix_redox_metal_plasticity_index(geomosaic_wdir, output_folder, samples, pckg, sub_folder)
 
 
-def compose_matrix_redox_metal_indexes(folder, output_folder, samples, pckg, subfolder):
+def compose_matrix_redox_metal_plasticity_index(folder, output_folder, samples, pckg, subfolder):
     
-    for t in ['metal_indexes','metal_indexes_extended']:
+    for t in ['redox_metal_indexes','redox_metal_indexes_extended']:
 
         list_dfs = []
 
