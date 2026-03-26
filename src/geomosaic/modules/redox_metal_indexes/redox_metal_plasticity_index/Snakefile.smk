@@ -37,7 +37,7 @@ rule run_rmi_mpi_funprofiler:
         """
 
 
-rule run_redox_metal_indexes:
+rule run_redox_metal_plasticity_index:
     input:
         raw_counts= rules.run_rmi_mpi_funprofiler.output.raw_counts,
         custom_table_metals= expand("{table_file}", table_file = config["EXT_DB"]["redox_metal_plasticity_index"]["table_file"])
