@@ -2,6 +2,15 @@
 Major changes will be documented in this file.
 
 
+## Version 1.3.6 (Mar 26, 2026)
+### Added
+
+### Changed
+- Renamed gather func & inner function for consistency
+- Renaming smk output files & 2nd rule in redox_metal_plasticity_index module
+### Fixed
+
+
 ## Version 1.3.5 (Mar 25, 2026)
 ### Added
 
