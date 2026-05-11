@@ -88,6 +88,7 @@ def gather_functions():
         "eggnog_mapper": gather_eggnogmapper,
         "recognizer": gather_recognizer,
         "hmms_search": gather_hmms_search,
+        "kofam_scan": gather_kofam_scan,
         
         "mags_gtdbtk": gather_mags_gtdbtk,
         "mags_recognizer": gather_mags_recognizer,
