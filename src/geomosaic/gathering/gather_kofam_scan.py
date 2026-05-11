@@ -1,5 +1,4 @@
 import os
-import glob
 import pandas as pd
 from subprocess import check_call
 from geomosaic.gathering.utils import get_sample_with_results
@@ -27,30 +26,28 @@ def compose_matrix_kofam_scan(folder, output_folder, samples, pckg):
     """
     all_hits = []
 
-    for sample in tqdm(samples, desc="Processing samples"):
+    for sample in samples:
 
-        glob_pattern = os.path.join(folder, sample, pckg, "result.txt")
+        folder_data = os.path.join(folder, sample, pckg)
+        filename = os.path.join(folder_data, f"result.txt")
 
-        for filename in glob.glob(glob_pattern, recursive=True):
-            kofam_df = pd.read_table(filename, low_memory=False)
+        if not os.path.exists(filename):
+            continue
 
-            # Drop the blank separator line that KOfam inserts
-            kofam_df = kofam_df.iloc[1:]
-
-            # Keep only hits that pass the built-in threshold (marked with "*" in "#" column)
-            # kofam_df = kofam_df.dropna(subset=["#"])
-
-            kofam_df = kofam_df.rename(columns={
-                "gene name": "gene_name",
-                "ko definition": "ko_definition",
-            })
-
-            kofam_df["sample"] = sample
-
-            all_hits.append(kofam_df)
+        kofam_df = pd.read_table(filename, low_memory=False)
+        # Drop the blank separator line that KOfam inserts
+        kofam_df = kofam_df.iloc[1:]
+        # Keep only hits that pass the built-in threshold (marked with "*" in "#" column)
+        # kofam_df = kofam_df.dropna(subset=["#"])
+        
+        kofam_df = kofam_df.rename(columns={
+            "gene name": "gene_name",
+            "ko definition": "ko_definition",
+        })
+        kofam_df["sample"] = sample
+        all_hits.append(kofam_df)
 
     if not all_hits:
-        print(f"[!] No KOfam results found for package '{pckg}' — skipping.")
         return
 
     final_df = pd.concat(all_hits, ignore_index=True)
@@ -60,8 +57,7 @@ def compose_matrix_kofam_scan(folder, output_folder, samples, pckg):
 
     # Output 1 – full hit table
     
-    _write_csv(final_df, output_folder, f"geomosaic-{pckg}.csv",
-               label="all hits")
+    _write_csv(final_df, output_folder, f"geomosaic-{pckg}.csv")
  
     # Output 2 – counts per ORF  (sample × gene_name)
 
@@ -71,8 +67,7 @@ def compose_matrix_kofam_scan(folder, output_folder, samples, pckg):
         .reset_index()
         .rename(columns={0: "count"})
     )
-    _write_csv(counts_orf, output_folder, f"geomosaic-{pckg}-counts-by-orf.csv",
-               label="counts per ORF")
+    _write_csv(counts_orf, output_folder, f"geomosaic-{pckg}-counts-by-orf.csv")
  
     # Output 3 – long + wide tables grouped by sample
 
@@ -90,14 +85,10 @@ def compose_matrix_kofam_scan(folder, output_folder, samples, pckg):
         .fillna(0.0)
     )
  
-    _write_csv(group_df, output_folder, f"geomosaic-{pckg}-by-sample-long.csv",
-               label="counts by sample (long)")
-    _write_csv(wide_df, output_folder, f"geomosaic-{pckg}-by-sample-wide.csv",
-               label="counts by sample (wide)")
+    _write_csv(group_df, output_folder, f"geomosaic-{pckg}-by-sample-long.csv")
+    _write_csv(wide_df, output_folder, f"geomosaic-{pckg}-by-sample-wide.csv")
  
- 
+
 def _write_csv(df: pd.DataFrame, folder: str, filename: str, label: str = "") -> None:
     path = os.path.join(folder, filename)
     df.to_csv(path, index=False)
-    tag = f" ({label})" if label else ""
-    print(f"[+] KOfam results{tag} written to {path}")
