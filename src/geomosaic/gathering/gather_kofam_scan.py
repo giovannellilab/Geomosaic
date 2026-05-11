@@ -27,7 +27,7 @@ def compose_matrix_kofam_scan(folder, output_folder, samples, pckg):
     """
     all_hits = []
 
-    for sample in tqdm(samples, desc="Processing samples")
+    for sample in tqdm(samples, desc="Processing samples"):
 
         glob_pattern = os.path.join(folder, sample, pckg, "result.txt")
 
