@@ -27,12 +27,12 @@ def compose_matrix_kofam_scan(folder, output_folder, samples, pckg):
     """
     all_hits = []
 
-    for sample in samples:
+    for sample in tqdm(samples, desc="Processing samples")
 
         glob_pattern = os.path.join(folder, sample, pckg, "result.txt")
 
         for filename in glob.glob(glob_pattern, recursive=True):
-            kofam_df = pd.read_table(filename)
+            kofam_df = pd.read_table(filename, low_memory=False)
 
             # Drop the blank separator line that KOfam inserts
             kofam_df = kofam_df.iloc[1:]
