@@ -440,6 +440,7 @@
         "eggnog_mapper",
         "recognizer",
         "hmms_search",
+        "kofam_scan",
         
         "mags_gtdbtk",
         "mags_recognizer",
