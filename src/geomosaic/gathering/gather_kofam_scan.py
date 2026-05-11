@@ -45,7 +45,7 @@ def compose_matrix_kofam_scan(folder, output_folder, samples, pckg):
                 "ko definition": "ko_definition",
             })
 
-            kofam_df["sample"] = sample_id
+            kofam_df["sample"] = sample
 
             all_hits.append(kofam_df)
 
