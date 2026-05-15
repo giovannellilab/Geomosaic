@@ -18,76 +18,47 @@ def gather_kofam_scan(all_samples, geomosaic_wdir, output_base_folder, additiona
 
 def compose_matrix_kofam_scan(folder, output_folder, samples, pckg):
     """
-    Processes KOfam scan result files for all samples and writes 4 output files:
-      1. geomosaic-kofam_scan.csv                          — all hits (long)
-      2. geomosaic-kofam_scan-counts-by-orf.csv            — counts per ORF
-      3. geomosaic-kofam_scan-by-sample-long/wide.csv      — counts grouped by sample
-      4. geomosaic-kofam_scan-by-sample-long/wide.csv — counts grouped by sample
+    Processes KOfam scan result files for all samples and writes 2 output files:
+      1. geomosaic-kofam_scan.csv              — all hits (long)
+      2. geomosaic-kofam_scan-by-sample-long   — counts grouped by sample
     """
-    all_hits = []
 
+    kofam_dfs = []
     for sample in samples:
-
+        
         folder_data = os.path.join(folder, sample, pckg)
-        filename = os.path.join(folder_data, f"result.txt")
-
+        filename = os.path.join(folder_data, "result.txt")
         if not os.path.exists(filename):
             continue
 
         kofam_df = pd.read_table(filename, low_memory=False)
-        # Drop the blank separator line that KOfam inserts
         kofam_df = kofam_df.iloc[1:]
-        # Keep only hits that pass the built-in threshold (marked with "*" in "#" column)
-        # kofam_df = kofam_df.dropna(subset=["#"])
-        
         kofam_df = kofam_df.rename(columns={
             "gene name": "gene_name",
             "ko definition": "ko_definition",
         })
         kofam_df["sample"] = sample
-        all_hits.append(kofam_df)
+        kofam_dfs.append(kofam_df)
 
-    if not all_hits:
+    if not kofam_dfs:
         return
 
-    final_df = pd.concat(all_hits, ignore_index=True)
-
+    final_df = pd.concat(kofam_dfs, ignore_index=True)
     id_cols = ["sample"]
     final_df = final_df[id_cols + [c for c in final_df.columns if c not in id_cols]]
 
     # Output 1 – full hit table
-    
     _write_csv(final_df, output_folder, f"geomosaic-{pckg}.csv")
- 
-    # Output 2 – counts per ORF  (sample × gene_name)
 
-    counts_orf = (
-        final_df
-        .value_counts(["sample", "gene_name"])
-        .reset_index()
-        .rename(columns={0: "count"})
-    )
-    _write_csv(counts_orf, output_folder, f"geomosaic-{pckg}-counts-by-orf.csv")
- 
-    # Output 3 – long + wide tables grouped by sample
-
+    # Output 2 – counts grouped by sample (long)
     group_df = (
         final_df
         .groupby(["KO", "sample"], as_index=False)
         .size()
         .rename(columns={"size": "count"})
     )
- 
-    wide_df = (
-        group_df
-        .pivot(index="sample", columns="KO", values="count")
-        .reset_index()
-        .fillna(0.0)
-    )
- 
     _write_csv(group_df, output_folder, f"geomosaic-{pckg}-by-sample-long.csv")
-    _write_csv(wide_df, output_folder, f"geomosaic-{pckg}-by-sample-wide.csv")
- 
+
 
 def _write_csv(df: pd.DataFrame, folder: str, filename: str, label: str = "") -> None:
     path = os.path.join(folder, filename)
