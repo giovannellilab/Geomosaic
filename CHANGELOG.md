@@ -2,6 +2,14 @@
 Major changes will be documented in this file.
 
 
+## Version 1.4.1 (May 19, 2026)
+### Added
+- Add gather option to `kofam_scan` package at the bin-based stream
+### Changed
+
+### Fixed
+
+
 ## Version 1.3.6 (Mar 26, 2026)
 ### Added
 
