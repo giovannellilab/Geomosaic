@@ -11,8 +11,7 @@ geomosaic prerun --help
 ```
 
 ```
-usage: geomosaic prerun -s SETUP_FILE --exec_type {slurm,gnu_parallel} [-u] [-t THREADS] [-f FOLDER_LOGS] [--ignore_samples IGNORE_SAMPLES] [-m MEMORY]
-                        [-p PARTITION] [--mail_type {NONE,BEGIN,END,FAIL,REQUEUE,ALL}] [--mail_user MAIL_USER] [-n N_JOBS] [-h]
+usage: geomosaic prerun -s SETUP_FILE --exec_type {slurm,gnu_parallel} --source {unit,workflow} [--conda_frontend {conda,mamba}] [-t THREADS] [-f FOLDER_LOGS] [-i IGNORE_SAMPLES] [-m MEMORY] [-p PARTITION] [--mail_type {NONE,BEGIN,END,FAIL,REQUEUE,ALL}] [--mail_user MAIL_USER] [-n N_JOBS] [-h]
 
 DESCRIPTION: This command is usefull to install the required conda environments of your workflow/unit and create required scripts to execute Geomosaic on a cluster using SLURM
 

@@ -31,6 +31,7 @@ Available Modules:
   - reads_qc - Module: Quality check (and/or Reads Count) of the reads after Pre-Processing
   - func_classification_rb - Module: Functional classification [Read-based]
   - tax_classification_rb - Module: Taxonomic classification [Read-based]
+  - redox_metal_indexes - Module: Redox Metabolic Index and Metal Plasticity Index Computation [Read-based]
   - assembly - Module: Assembly
   - assembly_func_annotation - Module: Functional Annotation on Assembly [Assembly-based]
   - assembly_qc - Module: Assembly quality evaluation with metrics [Assembly-based]

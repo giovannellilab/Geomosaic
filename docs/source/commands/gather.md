@@ -33,6 +33,7 @@ Available packages for Gathering:
   
   - mifaser
   - kaiju
+  - redox_metal_indexes
   - kraken2
   - eggnog_mapper
   - recognizer
