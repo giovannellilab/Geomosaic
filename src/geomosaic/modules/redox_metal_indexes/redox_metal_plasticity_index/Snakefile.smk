@@ -140,16 +140,17 @@ rule run_redox_metal_plasticity_index:
         df_ext = pd.concat([results_donors, results_acceptors], ignore_index=True)
 
         out_file_extended = os.path.join(str(output.metal_index_extended))
+        df_ext["KO"] = df_ext.apply(lambda x: ";".join(x["KO"]), axis=1)
         df_ext.to_csv(out_file_extended, sep='\t', index=False)
 
         out_file_truncated = os.path.join(str(output.metal_index))
         df_trunc = pd.DataFrame({
             'sample': [sample],
-            'redox_metabolic_index': [rmi],
-            'metal_plasticty_index': [mpi],
-            'acceptors_metals': str(unq_acceptor_metals),
-            'donors_metal': str(unq_donor_metals),
-            'acceptor_substrates': str(unq_acceptor_subs),
-            'donor_substrates': str(unq_donors_subs)
+            'redox_metabolic_index': [float(rmi)],
+            'metal_plasticity_index': [float(mpi)],
+            'acceptors_metals': ";".join(unq_acceptor_metals),
+            'donors_metal': ";".join(unq_donor_metals),
+            'acceptor_substrates': ";".join(unq_acceptor_subs),
+            'donor_substrates': ";".join(unq_donors_subs)
         })
         df_trunc.to_csv(out_file_truncated, sep='\t', index=False)
