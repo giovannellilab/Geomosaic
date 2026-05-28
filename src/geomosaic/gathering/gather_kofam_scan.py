@@ -1,0 +1,65 @@
+import os
+import pandas as pd
+from subprocess import check_call
+from geomosaic.gathering.utils import get_sample_with_results
+
+
+def gather_kofam_scan(all_samples, geomosaic_wdir, output_base_folder, additional_info):
+    
+    pckg = "kofam_scan"
+    
+    samples = get_sample_with_results(pckg, geomosaic_wdir, all_samples)
+
+    output_folder = os.path.join(output_base_folder, pckg)
+    
+    check_call(f"mkdir -p {output_folder}", shell=True)
+    compose_matrix_kofam_scan(geomosaic_wdir, output_folder, samples, pckg)
+
+
+def compose_matrix_kofam_scan(folder, output_folder, samples, pckg):
+    """
+    Processes KOfam scan result files for all samples and writes 2 output files:
+      1. geomosaic-kofam_scan.csv              — all hits (long)
+      2. geomosaic-kofam_scan-by-sample-long   — counts grouped by sample
+    """
+
+    kofam_dfs = []
+    for sample in samples:
+        
+        folder_data = os.path.join(folder, sample, pckg)
+        filename = os.path.join(folder_data, "result.txt")
+        if not os.path.exists(filename):
+            continue
+
+        kofam_df = pd.read_table(filename, low_memory=False)
+        kofam_df = kofam_df.iloc[1:]
+        kofam_df = kofam_df.rename(columns={
+            "gene name": "gene_name",
+            "ko definition": "ko_definition",
+        })
+        kofam_df["sample"] = sample
+        kofam_dfs.append(kofam_df)
+
+    if not kofam_dfs:
+        return
+
+    final_df = pd.concat(kofam_dfs, ignore_index=True)
+    id_cols = ["sample"]
+    final_df = final_df[id_cols + [c for c in final_df.columns if c not in id_cols]]
+
+    # Output 1 – full hit table
+    _write_csv(final_df, output_folder, f"geomosaic-{pckg}.csv")
+
+    # Output 2 – counts grouped by sample (long)
+    group_df = (
+        final_df
+        .groupby(["KO", "sample"], as_index=False)
+        .size()
+        .rename(columns={"size": "count"})
+    )
+    _write_csv(group_df, output_folder, f"geomosaic-{pckg}-by-sample-long.csv")
+
+
+def _write_csv(df: pd.DataFrame, folder: str, filename: str, label: str = "") -> None:
+    path = os.path.join(folder, filename)
+    df.to_csv(path, index=False)

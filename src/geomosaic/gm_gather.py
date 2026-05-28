@@ -15,6 +15,8 @@ from geomosaic.gathering.gather_recognizer import gather_recognizer
 from geomosaic.gathering.gather_coverm_genome import gather_coverm_genome
 from geomosaic.gathering.gather_funprofiler import gather_funprofiler
 from geomosaic.gathering.gather_redox_metal_plasticity_index import gather_redox_metal_plasticity_index
+from geomosaic.gathering.gather_kofam_scan import gather_kofam_scan
+
 # add import to redoxes
 
 
@@ -86,6 +88,7 @@ def gather_functions():
         "eggnog_mapper": gather_eggnogmapper,
         "recognizer": gather_recognizer,
         "hmms_search": gather_hmms_search,
+        "kofam_scan": gather_kofam_scan,
         
         "mags_gtdbtk": gather_mags_gtdbtk,
         "mags_recognizer": gather_mags_recognizer,
