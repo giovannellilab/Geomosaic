@@ -1,6 +1,14 @@
 # Change Log
 Major changes will be documented in this file.
 
+## Version 1.4.3 (May 28, 2026)
+### Added
+
+### Changed
+
+### Fixed
+- minor fix on gathering kaiju and redox metabolic indexes
+
 
 ## Version 1.4.2 (May 28, 2026)
 ### Added
@@ -8,7 +16,6 @@ Major changes will be documented in this file.
 ### Changed
 - Changed variable type in `metal_indexes_rb` for R downstream analysis
 ### Fixed
-
 
 
 ## Version 1.4.1 (May 19, 2026)
