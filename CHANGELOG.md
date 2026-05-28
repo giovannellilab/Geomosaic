@@ -2,6 +2,15 @@
 Major changes will be documented in this file.
 
 
+## Version 1.4.2 (May 28, 2026)
+### Added
+
+### Changed
+- Changed variable type in `metal_indexes_rb` for R downstream analysis
+### Fixed
+
+
+
 ## Version 1.4.1 (May 19, 2026)
 ### Added
 - Add gather option to `kofam_scan` package at the bin-based stream
