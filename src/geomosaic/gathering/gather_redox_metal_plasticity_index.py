@@ -19,24 +19,17 @@ def gather_redox_metal_plasticity_index(all_samples,geomosaic_wdir,output_base_f
 
 
 def compose_matrix_redox_metal_plasticity_index(folder, output_folder, samples, pckg, subfolder):
-    
     for t in ['redox_metal_indexes','redox_metal_indexes_extended']:
-
         list_dfs = []
 
         for s in samples:
             folder_data = os.path.join(folder,s,pckg,subfolder)
-            flag = True
             
             if f"{t}.tsv" not in listdir(folder_data):
-                flag = False
-                break
+                continue
             
             df = pd.read_csv(os.path.join(folder_data,f"{t}.tsv"), sep="\t")
             list_dfs.append(df)
-            
-        if not flag:
-            continue
 
         finalm = pd.concat(list_dfs)
         finalm.to_csv(os.path.join(output_folder,f"{t}.tsv"), sep="\t", index=False, header=True)

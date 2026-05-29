@@ -28,10 +28,8 @@ def compose_matrix_kaiju(folder, output_folder, samples, pckg):
         for s in samples:
             folder_data = os.path.join(folder,s,pckg)
             
-            flag = True
             if f"{t}.tsv" not in listdir(folder_data):
-                flag = False
-                break
+                continue
 
             rawdf = pd.read_csv(os.path.join(folder_data,f"{t}.tsv"), sep="\t")
             
@@ -45,9 +43,6 @@ def compose_matrix_kaiju(folder, output_folder, samples, pckg):
             
             list_dfs_percent.append(df_percent)
             list_dfs_reads.append(df_reads)
-
-        if not flag:
-            continue
 
         m_percent = pd.DataFrame(sorted(unique_list), columns=[pivot])
         m_reads = pd.DataFrame(sorted(unique_list), columns=[pivot])
@@ -64,4 +59,3 @@ def compose_matrix_kaiju(folder, output_folder, samples, pckg):
 
         finalm_reads = m_reads.replace(np.nan, 0, regex=True)
         finalm_reads.to_csv(os.path.join(output_folder,f"{t}_reads.tsv"), sep="\t", index=False, header=True)
-
