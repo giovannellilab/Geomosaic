@@ -25,20 +25,20 @@ def compose_matrix_mifaser(folder, samples, output_folder, pckg, pivot):
     for s in samples:
         folder_data = os.path.join(folder,s,pckg)
         
-        flag = True
         if "analysis.tsv" not in listdir(folder_data):
-            flag = False
-            break
+            continue
 
         df = pd.read_csv(os.path.join(folder_data,"analysis.tsv"), sep="\t", skiprows=1, names=[pivot,s])
         unique_list.update(list(df[pivot].unique()))
         list_dfs.append(df)
 
-    if flag:
+        if not list_dfs:
+            return
+        
         m = pd.DataFrame(sorted(unique_list), columns=[pivot])
         for x in list_dfs:
             temp = pd.merge(m, x, how="left", on=pivot)
             m = temp.copy()
         
         finalm = m.replace(np.nan, 0, regex=True)
-        finalm.to_csv(os.path.join(folder_data,"mifaser.tsv"), sep="\t", index=False, header=True)
+        finalm.to_csv(os.path.join(output_folder,"mifaser.tsv"), sep="\t", index=False, header=True)

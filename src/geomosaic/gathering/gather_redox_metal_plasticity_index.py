@@ -30,6 +30,9 @@ def compose_matrix_redox_metal_plasticity_index(folder, output_folder, samples, 
             
             df = pd.read_csv(os.path.join(folder_data,f"{t}.tsv"), sep="\t")
             list_dfs.append(df)
+            
+        if not list_dfs:
+            continue
 
         finalm = pd.concat(list_dfs)
         finalm.to_csv(os.path.join(output_folder,f"{t}.tsv"), sep="\t", index=False, header=True)

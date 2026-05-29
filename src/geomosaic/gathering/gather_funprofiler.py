@@ -31,8 +31,7 @@ def compose_matrix_funprofiler(folder, output_folder, samples, pckg):
             flag = True
 
             if f"{t}.csv" not in listdir(folder_data):
-                flag = False
-                break
+                continue
 
             raw_df = pd.read_csv(os.path.join(folder_data,f"{t}.csv"), sep=",")
 
@@ -49,7 +48,7 @@ def compose_matrix_funprofiler(folder, output_folder, samples, pckg):
             unique_list.update(list(raw_df[pivot].unique()))
             list_dfs.append(raw_df)
 
-        if not flag:
+        if not list_dfs:
             continue
         
         m = pd.DataFrame(sorted(unique_list), columns=[pivot])
