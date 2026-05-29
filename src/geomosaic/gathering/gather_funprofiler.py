@@ -28,7 +28,6 @@ def compose_matrix_funprofiler(folder, output_folder, samples, pckg):
 
         for s in samples:
             folder_data = os.path.join(folder,s,pckg)
-            flag = True
 
             if f"{t}.csv" not in listdir(folder_data):
                 continue
