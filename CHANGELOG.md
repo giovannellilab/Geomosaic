@@ -10,6 +10,16 @@ Major changes will be documented in this file.
 - minor fix on gathering kaiju and redox metabolic indexes
 
 
+## Version 1.4.3 (May 29, 2026)
+### Added
+
+### Changed
+
+### Fixed
+- Fixed `mags_hmmsearch` gather output to standard presence/absence gene matrix
+- Fixed gathering logic in `kaiju`,`funprofiler`,`redox_metal_indexes_rb`,`mifaser`
+
+
 ## Version 1.4.2 (May 28, 2026)
 ### Added
 

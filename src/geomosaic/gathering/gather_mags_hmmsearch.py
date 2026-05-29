@@ -32,6 +32,13 @@ def complete_hmmsearch(folder, mags_hmmsearch_outfolder, base_output_folder, sam
 
         for n in DF_NORM:
             norm_merged = merge_results_by_norm(DF_NORM, norm_method=n)
+
+            if n == "mags":
+                cols_to_convert = [c for c in norm_merged.columns if c != "HMM_model"]
+                norm_merged[cols_to_convert] = norm_merged[cols_to_convert].apply(
+                    lambda col: col.map(lambda x: 0 if x == 0 else 1)
+                )
+                
             norm_merged.to_csv(f"{output_folder}/{n}.tsv", sep="\t", header=True, index=False)
 
 

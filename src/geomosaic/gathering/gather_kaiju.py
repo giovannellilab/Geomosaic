@@ -44,6 +44,9 @@ def compose_matrix_kaiju(folder, output_folder, samples, pckg):
             list_dfs_percent.append(df_percent)
             list_dfs_reads.append(df_reads)
 
+        if not list_dfs_percent:
+            continue
+
         m_percent = pd.DataFrame(sorted(unique_list), columns=[pivot])
         m_reads = pd.DataFrame(sorted(unique_list), columns=[pivot])
 
