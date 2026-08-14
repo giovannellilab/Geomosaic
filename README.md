@@ -14,9 +14,7 @@
 
 <br>
 
-__Geomosaic__ is a flexible metagenomic pipeline combining biological and geochemical data to outline biosphere and geosphere interactions.
-
-It has been designed to be user friendly and higly customizable, with no bioinformatic expertise required.
+__Geomosaic__ is  a modular framework that integrates complementary analytical representations of metagenomic data, from reads to genomes, within a single scalable, customizable, and reproducible workflow. Built on a graph-based architecture implemented in Snakemake, Geomosaic enables users to construct complete end-to-end workflows or execute individual analytical modules while selecting among interchangeable software packages. The framework supports read preprocessing, quality control, taxonomic and functional profiling, assembly, genome reconstruction, genome-resolved annotation, custom HMM-based analyses, and automated downstream result aggregation. Automatic generation of execution scripts, modular workflows, and multiple analysis entry points make Geomosaic accessible to researchers approaching metagenomic analyses for the first time, while providing the flexibility and control required by expert users. Native support for HPC environments enables efficient analysis of datasets ranging from individual projects to large-scale metagenomic surveys.
 
 Full Documentation available at: [giovannellilab.github.io/Geomosaic](https://giovannellilab.github.io/Geomosaic)
 
