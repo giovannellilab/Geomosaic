@@ -6,7 +6,7 @@ hide-toc: true
 
 <br> 
 
-Welcome to the documentation of our flexible **metagenomic pipeline** combining biological and geochemical data to outline biosphere and geosphere interactions.
+Welcome to the documentation of our flexible **a flexible bioinformatics platform** integrating complementary metagenomic analyses from sequencing reads to genomes. 
 
 It has been designed to be user friendly and higly customizable, with no bioinformatic expertise required.
 
