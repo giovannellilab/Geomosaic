@@ -6,11 +6,20 @@ hide-toc: true
 
 <br> 
 
-Welcome to the documentation of our flexible **a flexible bioinformatics platform** integrating complementary metagenomic analyses from sequencing reads to genomes. 
+Welcome to the documentation of **Geomosaic**, a flexible and extensible bioinformatics platform integrating complementary metagenomic analyses from sequencing reads to genomes.
 
-It has been designed to be user friendly and higly customizable, with no bioinformatic expertise required.
+Geomosaic integrates **read-based, assembly-based, and genome-resolved analyses** within a single modular workflow. These complementary analytical streams provide different views of the same metagenomic dataset, from broad community-level profiling to increasingly resolved genomic and functional context.
 
-Moreover, it has been developed to be easy to integrate with new modules and packages. See our section of [Contributes](contributes/index).
+Geomosaic is designed to lower the technical barrier to metagenomic analysis while retaining the flexibility required by experienced users. Automated workflow generation, ready-to-run execution scripts, modular analyses, and multiple entry points allow users to build and run complex metagenomic workflows without manually integrating individual software packages. More advanced users can modify parameters, execute individual modules, select alternative tools, or extend the platform with new modules and packages.
+
+Geomosaic is designed for scalable execution on High-Performance Computing (HPC) systems using SLURM or GNU Parallel, while its modular architecture allows workflows to be tailored to different datasets and research questions.
+
+If you want to know more about the philosophy behind Geomosaic, the different analytical streams, and what the platform can do for you, start with the [Introduction](introduction). If you want to get started immediately, jump directly to the [Installation](installation) instructions and then follow the [Tutorial](walkthrough/tutorial).
+
+Already completed a Geomosaic analysis and ready to explore your results? Check out the [Geomosaic Cookbook](cookbook) and its companion GitHub repository for reproducible Jupyter notebooks and scripts for downstream analysis, visualization, and publication-ready figures.
+
+Interested in extending Geomosaic? See the [Contributing to Geomosaic](contributes/index) section.
+
 
 <!-- [Contributes](contributes/) -->
 
@@ -19,11 +28,12 @@ Moreover, it has been developed to be easy to integrate with new modules and pac
 
 
 ```{toctree}
-:caption: Theory
+:caption: About Geomosaic
 :hidden:
 
 introduction
 modules
+Geomosaic cookbook
 lastupdates
 citation
 ```

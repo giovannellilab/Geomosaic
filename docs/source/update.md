@@ -1,6 +1,6 @@
 # Update
 
-Here you will find a short guide on how to update an older version of Geomosaic to the newest one!
+This page provides a short guide for updating an existing Geomosaic installation to the latest version.
 
 
 ```{important}
@@ -15,7 +15,6 @@ conda activate geomosaic
 
 ## Step 1 - Fetch last commits
 Change your current directory to the one that has been created through the [`git clone` (during the installation)](installation.md#step-1---clone-the-repository). If you don't remember where it is located (or if it has been deleted), don't worry you can clone it again
-
 
 ::::{tab-set}
 
@@ -59,4 +58,12 @@ Installing collected packages: geomosaic
 Successfully installed geomosaic-1.1.3
 ```
 
-That's it! 
+## Step 3 — Verify the update
+
+Confirm that Geomosaic is available and responding correctly:
+
+```
+geomosaic --help
+```
+
+That's it — Geomosaic is now updated to the latest version available in the repository.
