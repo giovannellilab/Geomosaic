@@ -1,24 +1,35 @@
-# Main command
+# Main commands
 
-<br>
+Geomosaic provides five main commands that together cover project setup, workflow construction, modular execution, workflow preparation, and downstream result aggregation.
 
-Geomosaic pipeline has five main commands:
-- _setup_
-    - It creates the Geomosaic working directory and the relative sample folders based on the provided sample table, together with a Geomosaic config file (whose default name is: `gmsetup.yaml`)
-- _workflow_
-    - It allows the user to choose the modules and the relative packages to be used. Based on these choices, the command generates a Snakefile with the selected modules, a config file for snakemake, and a graph image to show the created workflow; the mentioned files are created in the Geomosaic directory.
-- _unit_
-    - It enables the selection of a module the user wants to execute with an alternative package. The command generates another Snakefile and a config file with the chosen module, both in the Geomosaic directory.
-- _prerun_
-    - This command allows you to install the required conda environments of your workflow/unit and (OPTIONAL) to create required scripts to execute Geomosaic on a cluster using SLURM
-- _gather_
-    - This command is useful to gather all the results obtained from your workflow and create tables and data that are ready to use for downstream analysis.
+- **_setup_**
+  - Creates the Geomosaic working directory and the corresponding sample folders based on the provided sample table. It also generates the main Geomosaic configuration file (default name: `gmsetup.yaml`).
 
-```
+- **_workflow_**
+  - Interactively guides the user through the selection of analytical modules and the corresponding software packages. Based on these choices, Geomosaic automatically generates a Snakefile containing the selected workflow, a Snakemake configuration file, and a graphical representation of the resulting workflow. All files are created within the Geomosaic project directory.
+
+- **_unit_**
+  - Executes a single analytical module independently of the complete workflow. This command is particularly useful for testing alternative software packages, rerunning individual analytical steps, modifying parameters, or evaluating different implementations of the same module. A dedicated Snakefile and configuration file are generated for the selected module.
+
+- **_prerun_**
+  - Prepares a workflow or a single module for execution by installing the required Conda environments and, optionally, generating ready-to-run execution scripts for High-Performance Computing (HPC) systems using either SLURM or GNU Parallel.
+
+- **_gather_**
+  - Collects results generated across all samples and integrates them into standardized tables and matrices that are immediately suitable for downstream statistical analysis, visualization, and data exploration.
+
+Together, these five commands allow Geomosaic to accommodate different levels of user expertise. New users can generate and execute complete metagenomic workflows with minimal manual configuration, whereas advanced users can customize analyses at the level of individual modules, software packages, and workflow components.
+
+## Command-line help
+
+The complete list of available commands can be displayed at any time with:
+
+```bash
 geomosaic --help
 ```
 
-```
+which returns:
+
+```none
 usage: geomosaic [-h] [-v] {setup,workflow,unit,prerun,gather} ...
 
 Geomosaic: A flexible metagenomic pipeline combining read-based, assemblies and MAGs with downstream analysis
@@ -30,12 +41,13 @@ options:
 commands:
   {setup,workflow,unit,prerun,gather}
     setup               It creates the geomosaic working directory and the relative samples folders based on the provided sample table
-    workflow            It allows to choose the desired modules and the relative packages. Based on you choices, the command will create a Snakefile (in the
-                        geomosaic directory) with the chosen modules, the config file for snakemake, and a graph image to show the created workflow
-    unit                It allows to choose and run just one module, for example to execute an alternative package for that module. The command create
-                        another Snakefile a config file (both in the geomosaic directory) with the chosen module
-    prerun              This command is usefull to install the required conda environments of your workflow/unit and create required scripts to execute
-                        Geomosaic on a cluster using SLURM
-    gather              This command is useful to gather all the results obtained from your workflow and create tables and data that are ready to use for
-                        downstream analysis.
+    workflow            It allows to choose the desired modules and the relative packages. Based on your choices, the command creates a Snakefile (in the
+                        Geomosaic directory) with the selected modules, the Snakemake configuration file, and a graph showing the generated workflow
+    unit                It allows the execution of a single module, for example to evaluate an alternative package. The command generates a dedicated
+                        Snakefile and configuration file for the selected module
+    prerun              It installs the required Conda environments for the selected workflow or unit and optionally creates execution scripts for
+                        running Geomosaic on HPC systems using SLURM or GNU Parallel
+    gather              It gathers all results produced by the workflow and creates standardized tables and matrices for downstream analyses
 ```
+
+Each command is described in detail in the following sections.

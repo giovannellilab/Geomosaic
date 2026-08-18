@@ -75,3 +75,5 @@ geomosaic gather -s gmsetup_exp2023.yaml \
   -p kaiju,mifaser,coverm_genome \
   -f /home/davide/geomosaic_test/
 ```
+
+The output of `geomosaic gather` can be used with the [Geomosaic cookbook](../cookbook) notebooks. 
