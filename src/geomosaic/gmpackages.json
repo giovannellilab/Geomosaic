@@ -198,7 +198,7 @@
         "assembly_redox_metal_indexes": {
             "description": "Module: Redox Metabolic Index & Metal Plasticity Index [Assembly-based]",
             "choices": {
-                "KOfam Scan - Redox Metabolic Index & Metal Plasticity Index": "kofam_scan_redox_metal_plasticty_index"
+                "KOfam Scan - Redox Metabolic Index & Metal Plasticity Index": "kofam_scan_redox_metal_plasticity_index"
             }
         },
 
@@ -331,7 +331,7 @@
         "gtdbtk": "gtdbtk.yaml",
         "kaiju": "kaiju.yaml",
         "kofam_scan": "kofam_scan.yaml",
-        "kofam_scan_redox_metal_plasticty_index": "kofam_scan_redox_metal_plasticty_index.yaml",
+        "kofam_scan_redox_metal_plasticity_index": "kofam_scan_redox_metal_plasticity_index.yaml",
         "kraken2": "kraken2.yaml",
         "megahit": "megahit.yaml",
         "metaphlan": "metaphlan.yaml",
@@ -438,7 +438,7 @@
                 "type": "file"
             }
         },
-        "kofam_scan_redox_metal_plasticty_index": {
+        "kofam_scan_redox_metal_plasticity_index": {
             "redox_metal_index_file_table" : {
                 "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM TABLE for Redox Metabolic Index & Redox Plasticity Index - TSV FILE]\nDescription: you need to specify the path to the biogeo-table TSV table for computation of Redox Metabolic & Redox Plasticity Indexes based on KOfam Scan annotation",
                 "type": "file"
