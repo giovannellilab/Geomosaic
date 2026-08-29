@@ -163,8 +163,8 @@ def prepare_custom_db():
     tools_for_customdb = {
         "argsoap_custom": prepare_argsoap_customdb,
         "redox_metal_plasticity_index": prepare_metalindex_customdb,
-        "kofam_scan_redox_metal_plasticty_index": prepare_metalindex_customdb_kofam,
-        #"mags_kofam_scan_redox_metal_plasticty_index": prepare_metalindex_customdb_mags_kofam
+        "kofam_scan_redox_metal_plasticity_index": prepare_metalindex_customdb_kofam,
+        #"mags_kofam_scan_redox_metal_plasticity_index": prepare_metalindex_customdb_mags_kofam
     }
 
     return tools_for_customdb

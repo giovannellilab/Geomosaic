@@ -24,12 +24,11 @@ def prepare_metalindex_customdb(config_customdb_section, config_extdb_section, c
 
 
 def prepare_metalindex_customdb_kofam(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder):
-    _prepare_metalindex_customdb_generic(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder, "kofam_scan_redox_metal_plasticty_index")
+    _prepare_metalindex_customdb_generic(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder, "kofam_scan_redox_metal_plasticity_index")
 
 
 def prepare_metalindex_customdb_mags_kofam(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder):
-    _prepare_metalindex_customdb_generic(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder, "mags_kofam_scan_redox_metal_plasticty_index")
-
+    _prepare_metalindex_customdb_generic(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder, "mags_kofam_scan_redox_metal_plasticity_index")
 
 def check_file(file_path: str):
 
