@@ -2,15 +2,15 @@
 rule run_rmi_mpi_kofam_scan:
     input:
         orf_predicted=expand("{wdir}/{sample}/{orf_prediction}/orf_predicted.faa", orf_prediction=config["MODULES"]["orf_prediction"], allow_missing=True),
-        db_folder=expand("{kofam_scan_redox_metal_plasticty_index_extdb_folder}", kofam_scan_redox_metal_plasticty_index_extdb_folder=config["EXT_DB"]["kofam_scan_redox_metal_plasticty_index"]["database_folder"])
+        db_folder=expand("{kofam_scan_redox_metal_plasticity_index_extdb_folder}", kofam_scan_redox_metal_plasticity_index_extdb_folder=config["EXT_DB"]["kofam_scan_redox_metal_plasticity_index"]["database_folder"])
     output:
         result="{wdir}/{sample}/{kofam_scan_redox_metal_plasticity_index_output_folder}/kofam_scan_output/result.txt",
         tmp_dir=temp(directory("{wdir}/{sample}/{kofam_scan_redox_metal_plasticity_index_output_folder}/kofam_scan_output/temp_geomosaic_dir")),
         done="{wdir}/{sample}/{kofam_scan_redox_metal_plasticity_index_output_folder}/kofam_scan_output/kofam_scan.done"
-    conda: config["ENVS"]["kofam_scan_redox_metal_plasticty_index"]
+    conda: config["ENVS"]["kofam_scan_redox_metal_plasticity_index"]
     params:
-        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["kofam_scan_redox_metal_plasticty_index"])) ) (config["USER_PARAMS"]["kofam_scan_redox_metal_plasticty_index"]),
-        user_kofam_profiles=(lambda x: yaml.safe_load(open(x, "r"))["kofam_scan_profiles"]) (config["USER_PARAMS"]["kofam_scan_redox_metal_plasticty_index"])
+        user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["kofam_scan_redox_metal_plasticity_index"])) ) (config["USER_PARAMS"]["kofam_scan_redox_metal_plasticity_index"]),
+        user_kofam_profiles=(lambda x: yaml.safe_load(open(x, "r"))["kofam_scan_profiles"]) (config["USER_PARAMS"]["kofam_scan_redox_metal_plasticity_index"])
     threads: config["threads"]
     shell:
         """
@@ -53,7 +53,7 @@ rule format_kofam_scan_output:
                         kos.append(f"gene:{fields[2]}")
             return kos
 
-        ko_list = parse_kofam_result(str(input.result))")
+        ko_list = parse_kofam_result(str(input.result))
 
         df = (
             pd.Series(ko_list)
@@ -63,13 +63,13 @@ rule format_kofam_scan_output:
             [["intersect_bp", "match_name"]]
         )
         
-        df.to_csv({output.formatted}, index=False)
+        df.to_csv(str(output.formatted), index=False)
 
 
 rule run_kofam_scan_redox_metal_plasticity_index:
     input:
         raw_counts=rules.format_kofam_scan_output.output.formatted,
-        custom_table_metals=expand("{table_file}", table_file=config["EXT_DB"]["kofam_scan_redox_metal_plasticty_index"]["table_file"])
+        custom_table_metals=expand("{table_file}", table_file=config["EXT_DB"]["kofam_scan_redox_metal_plasticity_index"]["table_file"])
     output:
         metal_index="{wdir}/{sample}/{kofam_scan_redox_metal_plasticity_index_output_folder}/metabolic_index/redox_metal_indexes.tsv",
         metal_index_extended="{wdir}/{sample}/{kofam_scan_redox_metal_plasticity_index_output_folder}/metabolic_index/redox_metal_indexes_extended.tsv"
@@ -79,7 +79,7 @@ rule run_kofam_scan_redox_metal_plasticity_index:
 
         from geomosaic.custom_tools.redox_metal_plasticity_index_custom import (
             redox_metabolic_index,
-            metal_plasticty_index,
+            metal_plasticity_index,
             substrate_metal_map,
             parse_results
         )
@@ -101,7 +101,7 @@ rule run_kofam_scan_redox_metal_plasticity_index:
         data_acceptors, unq_acceptor_metals, unq_acceptor_subs = substrate_metal_map(acceptors_df)
 
         rmi = redox_metabolic_index(unq_donors_subs, unq_acceptor_subs)
-        mpi = metal_plasticty_index(unq_donor_metals, unq_acceptor_metals)
+        mpi = metal_plasticity_index(unq_donor_metals, unq_acceptor_metals)
 
         results_donors = parse_results(sample, data_donors, rmi, mpi, type_s='donors')
         results_acceptors = parse_results(sample, data_acceptors, rmi, mpi, type_s='acceptors')
