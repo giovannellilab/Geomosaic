@@ -138,6 +138,6 @@ rule run_mags_redox_metal_plasticity_index:
 rule gather_mags_redox_metal_plasticity_index:
     input:
         collected=get_kofamscan_inputs("{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/{mag}/metabolic_index/redox_metal_indexes.tsv"),
-        mags_tsv=expand("{wdir}/{sample}/{mags_retrieval}/MAGs.tsv", mags_retrieval=config["MODULES"]["mags_retrieval"], allow_missing=True)
+        mags_tsv=expand("{wdir}/{sample}/{mags_orf_prediction}/MAGs.tsv", mags_orf_prediction=config["MODULES"]["mags_orf_prediction"], allow_missing=True)
     output: touch("{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/gather_redox_metal_index_OK.txt")
     threads: 1
