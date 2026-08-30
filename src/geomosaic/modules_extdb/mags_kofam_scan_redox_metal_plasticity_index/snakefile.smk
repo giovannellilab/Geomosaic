@@ -7,7 +7,7 @@ rule mags_kofam_scan_redox_metal_plasticity_index_custom_db:
         profiles="https://www.genome.jp/ftp/db/kofam/profiles.tar.gz",
         profiles_file="profiles.tar.gz"
     output:
-        mags_kofam_scan_redox_metal_plasticity_index = directory(expand("{kofam_scan_redox_metal_plasticity_index_extdb_folder}", kofam_scan_redox_metal_plasticity_index_extdb_folder=config["EXT_DB"]["mags_kofam_scan_redox_metal_plasticity_index"]["database_folder"])),
+        mags_kofam_scan_redox_metal_plasticity_index = directory(expand("{mags_kofam_scan_redox_metal_plasticity_index_extdb_folder}", mags_kofam_scan_redox_metal_plasticity_index_extdb_folder=config["EXT_DB"]["mags_kofam_scan_redox_metal_plasticity_index"]["database_folder"])),
         table_file = expand("{table_file}", table_file = config["EXT_DB"]["mags_kofam_scan_redox_metal_plasticity_index"]["table_file"])
     conda: config["ENVS_EXTDB"]["mags_kofam_scan_redox_metal_plasticity_index"]
     message: "GEOMOSAIC MSG: Starting to setup the custom database for KOfam Scan-based RM-RP Indexes"
