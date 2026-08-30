@@ -26,7 +26,8 @@
         "mags_domain_annotation",
         "mags_orf_annotation",
         "mags_coverage",
-        "mags_hmm_annotation"
+        "mags_hmm_annotation",
+        "mags_redox_metal_indexes"
     ],
 
     "graph": [
@@ -72,6 +73,7 @@
         ["mags_orf_prediction", "mags_domain_annotation"],
         ["mags_orf_prediction", "mags_orf_annotation"],
         ["mags_orf_prediction", "mags_hmm_annotation"],
+        ["mags_orf_prediction", "mags_redox_metal_indexes"],
 
         ["mags_coverage", "mags_hmm_annotation"]        
     ],
