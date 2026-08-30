@@ -113,7 +113,7 @@ def redox_metabolic_index(acceptors_list: list, donors_list: list) -> float:
     return float(round(np.log(len(donors_list)) + np.log(len(acceptors_list)), 4))
 
 
-def metal_plasticty_index(metal_donors_l: list, metal_acceptor_l: list) -> float:
+def metal_plasticity_index(metal_donors_l: list, metal_acceptor_l: list) -> float:
     """
     Computes the Redox-Plasticity Index (RPI/MPI) as:
     RPI = log(len(unique metal pairs))

@@ -130,6 +130,8 @@ def ask_custom_db(gmpackages_custom_db, user_choices):
                 print(metal_index_database_structure)
             if tool == "kofam_scan_redox_metal_plasticty_index":
                 print(metal_index_database_structure)
+            if tool == "mags_kofam_scan_redox_metal_plasticty_index":
+                print(metal_index_database_structure)
             custom_db_info[tool] = {}
 
             for cdb_param, cdb_param_tokens in gmpackages_custom_db[tool].items():
