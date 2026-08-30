@@ -1,5 +1,5 @@
 
-checkpoint run_mags_kofam_scan_redox_metabolic_plasticity_index:
+checkpoint run_mags_kofam_scan_redox_metal_plasticity_index:
     input:
         mags_orf=expand("{wdir}/{sample}/{mags_orf_prediction}/{mag}/orf_predicted.faa", mags_orf_prediction=config["MODULES"]["mags_orf_prediction"], allow_missing=True),
         db_folder=expand("{kofam_scan_extdb_folder}", kofam_scan_extdb_folder=config["EXT_DB"]["mags_kofam_scan_redox_metal_plasticity_index"]["database_folder"])
@@ -9,7 +9,7 @@ checkpoint run_mags_kofam_scan_redox_metabolic_plasticity_index:
     conda: config["ENVS"]["mags_kofam_scan_redox_metal_plasticity_index"]
     params:
         user_params= ( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags_kofam_scan_redox_metal_plasticity_index"])) ) (config["USER_PARAMS"]["mags_kofam_scan_redox_metal_plasticity_index"]),
-        user_kofam_profiles = (lambda x: yaml.safe_load(open(x, "r"))["mags_kofam_scan__profiles"]) (config["USER_PARAMS"]["mags_kofam_scan_redox_metal_plasticity_index"]) 
+        user_kofam_profiles = (lambda x: yaml.safe_load(open(x, "r"))["mags_kofam_scan_profiles"]) (config["USER_PARAMS"]["mags_kofam_scan_redox_metal_plasticity_index"]) 
     threads: config["threads"]
     shell:
         """
@@ -82,7 +82,7 @@ rule format_mags_kofam_scan_redox_metal_plasticity_index_output:
 rule run_mags_redox_metal_plasticity_index:
     input:
         raw_counts=rules.format_mags_kofam_scan_redox_metal_plasticity_index_output.output.formatted,
-        custom_table_metals=expand("{table_file}", table_file=config["EXT_DB"]["mags_kofam_scan_redox_metal_plasticity_index_redox_metal_plasticity_index"]["table_file"])
+        custom_table_metals=expand("{table_file}", table_file=config["EXT_DB"]["mags_kofam_scan_redox_metal_plasticity_index"]["table_file"])
     output:
         metal_index="{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/{mag}/metabolic_index/redox_metal_indexes.tsv",
         metal_index_extended="{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/{mag}/metabolic_index/redox_metal_indexes_extended.tsv"

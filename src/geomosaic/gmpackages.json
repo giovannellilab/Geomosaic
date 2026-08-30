@@ -69,6 +69,7 @@
         ["mags_retrieval", "mags_tax_annotation"],
         ["mags_retrieval", "mags_orf_prediction"],
         ["mags_retrieval", "mags_coverage"],
+        ["mags_retrieval", "mags_redox_metal_indexes"],
 
         ["mags_orf_prediction", "mags_domain_annotation"],
         ["mags_orf_prediction", "mags_orf_annotation"],
