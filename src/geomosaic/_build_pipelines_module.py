@@ -128,9 +128,9 @@ def ask_custom_db(gmpackages_custom_db, user_choices):
                 print(argsoap_database_structure)
             if tool == "redox_metal_plasticity_index":
                 print(metal_index_database_structure)
-            if tool == "kofam_scan_redox_metal_plasticty_index":
+            if tool == "kofam_scan_redox_metal_plasticity_index":
                 print(metal_index_database_structure)
-            if tool == "mags_kofam_scan_redox_metal_plasticty_index":
+            if tool == "mags_kofam_scan_redox_metal_plasticity_index":
                 print(metal_index_database_structure)
             custom_db_info[tool] = {}
 
