@@ -4,12 +4,12 @@ checkpoint run_mags_kofam_scan_redox_metabolic_plasticity_index:
         mags_orf=expand("{wdir}/{sample}/{mags_orf_prediction}/{mag}/orf_predicted.faa", mags_orf_prediction=config["MODULES"]["mags_orf_prediction"], allow_missing=True),
         db_folder=expand("{kofam_scan_extdb_folder}", kofam_scan_extdb_folder=config["EXT_DB"]["kofam_scan"])
     output:
-        kofamscan_result="{wdir}/{sample}/mags_kofam_scan_redox_metabolic_plasticity_index/{mag}/result.txt",
-        tmp_dir=temp(directory("{wdir}/{sample}/mags_kofam_scan_redox_metabolic_plasticity_index/{mag}/temp_geomosaic_dir"))
-    conda: config["ENVS"]["mags_kofam_scan_redox_metabolic_plasticity_index"]
+        kofamscan_result="{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/{mag}/result.txt",
+        tmp_dir=temp(directory("{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/{mag}/temp_geomosaic_dir"))
+    conda: config["ENVS"]["mags_kofam_scan_redox_metal_plasticity_index"]
     params:
-        user_params= ( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags_kofam_scan_redox_metabolic_plasticity_index"])) ) (config["USER_PARAMS"]["mags_kofam_scan_redox_metabolic_plasticity_index"]),
-        user_kofam_profiles = (lambda x: yaml.safe_load(open(x, "r"))["mags_kofam_scan__profiles"]) (config["USER_PARAMS"]["mags_kofam_scan_redox_metabolic_plasticity_index"]) 
+        user_params= ( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags_kofam_scan_redox_metal_plasticity_index"])) ) (config["USER_PARAMS"]["mags_kofam_scan_redox_metal_plasticity_index"]),
+        user_kofam_profiles = (lambda x: yaml.safe_load(open(x, "r"))["mags_kofam_scan__profiles"]) (config["USER_PARAMS"]["mags_kofam_scan_redox_metal_plasticity_index"]) 
     threads: config["threads"]
     shell:
         """
@@ -41,17 +41,17 @@ def get_kofamscan_inputs(f_string):
         return _temp
     return _f
 
-rule gather_mags_kofam_scan_redox_metabolic_plasticity_index_inputs:
-    input: get_kofamscan_inputs("{wdir}/{sample}/mags_kofam_scan_redox_metabolic_plasticity_index/{mag}/result.txt")
-    output: touch("{wdir}/{sample}/mags_kofam_scan_redox_metabolic_plasticity_index/gather_OK.txt")
+rule gather_mags_kofam_scan_redox_metal_plasticity_index_inputs:
+    input: get_kofamscan_inputs("{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/{mag}/result.txt")
+    output: touch("{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/gather_OK.txt")
     threads: 1
 
 
-rule format_mags_kofam_scan_redox_metabolic_plasticity_index_output:
+rule format_mags_kofam_scan_redox_metal_plasticity_index_output:
     input:
-        result=rules.run_mags_kofam_scan_redox_metabolic_plasticity_index.output.kofamscan_result
+        result=rules.run_mags_kofam_scan_redox_metal_plasticity_index.output.kofamscan_result
     output:
-        formatted="{wdir}/{sample}/mags_kofam_scan_redox_metabolic_plasticity_index/{mag}/kofam_formatted.csv"
+        formatted="{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/{mag}/kofam_formatted.csv"
     run:
         import pandas as pd
 
@@ -81,11 +81,11 @@ rule format_mags_kofam_scan_redox_metabolic_plasticity_index_output:
 
 rule run_mags_redox_metal_plasticity_index:
     input:
-        raw_counts=rules.format_mags_kofam_scan_redox_metabolic_plasticity_index_output.output.formatted,
-        custom_table_metals=expand("{table_file}", table_file=config["EXT_DB"]["mags_kofam_scan_redox_metabolic_plasticity_index_redox_metal_plasticity_index"]["table_file"])
+        raw_counts=rules.format_mags_kofam_scan_redox_metal_plasticity_index_output.output.formatted,
+        custom_table_metals=expand("{table_file}", table_file=config["EXT_DB"]["mags_kofam_scan_redox_metal_plasticity_index_redox_metal_plasticity_index"]["table_file"])
     output:
-        metal_index="{wdir}/{sample}/mags_kofam_scan_redox_metabolic_plasticity_index/{mag}/metabolic_index/redox_metal_indexes.tsv",
-        metal_index_extended="{wdir}/{sample}/mags_kofam_scan_redox_metabolic_plasticity_index/{mag}/metabolic_index/redox_metal_indexes_extended.tsv"
+        metal_index="{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/{mag}/metabolic_index/redox_metal_indexes.tsv",
+        metal_index_extended="{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/{mag}/metabolic_index/redox_metal_indexes_extended.tsv"
     run:
         import os
         import pandas as pd
@@ -137,7 +137,7 @@ rule run_mags_redox_metal_plasticity_index:
 
 rule gather_mags_redox_metal_plasticity_index:
     input:
-        collected=get_kofamscan_inputs("{wdir}/{sample}/mags_kofam_scan_redox_metabolic_plasticity_index/{mag}/metabolic_index/redox_metal_indexes.tsv"),
+        collected=get_kofamscan_inputs("{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/{mag}/metabolic_index/redox_metal_indexes.tsv"),
         mags_tsv=expand("{wdir}/{sample}/{mags_retrieval}/MAGs.tsv", mags_retrieval=config["MODULES"]["mags_retrieval"], allow_missing=True)
-    output: touch("{wdir}/{sample}/mags_kofam_scan_redox_metabolic_plasticity_index/gather_redox_metal_index_OK.txt")
+    output: touch("{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/gather_redox_metal_index_OK.txt")
     threads: 1
