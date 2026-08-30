@@ -2,7 +2,7 @@
 checkpoint run_mags_kofam_scan_redox_metabolic_plasticity_index:
     input:
         mags_orf=expand("{wdir}/{sample}/{mags_orf_prediction}/{mag}/orf_predicted.faa", mags_orf_prediction=config["MODULES"]["mags_orf_prediction"], allow_missing=True),
-        db_folder=expand("{kofam_scan_extdb_folder}", kofam_scan_extdb_folder=config["EXT_DB"]["mags_kofam_scan_redox_metal_plasticity_index"])
+        db_folder=expand("{kofam_scan_extdb_folder}", kofam_scan_extdb_folder=config["EXT_DB"]["mags_kofam_scan_redox_metal_plasticity_index"]["database_folder"])
     output:
         kofamscan_result="{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/{mag}/result.txt",
         tmp_dir=temp(directory("{wdir}/{sample}/mags_kofam_scan_redox_metal_plasticity_index/{mag}/temp_geomosaic_dir"))
