@@ -112,7 +112,7 @@ The current Geomosaic release integrates software covering all major stages of m
     <td class="tg-9wq8">fastqc + reads count</td>
   </tr>
   <tr>
-    <td class="tg-9tkk" rowspan="4">Functional Annotation</td>
+    <td class="tg-9tkk" rowspan="3">Functional Annotation</td>
     <td class="tg-9tkk">ARGs-OAP with Custom DB</td>
   </tr>
   <tr>
