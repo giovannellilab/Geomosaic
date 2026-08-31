@@ -97,7 +97,7 @@ The current Geomosaic release integrates software covering all major stages of m
   </tr></thead>
 <tbody>
   <tr>
-    <td class="tg-uzvj" rowspan="8">Read-based</td>
+    <td class="tg-uzvj" rowspan="10">Read-based</td>
     <td class="tg-9wq8" rowspan="3">Pre Processing</td>
     <td class="tg-9wq8">fastp</td>
   </tr>
@@ -112,11 +112,14 @@ The current Geomosaic release integrates software covering all major stages of m
     <td class="tg-9wq8">fastqc + reads count</td>
   </tr>
   <tr>
-    <td class="tg-9tkk" rowspan="2">Functional Annotation</td>
+    <td class="tg-9tkk" rowspan="4">Functional Annotation</td>
     <td class="tg-9tkk">ARGs-OAP with Custom DB</td>
   </tr>
   <tr>
     <td class="tg-9wq8">mi-faser</td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8">fmh-funprofiler</td>
   </tr>
   <tr>
     <td class="tg-9wq8" rowspan="2">Taxonomic Annotation</td>
@@ -126,7 +129,12 @@ The current Geomosaic release integrates software covering all major stages of m
     <td class="tg-9wq8">metaPhlAn</td>
   </tr>
   <tr>
-    <td class="tg-uzvj" rowspan="16">Assembly Based</td>
+    <td class="tg-9wq8"> Redox Metal Indexes</td>
+    <td class="tg-9wq8">redox metal plasticity index
+  </td>
+  </tr>
+  <tr>
+    <td class="tg-uzvj" rowspan="17">Assembly Based</td>
     <td class="tg-9wq8" rowspan="2">Assembly</td>
     <td class="tg-9wq8">metaSPAdes</td>
   </tr>
@@ -189,7 +197,7 @@ The current Geomosaic release integrates software covering all major stages of m
     <td class="tg-9wq8">Bakta</td>
   </tr>
   <tr>
-    <td class="tg-uzvj" rowspan="12">Binning Based</td>
+    <td class="tg-uzvj" rowspan="13">Binning Based</td>
     <td class="tg-9wq8">Binning</td>
     <td class="tg-9wq8">Multi-Binners (Metabat2 + MaxBin2 + SemiBin2)</td>
   </tr>
