@@ -38,22 +38,34 @@ rule format_kofam_scan_output:
         result=rules.run_rmi_mpi_kofam_scan.output.result
     output:
         formatted="{wdir}/{sample}/{kofam_scan_redox_metal_plasticity_index_output_folder}/kofam_scan_output/kofam_formatted.csv"
+    params:
+        user_params_file=config["USER_PARAMS"]["kofam_scan_redox_metal_plasticity_index"]
     run:
-        
         import pandas as pd
 
-        def parse_kofam_result(path: str) -> list:
+        raw_threshold = yaml.safe_load(open(str(params.user_params_file), "r")).get("kofam_evalue_threshold")
+        evalue_threshold = float(raw_threshold) if raw_threshold not in (None, "") else None
+
+        def parse_kofam_result(path: str, evalue_threshold=None) -> list:
             kos = []
             with open(path) as fh:
                 for line in fh:
                     if not line.strip() or line.startswith('#') or not line.startswith('*'):
                         continue
                     fields = line.split()
-                    if len(fields) >= 3:
-                        kos.append(f"gene:{fields[2]}")
+                    if len(fields) < 6:
+                        continue
+                    if evalue_threshold is not None:
+                        try:
+                            evalue = float(fields[5])
+                        except ValueError:
+                            continue
+                        if evalue > evalue_threshold:
+                            continue
+                    kos.append(f"gene:{fields[2]}")
             return kos
 
-        ko_list = parse_kofam_result(str(input.result))
+        ko_list = parse_kofam_result(str(input.result), evalue_threshold=evalue_threshold)
 
         df = (
             pd.Series(ko_list)
@@ -62,7 +74,7 @@ rule format_kofam_scan_output:
             .rename(columns={"index": "match_name"})
             [["intersect_bp", "match_name"]]
         )
-        
+
         df.to_csv(str(output.formatted), index=False)
 
 
