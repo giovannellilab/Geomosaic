@@ -174,6 +174,10 @@ The current Geomosaic release integrates software covering all major stages of m
     <td class="tg-9wq8">HMMSearch</td>
   </tr>
   <tr>
+    <td class="tg-9wq8">Assembly Redox Metal Indexes</td>
+    <td class="tg-9wq8">Assembly redox metal plasticity index</td>
+  </tr>
+  <tr>
     <td class="tg-9wq8" rowspan="2">ORF Annotation</td>
     <td class="tg-9wq8">eggNOG-mapper</td>
   </tr>
@@ -231,6 +235,10 @@ The current Geomosaic release integrates software covering all major stages of m
   <tr>
     <td class="tg-9wq8">MAGs HMM Annotation</td>
     <td class="tg-9wq8">HMMSearch</td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8">MAGs Redox Metal Indexes</td>
+    <td class="tg-9wq8">Mags redox metal plasticity index</td>
   </tr>
 </tbody></table></div>
 
