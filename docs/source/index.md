@@ -23,7 +23,7 @@ Interested in extending Geomosaic? See the [Contributing to Geomosaic](contribut
 
 <!-- [Contributes](contributes/) -->
 
-![gm](_static/images/gm.png)
+![gm](_static/images/Graph_abstract.png)
 
 
 
