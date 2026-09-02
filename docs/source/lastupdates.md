@@ -2,7 +2,7 @@
 
 Major changes will be documented in this page.
 
-## Version 1.5.1 (Aug 31, 2026)
+## Version 1.5.1 (Sept 1, 2026)
 ### Added
 - Add module `assembly_redox_metal_indexes` for index computation at assembly level using KOfam-scan
 - Add module `mags_redox_metal_indexes` for index computation at binning level using KOfam-scan
