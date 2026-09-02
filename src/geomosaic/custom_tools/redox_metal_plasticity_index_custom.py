@@ -1,22 +1,34 @@
 import os
 import re
 import pandas as pd
+import numpy as np
+from itertools import product
 from geomosaic._utils import GEOMOSAIC_ERROR, GEOMOSAIC_PROMPT, GEOMOSAIC_OK, GEOMOSAIC_NOTE
 from geomosaic._validator import check_special_characters_on_string
 
 
-def prepare_metalindex_customdb(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder):
+def _prepare_metalindex_customdb_generic(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder, folder_name: str):
     # USER FILES
     config_customdb_section["user_metal_table"] = collected_info["redox_metal_index_file_table"]
-    config_customdb_section["output_folder"] = "redox_metal_plasticity_index"
+    config_customdb_section["output_folder"] = folder_name
 
     basename_table = os.path.basename(collected_info["redox_metal_index_file_table"])
-    
+
     # EXTDB Section
-    config_extdb_section["database_folder"] = os.path.join(geomosaic_externaldb_folder, "redox_metal_plasticity_index")
-    config_extdb_section["table_file"] = os.path.join(geomosaic_externaldb_folder, "redox_metal_plasticity_index", basename_table)
+    config_extdb_section["database_folder"] = os.path.join(geomosaic_externaldb_folder, folder_name)
+    config_extdb_section["table_file"] = os.path.join(geomosaic_externaldb_folder, folder_name, basename_table)
 
 
+def prepare_metalindex_customdb(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder):
+    _prepare_metalindex_customdb_generic(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder, "redox_metal_plasticity_index")
+
+
+def prepare_metalindex_customdb_kofam(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder):
+    _prepare_metalindex_customdb_generic(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder, "kofam_scan_redox_metal_plasticity_index")
+
+
+def prepare_metalindex_customdb_mags_kofam(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder):
+    _prepare_metalindex_customdb_generic(config_customdb_section, config_extdb_section, collected_info, geomosaic_externaldb_folder, "mags_kofam_scan_redox_metal_plasticity_index")
 
 def check_file(file_path: str):
 
@@ -90,6 +102,82 @@ def validator_metal_index_file(file_path:str):
     return True
 
 
+def redox_metabolic_index(acceptors_list: list, donors_list: list) -> float:
+    """
+    Computes the Redox-Metabolic Index (RMI) as:
+    RMI = log(len(unique donors)) + log(len(unique acceptors))
+    """
+    if len(donors_list) == 0 or len(acceptors_list) == 0:
+        return 0.0
+
+    return float(round(np.log(len(donors_list)) + np.log(len(acceptors_list)), 4))
+
+
+def metal_plasticity_index(metal_donors_l: list, metal_acceptor_l: list) -> float:
+    """
+    Computes the Redox-Plasticity Index (RPI/MPI) as:
+    RPI = log(len(unique metal pairs))
+    """
+    if len(metal_donors_l) == 0 or len(metal_acceptor_l) == 0:
+        return 0.0
+
+    unique_pairs = list({tuple(sorted(pair)) for pair in product(metal_donors_l, metal_acceptor_l)})
+
+    return float(round(np.log(len(unique_pairs)), 4))
+
+
+def substrate_metal_map(df: pd.DataFrame) -> tuple[dict[str, dict], list[str], list[str]]:
+    """
+    Builds a substrate -> {metal -> [KOs]} map from a biogeochemical table
+    already filtered by energyRole (donors or acceptors).
+    """
+    substrate_map = {}
+    unique_metals, unique_substrates = set(), set()
+    no_metal = "__no_metal__"
+
+    for _, row in df.iterrows():
+
+        substrate = row['biogeoSubstrate']
+        metal = row['Metal']
+        ko = row['KO']
+        unique_substrates.add(substrate)
+
+        if substrate not in substrate_map:
+            substrate_map[substrate] = {"metals": {}}
+
+        if isinstance(metal, str) and metal != '//':
+            metals = [m.strip() for m in metal.split(',')]
+            for m in metals:
+                unique_metals.add(m)
+                if m not in substrate_map[substrate]["metals"]:
+                    substrate_map[substrate]["metals"][m] = [ko]
+                else:
+                    substrate_map[substrate]["metals"][m].append(ko)
+
+        elif metal == '//':
+            if no_metal not in substrate_map[substrate]["metals"]:
+                substrate_map[substrate]["metals"][no_metal] = [ko]
+            else:
+                substrate_map[substrate]["metals"][no_metal].append(ko)
+
+    return substrate_map, sorted(list(unique_metals)), sorted(list(unique_substrates))
+
+
+def parse_results(s, d: dict, index_substrate_pairs: float, index_metal_pairs: float, type_s: str) -> pd.DataFrame:
+    """
+    Flattens the substrate_metal_map output into a long-format DataFrame,
+    one row per (substrate, metal) pair, tagged with the sample, computed
+    indexes, and donor/acceptor type.
+    """
+    rows = []
+    for substrate, data in d.items():
+        for metal, kos in data["metals"].items():
+            rows.append({'sample': s, 'rmi': index_substrate_pairs, 'mpi': index_metal_pairs,
+                         'substrate': substrate, 'metal': np.nan if metal == "__no_metal__" else metal,
+                         'type': type_s, "KO": kos})
+    return pd.DataFrame(rows)
+
+
 metal_index_database_structure = GEOMOSAIC_PROMPT("""
 #####################################
 ##### REDOX METAL PLASTICTY INDEX CUSTOM MODULE ##### 
@@ -123,10 +211,10 @@ This module will allow you to compute two indexes:
     KOs and the total number of unique acceptors biogeoSubstrate (energyRole = A) and is defined as:  
     ---> RMI = log(len(set(num_donors))) + log(len(set(num_acceptors))) \n
 
-- RPI or Redox-Plasticity Index 
+- MPI or Metal-Plasticity Index 
     Is computed as the number of unique metal pairs scored from previous index, such that Donors (Fe,Ni) and Acceptors (Fe,Ni)
     ,the resulting unique paris will be (Fe,Fe), (Fe,Ni), (Ni,Ni)
-    ---> RPI = log(len(set(pairs))) \n
+    ---> MPI = log(len(set(pairs))) \n
 
 Please, provide a custom table with this information to include it in the geomosaic database and use it for metal index annotation.
 """)

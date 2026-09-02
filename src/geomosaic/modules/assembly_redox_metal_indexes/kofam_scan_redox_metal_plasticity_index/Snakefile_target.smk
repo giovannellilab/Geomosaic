@@ -1,0 +1,6 @@
+
+rule all_kofam_scan_redox_metal_plasticity_index:
+    input:  
+        expand("{wdir}/{sample}/{kofam_scan_redox_metal_plasticity_index_output_folder}/kofam_scan_output/kofam_formatted.csv", sample=config["SAMPLES"], wdir=config["WDIR"], kofam_scan_redox_metal_plasticity_index_output_folder=config["CUSTOM_DB"]["kofam_scan_redox_metal_plasticity_index"]["output_folder"]),
+        expand("{wdir}/{sample}/{kofam_scan_redox_metal_plasticity_index_output_folder}/metabolic_index/redox_metal_indexes.tsv", sample=config["SAMPLES"], wdir=config["WDIR"], kofam_scan_redox_metal_plasticity_index_output_folder=config["CUSTOM_DB"]["kofam_scan_redox_metal_plasticity_index"]["output_folder"]),
+        expand("{wdir}/{sample}/{kofam_scan_redox_metal_plasticity_index_output_folder}/metabolic_index/redox_metal_indexes_extended.tsv", sample=config["SAMPLES"], wdir=config["WDIR"], kofam_scan_redox_metal_plasticity_index_output_folder=config["CUSTOM_DB"]["kofam_scan_redox_metal_plasticity_index"]["output_folder"])

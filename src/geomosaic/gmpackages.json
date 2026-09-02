@@ -15,6 +15,7 @@
         "assembly_orf_annotation",
         "domain_annotation",
         "assembly_hmm_annotation",
+        "assembly_redox_metal_indexes",
         "binning",
         "binning_derep",
         "binning_qa",
@@ -25,7 +26,8 @@
         "mags_domain_annotation",
         "mags_orf_annotation",
         "mags_coverage",
-        "mags_hmm_annotation"
+        "mags_hmm_annotation",
+        "mags_redox_metal_indexes"
     ],
 
     "graph": [
@@ -54,6 +56,7 @@
         ["orf_prediction", "assembly_hmm_annotation"],
         ["orf_prediction", "domain_annotation"],
         ["orf_prediction", "assembly_orf_annotation"],
+        ["orf_prediction", "assembly_redox_metal_indexes"],
 
         ["binning", "binning_derep"],
 
@@ -70,6 +73,7 @@
         ["mags_orf_prediction", "mags_domain_annotation"],
         ["mags_orf_prediction", "mags_orf_annotation"],
         ["mags_orf_prediction", "mags_hmm_annotation"],
+        ["mags_orf_prediction", "mags_redox_metal_indexes"],
 
         ["mags_coverage", "mags_hmm_annotation"]        
     ],
@@ -193,6 +197,13 @@
             }
         },
 
+        "assembly_redox_metal_indexes": {
+            "description": "Module: Redox Metabolic Index & Metal Plasticity Index [Assembly-based]",
+            "choices": {
+                "KOfam Scan - Redox Metabolic Index & Metal Plasticity Index": "kofam_scan_redox_metal_plasticity_index"
+            }
+        },
+
         "binning": {
             "description": "Module: Binning",
             "choices": {
@@ -267,6 +278,12 @@
             "choices": {
                 "HMMSearch on MAGs": "mags_hmmsearch"
             }
+        },
+        "mags_redox_metal_indexes": {
+            "description": "Module: Redox Metabolic Index & Metal Plasticity Index [Binning-based]",
+            "choices": {
+                "KOfam Scan - Redox Metabolic Index & Metal Plasticity Index on MAGs": "mags_kofam_scan_redox_metal_plasticity_index"
+            }
         }
     },
     
@@ -322,6 +339,8 @@
         "gtdbtk": "gtdbtk.yaml",
         "kaiju": "kaiju.yaml",
         "kofam_scan": "kofam_scan.yaml",
+        "kofam_scan_redox_metal_plasticity_index": "kofam_scan_redox_metal_plasticity_index.yaml",
+        "mags_kofam_scan_redox_metal_plasticity_index": "mags_kofam_scan_redox_metal_plasticity_index.yaml",
         "kraken2": "kraken2.yaml",
         "megahit": "megahit.yaml",
         "metaphlan": "metaphlan.yaml",
@@ -425,6 +444,18 @@
         "redox_metal_plasticity_index": {
             "redox_metal_index_file_table" : {
                 "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM TABLE for Redox Metabolic Index & Redox Plasticity Index - TSV FILE]\nDescription: you need to specify the path to the biogeo-table TSV table for computation of Redox Metabolic & Redox Plasticity Indexes based on funprofiler annotation",
+                "type": "file"
+            }
+        },
+        "kofam_scan_redox_metal_plasticity_index": {
+            "redox_metal_index_file_table" : {
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM TABLE for Redox Metabolic Index & Redox Plasticity Index - TSV FILE]\nDescription: you need to specify the path to the biogeo-table TSV table for computation of Redox Metabolic & Redox Plasticity Indexes based on KOfam Scan annotation",
+                "type": "file"
+            }
+        },
+        "mags_kofam_scan_redox_metal_plasticity_index": {
+            "redox_metal_index_file_table" : {
+                "description": "\n[ADDITIONAL PARAMETER REQUEST - CUSTOM TABLE for Redox Metabolic Index & Redox Plasticity Index - TSV FILE]\nDescription: you need to specify the path to the biogeo-table TSV table for computation of Redox Metabolic & Redox Plasticity Indexes based on KOfam Scan annotation",
                 "type": "file"
             }
         }

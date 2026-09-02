@@ -1,0 +1,9 @@
+name: geomosaic_kofam_scan
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - kofamscan
+  - python>=3.9
+  - pandas
+  - pyarrow

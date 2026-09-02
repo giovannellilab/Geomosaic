@@ -1,0 +1,1 @@
+expand("{mags_kofam_scan_redox_metal_plasticity_index_extdb_folder}", mags_kofam_scan_redox_metal_plasticity_index_extdb_folder=config["EXT_DB"]["mags_kofam_scan_redox_metal_plasticity_index"]["database_folder"]), expand("{table_file}", table_file = config["EXT_DB"]["mags_kofam_scan_redox_metal_plasticity_index"]["table_file"]),
