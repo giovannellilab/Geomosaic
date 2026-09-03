@@ -1,0 +1,14 @@
+name: "Changelog updated"
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "changelog.md"
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Changelog changed on master, this will trigger the docs rebuild on gh-pages"
