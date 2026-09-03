@@ -1,6 +1,6 @@
 <!--
 Note: this file is automatically synced to docs/source/lastupdate.md
-on the gh-pages branch every time the docs site is rebuilt.
+on the gh-pages branch every time the docs site is rebuilt
 -->
 
 # Change Log
