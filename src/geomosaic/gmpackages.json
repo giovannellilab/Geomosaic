@@ -478,7 +478,7 @@
         "mags_recognizer",
         "mags_dram",
         "mags_hmmsearch",
-        "coverm_genome"
+        "coverm_genome",
         "mags_kofam_scan_redox_metal_plasticity_index"
     ]
 }
