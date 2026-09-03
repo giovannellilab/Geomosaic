@@ -4,26 +4,18 @@ on:
   push:
     branches:
       - "gh-pages"
-  workflow_run:
-    workflows: ["Changelog updated"]
-    types: [completed]
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
   build:
-    # Run on direct pushes to gh-pages, or when the "Changelog updated" workflow
-    # on master completes successfully (i.e. changelog.md was updated)
-    if: github.event_name == 'push' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'master')
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -33,7 +25,7 @@ jobs:
 
       - name: Fetch changelog from master
         run: |
-          curl -s https://raw.githubusercontent.com/giovannellilab/Geomosaic/master/changelog.md -o source/lastupdate.md
+          curl -s https://raw.githubusercontent.com/giovannellilab/Geomosaic/master/CHANGELOG.md -o source/lastupdate.md
 
       - name: Setup Python
         uses: actions/setup-python@v3
@@ -41,8 +33,7 @@ jobs:
           python-version: '3.8'
 
       - name: Upgrade pip
-        run: |
-          python3 -m pip install --upgrade pip
+        run: python3 -m pip install --upgrade pip
 
       - name: Install dependencies
         run: python3 -m pip install -r requirements.txt
