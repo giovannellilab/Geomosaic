@@ -1,0 +1,66 @@
+name: "Sphinx: Render docs (triggered from master)"
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "CHANGELOG.md"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs
+    steps:
+      # Checkout gh-pages explicitly, not master, since that's where the Sphinx source lives
+      - uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+
+      - name: Fetch changelog from master
+        run: |
+          curl -s https://raw.githubusercontent.com/giovannellilab/Geomosaic/master/CHANGELOG.md -o source/lastupdate.md
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.8'
+
+      - name: Upgrade pip
+        run: python3 -m pip install --upgrade pip
+
+      - name: Install dependencies
+        run: python3 -m pip install -r requirements.txt
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v3
+
+      - run: sphinx-build -M html source build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "docs/build/html"
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
