@@ -472,6 +472,7 @@
         "recognizer",
         "hmms_search",
         "kofam_scan",
+        "kofam_scan_redox_metal_plasticity_index",
         
         "mags_gtdbtk",
         "mags_recognizer",
