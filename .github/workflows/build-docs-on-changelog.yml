@@ -30,7 +30,7 @@ jobs:
 
       - name: Fetch changelog from master
         run: |
-          curl -s https://raw.githubusercontent.com/giovannellilab/Geomosaic/master/CHANGELOG.md -o source/lastupdate.md
+          curl -s https://raw.githubusercontent.com/giovannellilab/Geomosaic/master/CHANGELOG.md -o source/lastupdates.md
 
       - name: Setup Python
         uses: actions/setup-python@v3
