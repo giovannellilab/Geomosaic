@@ -23,4 +23,23 @@ Full Documentation available at: [giovannellilab.github.io/Geomosaic](https://gi
 
 If you used __GEOMOSAIC__ for your analysis, please cite:
 
->[PLACEHOLDER] Corso D., et al., "Geomosaic: a flexible metagenomic pipeline combining biological and geochemical data to outline biosphere and geosphere interactions." 
+> Davide Corso, Edoardo Taccaliti, Bernardo Barosa, and Donato Giovannelli. **Geomosaic: a flexible bioinformatics platform integrating complementary metagenomic analyses from sequencing reads to genomes.** *bioRxiv preprint (2026)*. doi: [10.64898/2026.09.05.749574](https://doi.org/10.64898/2026.09.05.749574).
+
+<details>
+<summary><b>BibTeX entry</b> (click to expand)</summary>
+
+```bibtex
+@article{corso2026geomosaic,
+  title     = {Geomosaic: a flexible bioinformatics platform integrating complementary metagenomic analyses from sequencing reads to genomes},
+  author    = {Corso, Davide and Taccaliti, Edoardo and Barosa, Bernardo and Giovannelli, Donato},
+  journal   = {bioRxiv},
+  year      = {2026},
+  doi       = {10.64898/2026.09.05.749574},
+  url       = {https://doi.org/10.64898/2026.09.05.749574},
+  note      = {Preprint}
+}
+```
+
+</details>
+
+> **Note on modular tools:** Geomosaic wraps multiple third-party tools (e.g., assemblers, profilers, and binners). When reporting your results, please also cite the specific software modules executed by your workflow.
