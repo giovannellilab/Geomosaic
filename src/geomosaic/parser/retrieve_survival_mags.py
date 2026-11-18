@@ -21,7 +21,9 @@ def retrieve_survival_mags(checkm_table, das_tool_bins, completness_threshold, c
     mags_col = [f"mag_{idx}" for idx in range(1, len(df_mags)+1)]
     df_mags.insert(0, 'MAGs', mags_col)
 
-    df_mags.rename(columns={'Bin Id': 'binID'}, inplace=True)
+    id_col = "Bin Id" if "Bin Id" in df_mags.columns else "Name"
+    
+    df_mags.rename(columns={id_col: 'binID'}, inplace=True)
     df_mags.to_csv(f"{outfolder}/MAGs.tsv", header=True, index=False, sep="\t")
     df_mags.to_csv(mags_general_file, header=True, index=False, sep="\t")
     mags_list = {}

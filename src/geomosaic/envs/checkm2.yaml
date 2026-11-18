@@ -1,0 +1,6 @@
+name: checkm2
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - checkm2

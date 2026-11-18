@@ -221,7 +221,8 @@
         "binning_qa": {
             "description": "Module: Binning Quality Evaluation [Binning-based]",
             "choices": {
-                "CheckM": "checkm"
+                "CheckM": "checkm",
+                "CheckM2": "checkm2"
             }
         },
 
@@ -330,6 +331,7 @@
         "bowtie2": "bowtie2.yaml",
         "bowtie2_shrinked": "bowtie2.yaml",
         "checkm": "checkm.yaml",
+        "checkm2": "checkm2.yaml",
         "coverm": "coverm.yaml",
         "das_tool": "das_tool.yaml",
         "eggnog_mapper": "eggnog_mapper.yaml",
@@ -419,6 +421,10 @@
         "funprofiler": {
             "inpfolder": "funprofiler",
             "outfolder": "funprofiler_extdb"
+        },
+        "checkm2": {
+            "inpfolder": "checkm2",
+            "outfolder": "checkm2_extdb"
         }
     },
 
@@ -474,6 +480,8 @@
         "kofam_scan",
         "kofam_scan_redox_metal_plasticity_index",
         
+        "mags",
+        "mags_prodigal",
         "mags_gtdbtk",
         "mags_recognizer",
         "mags_dram",

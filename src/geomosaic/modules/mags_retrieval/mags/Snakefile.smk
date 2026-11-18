@@ -10,6 +10,7 @@ checkpoint run_mags:
     params:
         completness_threshold=config["ADDITIONAL_PARAM"]["completness_threshold"],
         contamination_threshold=config["ADDITIONAL_PARAM"]["contamination_threshold"],
+        qa_tool = config["MODULES"]["binning_qa"],
         user_params=( lambda x: " ".join(filter(None , yaml.safe_load(open(x, "r"))["mags"])) ) (config["USER_PARAMS"]["mags"]) 
     run:
         shell("mkdir -p {output.folder}/fasta")
@@ -19,8 +20,13 @@ checkpoint run_mags:
         shell('echo "Contamination {params.contamination_threshold}" >> {output.folder}/info.txt')
 
         from geomosaic.parser.retrieve_survival_mags import retrieve_survival_mags
-
-        checkm_table = os.path.join(str(input.checkm_folder), "checkm_output.tsv")
+        
+        qa_filename = {
+            "checkm1": "checkm_output.tsv",
+            "checkm2": "quality_report.tsv",
+        }.get(params.qa_tool)
+    
+        checkm_table = os.path.join(str(input.checkm_folder), qa_filename)
         das_tool_bins = os.path.join(str(input.dins_derep), "bins")
         mags_outfolder = str(output.folder)
 

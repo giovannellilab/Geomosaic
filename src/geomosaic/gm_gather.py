@@ -18,7 +18,8 @@ from geomosaic.gathering.gather_redox_metal_plasticity_index import gather_redox
 from geomosaic.gathering.gather_kofam_scan import gather_kofam_scan
 from geomosaic.gathering.gather_kofam_scan_redox_metal_plasticity_index import gather_kofam_scan_redox_metal_plasticity_index
 from geomosaic.gathering.gather_mags_kofam_scan_redox_metal_plasticity_index import gather_mags_kofam_scan_redox_metal_plasticity_index
-
+from geomosaic.gathering.gather_mags import gather_mags
+from geomosaic.gathering.gather_mags_prodigal import gather_mags_prodigal
 
 def geo_gather(args):
     gmsetup                 = args.setup_file
@@ -90,7 +91,9 @@ def gather_functions():
         "hmms_search": gather_hmms_search,
         "kofam_scan": gather_kofam_scan,
         "kofam_scan_redox_metal_plasticity_index": gather_kofam_scan_redox_metal_plasticity_index,
-        
+
+        "mags": gather_mags,
+        "mags_prodigal": gather_mags_prodigal,
         "mags_gtdbtk": gather_mags_gtdbtk,
         "mags_recognizer": gather_mags_recognizer,
         "mags_dram": gather_mags_dram,

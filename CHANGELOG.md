@@ -7,6 +7,15 @@ on the gh-pages branch every time the docs site is rebuilt.
 Major changes will be documented in this file.
 
 
+## Version 1.5.5 (Sept 18, 2026)
+### Added
+- Add package `checkm2` to  module `binning_qa`
+- Add gather command for `mags` file collection
+### Changed
+- Changed `fmh-funcprofiler` remote, is now installed through bioconda
+### Fixed
+
+
 ## Version 1.5.2 (Sept 3, 2026)
 ### Added
 - Add gather module `assembly_redox_metal_indexes` from KOfam-scan results

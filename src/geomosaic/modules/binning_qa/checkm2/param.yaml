@@ -1,0 +1,2 @@
+checkm2:
+  - "--lowmem"
